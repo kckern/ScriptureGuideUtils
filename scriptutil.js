@@ -1,4 +1,9 @@
-const scriptindex = require("./scriptindex.js")
+
+const fs = require('fs');
+let rawdata = fs.readFileSync('./data/scriptdata.json');
+let raw_index = JSON.parse(rawdata);
+
+
 const cleanReference = function (messyReference) {
     let ref = messyReference.trim();
     //Stray text cleanup
@@ -196,6 +201,9 @@ const cleanReference = function (messyReference) {
         var re = new RegExp("\\b" + regex[i][0] + "\\.*\\b", "ig");
         ref = ref.replace(re, regex[i][1]);
     }
+
+
+    
     //Default to 1st chapter
     ref = ref.replace(/(Words of Mormon|Articles of Faith|4 Nephi|Jarom|Enos|Omni|Obadiah|2 John|3 John|Philemon|Jude|First Vision|Joseph Smith—.+)\s+([2-9]|(\d\d+))/i, "$1 1:$2");
     //Default to 1st book
@@ -215,7 +223,8 @@ const cleanReference = function (messyReference) {
             //TODO : ref = self::getRefFromBookVerse(162,$m[1]);
         }
     }
-    let cleanReference = ref.trim();;
+    let cleanReference = ref.trim();
+
     return cleanReference;
 }
 const splitReferences = function (compoundReference) {
@@ -225,13 +234,14 @@ const splitReferences = function (compoundReference) {
     for (let i in refs) {
         let pieces = refs[i].split(/([0-9:,-]+)$/);
         if (pieces[0].length > 0) runningBook = pieces[0].trim();
-        completeRefs.push(runningBook + " " + pieces[1]);
+        if(pieces[1]==undefined) pieces[1] = '';
+        completeRefs.push((runningBook + " " + pieces[1]).trim());
     }
     return completeRefs;
 }
 const getBook = function (ref) {
     let book = ref.replace(/([ 0-9:,-]+)$/, '').trim();
-    if (scriptindex.bookExists(book)) return book;
+    if (bookExists(book)) return book;
     return false;
 }
 const getRanges = function (ref) {
@@ -339,7 +349,7 @@ const getRanges = function (ref) {
 let refIndex = null
 let verseIdIndex = null
 const loadVerseIds = function (book, ranges) {
-    if (refIndex == null) refIndex = scriptindex.loadRefIndex();
+    if (refIndex == null) refIndex = loadRefIndex();
     let verseList = [];
     for (let i in ranges) //Assumption: 1 range is within a single chapter
     {
@@ -349,7 +359,7 @@ const loadVerseIds = function (book, ranges) {
         let start = parseInt(matches[2]);
         let end = matches[3];
         if (end == '') end = start;
-        if (end == "X") end = scriptindex.loadMaxVerse(book, chapter);
+        if (end == "X") end = loadMaxVerse(book, chapter);
         else end = parseInt(end);
         for (let verse_num = start; verse_num <= end; verse_num++) {
             if (refIndex[book] == undefined) continue;
@@ -361,7 +371,7 @@ const loadVerseIds = function (book, ranges) {
     return verseList;
 }
 const loadVerseStructure = function (verse_ids) {
-    if (verseIdIndex == null) verseIdIndex = scriptindex.loadVerseIdIndex();
+    if (verseIdIndex == null) verseIdIndex = loadVerseIdIndex();
     let segments = consecutiveSplitter(verse_ids);
     let structure = [];
     for (let i in segments) {
@@ -405,7 +415,7 @@ const loadRefsFromRanges = function (ranges) {
                 if (start_vs == end_vs) {
                     ref = start_bk + " " + start_ch + ":" + start_vs;
                 } else {
-                    if (start_vs == 1 && end_vs == scriptindex.loadMaxVerse(start_bk, start_ch)) //whole chapter
+                    if (start_vs == 1 && end_vs == loadMaxVerse(start_bk, start_ch)) //whole chapter
                     {
                         ref = start_bk + " " + start_ch;
                     }
@@ -421,10 +431,10 @@ const loadRefsFromRanges = function (ranges) {
                 }
             }
         } else {
-            if (start_vs == 1 && end_vs == scriptindex.loadMaxVerse(end_bk, end_ch)) {
+            if (start_vs == 1 && end_vs == loadMaxVerse(end_bk, end_ch)) {
                 ref = start_bk + " " + start_ch + " - " + end_bk + " " + end_ch;
             }
-            else if (end_vs == scriptindex.loadMaxVerse(end_bk, end_ch)) {
+            else if (end_vs == loadMaxVerse(end_bk, end_ch)) {
                 ref = start_bk + " " + start_ch + ":" + start_vs + " - " + end_bk + " " + end_ch;
             }
             else if (start_vs == 1) {
@@ -441,9 +451,66 @@ const loadRefsFromRanges = function (ranges) {
     }
     return refs;
 }
-const loadMaxVerse = function (book, chapter) {
-    return scriptindex.loadMaxVerse(book, chapter);
+
+
+const loadRefIndex = function () {
+    let refIndex = {};
+    let verse_id = 1;
+    let book_list = Object.keys(raw_index);
+    for (let a in book_list) {
+        let book_title = book_list[a];
+        refIndex[book_title] = {};
+        for (let b in raw_index[book_title]) {
+            let chapter_num = parseInt(b) + 1;
+            let verse_max = raw_index[book_title][b];
+            refIndex[book_title][chapter_num] = {};
+            for (var verse_num = 1; verse_num <= verse_max; verse_num++) {
+                refIndex[book_title][chapter_num][verse_num] = verse_id;
+                verse_id++;
+            }
+        }
+
+    }
+    return refIndex;
 }
+
+
+const loadVerseIdIndex = function () {
+    let = verseIdIndex = [null];
+    let book_list = Object.keys(raw_index);
+    for (let a in book_list) {
+        let book_title = book_list[a];
+        for (let b in raw_index[book_title]) {
+            let chapter_num = parseInt(b) + 1;
+            let verse_max = raw_index[book_title][b];
+            for (var verse_num = 1; verse_num <= verse_max; verse_num++) {
+                verseIdIndex.push([book_title, chapter_num, verse_num]);
+            }
+        }
+    }
+    return verseIdIndex;
+}
+
+
+const bookExists = function (book) {
+    if (raw_index[book] === undefined) return false;
+    return true;
+}
+
+
+const loadMaxChapter = function (book) {
+
+    if (!bookExists(book)) return 0;
+    return raw_index[book].length;
+}
+
+const loadMaxVerse = function (book, chapter) {
+
+    if (!bookExists(book)) return 0;
+    return raw_index[book][parseInt(chapter) - 1]
+}
+
+
 module.exports = {
     getBook,
     getRanges,
@@ -452,5 +519,6 @@ module.exports = {
     cleanReference,
     splitReferences,
     loadRefsFromRanges,
-    loadMaxVerse
+    loadMaxVerse,
+    loadMaxChapter
 }

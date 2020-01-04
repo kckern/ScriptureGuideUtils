@@ -36,14 +36,30 @@ const generateReference = function (verse_ids) {
 
 
 const lookupMultiBookRange = function (cleanRef) { //eg Matthew 15—Mark 2
-    
+
+
     let range = cleanRef.split(/[—-]/);
-    if(!range[0].match(/[:]/)) range[0] = range[0]+":"+1;
+    if(!range[0].match(/[:]/))
+    {
+        if (range[0].match(/\d+\s*$/)) range[0] = range[0].trim() + ":" + 1;
+        else range[0] = range[0].trim() + " 1:1";
+    } 
     if(!range[1].match(/[:]/))
     {
-        let matches = range[1].match(/(.*?)\s(\d+)$/)
-        let maxverse = scriptutil.loadMaxVerse(scriptutil.cleanReference(matches[1]),matches[2]);
-        range[1] = range[1]+":"+maxverse;
+
+        let matches = range[1].match(/(.*?)\s(\d+)$/);
+        if(matches===null)
+        {
+            //find end of book
+            let maxChapter = scriptutil.loadMaxChapter(range[1]);
+            let maxverse = scriptutil.loadMaxVerse(range[1], maxChapter);
+            range[1] = range[1] + " " + maxChapter+ ":" + maxverse;
+            console.log(range);
+        }
+        else {
+            let maxverse = scriptutil.loadMaxVerse(scriptutil.cleanReference(matches[1]), matches[2]);
+            range[1] = range[1] + ":" + maxverse;
+        }
     }
     let start = lookupSingleRef(range[0])[0];
     let end = lookupSingleRef(range[1])[0];

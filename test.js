@@ -22,9 +22,8 @@ let testcases =
     ["Compound reference in same book","Exodus 5:1;6:2;8:5"],
     ["Compound reference in different books","Exodus 5:1; Leviticus 6:2; Numbers 8:5"],
     ["Compound reference ranges in different books","Exodus 5:1-3; Leviticus 6:2-5; Numbers 8:5-6"],
-
+    ["Entire Book Range","Genesis - Numbers"],
     ["Abbreviation detection","Mt2.5;Mk3;Lk4;Jn5.2-6;1Jn1.5,7-8;3Jn1.1"]
-
 
 ]
 
