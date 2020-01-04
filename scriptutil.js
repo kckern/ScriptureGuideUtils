@@ -1,31 +1,18 @@
-
 const scriptindex = require("./scriptindex.js")
-
 const cleanReference = function (messyReference) {
-
     let ref = messyReference.trim();
-
     //Stray text cleanup
     ref = ref.replace(/[.]{2,}/, ';');
     ref = ref.replace(/(\d+) (\d+)/i, '$1.$2');
-
-    if (false) console.log("fix") // TODO Process Numeric for direct vid lookup
-
+    ref = ref.replace(/[.]/, ':');
     //Fix strange whitespace encoding
     ref = ref.replace(decodeURIComponent('%C2%A0'), ' ');
-
-
     //Remove Leading Zeros
     ref = ref.replace(/([a-z])[ .-]*0+/i, '$1');
     ref = ref.replace(/^(\d+)-/i, '$1');
-
-
     //Build Regex rules
-
     let regex = [
         //Standardize JST
-
-
         //Turn spelled-out ordinals into pure numbers
         ["(first|1st|\\bi\\b)", "1"],
         ["(second|2nd|\\bii\\b)", "2"],
@@ -33,14 +20,11 @@ const cleanReference = function (messyReference) {
         ["(fourth|4th|\\biv\\b)", "4"],
         ["([0-9])th\\b", "$1"],
         ["([1-4])(st|nd|d|rd|th)\\b", "$1"],
-
         //Remove spelled out word chapter
         [",*\\s*\\b(?:ch\\b|chap(?:t*er)*s*)\\.*\\,*\\s*(\\d+)", "$1"],
         [",*\\s*\\b(?:sec\\b|section)\\.*\\s*(\\d+)", "$1"],
         ["([0-9]),*\\s*\\b(?:chapt*ers*|ch|chptrs*)\\.*,*\\s*([0-9])", "$1:$2"],
         ["([a-z]),*\\s*\\b(?:chapt*ers*|ch|chptrs*)\\s*([0-9])", "$1 $2"],
-
-
         //Punctuation standardization
         ["[()]+", " "],  //remove parentheses
         ["[\\s.]*[–—−\\-]+[\\s.]*", "-"], //standardize hyphens and dashes
@@ -58,41 +42,32 @@ const cleanReference = function (messyReference) {
         [": ", ":"],  //Dots to spaces
         ["(\\D)-(\\d)", "$1 $2"],  //Dots to spaces
         ["([a-z]),", "$1"],  //Dots to spaces
-
         ["jst(,| of )", "JST "],  //remove parentheses
         ["jst([a-z])", "JST $1"],  //remove parentheses
-
         [",\\s*((?:\\d+\\s)*[a-z])", "; $1"],
         ["\\b\\s*cf\\.*\\s*\\b", "; "],
-
-
         //Convert spelled out verses
         ["\\bv*ve*r*s*e*s*\\s*([0-9])", ":$1"],
         ["(, *)*\\bverses*\\s*([0-9])", ":$1"],
         ["\\s*:", ":"],  //space before colon
         [";\\s*:", ":"],
         ["(\\d+) *to *(\\d+)", "$1-$2"], //standardize hyphens and dashes
-
         //Capitalization and emdash
         ["([—-])h", "\u2014H"],
         ["([—-])m", "\u2014M"],
-
         //Add Space before digit
         ["([A-za-z])(\\d)", "$1 $2"],
         //Turn comma divider indo semicolon divider
         ["([0-9]),\\s*([1-4]*\\s*[a-z])", "$1; $2"],
-
         //unabreviate on/of
         ["o([nf])", "o$1"],
         ["([;,])", "$1 "],
         ["(the )*book of", ""]
     ];
-
     for (let i in regex) {
         var re = new RegExp(regex[i][0], "ig");
         ref = ref.replace(re, regex[i][1]);
     }
-
     regex = [
         //Old Testament
         ["gen\\.*(?:esis)*", "Genesis"],
@@ -131,8 +106,6 @@ const cleanReference = function (messyReference) {
         ["hag\\.*(?:gai)*", "Haggai"],
         ["zech*\\.*(?:ariah)*", "Zechariah"],
         ["mal*\\.*(?:achi)*", "Malachi"],
-
-
         //New Testament
         ["(?:ma*t*t*h*|mt)\\.*(?:ew)*", "Matthew"],
         ["m(ar)*k", "Mark"],
@@ -154,8 +127,6 @@ const cleanReference = function (messyReference) {
         ["pet*\\.*(?:er)*", "Peter"],
         ["ju\\.*(?:d)*\\.*(?:e)*", "Jude"],
         ["rev\\.*(?:elation)*", "Revelation"],
-
-
         //Book of Mormon
         ["ne\\.*(?:phi)*", "Nephi"],
         ["jac\\.*(?:ob)*", "Jacob"],
@@ -169,13 +140,9 @@ const cleanReference = function (messyReference) {
         ["eth\\.*(?:er)*", "Ether"],
         ["morm\\.*(?:on)*", "Mormon"],
         ["moro\\.*(?:ni)*", "Moroni"],
-
-
         //D&C
         ["d(?:octrine)*\\.* *(?:&amp;|&|and)* *c(?:ovenants)*(?:\\s*\\bSec(?:tion)*)*\\.*", "Doctrine and Covenants"],
         ["dee and see", "Doctrine and Covenants"], // for voice command
-
-
         //Pearl of Great Price
         ["Moses", "Moses"],
         ["Abra*\\.*(?:ham)*", "Abraham"],
@@ -184,8 +151,6 @@ const cleanReference = function (messyReference) {
         ["JS[—\\-]*\\s*[H]", "Joseph Smith History"],
         ["JS[—\\-]*\\s*[M]", "Joseph Smith Matthew"],
         ["a(?:rticles)*[ _-]*o[ _-f]*f(?:aith)*", "Articles of Faith"],
-
-
         //Other Mormon Scripture
         [",* *jst", "JST"], //remove comma in front of jst
         ["Jos(eph)*\\.* Smith('s)* Translation,*( of)*\\s*", "JST"], //abbreviate
@@ -198,55 +163,39 @@ const cleanReference = function (messyReference) {
         ["(?:book of )*com(?:mandments)*", "Book of Commandments"],
         ["l *on* *f", "Lectures on Faith"],
         ["lec\\.*(?:tures*)(?: on faith)*", "Lectures on Faith"],
-
-
         //Strangite
         ["(?:the )*(?:book of )*(?:the )*Law of the Lord", "Law"],
         ["Law", "The Law of the Lord"],
-
-
         //MW&W
         ["tsp", "The Sealed Portion"],
         ["the sealed portion", "The Sealed Portion"],
         ["1\\s*(?:st)*\\s*v(?:ision)*", "First Vision"],
-
-
         //Coc
         ["W\\s*Moroni", "Words of Moroni"],
         ["s(?:ealed)*.*?moses", "Sealed Book of Moses"],
         ["3.*ne(phi)*(te)*.*?acts", "Acts of the Three Nephites"],
-
-
         //Islam
         ["qur['’ ]*(an)*", "Qur’an"],
         ["(?:al[ \\-––])*qur'*’*ani*c*(?:verses*)*", "Qur’an"],
         ["surah [a-z\\-–’']*(?: |:|–|\\-|v|vv|verses*)*", "Qur’an"],
         ["al[ \\-–][a-z\\-–’']+(?: |:|–|\\-|v|vv|verses*|ayab)*", "Qur’an"],
         ["kor(an)*", "Qur’an"],
-
-
         //Eastern
         ["dh*p(ada)*", "Dhammapada"],
         ["d(ha|ah)mm*(apada)*", "Dhammapada"],
         ["b*h*(agavad)* *g(ita)*", "Bhagavad Gita"],
         ["tao( *te* *ching)*", "Tao Te Ching"],
         //deal with high verses
-
-
         //Utils for One-off Errors
         ["(Book of )+", "Book of "],
         ["( on Faith)+", " on Faith"],
         ["(Solomon's )+", "Solomon's "],
-
     ];
-
     //process book Fixes
     for (let i in regex) {
         var re = new RegExp("\\b" + regex[i][0] + "\\.*\\b", "ig");
         ref = ref.replace(re, regex[i][1]);
     }
-
-
     //Default to 1st chapter
     ref = ref.replace(/(Words of Mormon|Articles of Faith|4 Nephi|Jarom|Enos|Omni|Obadiah|2 John|3 John|Philemon|Jude|First Vision|Joseph Smith—.+)\s+([2-9]|(\d\d+))/i, "$1 1:$2");
     //Default to 1st book
@@ -255,13 +204,9 @@ const cleanReference = function (messyReference) {
     ref = ref.replace(/\s+/i, " ");
     //Allow for cross-chapter references that start with a whole
     ref = ref.replace(/([a-z]\s*\d+)(-\d+:\d+)/i, "$1:1$2");
-
     ref = ref.replace(/--/, "\u2014");
-
     //Treat commas as semicolons in the absence of verses
     if (!ref.match(/:/)) ref = ref.replace(/,/, ";");
-
-
     //Process Dhammapadda 
     let m = ref.match(/Dhammapada ([0-9]+)/)
     if (m) {
@@ -270,14 +215,10 @@ const cleanReference = function (messyReference) {
             //TODO : ref = self::getRefFromBookVerse(162,$m[1]);
         }
     }
-
-
     let cleanReference = ref.trim();;
     return cleanReference;
 }
-
 const splitReferences = function (compoundReference) {
-
     let refs = compoundReference.split(/\s*;\s*/);
     let runningBook = null;
     let completeRefs = [];
@@ -288,23 +229,17 @@ const splitReferences = function (compoundReference) {
     }
     return completeRefs;
 }
-
 const getBook = function (ref) {
     let book = ref.replace(/([ 0-9:,-]+)$/, '').trim();
     if (scriptindex.bookExists(book)) return book;
     return false;
 }
-
 const getRanges = function (ref) {
-
     let ranges = [];
-    let numbers = ref.replace(/.*?([0-9:,-]+)$/, '$1').trim();
-
+    let numbers = ref.replace(/.*?([0-9: ,-]+)$/, '$1').trim();
     let isChaptersOnly = numbers.match(/:/) ? false : true;
     let isRange = !numbers.match(/-/) ? false : true;
     let isSplit = !numbers.match(/,/) ? false : true;
-
-
     // Genesis 1,3-5
     if (isChaptersOnly && isSplit && isRange) {
         let chapterRanges = numbers.split(/,/);
@@ -322,7 +257,6 @@ const getRanges = function (ref) {
                 ranges.push(chapterRanges[i] + ": 1-X");
             }
         }
-
     }
     // Genesis 1,3
     else if (isChaptersOnly && isSplit) {
@@ -348,7 +282,6 @@ const getRanges = function (ref) {
         let split = numbers.split(/,/);
         let verses = null;
         for (let i in split) {
-
             // 2:2   OR   1:1-4
             if (split[i].match(/:/)) {
                 let pieces = split[i].split(/:/);
@@ -387,37 +320,25 @@ const getRanges = function (ref) {
     else if (isRange) {
         let chapters = numbers.match(/((\d+)[:]|^\d+)/g);
         let verses = numbers.match(/[:-](\d+)/g);
-
         if (chapters.length == 1) chapters.push(chapters[0]);
         chapters = chapters.map(c => parseInt(c.replace(/\D/g, '').trim()));
         verses = verses.map(v => parseInt(v.replace(/\D/g, '').trim()));
-
         for (let i = chapters[0]; i <= chapters[1]; i++) {
             let start = 1;
             let end = "X";
             if (chapters[0] == i) start = verses[0];
             if (chapters[1] == i) end = verses[verses.length - 1];
-
             ranges.push(i + ": " + start + "-" + end);
         }
-
     }
     else {
         ranges = [numbers];
     }
-
-
-
-
     return ranges;
-
 }
-
 let refIndex = null
 let verseIdIndex = null
-
 const loadVerseIds = function (book, ranges) {
-
     if (refIndex == null) refIndex = scriptindex.loadRefIndex();
     let verseList = [];
     for (let i in ranges) //Assumption: 1 range is within a single chapter
@@ -431,37 +352,31 @@ const loadVerseIds = function (book, ranges) {
         if (end == "X") end = scriptindex.loadMaxVerse(book, chapter);
         else end = parseInt(end);
         for (let verse_num = start; verse_num <= end; verse_num++) {
-            if(refIndex[book]==undefined ) continue;
-            if(refIndex[book][chapter]==undefined ) continue;
-            if(refIndex[book][chapter][verse_num]==undefined ) continue;
+            if (refIndex[book] == undefined) continue;
+            if (refIndex[book][chapter] == undefined) continue;
+            if (refIndex[book][chapter][verse_num] == undefined) continue;
             verseList.push(refIndex[book][chapter][verse_num]);
         }
     }
     return verseList;
-
-
 }
 const loadVerseStructure = function (verse_ids) {
-
     if (verseIdIndex == null) verseIdIndex = scriptindex.loadVerseIdIndex();
     let segments = consecutiveSplitter(verse_ids);
     let structure = [];
     for (let i in segments) {
         let min = segments[i][0];
-        let max = segments[i][segments[i].length-1];
-        structure.push([verseIdIndex[min],verseIdIndex[max]]);
+        let max = segments[i][segments[i].length - 1];
+        structure.push([verseIdIndex[min], verseIdIndex[max]]);
     }
     return structure;
 }
-
-
 const consecutiveSplitter = function (verse_ids) {
-
     let segments = [];
     let segment = [];
     let previousVerseId = 0;
     for (let i in verse_ids) {
-        if (verse_ids[i] != previousVerseId + 1 && previousVerseId!=0) {
+        if (verse_ids[i] != previousVerseId + 1 && previousVerseId != 0) {
             segments.push(segment);
             segment = [];
         }
@@ -470,13 +385,10 @@ const consecutiveSplitter = function (verse_ids) {
     }
     segments.push(segment);
     return segments;
-
 }
-
-const loadRefsFromRanges = function (ranges)
-{
-
+const loadRefsFromRanges = function (ranges) {
     let refs = [];
+    let mostRecentBook,mostRecentChapter;
     for (let i in ranges) {
         let ref = '';
         let start_bk = ranges[i][0][0];
@@ -485,41 +397,53 @@ const loadRefsFromRanges = function (ranges)
         let end_ch = ranges[i][1][1];
         let start_vs = ranges[i][0][2];
         let end_vs = ranges[i][1][2];
-    
         if (start_bk == end_bk) {
             if (start_ch == end_ch) {
+
+                if(start_bk==mostRecentBook) start_bk = '';
+                if(start_bk==mostRecentBook && start_ch==mostRecentChapter) start_ch = '';
                 if (start_vs == end_vs) {
                     ref = start_bk + " " + start_ch + ":" + start_vs;
                 } else {
-
-                    if(start_vs==1 && end_vs == scriptindex.loadMaxVerse(start_bk,start_ch)) //whole chapter
+                    if (start_vs == 1 && end_vs == scriptindex.loadMaxVerse(start_bk, start_ch)) //whole chapter
                     {
                         ref = start_bk + " " + start_ch;
                     }
-                    else{
-
+                    else {
                         ref = start_bk + " " + start_ch + ":" + start_vs + "-" + end_vs;
                     }
                 }
             } else {
-                
-                if(start_vs==1)
-                {
+                if (start_vs == 1) {
                     ref = start_bk + " " + start_ch + "-" + end_ch + ":" + end_vs;
-                    
-                }else{
-
+                } else {
                     ref = start_bk + " " + start_ch + ":" + start_vs + "-" + end_ch + ":" + end_vs;
                 }
             }
         } else {
-            ref = start_bk + " " + start_ch + ":" + start_vs + " - " + start_bk + " " + end_ch + "-:" + end_vs;
+            if (start_vs == 1 && end_vs == scriptindex.loadMaxVerse(end_bk, end_ch)) {
+                ref = start_bk + " " + start_ch + " - " + end_bk + " " + end_ch;
+            }
+            else if (end_vs == scriptindex.loadMaxVerse(end_bk, end_ch)) {
+                ref = start_bk + " " + start_ch + ":" + start_vs + " - " + end_bk + " " + end_ch;
+            }
+            else if (start_vs == 1) {
+                ref = start_bk + " " + start_ch + " - " + end_bk + " " + end_ch + ":" + end_vs;
+            }
+            else {
+                ref = start_bk + " " + start_ch + ":" + start_vs + " - " + end_bk + " " + end_ch + ":" + end_vs;
+            }
         }
+        if(start_bk!='') mostRecentBook = start_bk;
+        if(start_ch!='') mostRecentChapter = start_ch;
+        ref = ref.replace(/^\s+:*/,'').trim();
         refs.push(ref);
     }
     return refs;
 }
-
+const loadMaxVerse = function (book, chapter) {
+    return scriptindex.loadMaxVerse(book, chapter);
+}
 module.exports = {
     getBook,
     getRanges,
@@ -527,6 +451,6 @@ module.exports = {
     loadVerseStructure,
     cleanReference,
     splitReferences,
-    loadRefsFromRanges
-
+    loadRefsFromRanges,
+    loadMaxVerse
 }

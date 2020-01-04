@@ -16,8 +16,7 @@ const lookupReference = function (query) {
 
 const lookupSingleRef = function (ref) {
 
-
-    if (false) return lookupMultiBookRange(cleanRef);
+    if (ref.match(/[—-](\d\s)*[A-Za-z]/ig)) return lookupMultiBookRange(ref);
     let book = scriptutil.getBook(ref);
     if (!book) return [];
     let ranges = scriptutil.getRanges(ref, book);
@@ -36,38 +35,22 @@ const generateReference = function (verse_ids) {
 }
 
 
-
-
-const lookupMultiBookRange = function (cleanRef) {
-    console.log("Looking up Single Reference")
-
-    /*
-    			$range = explode("-",$ref);
-	
-				if(!stristr(":",$range[1]))
-				{
-					preg_match("/(.*?)\s(\d+)$/",$range[1],$matches);
-					$maxverse = scriptutil::loadChapterMax(scriptutil::cleanReference($matches[1]),$matches[2]);
-					
-					$range[1] .= ":$maxverse";
-				}
-				foreach($range as $i=>$point)
-				{
-					$meta = self::lookup($point,array('meta_only' => 1));
-					$verse_ids[$i] = $meta[0]['verse_ids'][0];
-				}
-				
-				for($i=$verse_ids[0]; $i<=$verse_ids[1]; $i++) $all_verse_ids[] = $i;
-				
-				
-			
-				$tmp = array("orig"=>trim($ref),"book"=>"Multi","verse_ids"=>$all_verse_ids);
-	
-				$return[] =  $tmp;
-                continue;
-     */
+const lookupMultiBookRange = function (cleanRef) { //eg Matthew 15—Mark 2
+    
+    let range = cleanRef.split(/[—-]/);
+    if(!range[0].match(/[:]/)) range[0] = range[0]+":"+1;
+    if(!range[1].match(/[:]/))
+    {
+        let matches = range[1].match(/(.*?)\s(\d+)$/)
+        let maxverse = scriptutil.loadMaxVerse(scriptutil.cleanReference(matches[1]),matches[2]);
+        range[1] = range[1]+":"+maxverse;
+    }
+    let start = lookupSingleRef(range[0])[0];
+    let end = lookupSingleRef(range[1])[0];
+    let = all_verse_ids = [];
+    for(let i=start; i<=end; i++) all_verse_ids.push(i);
+    return all_verse_ids;
 }
-
 
 
 module.exports = { lookupReference, generateReference }
