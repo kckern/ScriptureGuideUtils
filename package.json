@@ -1,12 +1,17 @@
 {
-  "name": "scriptureguide",
-  "version": "1.0.0",
-  "description": "scripture reference tool",
-  "main": "index.js",
+  "name": "scripture-guide",
+  "version": "1.0.5",
+  "description": "A utiltiy for biblical and scripture reference parsing that enables structured queries based on strings of traditional scripture references (e.g. John 3:16).  ",
+  "main": "scriptures.js",
   "scripts": {
     "start": "node test.js",
     "test": "node test.js"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "path": "^0.12.7"
+  },
+  "keywords": ["bible", "old testament", "new testament", "scripture", "reference", "parsing", "query", "search", "structured", "string", "lds", "book of mormon", "doctrine and covenants", 
+  "pearl of great price"]
 }
