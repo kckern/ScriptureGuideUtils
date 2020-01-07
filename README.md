@@ -14,8 +14,11 @@ Scripture references generally follow standard conventions for citing the Bible.
 ## Installing
 
 ### NPM Installation
+Coming soon.
 ### Minified Installation
+Coming soon.
 ### Manual Installation
+Coming soon.
 
 ## INPUT—Supported Reference Types
 |**Reference Type**|**Example**  |
@@ -30,9 +33,9 @@ Scripture references generally follow standard conventions for citing the Bible.
 | Verse Split | Exodus 20:5,10 |
 | Verse range spanning multiple chapters | Exodus 1:5-4:3 |
 | Chapter range ending in partial chapter | Exodus 3-4:10 |
-| Chapter range spanning multiple books | Genesis 30 - Exodus 2 |
-| Chapter range spanning multiple books, ending in partial chapter | Genesis 30 - Exodus 2:5 |
-| Chapter range spanning multiple books, starting in partial chapter | Genesis 30:10 - Exodus 2 |
+| Chapter range spanning multiple books | Genesis 30—Exodus 2 |
+| Chapter range spanning multiple books, ending in partial chapter | Genesis 30—Exodus 2:5 |
+| Chapter range spanning multiple books, starting in partial chapter | Genesis 30:10—Exodus 2 |
 | Chapter range spanning multiple books, starting and ending with partial chapters | Genesis 30:10 - Exodus 2:5 |
 | Compound reference in same book | Exodus 5:1;6:2;8:5 |
 | Compound reference in different books | Exodus 5:1; Leviticus 6:2; Numbers 8:5 |
@@ -54,9 +57,9 @@ The function will return a `json` object containing the following:
 
 ```json
 {
-	query: 'Ex 20.5,10',
-	ref: 'Exodus 20:5, 10',
-	verse_ids: [ 2057, 2062 ]
+	"query" "Ex 20.5,10",
+	"ref": "Exodus 20:5, 10",
+	"verse_ids": [ 2057, 2062 ]
 }
 ```
 
@@ -76,7 +79,7 @@ The function will return a `json` object containing the following:
 |Genesis 50:26| 1533 |
 |Exodus 1:1| 1534 |
 |Exodus 1:2| 1535 |
-|Malichi 4:6| 23145 |
+|Malachi 4:6| 23145 |
 
 See also: Master Verse ID list
 
@@ -97,20 +100,20 @@ This query will enable the retrieval of the text associated with the input refer
 {
 	"Book 1 Name": 
 		[
-			'verse count (int) of chapter 1',
-			'verse count (int) of chapter 2',
-			'verse count (int) of chapter 3',
-			'verse count (int) of chapter 4'
+			"verse count (int) of chapter 1",
+			"verse count (int) of chapter 2",
+			"verse count (int) of chapter 3",
+			"verse count (int) of chapter 4"
 		],
 	"Book 2 Name": 
 		[
-			'verse count (int) of chapter 1',
-			'verse count (int) of chapter 2',
-			'verse count (int) of chapter 3'
+			"verse count (int) of chapter 1",
+			"verse count (int) of chapter 2",
+			"verse count (int) of chapter 3"
 		],
 }
 ```
-Following this structure,
+Following this structure, the verse_ids corresponding to each book, chapter and verse may be modified according to the desired sequenital index.
 
 ## Authors
 
