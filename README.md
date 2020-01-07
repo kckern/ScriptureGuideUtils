@@ -57,9 +57,9 @@ The function will return a `json` object containing the following:
 
 ```json
 {
-	"query" "Ex 20.5,10",
-	"ref": "Exodus 20:5, 10",
-	"verse_ids": [ 2057, 2062 ]
+    "query": "Ex 20.5,10",
+    "ref": "Exodus 20:5, 10",
+    "verse_ids": [ 2057, 2062 ]
 }
 ```
 
@@ -98,19 +98,19 @@ This query will enable the retrieval of the text associated with the input refer
  - The data structure is:
 ```json
 {
-	"Book 1 Name": 
-		[
-			"verse count (int) of chapter 1",
-			"verse count (int) of chapter 2",
-			"verse count (int) of chapter 3",
-			"verse count (int) of chapter 4"
-		],
-	"Book 2 Name": 
-		[
-			"verse count (int) of chapter 1",
-			"verse count (int) of chapter 2",
-			"verse count (int) of chapter 3"
-		],
+    "Book 1 Name": 
+        [
+            "verse count (int) of chapter 1",
+            "verse count (int) of chapter 2",
+            "verse count (int) of chapter 3",
+            "verse count (int) of chapter 4"
+        ],
+    "Book 2 Name": 
+        [
+            "verse count (int) of chapter 1",
+            "verse count (int) of chapter 2",
+            "verse count (int) of chapter 3"
+        ],
 }
 ```
 Following this structure, the verse_ids corresponding to each book, chapter and verse may be modified according to the desired sequenital index.
