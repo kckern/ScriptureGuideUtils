@@ -14,11 +14,11 @@ Scripture references generally follow standard conventions for citing the Bible.
 ## Installing
 
 Install the package:
-```
+```bash
 npm i scripture-guide
 ```
 Import and use the package:
-```
+```js
 import {lookupReference,generateReference} from 'scripture-guide';
 
 const verses = lookupReference('Jn 3:16');

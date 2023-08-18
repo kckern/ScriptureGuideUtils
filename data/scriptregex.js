@@ -1,6 +1,6 @@
 module.exports  = {
     "books":[
-        ["gen\\.*(?:esis)*", "Genesis"],
+        ["gen\\.*(?:e*sis)*", "Genesis"],
         ["exo*\\.*(?:dus)*", "Exodus"],
         ["levi*t*\\.*(?:icus)*", "Leviticus"],
         ["num\\.*(?:bers)*", "Numbers"],
@@ -66,13 +66,17 @@ module.exports  = {
         ["2\\s*mac\\.*(?:cabees)*", "2 Maccabees"],
         ["tob\\.*", "Tobit"],
         ["jud\\.*(?:ith)*\\s", "Judith"],
-        ["wis\\.*of\\.*sol", "Wisdom of Solomon"],
+        ["wisdom(of solomon)*", "Wisdom of Solomon"],
         ["ecclesiasticus", "Ecclesiasticus"],
         ["sirach", "Ecclesiasticus"],
-        ["bar\\.*(?:uch)*", "Baruch"],
-        ["ep\\.*of\\.*jer", "Epistle of Jeremiah"],
+        ["baruch", "Baruch"],
+        ["bar*\\.*(?:uch)*", "Baruch"],
+        ["epistle of jeremiah", "Epistle of Jeremiah"],
+        ["letter of jeremiah", "Epistle of Jeremiah"],
+        ["Azariah","Prayer of Azariah"],
         ["sus\\.*(?:anna)*", "Susanna"],
         ["bel\\.*", "Bel and the Dragon"],
+        ["bel\\s*(and\\s*)*dragon", "Bel and the Dragon"],
 
         
         ["ne\\.*(?:phi)*", "Nephi"],
