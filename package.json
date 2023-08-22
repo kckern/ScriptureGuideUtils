@@ -9,6 +9,7 @@
   },
   "author": "",
   "license": "ISC",
+  "homepage": "https://scripture.guide",
   "repository": {
     "type": "git",
     "url": "git://github.com/kckern/ScriptureGuideUtils.git"
