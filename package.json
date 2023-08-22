@@ -9,6 +9,10 @@
   },
   "author": "",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/kckern/ScriptureGuideUtils.git"
+  },
   "dependencies": {
     "path": "^0.12.7"
   },
