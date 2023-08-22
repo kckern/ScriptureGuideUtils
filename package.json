@@ -1,6 +1,6 @@
 {
   "name": "scripture-guide",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "A utility for biblical and scripture reference parsing that enables structured queries based on strings of traditional scripture references (e.g. John 3:16).  ",
   "main": "scriptures.js",
   "scripts": {
@@ -17,6 +17,20 @@
   "dependencies": {
     "path": "^0.12.7"
   },
-  "keywords": ["bible", "old testament", "new testament", "scripture", "reference", "parsing", "query", "search", "structured", "string", "lds", "book of mormon", "doctrine and covenants", 
-  "pearl of great price"]
+  "keywords": [
+    "bible",
+    "old testament",
+    "new testament",
+    "scripture",
+    "reference",
+    "parsing",
+    "query",
+    "search",
+    "structured",
+    "string",
+    "lds",
+    "book of mormon",
+    "doctrine and covenants",
+    "pearl of great price"
+  ]
 }
