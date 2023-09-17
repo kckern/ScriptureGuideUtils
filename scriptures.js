@@ -1,10 +1,22 @@
 const path = require('path');
 let raw_index = require(path.dirname(__filename) + '/data/scriptdata.js');
-let raw_regex = require(path.dirname(__filename) + '/data/scriptregex.js');
+let raw_regex = {}
 
 
-
-const lookupReference = function(query) {
+const lookupReference = function(query, lang=null) {
+    raw_regex = require(path.dirname(__filename) + '/data/scriptregex.js')(lang);
+    const {postProcessFn} = raw_regex;
+    
+    //translate raw_index
+    const index_keys = Object.keys(raw_index);
+    console.log(index_keys);
+    if(lang) for (let i in index_keys) {
+        let book = index_keys[i];
+        let lang_book = raw_regex.books?.[i]?.[1];
+        if(!lang_book) continue;
+        raw_index[lang_book] = raw_index[book];
+        delete raw_index[book];
+    }
 
     const isValidReference = query && typeof query === 'string' && query.length > 0;
     if (!isValidReference) return {
@@ -23,6 +35,8 @@ const lookupReference = function(query) {
     for (let i in refs) {
         verse_ids = verse_ids.concat(lookupSingleRef(refs[i]));
     }
+    //Language Override
+    ref = postProcessFn ? ref = postProcessFn(ref) : ref;
     return {
         "query": query,
         "ref": ref,
@@ -64,7 +78,7 @@ const generateReference = function(verse_ids) {
     let refs = loadRefsFromRanges(ranges);
     ref = refs.join("; ");
     return ref;
-
+ 
 }
 
 
@@ -98,8 +112,10 @@ const lookupMultiBookRange = function(cleanRef) { //eg Matthew 15—Mark 2
 }
 
 
-const cleanReference = function(messyReference) {
+const cleanReference = function(messyReference,) {
     let ref = messyReference.trim();
+    
+
 
     //Build Regex rules
     let regex = raw_regex.pre_rules;
@@ -109,8 +125,9 @@ const cleanReference = function(messyReference) {
     }
     regex = raw_regex.books;
     //process book Fixes
+    const {front,back} = raw_regex?.boundaries || {front:'',back:''};
     for (let i in regex) {
-        var re = new RegExp("\\b" + regex[i][0] + "\\.*\\b", "ig");
+        var re = new RegExp(front + regex[i][0] + back, "ig");
         ref = ref.replace(re, regex[i][1]);
     }
 
@@ -124,6 +141,7 @@ const cleanReference = function(messyReference) {
     if (!ref.match(/:/)) ref = ref.replace(/,/, ";");
 
     let cleanReference = ref.trim();
+
 
     return cleanReference;
 }
