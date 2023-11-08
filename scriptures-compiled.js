@@ -16,7 +16,7 @@ var lookupReference = function lookupReference(query) {
   var refs = splitReferences(ref);
 
   //Lookup each single reference individually, return the set
-  verse_ids = [];
+  var verse_ids = [];
   for (var _i in refs) {
     verse_ids = verse_ids.concat(lookupSingleRef(refs[_i]));
   }
