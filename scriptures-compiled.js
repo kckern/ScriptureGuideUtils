@@ -56,7 +56,7 @@ var generateReference = function generateReference(verse_ids) {
   if (!verse_ids) return '';
   var ranges = loadVerseStructure(verse_ids);
   var refs = loadRefsFromRanges(ranges);
-  ref = refs.join("; ");
+  var ref = refs.join("; ");
   return ref;
 };
 var lookupMultiBookRange = function lookupMultiBookRange(cleanRef) {
@@ -143,7 +143,6 @@ var getRanges = function getRanges(ref) {
         var chapterStartandEnd = chapterRanges[_i7].split(/-/);
         var startChapter = parseInt(chapterStartandEnd[0], 0);
         var endChapter = parseInt(chapterStartandEnd[1], 0);
-        var chapterRange = [];
         for (_i7 = startChapter; _i7 <= endChapter; _i7++) {
           ranges.push(_i7 + ": 1-X");
         }
@@ -166,11 +165,11 @@ var getRanges = function getRanges(ref) {
     var _chapterStartandEnd = numbers.split(/-/);
     var _startChapter = parseInt(_chapterStartandEnd[0], 0);
     var _endChapter = parseInt(_chapterStartandEnd[1], 0);
-    var _chapterRange = [];
+    var chapterRange = [];
     for (i = _startChapter; i <= _endChapter; i++) {
-      _chapterRange.push(i);
+      chapterRange.push(i);
     }
-    ranges = _chapterRange.map(function (chapter) {
+    ranges = chapterRange.map(function (chapter) {
       return chapter + ": 1-X";
     });
   }
@@ -183,19 +182,20 @@ var getRanges = function getRanges(ref) {
     var mostRecentChapter = null;
     var split = numbers.split(/,/);
     var verses = null;
+    var _chapter = null;
     for (var _i8 in split) {
       // 2:2   OR   1:1-4
       if (split[_i8].match(/:/)) {
         var pieces = split[_i8].split(/:/);
-        chapter = mostRecentChapter = pieces[0];
+        _chapter = mostRecentChapter = pieces[0];
         verses = pieces[1];
       }
       //3   or 6-7
       else {
-        chapter = mostRecentChapter;
+        _chapter = mostRecentChapter;
         verses = split[_i8];
       }
-      ranges.push(chapter + ": " + verses.trim());
+      ranges.push(_chapter + ": " + verses.trim());
     }
   }
   // Genesis 1:3,5
@@ -252,16 +252,16 @@ var loadVerseIds = function loadVerseIds(book, ranges) {
     var range = ranges[_i11];
     var matches = range.match(/(\d+): *([\dX]+)-*([\dX]*)/);
     if (!matches) continue;
-    var _chapter = parseInt(matches[1]);
+    var _chapter2 = parseInt(matches[1]);
     var start = parseInt(matches[2]);
     var end = matches[3];
     if (end == '') end = start;
-    if (end == "X") end = loadMaxVerse(book, _chapter);else end = parseInt(end);
+    if (end == "X") end = loadMaxVerse(book, _chapter2);else end = parseInt(end);
     for (var verse_num = start; verse_num <= end; verse_num++) {
       if (refIndex[book] == undefined) continue;
-      if (refIndex[book][_chapter] == undefined) continue;
-      if (refIndex[book][_chapter][verse_num] == undefined) continue;
-      verseList.push(refIndex[book][_chapter][verse_num]);
+      if (refIndex[book][_chapter2] == undefined) continue;
+      if (refIndex[book][_chapter2][verse_num] == undefined) continue;
+      verseList.push(refIndex[book][_chapter2][verse_num]);
     }
   }
   return verseList;
@@ -296,7 +296,7 @@ var loadRefsFromRanges = function loadRefsFromRanges(ranges) {
   var refs = [];
   var mostRecentBook, mostRecentChapter;
   for (var _i14 in ranges) {
-    var _ref = '';
+    var ref = '';
     var start_bk = ranges[_i14][0][0];
     var end_bk = ranges[_i14][1][0];
     var start_ch = ranges[_i14][0][1];
@@ -308,38 +308,38 @@ var loadRefsFromRanges = function loadRefsFromRanges(ranges) {
         if (start_bk == mostRecentBook) start_bk = '';
         if (start_bk == mostRecentBook && start_ch == mostRecentChapter) start_ch = '';
         if (start_vs == end_vs) {
-          _ref = start_bk + " " + start_ch + ":" + start_vs;
+          ref = start_bk + " " + start_ch + ":" + start_vs;
         } else {
           if (start_vs == 1 && end_vs == loadMaxVerse(start_bk, start_ch))
             //whole chapter
             {
-              _ref = start_bk + " " + start_ch;
+              ref = start_bk + " " + start_ch;
             } else {
-            _ref = start_bk + " " + start_ch + ":" + start_vs + "-" + end_vs;
+            ref = start_bk + " " + start_ch + ":" + start_vs + "-" + end_vs;
           }
         }
       } else {
         if (start_vs == 1) {
-          _ref = start_bk + " " + start_ch + "-" + end_ch + ":" + end_vs;
+          ref = start_bk + " " + start_ch + "-" + end_ch + ":" + end_vs;
         } else {
-          _ref = start_bk + " " + start_ch + ":" + start_vs + "-" + end_ch + ":" + end_vs;
+          ref = start_bk + " " + start_ch + ":" + start_vs + "-" + end_ch + ":" + end_vs;
         }
       }
     } else {
       if (start_vs == 1 && end_vs == loadMaxVerse(end_bk, end_ch)) {
-        _ref = start_bk + " " + start_ch + " - " + end_bk + " " + end_ch;
+        ref = start_bk + " " + start_ch + " - " + end_bk + " " + end_ch;
       } else if (end_vs == loadMaxVerse(end_bk, end_ch)) {
-        _ref = start_bk + " " + start_ch + ":" + start_vs + " - " + end_bk + " " + end_ch;
+        ref = start_bk + " " + start_ch + ":" + start_vs + " - " + end_bk + " " + end_ch;
       } else if (start_vs == 1) {
-        _ref = start_bk + " " + start_ch + " - " + end_bk + " " + end_ch + ":" + end_vs;
+        ref = start_bk + " " + start_ch + " - " + end_bk + " " + end_ch + ":" + end_vs;
       } else {
-        _ref = start_bk + " " + start_ch + ":" + start_vs + " - " + end_bk + " " + end_ch + ":" + end_vs;
+        ref = start_bk + " " + start_ch + ":" + start_vs + " - " + end_bk + " " + end_ch + ":" + end_vs;
       }
     }
     if (start_bk != '') mostRecentBook = start_bk;
     if (start_ch != '') mostRecentChapter = start_ch;
-    _ref = _ref.replace(/^\s+:*/, '').trim();
-    refs.push(_ref);
+    ref = ref.replace(/^\s+:*/, '').trim();
+    refs.push(ref);
   }
   return refs;
 };
