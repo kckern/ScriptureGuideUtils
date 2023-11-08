@@ -1,8 +1,6 @@
-const path = require('path');
-let raw_index = require(path.dirname(__filename) + '/data/scriptdata.js');
-let raw_regex = require(path.dirname(__filename) + '/data/scriptregex.js');
 
-
+const raw_index = require('./data/scriptdata.js');
+const raw_regex = require('./data/scriptregex.js');
 
 const lookupReference = function(query) {
 
@@ -92,7 +90,7 @@ const lookupMultiBookRange = function(cleanRef) { //eg Matthew 15—Mark 2
     }
     let start = lookupSingleRef(range[0])[0];
     let end = lookupSingleRef(range[1])[0];
-    let = all_verse_ids = [];
+    let all_verse_ids = [];
     for (let i = start; i <= end; i++) all_verse_ids.push(i);
     return all_verse_ids;
 }
@@ -376,7 +374,7 @@ const loadRefIndex = function() {
 
 
 const loadVerseIdIndex = function() {
-    let = verseIdIndex = [null];
+    let verseIdIndex = [null];
     let book_list = Object.keys(raw_index);
     for (let a in book_list) {
         let book_title = book_list[a];

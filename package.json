@@ -1,11 +1,12 @@
 {
   "name": "scripture-guide",
-  "version": "1.0.8",
+  "version": "1.0.10",
   "description": "A utility for biblical and scripture reference parsing that enables structured queries based on strings of traditional scripture references (e.g. John 3:16).  ",
-  "main": "scriptures.js",
+  "main": "scriptures-compiled.js",
   "scripts": {
     "start": "node test.js",
-    "test": "node test.js"
+    "test": "node test.js",
+    "build": "babel scriptures.js --out-file scriptures-compiled.js"
   },
   "author": "",
   "license": "ISC",
@@ -32,5 +33,10 @@
     "book of mormon",
     "doctrine and covenants",
     "pearl of great price"
-  ]
+  ],
+  "devDependencies": {
+    "@babel/cli": "^7.23.0",
+    "@babel/core": "^7.23.2",
+    "@babel/preset-env": "^7.23.2"
+  }
 }
