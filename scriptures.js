@@ -487,8 +487,7 @@ const detectReferences = (content,callBack) => {
     const pattern = preparePattern(bookMatchList,wordBreak="",lang_extra);
     const blacklist_pattern = prepareBlacklist();
     var matches = content.match(pattern)?.filter(i=>!blacklist_pattern.test(i)) || [];
-
-    matches = matches.map(i=>i.replace(/[,;!?.]$/,"").trim());
+    matches = matches.map(i => i.trim().replace(/[,;!?.]+/ig, "").trim()); 
 
     //split by matches
     const pieces = matches.length? content.split(new RegExp(`(${matches.join("|")})`, "ig")) : [content];

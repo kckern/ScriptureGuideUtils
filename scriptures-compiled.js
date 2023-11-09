@@ -503,6 +503,9 @@ var detectReferences = function detectReferences(content, callBack) {
   var matches = ((_content$match = content.match(pattern)) === null || _content$match === void 0 ? void 0 : _content$match.filter(function (i) {
     return !blacklist_pattern.test(i);
   })) || [];
+  matches = matches.map(function (i) {
+    return i.trim().replace(/[,;!?.]+/ig, "").trim();
+  });
 
   //split by matches
   var pieces = matches.length ? content.split(new RegExp("(".concat(matches.join("|"), ")"), "ig")) : [content];

@@ -4,13 +4,16 @@ const {lookup, generateReference, setLanguage, detectReferences}= require("./scr
 
 const lines = [
     "Please refer to Genesis 20 in the bible",
-    "Please refer to 3 Nephi 5:1-3 in the Book of Mormon"
+    "Please refer to 3 Nephi 5:1-3 in the Book of Mormon",
+    "For example, in Matthew 27:51, the earth quakes and ro"
 ]
 
 lines.forEach(l=>{
     const result = detectReferences(l);
     console.log({result});
 });
+
+process.exit(0);
 
 setLanguage("ko");
 
@@ -24,7 +27,6 @@ const ko_lines = [
     "이제 제4니파이서 4~5절 참조하십시오.",
     "이제 모세서 3장 참조하십시오.",
     "이제 참조하십시오.",
-    "test this please"
 ]
 ko_lines.forEach(l=>{
     let callback = (string)=>{
