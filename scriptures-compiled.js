@@ -27,7 +27,7 @@ var preProcess = function preProcess(i) {
   return i;
 };
 var setLanguage = function setLanguage(language) {
-  var _raw_lang$lang, _raw_lang$lang2, _raw_lang$lang3, _raw_lang$lang4, _raw_lang$lang5, _raw_lang$lang6, _raw_lang$lang7, _raw_lang$lang8, _raw_lang$lang9, _raw_lang$lang10;
+  var _raw_lang$lang, _raw_lang$lang2, _raw_lang$lang3, _raw_lang$lang4, _raw_lang$lang5, _raw_lang$lang6, _raw_lang$lang7, _raw_lang$lang8;
   lang = language;
   var new_index = {};
   if ((_raw_lang$lang = raw_lang[lang]) !== null && _raw_lang$lang !== void 0 && _raw_lang$lang.books) {
@@ -40,28 +40,30 @@ var setLanguage = function setLanguage(language) {
     raw_index = new_index;
   }
   //if(raw_lang[lang]?.regex) raw_regex.books = [];
-  var _iterator = _createForOfIteratorHelper((_raw_lang$lang10 = raw_lang[lang]) === null || _raw_lang$lang10 === void 0 ? void 0 : _raw_lang$lang10.regex),
+  var _iterator = _createForOfIteratorHelper((_raw_lang$lang8 = raw_lang[lang]) === null || _raw_lang$lang8 === void 0 ? void 0 : _raw_lang$lang8.regex),
     _step;
   try {
     for (_iterator.s(); !(_step = _iterator.n()).done;) {
       var regexitem = _step.value;
       raw_regex.books.push(regexitem);
     }
+
+    //if(raw_lang[lang]?.wordBreak==-1) wordBreak = "";
+    //else wordBreak = raw_lang[lang]?.wordBreak || wordBreak;
   } catch (err) {
     _iterator.e(err);
   } finally {
     _iterator.f();
   }
-  if (((_raw_lang$lang2 = raw_lang[lang]) === null || _raw_lang$lang2 === void 0 ? void 0 : _raw_lang$lang2.wordBreak) == -1) wordBreak = "";else wordBreak = ((_raw_lang$lang3 = raw_lang[lang]) === null || _raw_lang$lang3 === void 0 ? void 0 : _raw_lang$lang3.wordBreak) || wordBreak;
-  if ((_raw_lang$lang4 = raw_lang[lang]) !== null && _raw_lang$lang4 !== void 0 && _raw_lang$lang4.postProcess) postProcess = (_raw_lang$lang5 = raw_lang[lang]) === null || _raw_lang$lang5 === void 0 ? void 0 : _raw_lang$lang5.postProcess;
+  if ((_raw_lang$lang2 = raw_lang[lang]) !== null && _raw_lang$lang2 !== void 0 && _raw_lang$lang2.postProcess) postProcess = (_raw_lang$lang3 = raw_lang[lang]) === null || _raw_lang$lang3 === void 0 ? void 0 : _raw_lang$lang3.postProcess;
   if (typeof postProcess !== 'function') postProcess = function postProcess(i) {
     return i;
   };
-  if ((_raw_lang$lang6 = raw_lang[lang]) !== null && _raw_lang$lang6 !== void 0 && _raw_lang$lang6.preProcess) preProcess = (_raw_lang$lang7 = raw_lang[lang]) === null || _raw_lang$lang7 === void 0 ? void 0 : _raw_lang$lang7.preProcess;
+  if ((_raw_lang$lang4 = raw_lang[lang]) !== null && _raw_lang$lang4 !== void 0 && _raw_lang$lang4.preProcess) preProcess = (_raw_lang$lang5 = raw_lang[lang]) === null || _raw_lang$lang5 === void 0 ? void 0 : _raw_lang$lang5.preProcess;
   if (typeof preProcess !== 'function') preProcess = function preProcess(i) {
     return i;
   };
-  if ((_raw_lang$lang8 = raw_lang[lang]) !== null && _raw_lang$lang8 !== void 0 && _raw_lang$lang8.matchRules) lang_extra = (_raw_lang$lang9 = raw_lang[lang]) === null || _raw_lang$lang9 === void 0 ? void 0 : _raw_lang$lang9.matchRules;
+  if ((_raw_lang$lang6 = raw_lang[lang]) !== null && _raw_lang$lang6 !== void 0 && _raw_lang$lang6.matchRules) lang_extra = (_raw_lang$lang7 = raw_lang[lang]) === null || _raw_lang$lang7 === void 0 ? void 0 : _raw_lang$lang7.matchRules;
 };
 var lookupReference = function lookupReference(query) {
   var isValidReference = query && typeof query === 'string' && query.length > 0;
@@ -159,6 +161,8 @@ var strToHash = function strToHash(str) {
 };
 var cleanReference = function cleanReference(messyReference) {
   var ref = messyReference.replace(/[\s]+/g, " ").trim();
+  var hasNoAlpha = !/[A-Za-z]/.test(ref);
+  if (hasNoAlpha) wordBreak = "";
   ref = preProcess(ref);
 
   //Build Regex rules
@@ -486,9 +490,12 @@ var loadMaxVerse = function loadMaxVerse(book, chapter) {
 };
 var detectReferences = function detectReferences(content, callBack) {
   var _content$match;
+  var wordBreak = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "\\b";
   callBack = callBack ? callBack : function (i) {
     return "[".concat(i, "]");
   };
+  var hasNoAlpha = !/[A-Za-z]/.test(content);
+  if (hasNoAlpha && wordBreak) wordBreak = "";
   var src = raw_regex.books.map(function (i) {
     return i[0];
   });
@@ -498,7 +505,7 @@ var detectReferences = function detectReferences(content, callBack) {
   var bookMatchList = [].concat(_toConsumableArray(dst), _toConsumableArray(src)).map(function (i) {
     return [i];
   });
-  var pattern = preparePattern(bookMatchList, wordBreak = "", lang_extra);
+  var pattern = preparePattern(bookMatchList, wordBreak, lang_extra);
   var blacklist_pattern = prepareBlacklist();
   var matches = ((_content$match = content.match(pattern)) === null || _content$match === void 0 ? void 0 : _content$match.filter(function (i) {
     return !blacklist_pattern.test(i);

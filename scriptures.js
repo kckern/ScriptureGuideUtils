@@ -23,8 +23,9 @@ const setLanguage = function(language) {
     for(let regexitem of raw_lang[lang]?.regex) {
         raw_regex.books.push(regexitem);
     }
-    if(raw_lang[lang]?.wordBreak==-1) wordBreak = "";
-    else wordBreak = raw_lang[lang]?.wordBreak || wordBreak;
+
+    //if(raw_lang[lang]?.wordBreak==-1) wordBreak = "";
+    //else wordBreak = raw_lang[lang]?.wordBreak || wordBreak;
 
 
     if(raw_lang[lang]?.postProcess) postProcess = raw_lang[lang]?.postProcess;
@@ -38,6 +39,7 @@ const setLanguage = function(language) {
 
 
 const lookupReference = function(query) {
+
 
     const isValidReference = query && typeof query === 'string' && query.length > 0;
     if (!isValidReference) return {
@@ -146,7 +148,11 @@ const strToHash = function(str) {
 
 
 const cleanReference = function(messyReference) {
+
     let ref = messyReference.replace(/[\s]+/g, " ").trim();
+
+    const hasNoAlpha = !/[A-Za-z]/.test(ref);
+    if(hasNoAlpha) wordBreak = "";
 
     ref = preProcess(ref);
 
@@ -167,7 +173,6 @@ const cleanReference = function(messyReference) {
         const hash = strToHash(book);
         hashCypher[book] = hash;
     }
-    
     for (let i in regex) {
         var re = new RegExp( wordBreak +regex[i][0] + "\\.*"+wordBreak, "ig");
         let replacement = hashCypher[regex[i][1]] || regex[i][1];
@@ -477,14 +482,17 @@ const loadMaxVerse = function(book, chapter) {
 
 
 
-const detectReferences = (content,callBack) => {
+const detectReferences = (content,callBack,wordBreak="\\b") => {
 
     callBack = callBack ? callBack : (i)=>{return `[${i}]`};
+
+    const hasNoAlpha = !/[A-Za-z]/.test(content);
+    if(hasNoAlpha && wordBreak) wordBreak = "";
     
     const src = raw_regex.books.map(i => i[0]);
     const dst = [...new Set(raw_regex.books.map(i => i[1]))];
     const bookMatchList = [...dst, ...src].map(i => [i]);
-    const pattern = preparePattern(bookMatchList,wordBreak="",lang_extra);
+    const pattern = preparePattern(bookMatchList,wordBreak,lang_extra);
     const blacklist_pattern = prepareBlacklist();
     var matches = content.match(pattern)?.filter(i=>!blacklist_pattern.test(i)) || [];
     matches = matches.map(i => i.trim().replace(/[,;!?.]+/ig, "").trim()); 

@@ -13,7 +13,7 @@ lines.forEach(l=>{
     console.log({result});
 });
 
-process.exit(0);
+//process.exit(0);
 
 setLanguage("ko");
 
@@ -30,8 +30,7 @@ const ko_lines = [
 ]
 ko_lines.forEach(l=>{
     let callback = (string)=>{
-        const verse_ids = lookup(string).verse_ids;
-        return JSON.stringify({string,verse_ids});
+        return `[${string}]`
     }
     const result = detectReferences(l,callback);
     console.log({result});
