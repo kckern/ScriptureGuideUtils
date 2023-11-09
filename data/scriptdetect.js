@@ -19,7 +19,10 @@ const prepareBlacklist = (lang_extras) => {
 
 const preparePattern = (booklist,wordBreak,lang_extras) => {
 
+
     wordBreak = wordBreak || "";
+    lang_chapter = lang_extras?.chapter || "";
+    lang_verse = lang_extras?.verse || "";
     
      var bookregex = booklist.map(b=>{
          return b[0];
@@ -55,10 +58,12 @@ const preparePattern = (booklist,wordBreak,lang_extras) => {
 
     //Punctuations, etc
     var punct = [];
-    punct.push("\\s*[:\\-\\.–—]" + versenums); //[a-z]{0,1} //colons,dots and dashes
+    punct.push("\\s*[:\\-\\.~–—]" + versenums); //[a-z]{0,1} //colons,dots and dashes
     punct.push("\\s*(?:" + chapter + "|" + verse + ")" + versenums); //spelled out chapter and verse words
     punct.push("\\s*(?:;|,|,* *and|&amp;|&| *to *)\\s*[1-9]\\d*(?!\\s*\\.*(" + numbooks.join("|") + "))"); //passage breakers (a new book may appear after)
     //add language overrides
+    if(lang_chapter) punct.push(lang_chapter);
+    if(lang_verse) punct.push(lang_verse);
     //if(Array.isArray(lang_extras)) punct = [...punct, ...lang_extras];
 
     //combine punctuation

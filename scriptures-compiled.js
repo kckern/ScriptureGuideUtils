@@ -13,6 +13,7 @@ function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o =
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 var lang = null;
 var wordBreak = "\\b";
+var lang_extra = {};
 var raw_index = require('./data/scriptdata.js');
 var raw_regex = require('./data/scriptregex.js');
 var raw_lang = require('./data/scriptlang.js');
@@ -26,7 +27,7 @@ var preProcess = function preProcess(i) {
   return i;
 };
 var setLanguage = function setLanguage(language) {
-  var _raw_lang$lang, _raw_lang$lang2, _raw_lang$lang3, _raw_lang$lang4, _raw_lang$lang5, _raw_lang$lang6, _raw_lang$lang7, _raw_lang$lang8;
+  var _raw_lang$lang, _raw_lang$lang2, _raw_lang$lang3, _raw_lang$lang4, _raw_lang$lang5, _raw_lang$lang6, _raw_lang$lang7, _raw_lang$lang8, _raw_lang$lang9, _raw_lang$lang10;
   lang = language;
   var new_index = {};
   if ((_raw_lang$lang = raw_lang[lang]) !== null && _raw_lang$lang !== void 0 && _raw_lang$lang.books) {
@@ -39,7 +40,7 @@ var setLanguage = function setLanguage(language) {
     raw_index = new_index;
   }
   //if(raw_lang[lang]?.regex) raw_regex.books = [];
-  var _iterator = _createForOfIteratorHelper((_raw_lang$lang8 = raw_lang[lang]) === null || _raw_lang$lang8 === void 0 ? void 0 : _raw_lang$lang8.regex),
+  var _iterator = _createForOfIteratorHelper((_raw_lang$lang10 = raw_lang[lang]) === null || _raw_lang$lang10 === void 0 ? void 0 : _raw_lang$lang10.regex),
     _step;
   try {
     for (_iterator.s(); !(_step = _iterator.n()).done;) {
@@ -60,6 +61,7 @@ var setLanguage = function setLanguage(language) {
   if (typeof preProcess !== 'function') preProcess = function preProcess(i) {
     return i;
   };
+  if ((_raw_lang$lang8 = raw_lang[lang]) !== null && _raw_lang$lang8 !== void 0 && _raw_lang$lang8.matchRules) lang_extra = (_raw_lang$lang9 = raw_lang[lang]) === null || _raw_lang$lang9 === void 0 ? void 0 : _raw_lang$lang9.matchRules;
 };
 var lookupReference = function lookupReference(query) {
   var isValidReference = query && typeof query === 'string' && query.length > 0;
@@ -483,14 +485,9 @@ var loadMaxVerse = function loadMaxVerse(book, chapter) {
   return raw_index[book][parseInt(chapter) - 1];
 };
 var detectReferences = function detectReferences(content, callBack) {
-  content = content.replace(/<a.*?>scripture.guide\/(.*?)<\/a>/ig, function (match, contents) {
-    return contents.split(/[ .]+/).map(function (item) {
-      //title case
-      item = item.toLowerCase();
-      item = item.charAt(0).toUpperCase() + item.slice(1);
-      return item;
-    }).join(' ');
-  });
+  callBack = callBack ? callBack : function (i) {
+    return "[".concat(i, "]");
+  };
   var src = raw_regex.books.map(function (i) {
     return i[0];
   });
@@ -500,45 +497,18 @@ var detectReferences = function detectReferences(content, callBack) {
   var bookMatchList = [].concat(_toConsumableArray(dst), _toConsumableArray(src)).map(function (i) {
     return [i];
   });
-  var pattern = preparePattern(bookMatchList, wordBreak = "");
+  var pattern = preparePattern(bookMatchList, wordBreak = "", lang_extra);
   var blacklist_pattern = prepareBlacklist();
-  var matches = content.match(pattern);
-  if (matches) {
-    content = content.replace(/&nbsp;/g, " ");
-    //process blacklist
+  var matches = content.match(pattern).filter(function (i) {
+    return !blacklist_pattern.test(i);
+  });
 
-    var highlighted = content.replace(pattern, function (match, contents, offset, s) {
-      if (!contents) return "";
-      console.log({
-        contents: contents
-      });
-      contents = contents.trim();
-      var link = contents;
-      link = link.trim().toLowerCase();
-      link = link.split(/[\s:]+/).join('.');
-      link = link.split(/\.+/).join('.');
-      link = link.split(";.").join(';');
-      link = link.split(",.").join(',');
-      if (contents.match(blacklist_pattern)) {
-        try {
-          return contents.trim();
-        } catch (err) {
-          return "";
-        }
-      }
-      return ' <a className="scripture_link" onClick="sgshow(this); return false;" sg-flag="true" href="https://scripture.guide/' + link + '" target="_blank">' + contents + '</a> ';
-    });
-    highlighted = highlighted.replace(/([;, ]+(?:and)*)\s*<\/a>/gi, "</a>$1 ");
-    highlighted = highlighted.replace(/[;, ]+(?:and)*\s*\"/gi, "\"");
-
-    //remove surrounding parenthses
-    highlighted = highlighted.replace(/\(\s*<a className="scripture_link"(.*?)<\/a>\s*\)/ig, function (match, contents, punct, s) {
-      match = match.replace(/^\(/, "").trim();
-      match = match.replace(/\)$/, "").trim();
-      return match;
-    });
-    return highlighted;
-  }
+  //split by matches
+  var pieces = content.split(new RegExp("(".concat(matches.join("|"), ")"), "ig"));
+  content = pieces.map(function (i, j) {
+    if (j % 2 == 0) return i;
+    return callBack(i);
+  }).join(" ").replace(/\s+/g, " ").trim();
   return content;
 };
 module.exports = {

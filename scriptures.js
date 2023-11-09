@@ -1,5 +1,6 @@
 let lang = null;
 let wordBreak = "\\b";
+let lang_extra = {};
 let raw_index = require('./data/scriptdata.js');
 let raw_regex = require('./data/scriptregex.js');
 let raw_lang = require('./data/scriptlang.js');
@@ -31,6 +32,8 @@ const setLanguage = function(language) {
 
     if(raw_lang[lang]?.preProcess) preProcess = raw_lang[lang]?.preProcess;
     if(typeof preProcess !== 'function') preProcess = (i)=>i;
+
+    if(raw_lang[lang]?.matchRules) lang_extra = raw_lang[lang]?.matchRules;
 }
 
 
@@ -476,65 +479,23 @@ const loadMaxVerse = function(book, chapter) {
 
 const detectReferences = (content,callBack) => {
 
-
-    content = content.replace(/<a.*?>scripture.guide\/(.*?)<\/a>/ig, function (match, contents) {
-        return contents.split(/[ .]+/).map(function (item) {
-            //title case
-            item = item.toLowerCase();
-            item = item.charAt(0).toUpperCase() + item.slice(1);
-            return item;
-        }).join(' ');
-    });
+    callBack = callBack ? callBack : (i)=>{return `[${i}]`};
+    
     const src = raw_regex.books.map(i => i[0]);
     const dst = [...new Set(raw_regex.books.map(i => i[1]))];
     const bookMatchList = [...dst, ...src].map(i => [i]);
-    const pattern = preparePattern(bookMatchList,wordBreak="");
+    const pattern = preparePattern(bookMatchList,wordBreak="",lang_extra);
     const blacklist_pattern = prepareBlacklist();
-    var matches = content.match(pattern);
+    var matches = content.match(pattern).filter(i=>!blacklist_pattern.test(i));
 
+    //split by matches
+    const pieces = content.split(new RegExp(`(${matches.join("|")})`, "ig"));
+    
+    content = pieces.map((i,j)=>{
+        if(j%2==0) return i;
+        return callBack(i);
+    }).join(" ").replace(/\s+/g," ").trim();
 
-    if (matches) {
-
-        content = content.replace(/&nbsp;/g, " ");
-        //process blacklist
-
-        let highlighted = content.replace(pattern, function (match, contents, offset, s) {
-
-            if (!contents) return "";
-            console.log({contents});
-            contents = contents.trim();
-            var link = contents;
-            link = link.trim().toLowerCase();
-            link = link.split(/[\s:]+/).join('.');
-            link = link.split(/\.+/).join('.');
-            link = link.split(";.").join(';');
-            link = link.split(",.").join(',');
-
-            if (contents.match(blacklist_pattern)) {
-                try {
-                    return contents.trim();
-                }
-                catch (err) {
-                    return "";
-                }
-            }
-            return ' <a className="scripture_link" onClick="sgshow(this); return false;" sg-flag="true" href="https://scripture.guide/' + link + '" target="_blank">' + contents + '</a> ';
-        });
-
-
-        highlighted = highlighted.replace(/([;, ]+(?:and)*)\s*<\/a>/gi, "</a>$1 ");
-        highlighted = highlighted.replace(/[;, ]+(?:and)*\s*\"/gi, "\"");
-
-        //remove surrounding parenthses
-        highlighted = highlighted.replace(/\(\s*<a className="scripture_link"(.*?)<\/a>\s*\)/ig, function (match, contents, punct, s) {
-            match = match.replace(/^\(/, "").trim();
-            match = match.replace(/\)$/, "").trim();
-            return match;
-        }); 
-
-        return highlighted
-
-    }
     return content;
 }
 
