@@ -485,6 +485,7 @@ var loadMaxVerse = function loadMaxVerse(book, chapter) {
   return raw_index[book][parseInt(chapter) - 1];
 };
 var detectReferences = function detectReferences(content, callBack) {
+  var _content$match;
   callBack = callBack ? callBack : function (i) {
     return "[".concat(i, "]");
   };
@@ -499,16 +500,16 @@ var detectReferences = function detectReferences(content, callBack) {
   });
   var pattern = preparePattern(bookMatchList, wordBreak = "", lang_extra);
   var blacklist_pattern = prepareBlacklist();
-  var matches = content.match(pattern).filter(function (i) {
+  var matches = ((_content$match = content.match(pattern)) === null || _content$match === void 0 ? void 0 : _content$match.filter(function (i) {
     return !blacklist_pattern.test(i);
-  });
+  })) || [];
 
   //split by matches
-  var pieces = content.split(new RegExp("(".concat(matches.join("|"), ")"), "ig"));
+  var pieces = matches.length ? content.split(new RegExp("(".concat(matches.join("|"), ")"), "ig")) : [content];
   content = pieces.map(function (i, j) {
     if (j % 2 == 0) return i;
     return callBack(i);
-  }).join(" ").replace(/\s+/g, " ").trim();
+  }).join("").replace(/\s+/g, " ").trim();
   return content;
 };
 module.exports = {

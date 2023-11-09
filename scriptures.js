@@ -486,15 +486,17 @@ const detectReferences = (content,callBack) => {
     const bookMatchList = [...dst, ...src].map(i => [i]);
     const pattern = preparePattern(bookMatchList,wordBreak="",lang_extra);
     const blacklist_pattern = prepareBlacklist();
-    var matches = content.match(pattern).filter(i=>!blacklist_pattern.test(i));
+    var matches = content.match(pattern)?.filter(i=>!blacklist_pattern.test(i)) || [];
+
+    matches = matches.map(i=>i.replace(/[,;!?.]$/,"").trim());
 
     //split by matches
-    const pieces = content.split(new RegExp(`(${matches.join("|")})`, "ig"));
+    const pieces = matches.length? content.split(new RegExp(`(${matches.join("|")})`, "ig")) : [content];
     
     content = pieces.map((i,j)=>{
         if(j%2==0) return i;
         return callBack(i);
-    }).join(" ").replace(/\s+/g," ").trim();
+    }).join("").replace(/\s+/g," ").trim();
 
     return content;
 }
