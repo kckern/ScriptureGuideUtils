@@ -16,6 +16,7 @@
     "url": "git://github.com/kckern/ScriptureGuideUtils.git"
   },
   "dependencies": {
+    "jest": "^29.7.0",
     "path": "^0.12.7"
   },
   "keywords": [

@@ -1,6 +1,38 @@
+let lang = null;
+let wordBreak = "\\b";
+let raw_index = require('./data/scriptdata.js');
+let raw_regex = require('./data/scriptregex.js');
+let raw_lang = require('./data/scriptlang.js');
+let {prepareBlacklist, preparePattern} = require('./data/scriptdetect.js');
+let postProcess = (i)=>i;
+let preProcess = (i)=>i;
 
-const raw_index = require('./data/scriptdata.js');
-const raw_regex = require('./data/scriptregex.js');
+const setLanguage = function(language) {
+    lang = language;
+    let new_index = {};
+    if(raw_lang[lang]?.books) {
+        for(let i in raw_lang[lang].books) {
+            let book = raw_lang[lang].books[i];
+            let original_book = Object.keys(raw_index)?.[i];
+            new_index[book] = raw_index[original_book];
+        }
+        raw_index = new_index;
+    }
+    //if(raw_lang[lang]?.regex) raw_regex.books = [];
+    for(let regexitem of raw_lang[lang]?.regex) {
+        raw_regex.books.push(regexitem);
+    }
+    if(raw_lang[lang]?.wordBreak==-1) wordBreak = "";
+    else wordBreak = raw_lang[lang]?.wordBreak || wordBreak;
+
+
+    if(raw_lang[lang]?.postProcess) postProcess = raw_lang[lang]?.postProcess;
+    if(typeof postProcess !== 'function') postProcess = (i)=>i;
+
+    if(raw_lang[lang]?.preProcess) preProcess = raw_lang[lang]?.preProcess;
+    if(typeof preProcess !== 'function') preProcess = (i)=>i;
+}
+
 
 const lookupReference = function(query) {
 
@@ -16,6 +48,7 @@ const lookupReference = function(query) {
     //Break compound reference into array of single references
     let refs = splitReferences(ref);
 
+
     //Lookup each single reference individually, return the set
     let verse_ids = [];
     for (let i in refs) {
@@ -24,13 +57,15 @@ const lookupReference = function(query) {
     return {
         "query": query,
         "ref": ref,
+        //"gen": generateReference(verse_ids),
         "verse_ids": verse_ids
     };
 }
 
 const lookupSingleRef = function(ref) {
 
-    if (ref.match(/[—-](\d\s)*[A-Za-z]/ig)) return lookupMultiBookRange(ref);
+    //todo: better handling of multi-book ranges for unicode
+    if (ref.match(/[—-](\d\s)*[A-Za-z\u3131-\uD79D]/ig)) return lookupMultiBookRange(ref);
     let book = getBook(ref);
     if (!book) return [];
     let ranges = getRanges(ref, book);
@@ -59,8 +94,9 @@ const generateReference = function(verse_ids) {
     if(!verse_ids) return '';
 
     let ranges = loadVerseStructure(verse_ids);
-    let refs = loadRefsFromRanges(ranges);
-    ref = refs.join("; ");
+    let refs = loadRefsFromRanges(ranges).map(postProcess);
+
+    let ref = refs.join("; ");
     return ref;
 
 }
@@ -95,9 +131,22 @@ const lookupMultiBookRange = function(cleanRef) { //eg Matthew 15—Mark 2
     return all_verse_ids;
 }
 
+const strToHash = function(str) {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+        hash = hash * 31 + str.charCodeAt(i);
+        //max 32
+        if (hash > 2147483647) hash = hash % 2147483647;
+    }
+    return `::${hash}::`;
+}
+
 
 const cleanReference = function(messyReference) {
-    let ref = messyReference.trim();
+    let ref = messyReference.replace(/[\s]+/g, " ").trim();
+
+    ref = preProcess(ref);
+
 
     //Build Regex rules
     let regex = raw_regex.pre_rules;
@@ -105,12 +154,29 @@ const cleanReference = function(messyReference) {
         var re = new RegExp(regex[i][0], "ig");
         ref = ref.replace(re, regex[i][1]);
     }
-    regex = raw_regex.books;
-    //process book Fixes
+    let srcbooks = raw_regex.books;
+    let dstbooks = raw_regex.books.map(i => [i[1], i[1]]);
+    let bookMatchList = [...dstbooks, ...srcbooks].sort((a, b) => b[0].length - a[0].length);
+    regex = bookMatchList;
+    let hashCypher = {};
     for (let i in regex) {
-        var re = new RegExp("\\b" + regex[i][0] + "\\.*\\b", "ig");
-        ref = ref.replace(re, regex[i][1]);
+        const [,book] = regex[i];
+        const hash = strToHash(book);
+        hashCypher[book] = hash;
     }
+    
+    for (let i in regex) {
+        var re = new RegExp( wordBreak +regex[i][0] + "\\.*"+wordBreak, "ig");
+        let replacement = hashCypher[regex[i][1]] || regex[i][1];
+        ref = ref.replace(re, replacement);
+    }
+    const books = Object.keys(hashCypher);
+    const hashes = Object.values(hashCypher);
+    ref = ref.replace(new RegExp(hashes.join("|"), "g"), function (match) {
+       const bookValue = books[hashes.indexOf((match))];
+         return bookValue + " ";
+    }
+    );
 
     regex = raw_regex.post_rules;
     for (let i in regex) {
@@ -122,7 +188,6 @@ const cleanReference = function(messyReference) {
     if (!ref.match(/:/)) ref = ref.replace(/,/, ";");
 
     let cleanReference = ref.trim();
-
     return cleanReference;
 }
 const splitReferences = function(compoundReference) {
@@ -158,7 +223,7 @@ const getRanges = function(ref) {
                 let startChapter = parseInt(chapterStartandEnd[0], 0);
                 let endChapter = parseInt(chapterStartandEnd[1], 0);
                 let chapterRange = [];
-                for (i = startChapter; i <= endChapter; i++) {
+                for (leti = startChapter; i <= endChapter; i++) {
                     ranges.push(i + ": 1-X");
                 }
             }
@@ -179,7 +244,7 @@ const getRanges = function(ref) {
         let startChapter = parseInt(chapterStartandEnd[0], 0);
         let endChapter = parseInt(chapterStartandEnd[1], 0);
         let chapterRange = [];
-        for (i = startChapter; i <= endChapter; i++) {
+        for (let i = startChapter; i <= endChapter; i++) {
             chapterRange.push(i);
         }
         ranges = chapterRange.map(chapter => chapter + ": 1-X");
@@ -244,7 +309,7 @@ const getRanges = function(ref) {
         }
     } else {
         ranges = [numbers];
-    }
+    };
     return ranges;
 }
 let refIndex = null
@@ -311,7 +376,6 @@ const loadRefsFromRanges = function(ranges) {
         let end_vs = ranges[i][1][2];
         if (start_bk == end_bk) {
             if (start_ch == end_ch) {
-
                 if (start_bk == mostRecentBook) start_bk = '';
                 if (start_bk == mostRecentBook && start_ch == mostRecentChapter) start_ch = '';
                 if (start_vs == end_vs) {
@@ -325,8 +389,8 @@ const loadRefsFromRanges = function(ranges) {
                     }
                 }
             } else {
-                if (start_vs == 1) {
-                    ref = start_bk + " " + start_ch + "-" + end_ch + ":" + end_vs;
+                if (start_vs == 1 && end_vs == loadMaxVerse(end_bk, end_ch)) {
+                    ref = start_bk + " " + start_ch + "-" + end_ch;
                 } else {
                     ref = start_bk + " " + start_ch + ":" + start_vs + "-" + end_ch + ":" + end_vs;
                 }
@@ -350,11 +414,11 @@ const loadRefsFromRanges = function(ranges) {
     return refs;
 }
 
-
 const loadRefIndex = function() {
     let refIndex = {};
     let verse_id = 1;
     let book_list = Object.keys(raw_index);
+    //if(raw_lang[lang]?.books) book_list = raw_lang[lang].books
     for (let a in book_list) {
         let book_title = book_list[a];
         refIndex[book_title] = {};
@@ -408,20 +472,98 @@ const loadMaxVerse = function(book, chapter) {
     return raw_index[book][parseInt(chapter) - 1]
 }
 
-//Aliases
+
+
+const detectReferences = (content,callBack) => {
+
+
+    content = content.replace(/<a.*?>scripture.guide\/(.*?)<\/a>/ig, function (match, contents) {
+        return contents.split(/[ .]+/).map(function (item) {
+            //title case
+            item = item.toLowerCase();
+            item = item.charAt(0).toUpperCase() + item.slice(1);
+            return item;
+        }).join(' ');
+    });
+    const src = raw_regex.books.map(i => i[0]);
+    const dst = [...new Set(raw_regex.books.map(i => i[1]))];
+    const bookMatchList = [...dst, ...src].map(i => [i]);
+    const pattern = preparePattern(bookMatchList,wordBreak="");
+    const blacklist_pattern = prepareBlacklist();
+    var matches = content.match(pattern);
+
+
+    if (matches) {
+
+        content = content.replace(/&nbsp;/g, " ");
+        //process blacklist
+
+        let highlighted = content.replace(pattern, function (match, contents, offset, s) {
+
+            if (!contents) return "";
+            console.log({contents});
+            contents = contents.trim();
+            var link = contents;
+            link = link.trim().toLowerCase();
+            link = link.split(/[\s:]+/).join('.');
+            link = link.split(/\.+/).join('.');
+            link = link.split(";.").join(';');
+            link = link.split(",.").join(',');
+
+            if (contents.match(blacklist_pattern)) {
+                try {
+                    return contents.trim();
+                }
+                catch (err) {
+                    return "";
+                }
+            }
+            return ' <a className="scripture_link" onClick="sgshow(this); return false;" sg-flag="true" href="https://scripture.guide/' + link + '" target="_blank">' + contents + '</a> ';
+        });
+
+
+        highlighted = highlighted.replace(/([;, ]+(?:and)*)\s*<\/a>/gi, "</a>$1 ");
+        highlighted = highlighted.replace(/[;, ]+(?:and)*\s*\"/gi, "\"");
+
+        //remove surrounding parenthses
+        highlighted = highlighted.replace(/\(\s*<a className="scripture_link"(.*?)<\/a>\s*\)/ig, function (match, contents, punct, s) {
+            match = match.replace(/^\(/, "").trim();
+            match = match.replace(/\)$/, "").trim();
+            return match;
+        }); 
+
+        return highlighted
+
+    }
+    return content;
+}
+
 
 
 
 module.exports = {
     lookupReference,
     generateReference,
-    //Aliases
+    setLanguage,
+    detectReferences,
+
+    //Aliases for convenience
+    lang: setLanguage,
+    language: setLanguage,
+    setLang: setLanguage,
+
     lookup: lookupReference,
-    generate: generateReference,
-    ref: generateReference,
-    gen: generateReference,
     parse: lookupReference,
     read: lookupReference,
-    verseId2Ref: generateReference,
     ref2VerseId: lookupReference,
+
+    ref: generateReference,
+    gen: generateReference,
+    generate: generateReference,
+    verseId2Ref: generateReference,
+
+    detect: detectReferences,
+    detectRefs: detectReferences,
+    detectScriptures: detectReferences,
+    linkRefs: detectReferences,
 }
