@@ -265,6 +265,7 @@ const getRanges = function(ref) {
     else if (isRange && isSplit) {
         let mostRecentChapter = null;
         let split = numbers.split(/,/);
+        let chapter = null;
         let verses = null;
         for (let i in split) {
             // 2:2   OR   1:1-4
@@ -285,6 +286,7 @@ const getRanges = function(ref) {
     else if (isSplit) {
         let split = numbers.split(/,/);
         let mostRecentChapter = null;
+        let chapter = null;
         let verses = null;
         for (let i in split) {
             //Genesis 1:1-5

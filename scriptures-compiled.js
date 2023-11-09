@@ -279,6 +279,7 @@ var getRanges = function getRanges(ref) {
   else if (isRange && isSplit) {
     var mostRecentChapter = null;
     var split = numbers.split(/,/);
+    var chapter = null;
     var verses = null;
     for (var _i5 in split) {
       // 2:2   OR   1:1-4
@@ -299,20 +300,21 @@ var getRanges = function getRanges(ref) {
   else if (isSplit) {
     var _split = numbers.split(/,/);
     var _mostRecentChapter = null;
+    var _chapter = null;
     var _verses = null;
     for (var _i6 in _split) {
       //Genesis 1:1-5
       if (_split[_i6].match(/:/)) {
         var _pieces = numbers.split(/:/);
-        chapter = _mostRecentChapter = _pieces[0];
+        _chapter = _mostRecentChapter = _pieces[0];
         _verses = _pieces[1];
       }
       //10
       else {
-        chapter = _mostRecentChapter;
+        _chapter = _mostRecentChapter;
         _verses = _split[_i6];
       }
-      ranges.push(chapter + ": " + _verses.trim());
+      ranges.push(_chapter + ": " + _verses.trim());
     }
   }
   //Genesis 1:1-10    OR    Exodus 1-2:15  OR Leviticus 1:10-2:5
@@ -350,16 +352,16 @@ var loadVerseIds = function loadVerseIds(book, ranges) {
     var range = ranges[i];
     var matches = range.match(/(\d+): *([\dX]+)-*([\dX]*)/);
     if (!matches) continue;
-    var _chapter = parseInt(matches[1]);
+    var chapter = parseInt(matches[1]);
     var start = parseInt(matches[2]);
     var end = matches[3];
     if (end == '') end = start;
-    if (end == "X") end = loadMaxVerse(book, _chapter);else end = parseInt(end);
+    if (end == "X") end = loadMaxVerse(book, chapter);else end = parseInt(end);
     for (var verse_num = start; verse_num <= end; verse_num++) {
       if (refIndex[book] == undefined) continue;
-      if (refIndex[book][_chapter] == undefined) continue;
-      if (refIndex[book][_chapter][verse_num] == undefined) continue;
-      verseList.push(refIndex[book][_chapter][verse_num]);
+      if (refIndex[book][chapter] == undefined) continue;
+      if (refIndex[book][chapter][verse_num] == undefined) continue;
+      verseList.push(refIndex[book][chapter][verse_num]);
     }
   }
   return verseList;
