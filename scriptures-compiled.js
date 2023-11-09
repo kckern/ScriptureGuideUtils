@@ -511,9 +511,8 @@ var detectReferences = function detectReferences(content, callBack) {
     return !blacklist_pattern.test(i);
   })) || [];
   matches = matches.map(function (i) {
-    return i.trim().replace(/[,;!?.]+/ig, "").trim();
+    return i.trim().replace(/[,;!?.()]+$/ig, "").replace(/^[,;!?.()]+/ig, " ").trim();
   });
-
   //split by matches
   var pieces = matches.length ? content.split(new RegExp("(".concat(matches.join("|"), ")"), "ig")) : [content];
   content = pieces.map(function (i, j) {
