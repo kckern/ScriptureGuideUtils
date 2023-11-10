@@ -3,6 +3,10 @@ let wordBreak = "\\b";
 let lang_extra = {};
 let raw_index = require('./data/scriptdata.js');
 let raw_regex = require('./data/scriptregex.js');
+let refIndex = null
+let verseIdIndex = null
+const orginal_raw_index = {...raw_index};
+const orginal_raw_regex = {...raw_regex};
 let raw_lang = require('./data/scriptlang.js');
 let {prepareBlacklist, preparePattern} = require('./data/scriptdetect.js');
 let postProcess = (i)=>i;
@@ -10,6 +14,20 @@ let preProcess = (i)=>i;
 
 const setLanguage = function(language) {
     lang = language;
+    if(!lang || !raw_lang?.[lang]) {
+        //revert to originals
+        raw_index = {...orginal_raw_index};
+        raw_regex = {...orginal_raw_regex};
+        postProcess = (i)=>i;
+        preProcess = (i)=>i;
+        lang_extra = {};
+        wordBreak = "\\b";
+        refIndex = null
+        verseIdIndex = null
+        return;
+    }
+
+
     let new_index = {};
     if(raw_lang[lang]?.books) {
         for(let i in raw_lang[lang].books) {
@@ -322,8 +340,6 @@ const getRanges = function(ref) {
     };
     return ranges;
 }
-let refIndex = null
-let verseIdIndex = null
 const loadVerseIds = function(book, ranges) {
     if (refIndex == null) refIndex = loadRefIndex();
     let verseList = [];

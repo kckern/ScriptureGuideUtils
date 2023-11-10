@@ -16,6 +16,18 @@ lookUpTests.forEach(t=>{
     console.log({result});
 });
 
+setLanguage();
+//korean tests
+const lookUpTests2 = [
+    "Alma 5:3",
+]
+
+lookUpTests2.forEach(t=>{
+    const result = lookup(t);
+    console.log({result});
+});
+
+process.exit();
 
 let testcases = [
 ["Simple reference",    "출애굽기 1:1"],
