@@ -168,7 +168,7 @@ module.exports  = {
                 i = i.replace("~", "-");
                 i = i.replace(/(\d+) *장/g, "$1");
                 i = i.replace(/(\d+) *절/g, "$1");
-
+                i = i.replace(/([\u3131-\uD79D]) *(\d+)/ig, "$1 $2");
                 return i;
             }
     }

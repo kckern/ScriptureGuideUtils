@@ -9,9 +9,7 @@ setLanguage("ko");
 //korean tests
 const lookUpTests = [
     "이더서 13장 18절",
-
-
-
+    "니전5.2",
 
 ]
 
