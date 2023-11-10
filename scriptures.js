@@ -192,10 +192,11 @@ const cleanReference = function(messyReference) {
         const hash = strToHash(book);
         hashCypher[book] = hash;
     }
+    const buffer = wordBreak ? "" : " ";
     for (let i in regex) {
-        var re = new RegExp( wordBreak +regex[i][0] + "\\.*"+wordBreak, "ig");
+        var re = new RegExp( wordBreak + buffer + regex[i][0] + buffer + "\\.*"+wordBreak, "ig");
         let replacement = hashCypher[regex[i][1]] || regex[i][1];
-        ref = ref.replace(re, replacement);
+        ref = (buffer+ref+buffer).replace(re, replacement).trim();
     }
     const books = Object.keys(hashCypher);
     const hashes = Object.values(hashCypher);

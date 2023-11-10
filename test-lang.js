@@ -9,6 +9,8 @@ const lookUpTests = [
     "티모테후서 2장3-4",
     "창세기 1:1-2",
     "출 20:2-20",
+    "앨마 19:3",
+    "마 14:3",
 ]
 
 lookUpTests.forEach(t=>{

@@ -38,6 +38,7 @@ var preProcess = function preProcess(i) {
 };
 var setLanguage = function setLanguage(language) {
   var _raw_lang$lang, _raw_lang$lang2, _raw_lang$lang3, _raw_lang$lang4, _raw_lang$lang5, _raw_lang$lang6, _raw_lang$lang7, _raw_lang$lang8;
+  if (lang === language) return;
   lang = language;
   if (!lang || !(raw_lang !== null && raw_lang !== void 0 && raw_lang[lang])) {
     //revert to originals
@@ -212,10 +213,11 @@ var cleanReference = function cleanReference(messyReference) {
     var hash = strToHash(book);
     hashCypher[book] = hash;
   }
+  var buffer = wordBreak ? "" : " ";
   for (var _i2 in regex) {
-    var re = new RegExp(wordBreak + regex[_i2][0] + "\\.*" + wordBreak, "ig");
+    var re = new RegExp(wordBreak + buffer + regex[_i2][0] + buffer + "\\.*" + wordBreak, "ig");
     var replacement = hashCypher[regex[_i2][1]] || regex[_i2][1];
-    ref = ref.replace(re, replacement);
+    ref = (buffer + ref + buffer).replace(re, replacement).trim();
   }
   var books = Object.keys(hashCypher);
   var hashes = Object.values(hashCypher);
