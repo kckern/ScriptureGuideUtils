@@ -40,6 +40,13 @@ let testcases = [
 ["Numbered Books","요삼1.1"],
 ];
 
+testcases = [
+    ["test1","니파이전서 5장 1-4"],
+    ["test1","니파이전서 5:1-4"],
+    ["test1","니파이전서 5장"],
+    ["test1","니전5.1-2"]
+];
+
 for (let i in testcases)
 {
     console.log("\n===================\n\nTEST CASE #"+(parseInt(i)+1)+": "+testcases[i][0]);
