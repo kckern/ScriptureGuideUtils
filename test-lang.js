@@ -1,16 +1,18 @@
 const {lookup, generateReference, setLanguage, detectReferences}= require("./scriptures.js");
 
-
+console.log(lookup("Alma 5:3"));
+setLanguage("ko");
+console.log(lookup("니파이후서 1장 4절"));
+setLanguage();
+console.log(lookup("Helaman 6:26"));
 setLanguage("ko");
 //korean tests
 const lookUpTests = [
-    "계 10:4-20",
-    "요한복음 4장 3~14절",
-    "티모테후서 2장3-4",
-    "창세기 1:1-2",
-    "출 20:2-20",
-    "앨마 19:3",
-    "마 14:3",
+    "이더서 13장 18절",
+
+
+
+
 ]
 
 lookUpTests.forEach(t=>{

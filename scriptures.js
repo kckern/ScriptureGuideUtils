@@ -15,6 +15,8 @@ let preProcess = (i)=>i;
 const setLanguage = function(language) {
     if(lang===language) return;
     lang = language;
+    refIndex = null
+    verseIdIndex = null
     if(!lang || !raw_lang?.[lang]) {
         //revert to originals
         raw_index = {...orginal_raw_index};
@@ -23,8 +25,6 @@ const setLanguage = function(language) {
         preProcess = (i)=>i;
         lang_extra = {};
         wordBreak = "\\b";
-        refIndex = null
-        verseIdIndex = null
         return;
     }
 

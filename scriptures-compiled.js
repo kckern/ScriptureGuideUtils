@@ -40,6 +40,8 @@ var setLanguage = function setLanguage(language) {
   var _raw_lang$lang, _raw_lang$lang2, _raw_lang$lang3, _raw_lang$lang4, _raw_lang$lang5, _raw_lang$lang6, _raw_lang$lang7, _raw_lang$lang8;
   if (lang === language) return;
   lang = language;
+  refIndex = null;
+  verseIdIndex = null;
   if (!lang || !(raw_lang !== null && raw_lang !== void 0 && raw_lang[lang])) {
     //revert to originals
     raw_index = _objectSpread({}, orginal_raw_index);
@@ -52,8 +54,6 @@ var setLanguage = function setLanguage(language) {
     };
     lang_extra = {};
     wordBreak = "\\b";
-    refIndex = null;
-    verseIdIndex = null;
     return;
   }
   var new_index = {};
@@ -371,6 +371,9 @@ var getRanges = function getRanges(ref) {
 };
 var loadVerseIds = function loadVerseIds(book, ranges) {
   if (refIndex == null) refIndex = loadRefIndex();
+  console.log({
+    ref: Object.keys(refIndex)[0]
+  });
   var verseList = [];
   for (var i in ranges)
   //Assumption: 1 range is within a single chapter
