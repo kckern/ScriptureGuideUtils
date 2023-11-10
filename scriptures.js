@@ -13,6 +13,7 @@ let postProcess = (i)=>i;
 let preProcess = (i)=>i;
 
 const setLanguage = function(language) {
+    if(lang===language) return;
     lang = language;
     if(!lang || !raw_lang?.[lang]) {
         //revert to originals
