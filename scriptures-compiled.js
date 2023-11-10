@@ -371,9 +371,6 @@ var getRanges = function getRanges(ref) {
 };
 var loadVerseIds = function loadVerseIds(book, ranges) {
   if (refIndex == null) refIndex = loadRefIndex();
-  console.log({
-    ref: Object.keys(refIndex)[0]
-  });
   var verseList = [];
   for (var i in ranges)
   //Assumption: 1 range is within a single chapter
