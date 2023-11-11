@@ -12,6 +12,7 @@ const prepareBlacklist = (lang_extras) => {
     blacklist.push("\\b(AC3|PS2|PS3|PS4)\\b");                //Common file extentions
     blacklist.push("\\b(ps|PS)[1-9]\\b");                     //Common file extentions'
 
+
     var blacklist_pattern = new RegExp("(" + blacklist.join("|") + ")", 'g');
 
     return blacklist_pattern;

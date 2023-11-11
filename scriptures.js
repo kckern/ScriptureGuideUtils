@@ -506,6 +506,13 @@ const detectReferences = (content,callBack,wordBreak="\\b") => {
 
     callBack = callBack ? callBack : (i)=>{return `[${i}]`};
 
+    const trimExternalMatchStrings = (i) => i.trim().
+        replace(/^[^0-9]*\(/g, '').
+        replace(/\)[^0-9]*$/g, '').
+        replace(/[,;!?.()]+$/ig, "").
+        replace(/^[,;!?.()]+/ig, " ").
+        trim();
+
     const hasNoAlpha = !/[A-Za-z]/.test(content);
     if(hasNoAlpha && wordBreak) wordBreak = "";
     
@@ -515,15 +522,18 @@ const detectReferences = (content,callBack,wordBreak="\\b") => {
     const pattern = preparePattern(bookMatchList,wordBreak,lang_extra);
     const blacklist_pattern = prepareBlacklist();
     var matches = content.match(pattern)?.filter(i => !blacklist_pattern.test(i)) || [];
-    matches = matches.map(i => i.trim().replace(/[,;!?.()]+$/ig, "").replace(/^[,;!?.()]+/ig, " ").trim())
-    matches = matches.filter(i => i.length <= 100);
+    matches = matches.map(trimExternalMatchStrings)
+    matches = matches.filter(i => i.length <= 1000);
+
+    console.log({matches});
 
     // split by matches
     let pieces;
     try {
         pieces = matches.length ? content.split(new RegExp(`(${matches.join("|")})`, "ig")) : [content];
     } catch (error) {
-        console.log('Invalid regular expression:', error);
+        console.error(error);
+        console.log({matches,pattern});
         return content;
     }
 

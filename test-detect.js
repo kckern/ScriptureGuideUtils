@@ -6,7 +6,7 @@ const lines = [
     "Please refer to Genesis 20 in the bible",
     "Please refer to 3 Nephi 5:1-3 in the Book of Mormon",
     "For example, in Matthew 27:51, the earth quakes and ro",
-    "(Here is a compound referece) at (the end of a sentence. (Alma 5:1-3; 6:7-9; Genesis 1:1-2)",
+    "It aligns with other scriptures (3 Nephi 12:2, Mosiah 18:13, Moses 6:52).",
 ]
 
 lines.forEach(l=>{

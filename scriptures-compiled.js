@@ -522,6 +522,9 @@ var detectReferences = function detectReferences(content, callBack) {
   callBack = callBack ? callBack : function (i) {
     return "[".concat(i, "]");
   };
+  var trimExternalMatchStrings = function trimExternalMatchStrings(i) {
+    return i.trim().replace(/^[^0-9]*\(/g, '').replace(/\)[^0-9]*$/g, '').replace(/[,;!?.()]+$/ig, "").replace(/^[,;!?.()]+/ig, " ").trim();
+  };
   var hasNoAlpha = !/[A-Za-z]/.test(content);
   if (hasNoAlpha && wordBreak) wordBreak = "";
   var src = raw_regex.books.map(function (i) {
@@ -538,11 +541,12 @@ var detectReferences = function detectReferences(content, callBack) {
   var matches = ((_content$match = content.match(pattern)) === null || _content$match === void 0 ? void 0 : _content$match.filter(function (i) {
     return !blacklist_pattern.test(i);
   })) || [];
-  matches = matches.map(function (i) {
-    return i.trim().replace(/[,;!?.()]+$/ig, "").replace(/^[,;!?.()]+/ig, " ").trim();
-  });
+  matches = matches.map(trimExternalMatchStrings);
   matches = matches.filter(function (i) {
-    return i.length <= 100;
+    return i.length <= 1000;
+  });
+  console.log({
+    matches: matches
   });
 
   // split by matches
@@ -550,7 +554,11 @@ var detectReferences = function detectReferences(content, callBack) {
   try {
     pieces = matches.length ? content.split(new RegExp("(".concat(matches.join("|"), ")"), "ig")) : [content];
   } catch (error) {
-    console.log('Invalid regular expression:', error);
+    console.error(error);
+    console.log({
+      matches: matches,
+      pattern: pattern
+    });
     return content;
   }
   content = pieces.map(function (i, j) {
