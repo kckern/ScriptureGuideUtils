@@ -541,8 +541,18 @@ var detectReferences = function detectReferences(content, callBack) {
   matches = matches.map(function (i) {
     return i.trim().replace(/[,;!?.()]+$/ig, "").replace(/^[,;!?.()]+/ig, " ").trim();
   });
-  //split by matches
-  var pieces = matches.length ? content.split(new RegExp("(".concat(matches.join("|"), ")"), "ig")) : [content];
+  matches = matches.filter(function (i) {
+    return i.length <= 100;
+  });
+
+  // split by matches
+  var pieces;
+  try {
+    pieces = matches.length ? content.split(new RegExp("(".concat(matches.join("|"), ")"), "ig")) : [content];
+  } catch (error) {
+    console.log('Invalid regular expression:', error);
+    return content;
+  }
   content = pieces.map(function (i, j) {
     if (j % 2 == 0) return i;
     return callBack(i);

@@ -5,7 +5,8 @@ const {lookup, generateReference, setLanguage, detectReferences}= require("./scr
 const lines = [
     "Please refer to Genesis 20 in the bible",
     "Please refer to 3 Nephi 5:1-3 in the Book of Mormon",
-    "For example, in Matthew 27:51, the earth quakes and ro"
+    "For example, in Matthew 27:51, the earth quakes and ro",
+    "(Here is a compound referece) at (the end of a sentence. (Alma 5:1-3; 6:7-9; Genesis 1:1-2)",
 ]
 
 lines.forEach(l=>{
@@ -13,7 +14,7 @@ lines.forEach(l=>{
     console.log({result});
 });
 
-//process.exit(0);
+process.exit(0);
 
 setLanguage("ko");
 

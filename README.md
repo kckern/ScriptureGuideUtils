@@ -130,3 +130,5 @@ Following this structure, the verse_ids corresponding to each book, chapter and 
 ## Authors
 
 * **KC Kern** - *Initial work* - [kckern](https://github.com/kckern)
+
+```npm run build && node test.js```
