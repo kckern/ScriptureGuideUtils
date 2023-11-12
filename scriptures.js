@@ -525,8 +525,6 @@ const detectReferences = (content,callBack,wordBreak="\\b") => {
     matches = matches.map(trimExternalMatchStrings)
     matches = matches.filter(i => i.length <= 1000);
 
-    console.log({matches});
-
     // split by matches
     let pieces;
     try {

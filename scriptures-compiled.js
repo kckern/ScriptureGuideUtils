@@ -545,9 +545,6 @@ var detectReferences = function detectReferences(content, callBack) {
   matches = matches.filter(function (i) {
     return i.length <= 1000;
   });
-  console.log({
-    matches: matches
-  });
 
   // split by matches
   var pieces;
