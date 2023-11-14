@@ -113,13 +113,14 @@ var lookupReference = function lookupReference(query) {
   return {
     "query": query,
     "ref": ref,
-    //"gen": generateReference(verse_ids),
+    "gen": generateReference(verse_ids),
     "verse_ids": verse_ids
   };
 };
 var lookupSingleRef = function lookupSingleRef(ref) {
+  var booksWithDashRegex = /^(joseph|조셉)/i; // TODO: get from lang config
   //todo: better handling of multi-book ranges for unicode
-  if (ref.match(/[—-](\d\s)*[A-Za-z\u3131-\uD79D]/ig)) return lookupMultiBookRange(ref);
+  if (!booksWithDashRegex.test(ref) && ref.match(/[—-](\d\s)*[A-Za-z\u3131-\uD79D]/ig)) return lookupMultiBookRange(ref);
   var book = getBook(ref);
   if (!book) return [];
   var ranges = getRanges(ref, book);
@@ -184,14 +185,14 @@ var strToHash = function strToHash(str) {
     //max 32
     if (hash > 2147483647) hash = hash % 2147483647;
   }
-  return "::".concat(hash, "::");
+  return "==".concat(hash, "==");
 };
 var cleanReference = function cleanReference(messyReference) {
   var ref = messyReference.replace(/[\s]+/g, " ").trim();
   var hasNoAlpha = !/[A-Za-z]/.test(ref);
   if (hasNoAlpha) wordBreak = "";
   ref = preProcess(ref);
-
+  var buffer = wordBreak ? "" : " ";
   //Build Regex rules
   var regex = raw_regex.pre_rules;
   for (var i in regex) {
@@ -199,9 +200,9 @@ var cleanReference = function cleanReference(messyReference) {
     ref = ref.replace(re, regex[i][1]);
   }
   var srcbooks = raw_regex.books;
-  var dstbooks = raw_regex.books.map(function (i) {
+  var dstbooks = buffer ? raw_regex.books.map(function (i) {
     return [i[1], i[1]];
-  });
+  }) : [];
   var bookMatchList = [].concat(_toConsumableArray(dstbooks), _toConsumableArray(srcbooks)).sort(function (a, b) {
     return b[0].length - a[0].length;
   });
@@ -213,7 +214,6 @@ var cleanReference = function cleanReference(messyReference) {
     var hash = strToHash(book);
     hashCypher[book] = hash;
   }
-  var buffer = wordBreak ? "" : " ";
   for (var _i2 in regex) {
     var re = new RegExp(wordBreak + buffer + regex[_i2][0] + buffer + "\\.*" + wordBreak, "ig");
     var replacement = hashCypher[regex[_i2][1]] || regex[_i2][1];
@@ -250,6 +250,7 @@ var splitReferences = function splitReferences(compoundReference) {
 };
 var getBook = function getBook(ref) {
   var book = ref.replace(/([ 0-9:,-]+)$/, '').trim();
+  book = book.replace(/-/g, "—");
   if (bookExists(book)) return book;
   return false;
 };
