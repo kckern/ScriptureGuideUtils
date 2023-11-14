@@ -81,15 +81,16 @@ const lookupReference = function(query) {
     return {
         "query": query,
         "ref": ref,
-        //"gen": generateReference(verse_ids),
+        "gen": generateReference(verse_ids),
         "verse_ids": verse_ids
     };
 }
 
 const lookupSingleRef = function(ref) {
 
+    const booksWithDashRegex = /^(joseph|조셉)/i; // TODO: get from lang config
     //todo: better handling of multi-book ranges for unicode
-    if (ref.match(/[—-](\d\s)*[A-Za-z\u3131-\uD79D]/ig)) return lookupMultiBookRange(ref);
+    if (!booksWithDashRegex.test(ref) && ref.match(/[—-](\d\s)*[A-Za-z\u3131-\uD79D]/ig)) return lookupMultiBookRange(ref);
     let book = getBook(ref);
     if (!book) return [];
     let ranges = getRanges(ref, book);
@@ -162,7 +163,7 @@ const strToHash = function(str) {
         //max 32
         if (hash > 2147483647) hash = hash % 2147483647;
     }
-    return `::${hash}::`;
+    return `==${hash}==`;
 }
 
 
@@ -175,7 +176,7 @@ const cleanReference = function(messyReference) {
 
     ref = preProcess(ref);
 
-
+    const buffer = wordBreak ? "" : " ";
     //Build Regex rules
     let regex = raw_regex.pre_rules;
     for (let i in regex) {
@@ -183,7 +184,7 @@ const cleanReference = function(messyReference) {
         ref = ref.replace(re, regex[i][1]);
     }
     let srcbooks = raw_regex.books;
-    let dstbooks = raw_regex.books.map(i => [i[1], i[1]]);
+    let dstbooks = buffer ? raw_regex.books.map(i => [i[1], i[1]]) : [];
     let bookMatchList = [...dstbooks, ...srcbooks].sort((a, b) => b[0].length - a[0].length);
     regex = bookMatchList;
     let hashCypher = {};
@@ -192,7 +193,6 @@ const cleanReference = function(messyReference) {
         const hash = strToHash(book);
         hashCypher[book] = hash;
     }
-    const buffer = wordBreak ? "" : " ";
     for (let i in regex) {
         var re = new RegExp( wordBreak + buffer + regex[i][0] + buffer + "\\.*"+wordBreak, "ig");
         let replacement = hashCypher[regex[i][1]] || regex[i][1];
@@ -205,7 +205,6 @@ const cleanReference = function(messyReference) {
          return bookValue + " ";
     }
     );
-
     regex = raw_regex.post_rules;
     for (let i in regex) {
         var re = new RegExp(regex[i][0], "ig");
@@ -232,6 +231,7 @@ const splitReferences = function(compoundReference) {
 }
 const getBook = function(ref) {
     let book = ref.replace(/([ 0-9:,-]+)$/, '').trim();
+    book = book.replace(/-/g, "—");
     if (bookExists(book)) return book;
     return false;
 }

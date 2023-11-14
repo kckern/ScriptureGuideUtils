@@ -1,27 +1,30 @@
 const {lookup, generateReference, setLanguage, detectReferences}= require("./scriptures.js");
 
-console.log(lookup("Alma 5:3"));
-setLanguage("ko");
-console.log(lookup("니파이후서 1장 4절"));
-setLanguage();
-console.log(lookup("Helaman 6:26"));
+
 setLanguage("ko");
 //korean tests
 const lookUpTests = [
     "이더서 13장 18절",
     "니전5.2",
+    "제3니파이 2장 8절",
+    "제3니파이 23장 7절",
+    "조셉 스미스—역사 1장 30절",
+    "이더서 1장 32~35절, 이더서 7장 26절, 이더서 9장 23절",
 
-]
+];
 
 lookUpTests.forEach(t=>{
     const result = lookup(t);
     console.log({result});
 });
-
+process.exit();
 setLanguage();
-//korean tests
+//english tests
 const lookUpTests2 = [
-    "Alma 5:3",
+    "Moses 1:1",
+    "3 Nephi 9:3",
+    "Joseph Smith—History 1:20",
+
 ]
 
 lookUpTests2.forEach(t=>{

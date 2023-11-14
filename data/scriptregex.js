@@ -96,12 +96,12 @@ module.exports  = {
         ["d(?:octrine)*\\.* *(?:&amp;|&|and)* *c(?:ovenants)*(?:\\s*\\bSec(?:tion)*)*\\.*", "Doctrine and Covenants"],
         ["dee and see", "Doctrine and Covenants"], 
         
-        ["Moses", "Moses"],
+        ["moses", "Moses"],
         ["Abra*\\.*(?:ham)*", "Abraham"],
         ["Jos(?:eph)*\\.* Smith(?:[–—\\- ]+Matthew)", "Joseph Smith\u2014Matthew"],
         ["Jos(?:eph)*\\.* Smith(?:[–—\\- ]+History)", "Joseph Smith\u2014History"],
-        ["JS[—\\-]*\\s*[H]", "Joseph Smith History"],
-        ["JS[—\\-]*\\s*[M]", "Joseph Smith Matthew"],
+        ["JS[—\\-]*\\s*[H]", "Joseph Smith\u2014History"],
+        ["JS[—\\-]*\\s*[M]", "Joseph Smith\u2014Matthew"],
         ["a(?:rticles)*[ _-]*o[ _-f]*f(?:aith)*", "Articles of Faith"],
         
         [",* *jst", "JST"], 

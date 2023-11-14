@@ -157,7 +157,10 @@ module.exports  = {
                 i = i.replace(/([\u3131-\uD79D]) *([0-9]+)/ig, "$1 $2장 ");
                 i = i.replace(/([0-9]+):([0-9]+)-([0-9]+)/g, "$1장 $2~$3절");
                 i = i.replace(/[–-]+/g,"~");
-                i = i.replace(/\s*:\s*([0-9~]+)/g, "$1절");
+                i = i.replace(/\s*:\s*([0-9~]+)/g, ":$1절");
+                i = i.replace(/([0-9]+):([0-9]+)/g, "$1장$2");
+                i = i.replace(/장:([0-9]+)/g, "장 $1");
+
                 i = i.replace(/;/g, "; ").replace(/\s+/g, " ").trim();
                 i = i.replace(/제\s*([3-4])장\s*니파이/g, "제$1니파이");
                 i = i.replace(/([0-9]+)장\s*([0-9]+)/g, "$1장 $2");
@@ -169,6 +172,11 @@ module.exports  = {
                 i = i.replace(/(\d+) *장/g, "$1");
                 i = i.replace(/(\d+) *절/g, "$1");
                 i = i.replace(/([\u3131-\uD79D]) *(\d+)/ig, "$1 $2");
+                i = i.replace(/제 ([3-4])/g, "제$1");
+                i = i.replace(/조셉 스미스[—-]/g, "조셉 스미스—");
+                //replace commas with semicolons, unless a digit is on both sides of the comma
+                i = i.replace(/, *([^0-9])/g, ";  $1");
+                console.log(i);
                 return i;
             }
     }
