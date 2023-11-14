@@ -78,10 +78,21 @@ const lookupReference = function(query) {
     for (let i in refs) {
         verse_ids = verse_ids.concat(lookupSingleRef(refs[i]));
     }
+
+    if(verse_ids.length == 0 && lang)
+    {
+        const original_lang = lang+""; //clone
+        //try again with no language
+        setLanguage();
+        const results = lookupReference(query);
+        setLanguage(original_lang);
+        return results;
+    }
+
     return {
         "query": query,
         "ref": ref,
-        "gen": generateReference(verse_ids),
+       // "gen": generateReference(verse_ids),
         "verse_ids": verse_ids
     };
 }
