@@ -14,6 +14,7 @@ lines.forEach(l=>{
     console.log({result});
 });
 
+process.exit(0);
 
 setLanguage("ko");
 
