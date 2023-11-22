@@ -9,8 +9,7 @@ const orginal_raw_index = {...raw_index};
 const orginal_raw_regex = {...raw_regex};
 let raw_lang = require('./data/scriptlang.js');
 let {prepareBlacklist, preparePattern} = require('./data/scriptdetect.js');
-let postProcess = (i)=>i;
-let preProcess = (i)=>i;
+
 
 const setLanguage = function(language) {
     if(lang===language) return;
@@ -21,39 +20,33 @@ const setLanguage = function(language) {
         //revert to originals
         raw_index = {...orginal_raw_index};
         raw_regex = {...orginal_raw_regex};
-        postProcess = (i)=>i;
-        preProcess = (i)=>i;
         lang_extra = {};
-        wordBreak = "\\b";
+        wordBreak = "\\b"; //TODO get from lang config?
         return;
     }
 
-
-    let new_index = {};
-    if(raw_lang[lang]?.books) {
-        for(let i in raw_lang[lang].books) {
-            let book = raw_lang[lang].books[i];
-            let original_book = Object.keys(raw_index)?.[i];
-            new_index[book] = raw_index[original_book];
+    if(raw_lang[lang]?.books)
+    {
+        raw_regex.books = [];
+        new_index = {};
+        const bookList = Object.keys(raw_lang[lang].books);
+        for(let book of bookList) {
+            const book_index = bookList.indexOf(book);
+            const original_bookname = Object.keys(orginal_raw_index)?.[book_index];
+            new_index[book] = raw_index[original_bookname];
+            const matches = [book,...raw_lang[lang].books[book]]; //TODO, do I need the book in the list?
+            raw_regex.books = raw_regex.books.concat(matches.map(i => [i,book]));
         }
         raw_index = new_index;
     }
-    //if(raw_lang[lang]?.regex) raw_regex.books = [];
-    for(let regexitem of raw_lang[lang]?.regex) {
-        raw_regex.books.push(regexitem);
-    }
 
-    //if(raw_lang[lang]?.wordBreak==-1) wordBreak = "";
-    //else wordBreak = raw_lang[lang]?.wordBreak || wordBreak;
+    raw_regex.pre_rules = raw_lang[lang]?.pre_rules || raw_regex.pre_rules; //TODO: add replace/append options
+    raw_regex.post_rules = raw_lang[lang]?.post_rules || raw_regex.post_rules; //TODO: add replace/append options
 
-
-    if(raw_lang[lang]?.postProcess) postProcess = raw_lang[lang]?.postProcess;
-    if(typeof postProcess !== 'function') postProcess = (i)=>i;
-
-    if(raw_lang[lang]?.preProcess) preProcess = raw_lang[lang]?.preProcess;
-    if(typeof preProcess !== 'function') preProcess = (i)=>i;
+    //TODO: Set booksWithDashRegex
 
     if(raw_lang[lang]?.matchRules) lang_extra = raw_lang[lang]?.matchRules;
+
 }
 
 
@@ -130,7 +123,7 @@ const generateReference = function(verse_ids) {
     if(!verse_ids) return '';
 
     let ranges = loadVerseStructure(verse_ids);
-    let refs = loadRefsFromRanges(ranges).map(postProcess);
+    let refs = loadRefsFromRanges(ranges);
 
     let ref = refs.join("; ");
     return ref;
@@ -154,7 +147,7 @@ const lookupMultiBookRange = function(cleanRef) { //eg Matthew 15—Mark 2
             let maxChapter = loadMaxChapter(range[1]);
             let maxverse = loadMaxVerse(range[1], maxChapter);
             range[1] = range[1] + " " + maxChapter + ":" + maxverse;
-          //  console.log(range);
+           // console.log(range);
         } else {
             let maxverse = loadMaxVerse(cleanReference(matches[1]), matches[2]);
             range[1] = range[1] + ":" + maxverse;
@@ -184,8 +177,6 @@ const cleanReference = function(messyReference) {
 
     const hasNoAlpha = !/[A-Za-z]/.test(ref);
     if(hasNoAlpha) wordBreak = "";
-
-    ref = preProcess(ref);
 
     const buffer = wordBreak ? "" : " ";
     //Build Regex rules
@@ -277,7 +268,7 @@ const getRanges = function(ref) {
         let chapters = numbers.split(/,/);
         ranges = chapters.map(chapter => chapter + ": 1-X");
     }
-    //Genesis 1-2
+    //Genesis 1-2 (ch-ch)
     else if (isChaptersOnly && isRange) {
         let chapterStartandEnd = numbers.split(/-/);
         let startChapter = parseInt(chapterStartandEnd[0], 0);
@@ -334,7 +325,7 @@ const getRanges = function(ref) {
             ranges.push(chapter + ": " + verses.trim());
         }
     }
-    //Genesis 1:1-10    OR    Exodus 1-2:15  OR Leviticus 1:10-2:5
+    //Genesis 1:1-10 (cv-v)    OR    Exodus 1-2:15 (c-cv)  OR Leviticus 1:10-2:5 (cv-cv)
     else if (isRange) {
         let chapters = numbers.match(/((\d+)[:]|^\d+)/g);
         let verses = numbers.match(/[:-](\d+)/g);

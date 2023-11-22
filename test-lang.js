@@ -1,15 +1,29 @@
 const {lookup, generateReference, setLanguage, detectReferences}= require("./scriptures.js");
 
 
-setLanguage("ko");
+
+setLanguage("kr");
 //korean tests
+
+/*
+utils No verses found {"reference":"2 Kings 17:18-20, 2 Chronicles 36:15-21, Jeremiah 39:1-10","lang":"ko","verse_ids":[]}
+Nov 15 06:08:09 bookofmormon.online /usr/local/bin/node  info: utils No verses found {"reference":"4 Nephi 1:6-9","lang":"ko","verse_ids":[]}
+Nov 15 06:08:10 bookofmormon.online /usr/local/bin/node  info: utils No verses found {"reference":"3 Ne. 8:8","lang":"ko","verse_ids":[]}
+Nov 15 06:08:11 bookofmormon.online /usr/local/bin/node  info: utils No verses found {"reference":"3 Ne. 9:4","lang":"ko","verse_ids":[]}
+
+*/
+
 const lookUpTests = [
-    "이더서 13장 18절",
+    "이더서 13:18",
     "니전5.2",
     "제3니파이 2장 8절",
     "제3니파이 23장 7절",
     "조셉 스미스—역사 1장 30절",
-    "Matthew 4",
+    "힐라맨서 6:40",
+    "2 Kings 17:18-20, 2 Chronicles 36:15-21, Jeremiah 39:1-10",
+    "4 Nephi 1:6-9",
+    "3 Ne. 8:8",
+    "3 Ne. 9:4",
     "이더서 1장 32~35절, 이더서 7장 26절, 이더서 9장 23절",
 
 ];
