@@ -5,7 +5,15 @@ const fs = require("fs");
 fs.mkdirSync("./test_results", {recursive:true});
 const timestamp = new Date().toISOString();
 const filename = `./test_results/test_results.html`;
-fs.writeFileSync(filename, `<html><body><table>`);
+fs.writeFileSync(filename, `<html>
+<head>
+<style>
+body {font-family: sans-serif;}
+.json-data {font-family: monospace; word-break: break-all; white-space: pre-wrap; width: 20vw;}
+table {border-collapse: collapse;}
+td {border: 1px solid black; padding: 5px;}
+</style>
+<body><table>`);
 
 
 const langs = Object.keys(testdata);
@@ -22,12 +30,11 @@ const ref2idTest = ([input,expected,notes]) => {
     if(cleanRef)    result += ref===cleanRef ? "✅" : "❌";
     process.stdout.write(result+"•");
     fs.appendFileSync(filename, `<tr>
-        <td>${input}</td>
-        <td>${result}</td>
-        <td>${notes}</td>
-        <td>${ref}</td>
-        <td>${JSON.stringify({firstVerse:actualFirstVerse,lastVerse:actualLastVerse,verseCount:actualVerseCount}).replace(/"/g,"")}</td>
-    </tr>`);
+        <td class="notes">${notes}</td>
+        <td class="result">${result}</td>
+        <td class="input">${input}</td>
+        <td class="ref">${ref}</td>
+        <td class="json-data">${JSON.stringify({firstVerse:actualFirstVerse,lastVerse:actualLastVerse,verseCount:actualVerseCount}).replace(/"/g,"")}</td>    </tr>`);
 }
 
 

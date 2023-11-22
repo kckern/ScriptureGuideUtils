@@ -12,7 +12,8 @@ let {prepareBlacklist, preparePattern} = require('./data/scriptdetect.js');
 
 
 const setLanguage = function(language) {
-    if(lang===language) return;
+
+    if(lang===language) return console.log(`Language already set to ${lang}`);
     lang = language;
     refIndex = null
     verseIdIndex = null
@@ -22,7 +23,7 @@ const setLanguage = function(language) {
         raw_regex = {...orginal_raw_regex};
         lang_extra = {};
         wordBreak = "\\b"; //TODO get from lang config?
-        return;
+        return ;
     }
 
     if(raw_lang[lang]?.books)
@@ -40,8 +41,8 @@ const setLanguage = function(language) {
         raw_index = new_index;
     }
 
-    raw_regex.pre_rules = raw_lang[lang]?.pre_rules || raw_regex.pre_rules; //TODO: add replace/append options
-    raw_regex.post_rules = raw_lang[lang]?.post_rules || raw_regex.post_rules; //TODO: add replace/append options
+    raw_regex.pre_rules = raw_lang[lang]?.pre_rules || raw_regex.pre_rules;     //TODO: add replace/append options
+    raw_regex.post_rules = raw_lang[lang]?.post_rules || raw_regex.post_rules;  //TODO: add replace/append options
 
     //TODO: Set booksWithDashRegex
 
@@ -175,10 +176,19 @@ const cleanReference = function(messyReference) {
 
     let ref = messyReference.replace(/[\s]+/g, " ").trim();
 
+
+    //Treat commas as semicolons in the absence of verses
+    if (!ref.match(/:/)) ref = ref.replace(/,/, "; ");
+    //add space before numbers
+    ref = ref.replace(/^([0-9;,:-]+)(\d+)/g, "$1 $2");
+    //add spaces after semicolons
+    ref = ref.replace(/;/g, "; ");
+
+    //Handle non-latin languages because \b only works for latin alphabet
     const hasNoAlpha = !/[A-Za-z]/.test(ref);
     if(hasNoAlpha) wordBreak = "";
-
     const buffer = wordBreak ? "" : " ";
+
     //Build Regex rules
     let regex = raw_regex.pre_rules;
     for (let i in regex) {
@@ -207,14 +217,12 @@ const cleanReference = function(messyReference) {
          return bookValue + " ";
     }
     );
-    regex = raw_regex.post_rules;
-    for (let i in regex) {
-        var re = new RegExp(regex[i][0], "ig");
-        ref = ref.replace(re, regex[i][1]);
-    }
 
-    //Treat commas as semicolons in the absence of verses
-    if (!ref.match(/:/)) ref = ref.replace(/,/, ";");
+    //TODO: Do I need post rules here?
+
+    //Cleanup
+    ref = ref.replace(/\s*[~–-]\s*/g, "-"); //remove spaces around dashes
+
 
     let cleanReference = ref.trim();
     return cleanReference;
@@ -240,6 +248,7 @@ const getBook = function(ref) {
 const getRanges = function(ref) {
     let ranges = [];
     let numbers = ref.replace(/.*?([0-9: ,-]+)$/, '$1').trim();
+    numbers=numbers.replace(/^(\d+)-(\d+):(\d+)$/g, '$1:1-$2:$3'); //implict first verse
     let isChaptersOnly = numbers.match(/:/) ? false : true;
     let isRange = !numbers.match(/-/) ? false : true;
     let isSplit = !numbers.match(/,/) ? false : true;
