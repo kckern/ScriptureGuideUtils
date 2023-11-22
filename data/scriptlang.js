@@ -176,7 +176,7 @@ module.exports  = {
                 i = i.replace(/조셉 스미스[—-]/g, "조셉 스미스—");
                 //replace commas with semicolons, unless a digit is on both sides of the comma
                 i = i.replace(/, *([^0-9])/g, ";  $1");
-                console.log(i);
+             //   console.log(i);
                 return i;
             }
     }

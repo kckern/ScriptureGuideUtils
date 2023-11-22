@@ -1,0 +1,55 @@
+module.exports = {
+    en: {
+        ref2id:[
+            ["Genesis 1", {firstVerse:1,lastVerse:31,verseCount:31}, "Full book name and chapter"],
+            ["Genesis 1:2", {firstVerse:2,lastVerse:2,verseCount:1}, "Full book name, chapter, and verse"],
+            ["Exodus 1:2", {firstVerse:1535}, "Simple reference"],
+            ["Genesis 2", {firstVerse:32}, "Simple chapter"],
+            ["Genesis 1,3", {firstVerse:1, lastVerse:80, verseCount:55}, "Split chapters"],
+            ["Exodus 3-5", {firstVerse:1581,lastVerse:1656,verseCount:76}, "Chapter range"],
+            ["Exodus 3-5,8", {firstVerse:1581,lastVerse:1743,verseCount:108}, "Chapter range and split"],
+            ["Exodus 20:1-10", {firstVerse:2053, lastVerse:2062, verseCount:10}, "Verse range"],
+            ["Exodus 20:1-5,10", {firstVerse:2053, lastVerse:2062, verseCount:6}, "Verse range and split"],
+            ["Exodus 20:5,10", {firstVerse:2057, lastVerse:2062, verseCount:2}, "Verse Split"],
+            ["Exodus 1:5-4:3", {firstVerse:1538,lastVerse:1605,verseCount:68}, "Verse range spanning multiple chapters"],
+            ["Exodus 3-4:10", {firstVerse:1581, lastVerse:1612, verseCount:32}, "Chapter range ending in partial chapter"],
+            ["Genesis 30 - Exodus 2", {firstVerse:832, lastVerse:1580, verseCount:749}, "Chapter range spanning multiple books"],
+            ["Genesis 30 - Exodus 2:5", {firstVerse:832,lastVerse:1560,verseCount:729} , "Chapter range spanning multiple books, ending in partial chapter"],
+            ["Genesis 30:10 - Exodus 2", {firstVerse:841, lastVerse:1580, verseCount:740}, "Chapter range spanning multiple books, starting in partial chapter"],
+            ["Genesis 30:10 - Exodus 2:5", {firstVerse:841,lastVerse:1560,verseCount:720}, "Chapter range spanning multiple books, starting and ending with partial chapters"],
+            ["Exodus 5:1;6:2;8:5", {firstVerse:1634, lastVerse:1716, verseCount:3}, "Compound reference in same book"],
+            ["Exodus 5:1; Leviticus 6:2; Numbers 8:5", {firstVerse:1634, lastVerse:3945, verseCount:3}, "Compound reference in different books"],
+            ["Exodus 5:1-3; Leviticus 6:2-5; Numbers 8:5-6", {firstVerse:1634,lastVerse:3946,verseCount:9}, "Compound reference ranges in different books"],
+            ["Genesis - Numbers", {firstVerse:1,lastVerse:4893,verseCount:4893}, "Entire Book Range"],
+            ["Mt2.5;Mk3;Lk4;Jn5.2-6;1Jn1.5,7-8;3Jn1.1", {cleanRef:"Matthew 2:5; Mark 3; Luke 4; John 5:2-6; 1 John 1:5, 7-8; 3 John 1:1"}, "Abbreviation detection"],
+            ["1 Nephi 19:11", {firstVerse:31628,lastVerse:31628,verseCount:1}, "Other Books"],
+        ]
+    },
+    "ko": {
+        ref2id:[
+            ["창세기 1장", {firstVerse:1,lastVerse:31,verseCount:31}, "Full book name and chapter"],
+            ["창세기 1장 2절", {firstVerse:2,lastVerse:2,verseCount:1}, "Full book name, chapter, and verse"],
+            ["출애굽기 1:2", {firstVerse:1535}, "Simple reference"],
+            ["창세기 2장", {firstVerse:32}, "Simple chapter"],
+            ["창세기 1,3장", {firstVerse:1, lastVerse:80, verseCount:55}, "Split chapters"],
+            ["출애굽기 3-5", {firstVerse:1581,lastVerse:1656,verseCount:76}, "Chapter range"],
+            ["출애굽기 3-5장,8장", {firstVerse:1581,lastVerse:1743,verseCount:108}, "Chapter range and split"],
+            ["출애굽기 20:1-10", {firstVerse:2053, lastVerse:2062, verseCount:10}, "Verse range"],
+            ["출애굽기 20:1-5,10", {firstVerse:2053, lastVerse:2062, verseCount:6}, "Verse range and split"],
+            ["출애굽기 20:5,10", {firstVerse:2057, lastVerse:2062, verseCount:2}, "Verse Split"],
+            ["출애굽기 1:5-4:3", {firstVerse:1538,lastVerse:1605,verseCount:68}, "Verse range spanning multiple chapters"],
+            ["출애굽기 3-4:10", {firstVerse:1581, lastVerse:1612, verseCount:32}, "Chapter range ending in partial chapter"],
+            ["창세기 30장 - 출애굽기 2장", {firstVerse:832, lastVerse:1580, verseCount:749}, "Chapter range spanning multiple books"],
+            ["창세기 30장 - 출애굽기 2:5", {firstVerse:832,lastVerse:1560,verseCount:729} , "Chapter range spanning multiple books, ending in partial chapter"],
+            ["창세기 30:10 - 출애굽기 2장", {firstVerse:841, lastVerse:1580, verseCount:740}, "Chapter range spanning multiple books, starting in partial chapter"],
+            ["창세기 30:10 - 출애굽기 2:5", {firstVerse:841,lastVerse:1560,verseCount:720}, "Chapter range spanning multiple books, starting and ending with partial chapters"],
+            ["출애굽기 5:1;6:2;8:5", {firstVerse:1634, lastVerse:1716, verseCount:3}, "Compound reference in same book"],
+            ["출애굽기 5:1; 레위기 6:2; 민수기 8:5", {firstVerse:1634, lastVerse:3945, verseCount:3}, "Compound reference in different books"],
+            ["출애굽기 5:1-3; 레위기 6:2-5; 민수기 8:5-6", {firstVerse:1634,lastVerse:3946,verseCount:9}, "Compound reference ranges in different books"],
+            ["창세기 - 민수기", {firstVerse:1,lastVerse:4893,verseCount:4893}, "Entire Book Range"],
+            ["마2:5;막3;눅4;요5:2-6;1요1:5,7-8;3요1:1", {cleanRef:"마태복음 2:5;마가복음 3;누가복음 4;요한복음 5:2-6; 1요 1:5, 7-8; 3요 1:1",firstVerse:23175,lastVerse:30660,verseCount:89}, "Abbreviation detection"],
+            ["니전 19:11", {firstVerse:31628,lastVerse:31628,verseCount:1}, "Other Books"],
+        ]
+    }
+
+}

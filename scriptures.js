@@ -154,7 +154,7 @@ const lookupMultiBookRange = function(cleanRef) { //eg Matthew 15—Mark 2
             let maxChapter = loadMaxChapter(range[1]);
             let maxverse = loadMaxVerse(range[1], maxChapter);
             range[1] = range[1] + " " + maxChapter + ":" + maxverse;
-            console.log(range);
+          //  console.log(range);
         } else {
             let maxverse = loadMaxVerse(cleanReference(matches[1]), matches[2]);
             range[1] = range[1] + ":" + maxverse;

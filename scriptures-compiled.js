@@ -174,7 +174,7 @@ var lookupMultiBookRange = function lookupMultiBookRange(cleanRef) {
       var maxChapter = loadMaxChapter(range[1]);
       var maxverse = loadMaxVerse(range[1], maxChapter);
       range[1] = range[1] + " " + maxChapter + ":" + maxverse;
-      console.log(range);
+      //console.log(range);
     } else {
       var _maxverse = loadMaxVerse(cleanReference(matches[1]), matches[2]);
       range[1] = range[1] + ":" + _maxverse;
