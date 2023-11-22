@@ -73,11 +73,11 @@ const lookupReference = function(query) {
         verse_ids = verse_ids.concat(lookupSingleRef(refs[i]));
     }
 
-    if(verse_ids.length == 0 && lang)
+    if(!verse_ids?.length && lang)
     {
         const original_lang = lang+""; //clone
         //try again with no language
-        setLanguage();
+        setLanguage(null);
         const results = lookupReference(query);
         setLanguage(original_lang);
         return results;
@@ -95,7 +95,7 @@ const lookupSingleRef = function(ref) {
 
     const booksWithDashRegex = /^(joseph|조셉)/i; // TODO: get from lang config
     //todo: better handling of multi-book ranges for unicode
-    if (!booksWithDashRegex.test(ref) && ref.match(/[—-](\d\s)*[A-Za-z\u3131-\uD79D]/ig)) return lookupMultiBookRange(ref);
+    if (!booksWithDashRegex.test(ref) && ref.match(/[—-](\d\s)*[\D]/ig)) return lookupMultiBookRange(ref);
     let book = getBook(ref);
     if (!book) return [];
     let ranges = getRanges(ref, book);
@@ -176,13 +176,16 @@ const cleanReference = function(messyReference) {
 
     let ref = messyReference.replace(/[\s]+/g, " ").trim();
 
-
+    //Turn dots into colons
+    ref = ref.replace(/[.]/g, ":");
     //Treat commas as semicolons in the absence of verses
     if (!ref.match(/:/)) ref = ref.replace(/,/, "; ");
-    //add space before numbers
-    ref = ref.replace(/^([0-9;,:-]+)(\d+)/g, "$1 $2");
     //add spaces after semicolons
     ref = ref.replace(/;/g, "; ");
+    //add space before numbers
+    ref = ref.replace(/^([0-9;,:-]+)(\d+)/g, "$1 $2");
+    //spaces around book ranges
+    ref = ref.replace(/([–-])(\D+)/g, " $1 $2 ");
 
     //Handle non-latin languages because \b only works for latin alphabet
     const hasNoAlpha = !/[A-Za-z]/.test(ref);
@@ -218,13 +221,14 @@ const cleanReference = function(messyReference) {
     }
     );
 
-    //TODO: Do I need post rules here?
 
     //Cleanup
+    ref = ref.replace(/\s+/g, " "); //remove double spaces
     ref = ref.replace(/\s*[~–-]\s*/g, "-"); //remove spaces around dashes
-
+    ref = ref.replace(/;(\S+)/g, "; $1"); //add space after semicolons
 
     let cleanReference = ref.trim();
+    console.log({cleanReference});
     return cleanReference;
 }
 const splitReferences = function(compoundReference) {

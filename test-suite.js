@@ -28,6 +28,8 @@ const ref2idTest = ([input,expected,notes]) => {
     if(lastVerse)   result += actualLastVerse===lastVerse ? "✅" : "❌";
     if(verseCount)  result += actualVerseCount===verseCount ? "✅" : "❌";
     if(cleanRef)    result += ref===cleanRef ? "✅" : "❌";
+    if(cleanRef) console.log({cleanRef,ref});
+
     process.stdout.write(result+"•");
     fs.appendFileSync(filename, `<tr>
         <td class="notes">${notes}</td>
