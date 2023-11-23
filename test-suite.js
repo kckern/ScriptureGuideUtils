@@ -20,7 +20,7 @@ const langs = Object.keys(testdata);
 
 const ref2idTest = ([input,expected,notes]) => {
     const {ref,verse_ids} = lookupReference(input);
-    const {firstVerse,lastVerse,verseCount,cleanRef} = expected;
+    const {firstVerse,lastVerse,verseCount,cleanRef} = expected || {};
     const {actualFirstVerse,actualLastVerse,actualVerseCount} = {actualFirstVerse:verse_ids[0],actualLastVerse:verse_ids[verse_ids.length-1],actualVerseCount:verse_ids.length};
     let result = "";
 
@@ -28,11 +28,11 @@ const ref2idTest = ([input,expected,notes]) => {
     if(lastVerse)   result += actualLastVerse===lastVerse ? "✅" : "❌";
     if(verseCount)  result += actualVerseCount===verseCount ? "✅" : "❌";
     if(cleanRef)    result += ref===cleanRef ? "✅" : "❌";
-    if(cleanRef) console.log({cleanRef,ref});
+    //if(cleanRef) console.log({cleanRef,ref});
 
     process.stdout.write(result+"•");
     fs.appendFileSync(filename, `<tr>
-        <td class="notes">${notes}</td>
+        <td class="notes">${notes || ""}</td>
         <td class="result">${result}</td>
         <td class="input">${input}</td>
         <td class="ref">${ref}</td>
@@ -40,9 +40,10 @@ const ref2idTest = ([input,expected,notes]) => {
 }
 
 
-
+console.log(langs);
 for (let lang of langs)
 {
+    setLanguage(null);
     if(lang!=="en") setLanguage(lang);
     const langdata = testdata[lang];
     const {ref2id, id2ref, detectRef} = langdata;

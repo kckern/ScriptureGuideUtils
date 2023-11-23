@@ -40,7 +40,6 @@ const setLanguage = function(language) {
         }
         raw_index = new_index;
     }
-
     raw_regex.pre_rules = raw_lang[lang]?.pre_rules || raw_regex.pre_rules;     //TODO: add replace/append options
     raw_regex.post_rules = raw_lang[lang]?.post_rules || raw_regex.post_rules;  //TODO: add replace/append options
 
@@ -176,6 +175,13 @@ const cleanReference = function(messyReference) {
 
     let ref = messyReference.replace(/[\s]+/g, " ").trim();
 
+    //Build Regex rules
+    let regex = raw_regex.pre_rules;
+    for (let i in regex) {
+        var re = new RegExp(regex[i][0], "ig");
+        ref = ref.replace(re, regex[i][1]);
+    }
+
     //Turn dots into colons
     ref = ref.replace(/[.]/g, ":");
     //Treat commas as semicolons in the absence of verses
@@ -184,20 +190,15 @@ const cleanReference = function(messyReference) {
     ref = ref.replace(/;/g, "; ");
     //add space before numbers
     ref = ref.replace(/^([0-9;,:-]+)(\d+)/g, "$1 $2");
-    //spaces around book ranges
+    //spaces around book ranges !!! Breaks vietnamese, which uses dashes (optionally) instead of spaces in book names
     ref = ref.replace(/([–-])(\D+)/g, " $1 $2 ");
 
     //Handle non-latin languages because \b only works for latin alphabet
-    const hasNoAlpha = !/[A-Za-z]/.test(ref);
-    if(hasNoAlpha) wordBreak = "";
+    const hasBeyondAlpha = !!ref.match(/[^\u0000-\u007F]/);
+    if(hasBeyondAlpha) wordBreak = "";
     const buffer = wordBreak ? "" : " ";
+    
 
-    //Build Regex rules
-    let regex = raw_regex.pre_rules;
-    for (let i in regex) {
-        var re = new RegExp(regex[i][0], "ig");
-        ref = ref.replace(re, regex[i][1]);
-    }
     let srcbooks = raw_regex.books;
     let dstbooks = buffer ? raw_regex.books.map(i => [i[1], i[1]]) : [];
     let bookMatchList = [...dstbooks, ...srcbooks].sort((a, b) => b[0].length - a[0].length);
@@ -212,6 +213,7 @@ const cleanReference = function(messyReference) {
         var re = new RegExp( wordBreak + buffer + regex[i][0] + buffer + "\\.*"+wordBreak, "ig");
         let replacement = hashCypher[regex[i][1]] || regex[i][1];
         ref = (buffer+ref+buffer).replace(re, replacement).trim();
+        //console.log({ref,re,hasBeyondAlpha,wordBreak,buffer});
     }
     const books = Object.keys(hashCypher);
     const hashes = Object.values(hashCypher);
@@ -228,7 +230,6 @@ const cleanReference = function(messyReference) {
     ref = ref.replace(/;(\S+)/g, "; $1"); //add space after semicolons
 
     let cleanReference = ref.trim();
-    console.log({cleanReference});
     return cleanReference;
 }
 const splitReferences = function(compoundReference) {
@@ -528,8 +529,8 @@ const detectReferences = (content,callBack,wordBreak="\\b") => {
         replace(/^[,;!?.()]+/ig, " ").
         trim();
 
-    const hasNoAlpha = !/[A-Za-z]/.test(content);
-    if(hasNoAlpha && wordBreak) wordBreak = "";
+    const hasBeyondAlpha = /[^\u0000-\u007F]/.test(content);
+    if(hasBeyondAlpha && wordBreak) wordBreak = "";
     
     const src = raw_regex.books.map(i => i[0]);
     const dst = [...new Set(raw_regex.books.map(i => i[1]))];
