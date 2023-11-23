@@ -1,5 +1,5 @@
 const testdata = require("./data/testdata");
-const { lookupReference, setLanguage } = require("./scriptures");
+const { lookupReference, setLanguage, generate, generateReference } = require("./scriptures");
 const fs = require("fs");
 
 fs.mkdirSync("./test_results", {recursive:true});
@@ -39,6 +39,20 @@ const ref2idTest = ([input,expected,notes]) => {
         <td class="json-data">${JSON.stringify({firstVerse:actualFirstVerse,lastVerse:actualLastVerse,verseCount:actualVerseCount}).replace(/"/g,"")}</td>    </tr>`);
 }
 
+const id2refTest = ([input,expected,notes]) => {
+    const reference = generateReference(input);
+    let result = "";
+    if(expected) result += reference===expected ? "✅" : "❌";
+    process.stdout.write(result+"•");
+    fs.appendFileSync(filename, `<tr>
+        <td class="notes">${notes || ""}</td>
+        <td class="result">${result}</td>
+        <td class="input">${input}</td>
+        <td class="ref">${reference}</td>
+        <td class="json-data"></td>    </tr>`);
+
+
+}
 
 console.log(langs);
 for (let lang of langs)
@@ -52,7 +66,11 @@ for (let lang of langs)
         console.log(`\n\n[${lang}] Testing ref2id:`);
         ref2id.forEach(ref2idTest)
     }
-   ;
+    if(id2ref)
+    {
+        console.log(`\n\n[${lang}] Testing id2ref:`);
+        id2ref.forEach(id2refTest)
+    }
 }
 
 fs.appendFileSync(filename, `</table></body></html>`);

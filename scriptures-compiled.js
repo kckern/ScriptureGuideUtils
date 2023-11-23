@@ -7,10 +7,9 @@ function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" !=
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
-function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
 function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
@@ -30,15 +29,9 @@ var raw_lang = require('./data/scriptlang.js');
 var _require = require('./data/scriptdetect.js'),
   prepareBlacklist = _require.prepareBlacklist,
   preparePattern = _require.preparePattern;
-var postProcess = function postProcess(i) {
-  return i;
-};
-var preProcess = function preProcess(i) {
-  return i;
-};
 var setLanguage = function setLanguage(language) {
-  var _raw_lang$lang, _raw_lang$lang2, _raw_lang$lang3, _raw_lang$lang4, _raw_lang$lang5, _raw_lang$lang6, _raw_lang$lang7, _raw_lang$lang8;
-  if (lang === language) return;
+  var _raw_lang$lang, _raw_lang$lang2, _raw_lang$lang3, _raw_lang$lang4, _raw_lang$lang5;
+  if (lang === language) return console.log("Language already set to ".concat(lang));
   lang = language;
   refIndex = null;
   verseIdIndex = null;
@@ -46,53 +39,39 @@ var setLanguage = function setLanguage(language) {
     //revert to originals
     raw_index = _objectSpread({}, orginal_raw_index);
     raw_regex = _objectSpread({}, orginal_raw_regex);
-    postProcess = function postProcess(i) {
-      return i;
-    };
-    preProcess = function preProcess(i) {
-      return i;
-    };
     lang_extra = {};
-    wordBreak = "\\b";
+    wordBreak = "\\b"; //TODO get from lang config?
     return;
   }
-  var new_index = {};
   if ((_raw_lang$lang = raw_lang[lang]) !== null && _raw_lang$lang !== void 0 && _raw_lang$lang.books) {
-    for (var i in raw_lang[lang].books) {
+    raw_regex.books = [];
+    new_index = {};
+    var bookList = Object.keys(raw_lang[lang].books);
+    var _loop = function _loop() {
       var _Object$keys;
-      var book = raw_lang[lang].books[i];
-      var original_book = (_Object$keys = Object.keys(raw_index)) === null || _Object$keys === void 0 ? void 0 : _Object$keys[i];
-      new_index[book] = raw_index[original_book];
+      var book = _bookList[_i];
+      var book_index = bookList.indexOf(book);
+      var original_bookname = (_Object$keys = Object.keys(orginal_raw_index)) === null || _Object$keys === void 0 ? void 0 : _Object$keys[book_index];
+      new_index[book] = raw_index[original_bookname];
+      var matches = [book].concat(_toConsumableArray(raw_lang[lang].books[book])); //TODO, do I need the book in the list?
+      raw_regex.books = raw_regex.books.concat(matches.map(function (i) {
+        return [i, book];
+      }));
+    };
+    for (var _i = 0, _bookList = bookList; _i < _bookList.length; _i++) {
+      _loop();
     }
     raw_index = new_index;
   }
-  //if(raw_lang[lang]?.regex) raw_regex.books = [];
-  var _iterator = _createForOfIteratorHelper((_raw_lang$lang8 = raw_lang[lang]) === null || _raw_lang$lang8 === void 0 ? void 0 : _raw_lang$lang8.regex),
-    _step;
-  try {
-    for (_iterator.s(); !(_step = _iterator.n()).done;) {
-      var regexitem = _step.value;
-      raw_regex.books.push(regexitem);
-    }
+  raw_regex.pre_rules = ((_raw_lang$lang2 = raw_lang[lang]) === null || _raw_lang$lang2 === void 0 ? void 0 : _raw_lang$lang2.pre_rules) || raw_regex.pre_rules; //TODO: add replace/append options
+  raw_regex.post_rules = ((_raw_lang$lang3 = raw_lang[lang]) === null || _raw_lang$lang3 === void 0 ? void 0 : _raw_lang$lang3.post_rules) || raw_regex.post_rules; //TODO: add replace/append options
 
-    //if(raw_lang[lang]?.wordBreak==-1) wordBreak = "";
-    //else wordBreak = raw_lang[lang]?.wordBreak || wordBreak;
-  } catch (err) {
-    _iterator.e(err);
-  } finally {
-    _iterator.f();
-  }
-  if ((_raw_lang$lang2 = raw_lang[lang]) !== null && _raw_lang$lang2 !== void 0 && _raw_lang$lang2.postProcess) postProcess = (_raw_lang$lang3 = raw_lang[lang]) === null || _raw_lang$lang3 === void 0 ? void 0 : _raw_lang$lang3.postProcess;
-  if (typeof postProcess !== 'function') postProcess = function postProcess(i) {
-    return i;
-  };
-  if ((_raw_lang$lang4 = raw_lang[lang]) !== null && _raw_lang$lang4 !== void 0 && _raw_lang$lang4.preProcess) preProcess = (_raw_lang$lang5 = raw_lang[lang]) === null || _raw_lang$lang5 === void 0 ? void 0 : _raw_lang$lang5.preProcess;
-  if (typeof preProcess !== 'function') preProcess = function preProcess(i) {
-    return i;
-  };
-  if ((_raw_lang$lang6 = raw_lang[lang]) !== null && _raw_lang$lang6 !== void 0 && _raw_lang$lang6.matchRules) lang_extra = (_raw_lang$lang7 = raw_lang[lang]) === null || _raw_lang$lang7 === void 0 ? void 0 : _raw_lang$lang7.matchRules;
+  //TODO: Set booksWithDashRegex
+
+  if ((_raw_lang$lang4 = raw_lang[lang]) !== null && _raw_lang$lang4 !== void 0 && _raw_lang$lang4.matchRules) lang_extra = (_raw_lang$lang5 = raw_lang[lang]) === null || _raw_lang$lang5 === void 0 ? void 0 : _raw_lang$lang5.matchRules;
 };
 var lookupReference = function lookupReference(query) {
+  var _verse_ids;
   var isValidReference = query && typeof query === 'string' && query.length > 0;
   if (!isValidReference) return {
     "query": query,
@@ -110,10 +89,10 @@ var lookupReference = function lookupReference(query) {
   for (var i in refs) {
     verse_ids = verse_ids.concat(lookupSingleRef(refs[i]));
   }
-  if (verse_ids.length == 0 && lang) {
+  if (!((_verse_ids = verse_ids) !== null && _verse_ids !== void 0 && _verse_ids.length) && lang) {
     var original_lang = lang + ""; //clone
     //try again with no language
-    setLanguage();
+    setLanguage(null);
     var results = lookupReference(query);
     setLanguage(original_lang);
     return results;
@@ -128,7 +107,7 @@ var lookupReference = function lookupReference(query) {
 var lookupSingleRef = function lookupSingleRef(ref) {
   var booksWithDashRegex = /^(joseph|조셉)/i; // TODO: get from lang config
   //todo: better handling of multi-book ranges for unicode
-  if (!booksWithDashRegex.test(ref) && ref.match(/[—-](\d\s)*[A-Za-z\u3131-\uD79D]/ig)) return lookupMultiBookRange(ref);
+  if (!booksWithDashRegex.test(ref) && ref.match(/[—-](\d\s)*[\D]/ig)) return lookupMultiBookRange(ref);
   var book = getBook(ref);
   if (!book) return [];
   var ranges = getRanges(ref, book);
@@ -156,7 +135,7 @@ var generateReference = function generateReference(verse_ids) {
   verse_ids = validateVerseIds(verse_ids);
   if (!verse_ids) return '';
   var ranges = loadVerseStructure(verse_ids);
-  var refs = loadRefsFromRanges(ranges).map(postProcess);
+  var refs = loadRefsFromRanges(ranges);
   var ref = refs.join("; ");
   return ref;
 };
@@ -174,7 +153,7 @@ var lookupMultiBookRange = function lookupMultiBookRange(cleanRef) {
       var maxChapter = loadMaxChapter(range[1]);
       var maxverse = loadMaxVerse(range[1], maxChapter);
       range[1] = range[1] + " " + maxChapter + ":" + maxverse;
-      //console.log(range);
+      // console.log(range);
     } else {
       var _maxverse = loadMaxVerse(cleanReference(matches[1]), matches[2]);
       range[1] = range[1] + ":" + _maxverse;
@@ -197,16 +176,29 @@ var strToHash = function strToHash(str) {
 };
 var cleanReference = function cleanReference(messyReference) {
   var ref = messyReference.replace(/[\s]+/g, " ").trim();
-  var hasNoAlpha = !/[A-Za-z]/.test(ref);
-  if (hasNoAlpha) wordBreak = "";
-  ref = preProcess(ref);
-  var buffer = wordBreak ? "" : " ";
+
   //Build Regex rules
   var regex = raw_regex.pre_rules;
   for (var i in regex) {
     var re = new RegExp(regex[i][0], "ig");
     ref = ref.replace(re, regex[i][1]);
   }
+
+  //Turn dots into colons
+  ref = ref.replace(/[.]/g, ":");
+  //Treat commas as semicolons in the absence of verses
+  if (!ref.match(/:/)) ref = ref.replace(/,/, "; ");
+  //add spaces after semicolons
+  ref = ref.replace(/;/g, "; ");
+  //add space before numbers
+  ref = ref.replace(/^([0-9;,:-]+)(\d+)/g, "$1 $2");
+  //spaces around book ranges !!! Breaks vietnamese, which uses dashes (optionally) instead of spaces in book names
+  ref = ref.replace(/([–-])(\D+)/g, " $1 $2 ");
+
+  //Handle non-latin languages because \b only works for latin alphabet
+  var hasBeyondAlpha = !!ref.match(/[^\u0000-\u007F]/);
+  if (hasBeyondAlpha) wordBreak = "";
+  var buffer = wordBreak ? "" : " ";
   var srcbooks = raw_regex.books;
   var dstbooks = buffer ? raw_regex.books.map(function (i) {
     return [i[1], i[1]];
@@ -216,31 +208,31 @@ var cleanReference = function cleanReference(messyReference) {
   });
   regex = bookMatchList;
   var hashCypher = {};
-  for (var _i in regex) {
-    var _regex$_i = _slicedToArray(regex[_i], 2),
+  for (var _i2 in regex) {
+    var _regex$_i = _slicedToArray(regex[_i2], 2),
       book = _regex$_i[1];
     var hash = strToHash(book);
     hashCypher[book] = hash;
   }
-  for (var _i2 in regex) {
-    var re = new RegExp(wordBreak + buffer + regex[_i2][0] + buffer + "\\.*" + wordBreak, "ig");
-    var replacement = hashCypher[regex[_i2][1]] || regex[_i2][1];
+  for (var _i3 in regex) {
+    var re = new RegExp(wordBreak + buffer + regex[_i3][0] + buffer + "\\.*" + wordBreak, "ig");
+    var replacement = hashCypher[regex[_i3][1]] || regex[_i3][1];
     ref = (buffer + ref + buffer).replace(re, replacement).trim();
+    //console.log({ref,re,hasBeyondAlpha,wordBreak,buffer});
   }
+
   var books = Object.keys(hashCypher);
   var hashes = Object.values(hashCypher);
   ref = ref.replace(new RegExp(hashes.join("|"), "g"), function (match) {
     var bookValue = books[hashes.indexOf(match)];
     return bookValue + " ";
   });
-  regex = raw_regex.post_rules;
-  for (var _i3 in regex) {
-    var re = new RegExp(regex[_i3][0], "ig");
-    ref = ref.replace(re, regex[_i3][1]);
-  }
 
-  //Treat commas as semicolons in the absence of verses
-  if (!ref.match(/:/)) ref = ref.replace(/,/, ";");
+  //Cleanup
+  ref = ref.replace(/\s+/g, " "); //remove double spaces
+  ref = ref.replace(/\s*[~–-]\s*/g, "-"); //remove spaces around dashes
+  ref = ref.replace(/;(\S+)/g, "; $1"); //add space after semicolons
+
   var cleanReference = ref.trim();
   return cleanReference;
 };
@@ -265,6 +257,7 @@ var getBook = function getBook(ref) {
 var getRanges = function getRanges(ref) {
   var ranges = [];
   var numbers = ref.replace(/.*?([0-9: ,-]+)$/, '$1').trim();
+  numbers = numbers.replace(/^(\d+)-(\d+):(\d+)$/g, '$1:1-$2:$3'); //implict first verse
   var isChaptersOnly = numbers.match(/:/) ? false : true;
   var isRange = !numbers.match(/-/) ? false : true;
   var isSplit = !numbers.match(/,/) ? false : true;
@@ -295,7 +288,7 @@ var getRanges = function getRanges(ref) {
       return chapter + ": 1-X";
     });
   }
-  //Genesis 1-2
+  //Genesis 1-2 (ch-ch)
   else if (isChaptersOnly && isRange) {
     var _chapterStartandEnd = numbers.split(/-/);
     var _startChapter = parseInt(_chapterStartandEnd[0], 0);
@@ -354,7 +347,7 @@ var getRanges = function getRanges(ref) {
       ranges.push(_chapter + ": " + _verses.trim());
     }
   }
-  //Genesis 1:1-10    OR    Exodus 1-2:15  OR Leviticus 1:10-2:5
+  //Genesis 1:1-10 (cv-v)    OR    Exodus 1-2:15 (c-cv)  OR Leviticus 1:10-2:5 (cv-cv)
   else if (isRange) {
     var _chapters = numbers.match(/((\d+)[:]|^\d+)/g);
     var _verses2 = numbers.match(/[:-](\d+)/g);
@@ -534,8 +527,8 @@ var detectReferences = function detectReferences(content, callBack) {
   var trimExternalMatchStrings = function trimExternalMatchStrings(i) {
     return i.trim().replace(/^[^0-9]*\(/g, '').replace(/\)[^0-9]*$/g, '').replace(/[,;!?.()]+$/ig, "").replace(/^[,;!?.()]+/ig, " ").trim();
   };
-  var hasNoAlpha = !/[A-Za-z]/.test(content);
-  if (hasNoAlpha && wordBreak) wordBreak = "";
+  var hasBeyondAlpha = /[^\u0000-\u007F]/.test(content);
+  if (hasBeyondAlpha && wordBreak) wordBreak = "";
   var src = raw_regex.books.map(function (i) {
     return i[0];
   });

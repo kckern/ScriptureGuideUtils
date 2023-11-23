@@ -140,8 +140,19 @@ module.exports = {
             ["ÊThe 1:1; MRNi 2:2; GLGƯ 3:3",{firstVerse:37111,lastVerse:37751,verseCount:3}, "Ether 1:1; Moroni 2:2; Galatians 3:3"],
             ["MôiSe 1:1; ARHam 2:2; JS—MTƠ 3:3",{firstVerse:41361,lastVerse:41749,verseCount:2}, "Moses 1:1; Abraham 2:2; JS—Matthew 3:3"],
             ["JS—LS 1:1- 3; NTĐ 1:1 - 3",{firstVerse:41908,lastVerse:41910,verseCount:3}, "JS—H 1:1-3; Aof 1:1-3"]
+        ],
+        id2ref:[
+            [1, "Sáng Thế 1:1", "Genesis 1:1"],
+            [31, "Sáng Thế 1:31", "Genesis 1:31"],
+            [32, "Sáng Thế 2:1", "Genesis 2:1"],
+            [1535, "Xuất Ê Díp Tô 1:2", "Exodus 1:2"],
+            [1581, "Xuất Ê Díp Tô 3:1", "Exodus 3:1"],
+            [1656, "Xuất Ê Díp Tô 5:23", "Exodus 5:23"],
+            [1743, "Xuất Ê Díp Tô 8:32", "Exodus 8:32"],
+            [2053, "Xuất Ê Díp Tô 20:1", "Exodus 20:1"],
+            [2062, "Xuất Ê Díp Tô 20:10", "Exodus 20:10"],
+            [33263, "Mô Si A 19:24", "3 Nephi 1:1"],
         ]
-            
     }
 
 }
