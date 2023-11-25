@@ -29,7 +29,7 @@ const setLanguage = function(language) {
     if(raw_lang[lang]?.books)
     {
         raw_regex.books = [];
-        new_index = {};
+        let new_index = {};
         const bookList = Object.keys(raw_lang[lang].books);
         for(let book of bookList) {
             const book_index = bookList.indexOf(book);
