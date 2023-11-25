@@ -140,6 +140,7 @@ module.exports = {
             ["ÊThe 1:1; MRNi 2:2; GLGƯ 3:3",{firstVerse:37111,lastVerse:37751,verseCount:3}, "Ether 1:1; Moroni 2:2; Galatians 3:3"],
             ["MôiSe 1:1; ARHam 2:2; JS—MTƠ 3:3",{firstVerse:41361,lastVerse:41749,verseCount:2}, "Moses 1:1; Abraham 2:2; JS—Matthew 3:3"],
             ["JS—LS 1:1- 3; NTĐ 1:1 - 3",{firstVerse:41908,lastVerse:41910,verseCount:3}, "JS—H 1:1-3; Aof 1:1-3"]
+            ["1 Nê Phi 1:16", {firstVerse:31628,lastVerse:31628,verseCount:1}, "Other Books"],
         ],
         id2ref:[
             [1, "Sáng Thế 1:1", "Genesis 1:1"],
@@ -152,6 +153,14 @@ module.exports = {
             [2053, "Xuất Ê Díp Tô 20:1", "Exodus 20:1"],
             [2062, "Xuất Ê Díp Tô 20:10", "Exodus 20:10"],
             [33263, "Mô Si A 19:24", "3 Nephi 1:1"],
+        ]
+    },
+    fr:{
+        ref2id:[
+            ["2 Rois 23:27", {firstVerse:10193,lastVerse:10193,verseCount:1} , "Full book name and chapter"],
+            ["2 Chroniques 36:15"],
+
+            ["Joseph Smith, Histoire 1:45", {firstVerse:41952,lastVerse:41952,verseCount:1}, "Full book name, chapter, and verse"],
         ]
     }
 
