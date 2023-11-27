@@ -45,7 +45,7 @@ var setLanguage = function setLanguage(language) {
   }
   if ((_raw_lang$lang = raw_lang[lang]) !== null && _raw_lang$lang !== void 0 && _raw_lang$lang.books) {
     raw_regex.books = [];
-    new_index = {};
+    var new_index = {};
     var bookList = Object.keys(raw_lang[lang].books);
     var _loop = function _loop() {
       var _Object$keys;
