@@ -8,7 +8,7 @@ let verseIdIndex = null
 const orginal_raw_index = {...raw_index};
 const orginal_raw_regex = {...raw_regex};
 let raw_lang = require('./data/scriptlang.js');
-let {prepareBlacklist, preparePattern} = require('./data/scriptdetect.js');
+let {prepareBlacklist, preparePattern,getReferencePositions} = require('./data/scriptdetect.js');
 
 
 const setLanguage = function(language) {
@@ -535,9 +535,11 @@ const detectReferences = (content,callBack,wordBreak="\\b") => {
     const src = raw_regex.books.map(i => i[0]);
     const dst = [...new Set(raw_regex.books.map(i => i[1]))];
     const bookMatchList = [...dst, ...src].map(i => [i]);
+    const positions = getReferencePositions(content,bookMatchList,lookupReference,wordBreak,lang_extra);
     const pattern = preparePattern(bookMatchList,wordBreak,lang_extra);
-    const blacklist_pattern = prepareBlacklist();
+    const blacklist_pattern = /%/;prepareBlacklist();
     var matches = content.match(pattern)?.filter(i => !blacklist_pattern.test(i)) || [];
+    console.log(pattern,matches)
     matches = matches.map(trimExternalMatchStrings)
     matches = matches.filter(i => i.length <= 1000);
 

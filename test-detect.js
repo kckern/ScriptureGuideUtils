@@ -1,5 +1,5 @@
 
-const { setLanguage, detectReferences}= require("./scriptures.js");
+const { setLanguage, detectReferences, lookupReference}= require("./scriptures.js");
 const fs = require("fs");
 const paramLang = process.argv[2];
 const langs = fs.readdirSync(`${__dirname}/test/data`)
@@ -12,6 +12,8 @@ const langs = fs.readdirSync(`${__dirname}/test/data`)
                 });
 
 let callback = (string)=>{
+    const verse_ids = lookupReference(string).verse_ids;
+    console.log({verse_ids})
     return `[${string}]`
 }
 

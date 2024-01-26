@@ -108,7 +108,7 @@ module.exports  = {
             "2 Corinthiens"	: ["2 Cor*"],
             "Galates"	: ["Gal*"],
             "Éphésiens"	: ["[EÉ]ph*"],
-            "Philippiens"	: ["Phi*l*"],
+            "Philippiens"	: ["Phi*l"],
             "Colossiens"	: ["Col"],
             "1 Thessaloniciens"	: ["1 Th"],
             "2 Thessaloniciens"	: ["2 Th"],

@@ -1,3 +1,4 @@
+const {lookupReference } = require("../scriptures.js");
 
 const prepareBlacklist = (lang_extras) => {
     var blacklist = [];
@@ -12,10 +13,102 @@ const prepareBlacklist = (lang_extras) => {
     blacklist.push("\\b(AC3|PS2|PS3|PS4)\\b");                //Common file extentions
     blacklist.push("\\b(ps|PS)[1-9]\\b");                     //Common file extentions'
 
+    //Increase strictness for abbreviations
+    blacklist.push("\\b[a-z][a-z] [0-9]");                    //lowercase 2-letter abbreviation
+
 
     var blacklist_pattern = new RegExp("(" + blacklist.join("|") + ")", 'g');
 
     return blacklist_pattern;
+}
+
+
+const getReferencePositions = (content,booklist,lookupReference,wordBreak,lang_extras) =>
+{
+    var bookregex = booklist.map(b=>{
+        return b[0];
+    });
+
+    const postBookMatch = "\\s*[0-9:;,~——–-][0-9:;, ~——–-]+"; //todo: spaces are allowed but not at the end
+    //TODO, handle "chapter x Y"
+    const matchingBooks = bookregex.filter(i=>(new RegExp(i,"ig")).test(content));
+    const matchesWithReferences = matchingBooks.map(bookMatch=>{
+        const patternString = bookMatch + postBookMatch;
+        const pattern = (new RegExp(bookMatch + postBookMatch,"ig"));
+        return pattern.test(content) ? patternString : null;
+    }).filter(x=>!!x);
+
+    //TODO: handle Pre-book numbers and words:  `the xth Book of`  get from lang_extras?
+
+    const matches = matchesWithReferences.map(string=>{
+        return content.match((new RegExp(string,"ig")))?.[0];
+    }).map(i=>{
+        return i.replace(/[^0-9]+$/,"");
+    }).reduce((prev,current)=>{
+        if(prev.includes(current)) return prev;
+        return [...prev,current]
+    },[]);
+    
+    
+    //todo make unique
+    const matchIndeces = matches.map(i=>{
+        const instances = 1; //TODO: handle multple instances of same, 2D, then flatten
+        const index = content.indexOf(i); 
+        return [index,index+i.length];
+    });
+
+    
+    const overLapReport = matchIndeces.map(inOut=>{
+        const [inVal,outVal] = inOut;
+        const overlaps = [];
+        for(const inOutCompare of matchIndeces)
+        {
+            const [inVal2,outVal2] = inOutCompare;
+            const overLapStart  = inVal < outVal2   && inVal > inVal2;
+            const overLapEnd    = outVal > inVal2  && outVal < outVal2;
+            if(overLapEnd || overLapStart) overlaps.push([inVal2,outVal2])
+        }
+        return {inOut,overlaps};
+    });
+
+
+    console.log(overLapReport);
+
+    //double check bordering chars (word breaks, etc)
+
+    //Detect overlaps
+    const overlaps = [];
+    const unique = [];
+    for(const inOut of matchIndeces)
+    {
+    }
+    //lookup verse_id
+    //pare down if no verse_ids ( remove book ordinal, etc )  to replacements? "First Book of" => 1
+
+
+    //If Overlaps, tiebreaker
+    tieBreaker();
+
+
+    //check content between matches.  If puctuation only (or 'and'), then merge
+
+    const cutItems = matchIndeces.map(([start,end])=>{
+        return lookupReference(content.substring(start,end));
+    })
+
+
+    console.log(content,matchIndeces,cutItems);
+    process.exit();
+}
+
+const tieBreaker = (items)=>{
+
+
+    // is one all lower case the other has uppercase?
+            //lowecase loses
+        
+    // longer strlen wins
+
 }
 
 const preparePattern = (booklist,wordBreak,lang_extras) => {
@@ -81,5 +174,6 @@ const preparePattern = (booklist,wordBreak,lang_extras) => {
 
 module.exports = {
     prepareBlacklist,
-    preparePattern
+    preparePattern,
+    getReferencePositions
 }
