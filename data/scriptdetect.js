@@ -1,4 +1,4 @@
-const {lookupReference } = require("../scriptures.js");
+
 
 const prepareBlacklist = (lang_extras) => {
     var blacklist = [];
@@ -23,7 +23,7 @@ const prepareBlacklist = (lang_extras) => {
 }
 
 
-const getReferencePositions = (content,booklist,lookupReference,wordBreak,lang_extras) =>
+const processReferenceDetection = (content,booklist,lang_extra,lookupReference,callback) =>
 {
     var bookregex = booklist.map(b=>{
         return b[0];
@@ -108,11 +108,7 @@ const getReferencePositions = (content,booklist,lookupReference,wordBreak,lang_e
     },[]);
 
 
-    const stringsBetweenMatches = gapsBetweenIndeces.map(([start,end])=>{
-        return content.substring(start,end);
-    });
 
-    console.log({stringsBetweenMatches});
 
     const joiners = [/[;,]+/g]
     const gapThatMayBeMerged = gapsBetweenIndeces.map(([start,end])=>{
@@ -136,17 +132,49 @@ const getReferencePositions = (content,booklist,lookupReference,wordBreak,lang_e
         }
     }, []);
 
+    //get the gaps and the front/end bumpers if any
+    const negativeSpace = mergedIndeces.reduce((prev, current, index, array) => {
+        if (index !== 0) {
+            const prevIndex = array[index - 1];
+            const gap = [prevIndex[1], current[0]];
+            prev.push(gap);
+        }
+        return prev;
+    }, []);
+
+    if (mergedIndeces[0][0] !== 0) {
+        negativeSpace.unshift([0, mergedIndeces[0][0]]);
+    }
+
+    if (mergedIndeces[mergedIndeces.length - 1][1] !== content.length) {
+        negativeSpace.push([mergedIndeces[mergedIndeces.length - 1][1], content.length]);
+    }
 
 
     //check content between matches.  If puctuation only (or 'and'), then merge
 
     const cutItems = mergedIndeces.map(([start,end])=>{
         return lookupReference(content.substring(start,end)).query
-    })
+    }).map(callback);
+
+   const negativeItems = negativeSpace.map(([start,end])=>content.substring(start,end));
+
+   const firstReferenceIsAtStart = mergedIndeces[0][0] === 0;
+   const maxCount = Math.max(cutItems.length,negativeItems.length);
+   //merge by alternating cutItems and negativeItems.  run the callback on the cut items
+   const merged = [];
+
+   for(i=0;i<maxCount;i++){
+    const firstItem = firstReferenceIsAtStart ? cutItems[i] : negativeItems[i];
+    const secondItem = firstReferenceIsAtStart ? negativeItems[i] : cutItems[i];
+    if(firstItem) merged.push(firstItem);
+    if(secondItem) merged.push(secondItem);
+   }
 
 
-    console.log(content,cutItems);
-    process.exit();
+   return merged.join("");
+
+    
 }
 
 
@@ -214,5 +242,5 @@ const preparePattern = (booklist,wordBreak,lang_extras) => {
 module.exports = {
     prepareBlacklist,
     preparePattern,
-    getReferencePositions
+    processReferenceDetection
 }

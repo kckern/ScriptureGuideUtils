@@ -8,7 +8,7 @@ let verseIdIndex = null
 const orginal_raw_index = {...raw_index};
 const orginal_raw_regex = {...raw_regex};
 let raw_lang = require('./data/scriptlang.js');
-let {prepareBlacklist, preparePattern,getReferencePositions} = require('./data/scriptdetect.js');
+let {prepareBlacklist, preparePattern,processReferenceDetection} = require('./data/scriptdetect.js');
 
 
 const setLanguage = function(language) {
@@ -518,47 +518,14 @@ const loadMaxVerse = function(book, chapter) {
 
 
 
-const detectReferences = (content,callBack,wordBreak="\\b") => {
+const detectReferences = (content,callBack) => {
 
     callBack = callBack ? callBack : (i)=>{return `[${i}]`};
-
-    const trimExternalMatchStrings = (i) => i.trim().
-        replace(/^[^0-9]*\(/g, '').
-        replace(/\)[^0-9]*$/g, '').
-        replace(/[,;!?.()]+$/ig, "").
-        replace(/^[,;!?.()]+/ig, " ").
-        trim();
-
-    const hasBeyondAlpha = /[^\u0000-\u007F]/.test(content);
-    if(hasBeyondAlpha && wordBreak) wordBreak = "";
-    
     const src = raw_regex.books.map(i => i[0]);
     const dst = [...new Set(raw_regex.books.map(i => i[1]))];
     const bookMatchList = [...dst, ...src].map(i => [i]);
-    const positions = getReferencePositions(content,bookMatchList,lookupReference,wordBreak,lang_extra);
-    const pattern = preparePattern(bookMatchList,wordBreak,lang_extra);
-    const blacklist_pattern = /%/;prepareBlacklist();
-    var matches = content.match(pattern)?.filter(i => !blacklist_pattern.test(i)) || [];
-    console.log(pattern,matches)
-    matches = matches.map(trimExternalMatchStrings)
-    matches = matches.filter(i => i.length <= 1000);
+    return processReferenceDetection(content,bookMatchList,lang_extra,lookupReference,callBack);
 
-    // split by matches
-    let pieces;
-    try {
-        pieces = matches.length ? content.split(new RegExp(`(${matches.join("|")})`, "ig")) : [content];
-    } catch (error) {
-        console.error(error);
-        console.log({matches,pattern});
-        return content;
-    }
-
-    content = pieces.map((i, j) => {
-        if (j % 2 == 0) return i;
-        return callBack(i);
-    }).join("").replace(/\s+/g, " ").trim();
-
-    return content;
 }
 
 
