@@ -47,10 +47,16 @@ const processReferenceDetection = (content,books,lang_extra,lookupReference,call
     
 
     const matchIndeces = matches.map(i=>{
-        const instances = 1; //TODO: handle multple instances of same, 2D, then flatten
-        const index = content.indexOf(i); 
-        return [index,index+i.length];
-    }).filter(a=>{
+        const length = i.length;
+        let positions = [];
+        let strPos = content.indexOf(i);
+        while (strPos != -1) {
+            positions.push(strPos);
+            strPos = content.indexOf(i, strPos + 1);
+        }
+        return positions.map(i=>[i,i+length]);
+    }).flat()
+    .filter(a=>{
         const charRightBeforeMatch = content.substring(a[0]-1,a[0]);
         if(!!charRightBeforeMatch.trim()) return false; //make sure there is space or nothing before the match
         const verse_ids = lookupReference(content.substring(a[0],a[1])).verse_ids;
@@ -60,14 +66,11 @@ const processReferenceDetection = (content,books,lang_extra,lookupReference,call
     .sort((a, b) => a[0] - b[0])
 
 
-
     if(!matchIndeces.length) return content;
 
     const tieBreaker = (pair1,pair2)=>{
         const string1 = content.substring(pair1[0],pair1[1]);
         const string2 = content.substring(pair2[0],pair2[1]);
-
-        console.log(string1,string2);
 
         // if one pair is all lower case, return the other one
         if(/[^A-Z]/.test(string1) && !/[^A-Z]/.test(string2)) return pair2;
@@ -116,7 +119,6 @@ const processReferenceDetection = (content,books,lang_extra,lookupReference,call
     const joiners = [/^[;,]+$/g, /^et$/];
     const gapThatMayBeMerged = gapsBetweenIndeces.map(([start,end])=>{
         const string = content.substring(start,end);
-        console.log(string);
         return joiners.some(joiner=>joiner.test(string.trim()));
     });
 
