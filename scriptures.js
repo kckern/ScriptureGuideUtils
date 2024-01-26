@@ -523,8 +523,8 @@ const detectReferences = (content,callBack) => {
     callBack = callBack ? callBack : (i)=>{return `[${i}]`};
     const src = raw_regex.books.map(i => i[0]);
     const dst = [...new Set(raw_regex.books.map(i => i[1]))];
-    const bookMatchList = [...dst, ...src].map(i => [i]);
-    return processReferenceDetection(content,bookMatchList,lang_extra,lookupReference,callBack);
+    const books = [...dst, ...src];
+    return processReferenceDetection(content,books,lang_extra,lookupReference,callBack);
 
 }
 

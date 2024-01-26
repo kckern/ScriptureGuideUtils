@@ -23,21 +23,17 @@ const prepareBlacklist = (lang_extras) => {
 }
 
 
-const processReferenceDetection = (content,booklist,lang_extra,lookupReference,callback) =>
+const processReferenceDetection = (content,books,lang_extra,lookupReference,callback) =>
 {
-    var bookregex = booklist.map(b=>{
-        return b[0];
-    });
-
-    const postBookMatch = "\\s*[0-9:;,~——–-][0-9:;, ~——–-]+"; //todo: spaces are allowed but not at the end
+    const postBookMatch = "(?=.*\\S$)[0-9:;,~——–-\\s]+";  // Match numbers, 
     //TODO, handle "chapter x Y"
-    const matchingBooks = bookregex.filter(i=>(new RegExp(i,"ig")).test(content));
+    const matchingBooks = books.filter(i=>(new RegExp(i,"ig")).test(content));
+
     const matchesWithReferences = matchingBooks.map(bookMatch=>{
         const patternString = bookMatch + postBookMatch;
         const pattern = (new RegExp(bookMatch + postBookMatch,"ig"));
         return pattern.test(content) ? patternString : null;
     }).filter(x=>!!x);
-
     //TODO: handle Pre-book numbers and words:  `the xth Book of`  get from lang_extras?
 
     const matches = matchesWithReferences.map(string=>{
@@ -47,8 +43,7 @@ const processReferenceDetection = (content,booklist,lang_extra,lookupReference,c
     }).reduce((prev,current)=>{
         if(prev.includes(current)) return prev;
         return [...prev,current]
-    },[]);
-    
+    },[]).filter(i=>!!i);
     
 
     const matchIndeces = matches.map(i=>{
@@ -56,15 +51,23 @@ const processReferenceDetection = (content,booklist,lang_extra,lookupReference,c
         const index = content.indexOf(i); 
         return [index,index+i.length];
     }).filter(a=>{
+        const charRightBeforeMatch = content.substring(a[0]-1,a[0]);
+        if(!!charRightBeforeMatch.trim()) return false; //make sure there is space or nothing before the match
         const verse_ids = lookupReference(content.substring(a[0],a[1])).verse_ids;
         if(verse_ids.length > 0) return true;
         return false;
     })
-    .sort((a, b) => a[0] - b[0]);
+    .sort((a, b) => a[0] - b[0])
+
+
+
+    if(!matchIndeces.length) return content;
 
     const tieBreaker = (pair1,pair2)=>{
         const string1 = content.substring(pair1[0],pair1[1]);
         const string2 = content.substring(pair2[0],pair2[1]);
+
+        console.log(string1,string2);
 
         // if one pair is all lower case, return the other one
         if(/[^A-Z]/.test(string1) && !/[^A-Z]/.test(string2)) return pair2;
@@ -110,11 +113,14 @@ const processReferenceDetection = (content,booklist,lang_extra,lookupReference,c
 
 
 
-    const joiners = [/[;,]+/g]
+    const joiners = [/^[;,]+$/g, /^et$/];
     const gapThatMayBeMerged = gapsBetweenIndeces.map(([start,end])=>{
         const string = content.substring(start,end);
-        return joiners.some(joiner=>joiner.test(string));
+        console.log(string);
+        return joiners.some(joiner=>joiner.test(string.trim()));
     });
+
+
 
     // new incexes
     const mergedIndeces = nonOverlappingIndeces.reduce((prev, current, index) => {

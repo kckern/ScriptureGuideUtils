@@ -12,9 +12,9 @@ const langs = fs.readdirSync(`${__dirname}/test/data`)
                 });
 
 let callback = (string)=>{
-    const verse_ids = lookupReference(string).verse_ids;
-    console.log({verse_ids})
-    return `[${string}]`
+    const verse_ids = lookupReference(string);
+    //console.log(verse_ids);
+    return `[[${string}]]`
 }
 
 
