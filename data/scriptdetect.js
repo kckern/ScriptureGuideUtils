@@ -50,66 +50,105 @@ const getReferencePositions = (content,booklist,lookupReference,wordBreak,lang_e
     },[]);
     
     
-    //todo make unique
+
     const matchIndeces = matches.map(i=>{
         const instances = 1; //TODO: handle multple instances of same, 2D, then flatten
         const index = content.indexOf(i); 
         return [index,index+i.length];
-    });
+    }).filter(a=>{
+        const verse_ids = lookupReference(content.substring(a[0],a[1])).verse_ids;
+        if(verse_ids.length > 0) return true;
+        return false;
+    })
+    .sort((a, b) => a[0] - b[0]);
 
-    
-    const overLapReport = matchIndeces.map(inOut=>{
-        const [inVal,outVal] = inOut;
-        const overlaps = [];
-        for(const inOutCompare of matchIndeces)
-        {
-            const [inVal2,outVal2] = inOutCompare;
-            const overLapStart  = inVal < outVal2   && inVal > inVal2;
-            const overLapEnd    = outVal > inVal2  && outVal < outVal2;
-            if(overLapEnd || overLapStart) overlaps.push([inVal2,outVal2])
-        }
-        return {inOut,overlaps};
-    });
+    const tieBreaker = (pair1,pair2)=>{
+        const string1 = content.substring(pair1[0],pair1[1]);
+        const string2 = content.substring(pair2[0],pair2[1]);
 
+        // if one pair is all lower case, return the other one
+        if(/[^A-Z]/.test(string1) && !/[^A-Z]/.test(string2)) return pair2;
+        if(/[^A-Z]/.test(string2) && !/[^A-Z]/.test(string1)) return pair1;
 
-    console.log(overLapReport);
+        if(string1.length > string2.length) return pair1;
+        if(string2.length > string1.length) return pair2;
 
-    //double check bordering chars (word breaks, etc)
-
-    //Detect overlaps
-    const overlaps = [];
-    const unique = [];
-    for(const inOut of matchIndeces)
-    {
+        return pair1;
     }
-    //lookup verse_id
-    //pare down if no verse_ids ( remove book ordinal, etc )  to replacements? "First Book of" => 1
 
 
-    //If Overlaps, tiebreaker
-    tieBreaker();
+    const nonOverlappingIndeces = matchIndeces.reduce((prev, current) => {
+        if (prev.length === 0) {
+            return [current];
+        }
+        const lastPair = prev[prev.length - 1];
+        if (current[0] < lastPair[1]) { // They overlap
+            const chosenPair = tieBreaker(lastPair, current);
+            if (chosenPair === lastPair) {
+                // Keep the last pair, discard the current one
+                return prev;
+            } else {
+                // Replace the last pair with the current one
+                prev.pop();
+                return [...prev, current];
+            }
+        } else {
+            // They don't overlap, add the current pair
+            return [...prev, current];
+        }
+    }, []);
+
+
+
+    const gapsBetweenIndeces = nonOverlappingIndeces.reduce((prev,current,index)=>{
+        if(index === 0) return prev;
+        const lastPair = nonOverlappingIndeces[index-1];
+        const gap = [lastPair[1],current[0]];
+        return [...prev,gap];
+    },[]);
+
+
+    const stringsBetweenMatches = gapsBetweenIndeces.map(([start,end])=>{
+        return content.substring(start,end);
+    });
+
+    console.log({stringsBetweenMatches});
+
+    const joiners = [/[;,]+/g]
+    const gapThatMayBeMerged = gapsBetweenIndeces.map(([start,end])=>{
+        const string = content.substring(start,end);
+        return joiners.some(joiner=>joiner.test(string));
+    });
+
+    // new incexes
+    const mergedIndeces = nonOverlappingIndeces.reduce((prev, current, index) => {
+        if (index === 0) {
+            return [current];
+        } else {
+            const prevIndex = prev[prev.length - 1];
+            if (gapThatMayBeMerged[index - 1]) {
+                const merged = [prevIndex[0], current[1]];
+                prev[prev.length - 1] = merged;
+            } else {
+                prev.push(current);
+            }
+            return prev;
+        }
+    }, []);
+
 
 
     //check content between matches.  If puctuation only (or 'and'), then merge
 
-    const cutItems = matchIndeces.map(([start,end])=>{
-        return lookupReference(content.substring(start,end));
+    const cutItems = mergedIndeces.map(([start,end])=>{
+        return lookupReference(content.substring(start,end)).query
     })
 
 
-    console.log(content,matchIndeces,cutItems);
+    console.log(content,cutItems);
     process.exit();
 }
 
-const tieBreaker = (items)=>{
-
-
-    // is one all lower case the other has uppercase?
-            //lowecase loses
-        
-    // longer strlen wins
-
-}
 
 const preparePattern = (booklist,wordBreak,lang_extras) => {
 
