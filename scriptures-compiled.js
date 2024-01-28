@@ -184,6 +184,8 @@ var cleanReference = function cleanReference(messyReference) {
     ref = ref.replace(re, regex[i][1]);
   }
 
+  //remove leading "the"
+
   //Turn dots into colons
   ref = ref.replace(/[.]/g, ":");
   //Treat commas as semicolons in the absence of verses
