@@ -37,7 +37,7 @@ module.exports  = {
         ["zech*\\.*(?:ariah)*", "Zechariah"],
         ["mal*\\.*(?:achi)*", "Malachi"],
         
-        ["(?:ma*t*t*h*|mt)\\.*(?:ew)*", "Matthew"],
+        ["(?:mat*t*h*|mt)\\.*(?:ew)*", "Matthew"],
         ["m(ar)*k", "Mark"],
         ["lu*k*e*\\.*", "Luke"],
         ["jo*h*n\\.*", "John"],
