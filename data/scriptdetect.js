@@ -47,7 +47,8 @@ const findMatches = (content,books,lang_extra) => {
     // Also remove duplicates that may have been created by the postBookMatch
     return matchesWithReferences.map(string=>{
         const pattern = (new RegExp(string,"ig"));
-        const matches = content.match(pattern)?.map(i=>i.trim().replace(/[^0-9]+$/,""));
+        const tail = lang_extra.tail || /[^0-9]+$/;
+        const matches = content.match(pattern)?.map(i=>i.trim().replace(tail,""));
         return matches;
     }).flat()
     .reduce((prev,current)=>{
