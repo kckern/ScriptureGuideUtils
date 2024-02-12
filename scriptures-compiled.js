@@ -28,7 +28,8 @@ var orginal_raw_regex = _objectSpread({}, raw_regex);
 var raw_lang = require('./data/scriptlang.js');
 var _require = require('./data/scriptdetect.js'),
   prepareBlacklist = _require.prepareBlacklist,
-  preparePattern = _require.preparePattern;
+  preparePattern = _require.preparePattern,
+  processReferenceDetection = _require.processReferenceDetection;
 var setLanguage = function setLanguage(language) {
   var _raw_lang$lang, _raw_lang$lang2, _raw_lang$lang3, _raw_lang$lang4, _raw_lang$lang5;
   if (lang === language) return console.log("Language already set to ".concat(lang));
@@ -183,8 +184,6 @@ var cleanReference = function cleanReference(messyReference) {
     var re = new RegExp(regex[i][0], "ig");
     ref = ref.replace(re, regex[i][1]);
   }
-
-  //remove leading "the"
 
   //Turn dots into colons
   ref = ref.replace(/[.]/g, ":");
@@ -521,52 +520,17 @@ var loadMaxVerse = function loadMaxVerse(book, chapter) {
   return raw_index[book][parseInt(chapter) - 1];
 };
 var detectReferences = function detectReferences(content, callBack) {
-  var _content$match;
-  var wordBreak = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "\\b";
   callBack = callBack ? callBack : function (i) {
     return "[".concat(i, "]");
   };
-  var trimExternalMatchStrings = function trimExternalMatchStrings(i) {
-    return i.trim().replace(/^[^0-9]*\(/g, '').replace(/\)[^0-9]*$/g, '').replace(/[,;!?.()]+$/ig, "").replace(/^[,;!?.()]+/ig, " ").trim();
-  };
-  var hasBeyondAlpha = /[^\u0000-\u007F]/.test(content);
-  if (hasBeyondAlpha && wordBreak) wordBreak = "";
   var src = raw_regex.books.map(function (i) {
     return i[0];
   });
   var dst = _toConsumableArray(new Set(raw_regex.books.map(function (i) {
     return i[1];
   })));
-  var bookMatchList = [].concat(_toConsumableArray(dst), _toConsumableArray(src)).map(function (i) {
-    return [i];
-  });
-  var pattern = preparePattern(bookMatchList, wordBreak, lang_extra);
-  var blacklist_pattern = prepareBlacklist();
-  var matches = ((_content$match = content.match(pattern)) === null || _content$match === void 0 ? void 0 : _content$match.filter(function (i) {
-    return !blacklist_pattern.test(i);
-  })) || [];
-  matches = matches.map(trimExternalMatchStrings);
-  matches = matches.filter(function (i) {
-    return i.length <= 1000;
-  });
-
-  // split by matches
-  var pieces;
-  try {
-    pieces = matches.length ? content.split(new RegExp("(".concat(matches.join("|"), ")"), "ig")) : [content];
-  } catch (error) {
-    console.error(error);
-    console.log({
-      matches: matches,
-      pattern: pattern
-    });
-    return content;
-  }
-  content = pieces.map(function (i, j) {
-    if (j % 2 == 0) return i;
-    return callBack(i);
-  }).join("").replace(/\s+/g, " ").trim();
-  return content;
+  var books = [].concat(_toConsumableArray(dst), _toConsumableArray(src));
+  return processReferenceDetection(content, books, lang_extra, lookupReference, callBack);
 };
 module.exports = {
   lookupReference: lookupReference,
