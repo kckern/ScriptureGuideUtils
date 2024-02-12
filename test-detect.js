@@ -13,7 +13,7 @@ const langs = fs.readdirSync(`${__dirname}/test/data`)
 
 let callback = (string)=>{
     const verse_ids = lookupReference(string);
-    console.log({verse_ids});
+    console.log({string,verse_ids});
     return `【❰ ${string} ❱】`
 }
 
