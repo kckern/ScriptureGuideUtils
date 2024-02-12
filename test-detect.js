@@ -1,7 +1,7 @@
 
 const { setLanguage, detectReferences, lookupReference}= require("./scriptures.js");
 const fs = require("fs");
-const paramLang = process.argv[2];
+const paramLang = process.argv[2] || "en";
 const langs = fs.readdirSync(`${__dirname}/test/data`)
                 .filter(i=>/txt$/.test(i))
                 .map(i=>i.replace(".txt",""))
@@ -13,8 +13,8 @@ const langs = fs.readdirSync(`${__dirname}/test/data`)
 
 let callback = (string)=>{
     const verse_ids = lookupReference(string);
-    //console.log(verse_ids);
-    return `[[${string}]]`
+    console.log({string,verse_ids});
+    return `【❰ ${string} ❱】`
 }
 
 

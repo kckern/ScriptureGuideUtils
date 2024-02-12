@@ -124,8 +124,8 @@ module.exports  = {
         ["1\\s*(?:st)*\\s*v(?:ision)*", "First Vision"],
         
         ["W\\s*Moroni", "Words of Moroni"],
-        ["s(?:ealed)*.*?moses", "Sealed Book of Moses"],
-        ["3.*ne(phi)*(te)*.*?acts", "Acts of the Three Nephites"],
+        ["Sealed Book of Moses", "The Sealed Book of Moses"],
+        ["Acts of the Three Nephites", "The Acts of the Three Nephites"],
         
         ["qur['’ ]*(an)*", "Qur’an"],
         ["(?:al[ \\-––])*qur'*’*ani*c*(?:verses*)*", "Qur’an"],
@@ -193,7 +193,8 @@ module.exports  = {
         ["([0-9]),\\s*([1-4]*\\s*[a-z])", "$1; $2"],
         ["o([nf])", "o$1"],
         ["([;,])", "$1 "],
-        ["(the )*book of", ""]
+        ["(the )*book of", ""],
+        [",\\s*([0-9]+)\\s*:", "; $1:"]
     ],
 
     "post_rules":[
