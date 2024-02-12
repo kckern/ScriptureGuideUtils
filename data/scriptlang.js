@@ -72,7 +72,7 @@ module.exports  = {
             },
             matchRules:{
                 book: `(Thứ nhất|I|1|Thứ hai|II|2|Thứ ba|III|3|Thứ tư|IV|4)*\\s*(Sách* của)*\\s*`,
-                chapter:"chương",
+                chapter:"(ch[uư][ơo]ng|[0-9:;,~ —–-])*[0-9]+",
                 verse:"đoạn",
                 joiners: ["^[;, ]*(hoặc|và|so với)*$",]
         },
