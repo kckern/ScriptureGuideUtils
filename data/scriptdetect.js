@@ -32,7 +32,7 @@ const findMatches = (content,books,lang_extra) => {
 
     const preBookMatch = lang_extra.book || `(First|I|1|1st|Second|II|2|2nd|Third|III|3|3rd|Fourth|IV|4|4th)*\\s*(books* of)*\\s*`;
     const matchingBooks = findMatchingBooks(content,books);
-    const postBookMatch = lang_extra.chapter  || "([0-9:;,~ —–-])*[0-9]+"; 
+    const postBookMatch = lang_extra.chapter  || "([0-9:.;,~ —–-])*[0-9]+"; 
     const matchesWithReferences = matchingBooks.map(bookMatch=>{
         const patternString =  preBookMatch + bookMatch + postBookMatch;
         const pattern = (new RegExp(patternString,"ig"));
