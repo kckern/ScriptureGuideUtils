@@ -37,6 +37,7 @@ const findMatches = (content,books,lang_extra) => {
         const patternString =  preBookMatch + bookMatch + postBookMatch;
         const pattern = (new RegExp(patternString,"ig"));
         const stringMatch = pattern.test(content) ? patternString : null;
+        //console.log({pattern,content,stringMatch});
         return stringMatch;
     }).filter(x=>!!x);
 
@@ -83,6 +84,7 @@ function findMatchIndexes(content, matches,lookupReference) {
         const charRightBeforeMatch = content.substring(a[0]-1,a[0]);
         if(!/(^|\s|\W)/.test(charRightBeforeMatch)) return false;        
         const verse_ids = lookupReference(substring).verse_ids;
+        // console.log({a,substring,verse_ids});
         if(verse_ids.length > 0) return true;
 
 

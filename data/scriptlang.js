@@ -170,12 +170,12 @@ module.exports  = {
             ["Smith[,—–-]+", "Smith"],
             ["JS[,—–-]+ *", "JS"],
             ["le (.*) livre de", "$1"],
-            ["(premier|première|1er|1ère|I)", "1"],
+            ["(premier|première|1er|1ère)", "1"],
             ["(deuxième|2ème|II)", "2"],
             ["(troisième|3ème|III)", "3"],
             ["(quatrième|4ème|IV)", "4"],
             [",*\\s*(chapitre|ch[.]|section)*\\s*([0-9]+)" , "$2"],
-            ["\\s*(:|,|\\.)\\s*(v+[.]*|verset|versets)*\\s*([0-9]*)", "$3"],
+            //["\\s*(:|,|\\.)\\s*(v+[.]*|verset|versets)*\\s*([0-9]*)", "$3"],
          ],
          post_rules: [
             ["Smith (H|M)", "Smith, $1"],
@@ -183,7 +183,6 @@ module.exports  = {
          matchRules:{
             jst:"JSH",
             book:`(Premier|Première|I|1|1er|1ère|Deuxième|II|2|2ème|Troisième|III|3|3ème|Quatrième|IV|4|4ème)*\\s*(livres* de)*\\s*`,
-            chapter:",*\\s*(chapitre|ch[.]|section)*\\s*[0-9]+",
             verse:"\\s*(:|,|\\.)\\s*(v+[.]*|verset|versets)*\\s*[0-9]*",
             joiners: [
                 "^[ ,;]*(et|aussi|voir|voir aussi|v\\. *a\\.)*\\s*:*$",
