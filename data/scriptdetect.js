@@ -60,13 +60,17 @@ const findMatches = (content,books,lang_extra) => {
     });
 
     const possiblyOverlappingMatches = bookSubStrings.map(([substring,positions])=>{
-        const len = substring.length;
         return positions.map(i=>{
-            const match = content.slice(i).match(new RegExp(substring+postBookMatch,"ig"))?.[0];
-            const [posIn, posOut] = [content.indexOf(match),content.indexOf(match)+match.length];
-            return [match.replace(tail,"").trim(),posIn,posOut];
+            const pattern = new RegExp(substring+postBookMatch,"ig");
+            const match = content.slice(i).match(pattern)?.[0]?.replace(tail,"").trim();
+            if(!match) return null;
+            const len = match.length;
+            const pos = i;
+            const [posIn, posOut] = [pos,pos+len];
+            console.log({match,posIn,posOut});
+            return [match,posIn,posOut];
         }
-    )}).flat();
+    )}).flat().filter(i=>!!i);
 
     matchesWithReferences = possiblyOverlappingMatches.map(([string,start,end])=>{
         const overLappingItems = possiblyOverlappingMatches.filter(([s,s1,e1])=>s!==string && s1<end && e1>end);
@@ -109,7 +113,9 @@ function findMatchIndexes(content, matches,lookupReference) {
 
         const substring = content.substring(a[0],a[1]);
         const charRightBeforeMatch = content.substring(a[0]-1,a[0]);
-        if(!/(^|\s|\W)/.test(charRightBeforeMatch)) return false;        
+        const leadingCharIsInvalid = /(^|\s|\W)/.test(charRightBeforeMatch);
+        console.log({substring, charRightBeforeMatch, leadingCharIsInvalid});
+        if(leadingCharIsInvalid) return false;        
         const verse_ids = lookupReference(substring).verse_ids;
         // console.log({a,substring,verse_ids});
         if(verse_ids.length > 0) return true;
