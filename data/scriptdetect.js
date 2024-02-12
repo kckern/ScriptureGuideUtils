@@ -30,21 +30,53 @@ const findMatchingBooks = (content,books) => {
 
 const findMatches = (content,books,lang_extra) => {
 
+    const tail = lang_extra.tail ? new RegExp(lang_extra.tail,"ig") : /[^0-9]+$/;
     const preBookMatch = lang_extra.book || `(First|I|1|1st|Second|II|2|2nd|Third|III|3|3rd|Fourth|IV|4|4th)*\\s*(books* of)*\\s*`;
     const matchingBooks = findMatchingBooks(content,books);
     const postBookMatch = lang_extra.chapter  || "([0-9:.;,~ —–-])*[0-9]+"; 
-    const matchesWithReferences = matchingBooks.map(bookMatch=>{
-        const patternString =  preBookMatch + bookMatch + postBookMatch;
+    const fullBookMatches = matchingBooks.map(bookMatch=>{
+        const patternString =  preBookMatch + bookMatch ;
         const pattern = (new RegExp(patternString,"ig"));
         const stringMatch = pattern.test(content) ? patternString : null;
         //console.log({pattern,content,stringMatch});
         return stringMatch;
     }).filter(x=>!!x);
 
-    
 
-    // Ensure the match ends with a number
-    // Also remove duplicates that may have been created by the postBookMatch
+    const bookSubStrings = fullBookMatches.map(bookMatch=>{
+        const matchCount = content.match(new RegExp(bookMatch,"ig")).length;
+        const substrings = content.match(new RegExp(bookMatch,"ig")).flat();
+        return substrings;
+    }).flat().reduce((prev,current)=>{
+        if(prev.includes(current)) return prev;
+        return [...prev,current]
+    },[]).filter(i=>!!i).map(substring=>{
+        let positions = [];
+        let index = content.indexOf(substring);
+        while (index != -1) {
+            positions.push(index);
+            index = content.indexOf(substring, index + 1);
+        }        return [substring,positions];
+    });
+
+    const possiblyOverlappingMatches = bookSubStrings.map(([substring,positions])=>{
+        const len = substring.length;
+        return positions.map(i=>{
+            const match = content.slice(i).match(new RegExp(substring+postBookMatch,"ig"))?.[0];
+            const [posIn, posOut] = [content.indexOf(match),content.indexOf(match)+match.length];
+            return [match.replace(tail,"").trim(),posIn,posOut];
+        }
+    )}).flat();
+
+    matchesWithReferences = possiblyOverlappingMatches.map(([string,start,end])=>{
+        const overLappingItems = possiblyOverlappingMatches.filter(([s,s1,e1])=>s!==string && s1<end && e1>end);
+        const hasOverlap = overLappingItems.length > 0;
+        const newEnd = hasOverlap ? Math.min(...overLappingItems.map(([s,s1,e1])=>s1)) : end;
+        const newString = content.slice(start,newEnd);
+        return newString.replace(tail,"").trim();
+    }).filter(i=>!!i);
+
+
     return matchesWithReferences.map(string=>{
         const pattern = (new RegExp(string,"ig"));
         const tail = lang_extra.tail || /[^0-9]+$/;
@@ -57,13 +89,6 @@ const findMatches = (content,books,lang_extra) => {
     },[]).filter(i=>!!i);
 
 
-
-
-    //TODO: Process on a language by language basis
-    // 2. Prebook JST
-    // 3. Prechapter (, chapter, ch)
-    // 4. Preverse (, verse, v, vv, vv, vvv)
-    // 5. Joiners (,;and, &, cf, etc)
 }
 
 
@@ -73,6 +98,7 @@ function findMatchIndexes(content, matches,lookupReference) {
         const length = i.length;
         let positions = [];
         let strPos = content.indexOf(i);
+
         while (strPos != -1) {
             positions.push(strPos);
             strPos = content.indexOf(i, strPos + 1);
@@ -87,7 +113,6 @@ function findMatchIndexes(content, matches,lookupReference) {
         const verse_ids = lookupReference(substring).verse_ids;
         // console.log({a,substring,verse_ids});
         if(verse_ids.length > 0) return true;
-
 
         return false;
     })
@@ -149,7 +174,7 @@ const processReferenceDetection = (content,books,lang_extra,lookupReference,call
 {
     lang_extra = lang_extra || {};
     const matches = findMatches(content,books,lang_extra);
-
+    
 
     const matchIndeces = findMatchIndexes(content,matches,lookupReference);
     if(!matchIndeces) return content;
@@ -161,6 +186,8 @@ const processReferenceDetection = (content,books,lang_extra,lookupReference,call
         const gap = [lastPair[1],current[0]];
         return [...prev,gap];
     },[]);
+
+    const gapStrings = gapsBetweenIndeces.map(([start,end])=>content.substring(start,end).trim());
 
 
 
