@@ -1,27 +1,5 @@
 
 
-const prepareBlacklist = (lang_extras) => {
-    var blacklist = [];
-    blacklist.push("\\d{4,}");                          // 4 Digit references
-    blacklist.push("^Ch\\. \\d+");                      //Chapter with no book
-    blacklist.push("\\w\\w\\d\\d");                     //Words with numbers together KGURO43KEAJFK
-
-    //Oneoff Blacklist
-    blacklist.push("\\bro \\d+\\b");                          //lowecase letters followed by numbers   
-    blacklist.push("\\bETH \\d+\.\\d+\\b");
-    blacklist.push("\\b(BC|AD|BCE)[––—−]+\\d+\\b");           //550 BC–330 BC
-    blacklist.push("\\b(AC3|PS2|PS3|PS4)\\b");                //Common file extentions
-    blacklist.push("\\b(ps|PS)[1-9]\\b");                     //Common file extentions'
-
-    //Increase strictness for abbreviations
-    blacklist.push("\\b[a-z][a-z] [0-9]");                    //lowercase 2-letter abbreviation
-
-
-    var blacklist_pattern = new RegExp("(" + blacklist.join("|") + ")", 'g');
-
-    return blacklist_pattern;
-}
-
 
 const findMatchingBooks = (content,books) => {
     const matchingBooks = books.filter(i=>(new RegExp(i,"ig")).test(content));
@@ -59,6 +37,7 @@ const findMatches = (content,books,lang_extra) => {
         }        return [substring,positions];
     });
 
+
     const possiblyOverlappingMatches = bookSubStrings.map(([substring,positions])=>{
         return positions.map(i=>{
             const pattern = new RegExp(substring+postBookMatch,"ig");
@@ -67,12 +46,14 @@ const findMatches = (content,books,lang_extra) => {
             const len = match.length;
             const pos = i;
             const [posIn, posOut] = [pos,pos+len];
-            console.log({match,posIn,posOut});
+            //console.log({content:content.slice(i),pattern,match,posIn,posOut});
             return [match,posIn,posOut];
         }
     )}).flat().filter(i=>!!i);
 
-    matchesWithReferences = possiblyOverlappingMatches.map(([string,start,end])=>{
+
+
+    const matchesWithReferences = possiblyOverlappingMatches.map(([string,start,end])=>{
         const overLappingItems = possiblyOverlappingMatches.filter(([s,s1,e1])=>s!==string && s1<end && e1>end);
         const hasOverlap = overLappingItems.length > 0;
         const newEnd = hasOverlap ? Math.min(...overLappingItems.map(([s,s1,e1])=>s1)) : end;
@@ -80,11 +61,10 @@ const findMatches = (content,books,lang_extra) => {
         return newString.replace(tail,"").trim();
     }).filter(i=>!!i);
 
-
-    return matchesWithReferences.map(string=>{
+    const matches =  matchesWithReferences.map(string=>{
         const pattern = (new RegExp(string,"ig"));
-        const tail = lang_extra.tail || /[^0-9]+$/;
         const matches = content.match(pattern)?.map(i=>i.trim().replace(tail,""));
+        //console.log({string,matches,tail});
         return matches;
     }).flat()
     .reduce((prev,current)=>{
@@ -93,11 +73,14 @@ const findMatches = (content,books,lang_extra) => {
     },[]).filter(i=>!!i);
 
 
+
+    return matches;
 }
 
 
 
-function findMatchIndexes(content, matches,lookupReference) {
+function findMatchIndexes(content, matches,lookupReference, lang_extra) {
+    const tail = lang_extra.tail ? new RegExp(lang_extra.tail,"ig") : /[^0-9]+$/;
     const indexes =  matches.map(i=>{
         const length = i.length;
         let positions = [];
@@ -107,21 +90,22 @@ function findMatchIndexes(content, matches,lookupReference) {
             positions.push(strPos);
             strPos = content.indexOf(i, strPos + 1);
         }
-        return positions.map(i=>[i,i+length]);
+        return positions.map(i=>[i,i+length+2]);
     }).flat()
-    .filter(a=>{
+    .map(a=>{
 
-        const substring = content.substring(a[0],a[1]);
+        const substring = content.substring(a[0],a[1]).replace(tail,"").trim();
         const charRightBeforeMatch = content.substring(a[0]-1,a[0]);
-        const leadingCharIsInvalid = /(^|\s|\W)/.test(charRightBeforeMatch);
-        console.log({substring, charRightBeforeMatch, leadingCharIsInvalid});
+        const leadingCharIsInvalid = !/^(\s|\W|)$/.test(charRightBeforeMatch);        
+       // console.log({substring, charRightBeforeMatch, leadingCharIsInvalid});
         if(leadingCharIsInvalid) return false;        
         const verse_ids = lookupReference(substring).verse_ids;
-        // console.log({a,substring,verse_ids});
-        if(verse_ids.length > 0) return true;
+         //console.log({a,substring,verse_ids});
+        if(verse_ids.length > 0) return [a[0],a[0]+substring.length];
 
         return false;
     })
+    .filter(i=>!!i)
     .sort((a, b) => a[0] - b[0]);
 
 
@@ -182,7 +166,7 @@ const processReferenceDetection = (content,books,lang_extra,lookupReference,call
     const matches = findMatches(content,books,lang_extra);
     
 
-    const matchIndeces = findMatchIndexes(content,matches,lookupReference);
+    const matchIndeces = findMatchIndexes(content,matches,lookupReference,lang_extra);
     if(!matchIndeces) return content;
 
 
@@ -269,69 +253,7 @@ const processReferenceDetection = (content,books,lang_extra,lookupReference,call
 }
 
 
-const preparePattern = (booklist,wordBreak,lang_extras) => {
-
-
-    wordBreak = wordBreak || "";
-    lang_chapter = lang_extras?.chapter || "";
-    lang_verse = lang_extras?.verse || "";
-    
-     var bookregex = booklist.map(b=>{
-         return b[0];
-     });
-    
-    //Combine Books
-    const books = "(?:" + bookregex.join("|") + ")\\s*"; //   \\(*
-    
-    //Books that have a digit before them
-    var numbooks = [];
-    numbooks.push("ne");
-    numbooks.push("sam");
-    numbooks.push("ki*n*gs");
-    numbooks.push("chr");
-    numbooks.push("cor");
-    numbooks.push("ti");
-    numbooks.push("thes");
-    numbooks.push("pet");
-    numbooks.push("jo*h*n");
-    
-    
-    //Meta data components
-    var jst = "(?:[, —\\-]*(?:Joseph Smith[']*s* Translation *o*f*|\\(Joseph Smith[']*s* Translation *o*f*\\)|jst|\\(jst\\))[, \\—\\-)]*)*";
-    var ordinals = `(?:[I1-4]*(?:3rd|1st|2n*d|4th|first|sec*o*n*d*\\.*|third|fourt*h*)* *${wordBreak})*`;
-    var booksof = "(?:\\s*books* of\\s*)*";
-    var prechapter = "(?:\\s|\\-|–|,)*";
-    var chapter = `(?:,*\\s*` + ordinals + `${wordBreak}cha*p*t*e*r*s*\\.*,*\\s*)`;
-    var verse = `(?:,*\\s*` + ordinals + `${wordBreak}v*ve*r*s*e*s*\\.*,*\\s*)`;
-    var versenums = "\\s*[0-9]+"; //[a-f]*
-    var joiners = "(?:[,;&\\/](?:\\s*and\\s*)*\\s*(?!$))*";
-    var bumper = "(?![^<>]*>)"; //prevents matching inside of quotes
-
-
-    //Punctuations, etc
-    var punct = [];
-    punct.push("\\s*[:\\-\\.~–—]" + versenums); //[a-z]{0,1} //colons,dots and dashes
-    punct.push("\\s*(?:" + chapter + "|" + verse + ")" + versenums); //spelled out chapter and verse words
-    punct.push("\\s*(?:;|,|,* *and|&amp;|&| *to *)\\s*[1-9]\\d*(?!\\s*\\.*(" + numbooks.join("|") + "))"); //passage breakers (a new book may appear after)
-    //add language overrides
-    if(lang_chapter) punct.push(lang_chapter);
-    if(lang_verse) punct.push(lang_verse);
-    //if(Array.isArray(lang_extras)) punct = [...punct, ...lang_extras];
-
-    //combine punctuation
-    var punct = "(?:[1-9]\\d*(?:" + punct.join("|") + ")*)";
-    
-    //Full Regex
-    var match = bumper + "((?:(?:" + jst + `${wordBreak}` + ordinals + booksof + books + prechapter + chapter + "*" + punct + jst + ")" + joiners + ")+)";
-    var pattern = new RegExp(match, 'gi');
-
-    return pattern;
-
-}
-
 
 module.exports = {
-    prepareBlacklist,
-    preparePattern,
     processReferenceDetection
 }
