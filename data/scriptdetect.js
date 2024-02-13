@@ -106,10 +106,12 @@ function findMatchIndexes(content, matches,lookupReference, lang_extra) {
         return false;
     })
     .filter(i=>!!i)
-    .sort((a, b) => a[0] - b[0]);
-
-
-
+    .sort((a, b) => a[0] - b[0])
+    .map(([start, end], index, array) => {
+        const nextStart = array[index+1]?.[0] || null;
+        end = nextStart ? Math.min(end,nextStart) : end;
+        return [start,end];
+    });
     if(!indexes.length) return false;
 
 
