@@ -173,6 +173,7 @@ function findMatchIndexes(content, matches,lookupReference, lang_extra) {
 
 const processReferenceDetection = (content,books,lang_extra,lookupReference,callback) =>
 {
+    try{
     lang_extra = lang_extra || {};
     const matches = findMatches(content,books,lang_extra);
     
@@ -263,7 +264,9 @@ const processReferenceDetection = (content,books,lang_extra,lookupReference,call
 
    return merged.join("");
 
-    
+    }catch(e){
+        return content;
+    }
 }
 
 
