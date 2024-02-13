@@ -22,21 +22,29 @@ const findMatches = (content,books,lang_extra) => {
 
 
     const bookSubStrings = fullBookMatches.map(bookMatch=>{
-        const matchCount = content.match(new RegExp(bookMatch,"ig")).length;
         const substrings = content.match(new RegExp(bookMatch,"ig")).flat();
         return substrings;
     }).flat().reduce((prev,current)=>{
         if(prev.includes(current)) return prev;
         return [...prev,current]
     },[]).filter(i=>!!i).map(substring=>{
+        substring = substring.trim();
         let positions = [];
         let index = content.indexOf(substring);
         while (index != -1) {
             positions.push(index);
             index = content.indexOf(substring, index + 1);
         }        return [substring,positions];
-    });
-
+    }).map(([substring,positions])=>{
+        const preChars = positions.map(i=>content.substring(i-1,i));
+        positions = positions.filter((i,index)=>{
+            const charRightBeforeMatch = preChars[index];
+            const leadingCharIsInvalid = !/^(\s|\W|)$/.test(charRightBeforeMatch);  
+            return !leadingCharIsInvalid;
+        });
+        if(!positions.length) return false;
+        return [substring,positions];
+    }).filter(i=>!!i);
 
     const possiblyOverlappingMatches = bookSubStrings.map(([substring,positions])=>{
         return positions.map(i=>{
@@ -95,10 +103,6 @@ function findMatchIndexes(content, matches,lookupReference, lang_extra) {
     .map(a=>{
 
         const substring = content.substring(a[0],a[1]).replace(tail,"").trim();
-        const charRightBeforeMatch = content.substring(a[0]-1,a[0]);
-        const leadingCharIsInvalid = !/^(\s|\W|)$/.test(charRightBeforeMatch);        
-       // console.log({substring, charRightBeforeMatch, leadingCharIsInvalid});
-        if(leadingCharIsInvalid) return false;        
         const verse_ids = lookupReference(substring).verse_ids;
          //console.log({a,substring,verse_ids});
         if(verse_ids.length > 0) return [a[0],a[0]+substring.length];
