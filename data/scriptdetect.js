@@ -48,7 +48,12 @@ const findMatches = (content,books,lang_extra) => {
 
     const possiblyOverlappingMatches = bookSubStrings.map(([substring,positions])=>{
         return positions.map(i=>{
-            const pattern = new RegExp(substring+postBookMatch,"ig");
+            let pattern = null;
+            try{
+               pattern = new RegExp(substring+postBookMatch,"ig");
+            }catch(e){
+                return null;
+            }
             const match = content.slice(i).match(pattern)?.[0]?.replace(tail,"").trim();
             if(!match) return null;
             const len = match.length;
