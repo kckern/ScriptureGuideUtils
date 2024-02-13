@@ -188,10 +188,13 @@ const processReferenceDetection = (content,books,lang_extra,lookupReference,call
 
 
 
-    joiners = lang_extra.joiners || ["^[;, ]*(and|c\.*f\.*)*$"];
-    const gapThatMayBeMerged = gapsBetweenIndeces.map(([start,end])=>{
-        const string = content.substring(start,end).trim();
-        const canBeMerged =  joiners.some(joiner=>(new RegExp(joiner,"ig")).test(string));
+
+    joiners = lang_extra.joiners || ["^[;, ]*(and|c\\.*f\\.*)*$"];
+    const gapThatMayBeMerged = gapsBetweenIndeces.map(([start,end],i)=>{
+        const gapString = gapStrings[i];
+        const canBeMerged =  joiners.some(joiner=>(new RegExp(joiner,"ig")).test(gapString));
+        const matchingJoiner = joiners.find(joiner=>(new RegExp(joiner,"ig")).test(gapString));
+        //console.log({gapString,matchingJoiner});
         return canBeMerged;
     });
 
