@@ -188,7 +188,6 @@ var cleanReference = function cleanReference(messyReference) {
   //Turn dots into colons
   ref = ref.replace(/[.]/g, ":");
   //Treat commas as semicolons in the absence of verses
-  if (!ref.match(/:/)) ref = ref.replace(/,/, "; ");
   //add spaces after semicolons
   ref = ref.replace(/;/g, "; ");
   //add space before numbers
@@ -233,9 +232,25 @@ var cleanReference = function cleanReference(messyReference) {
   ref = ref.replace(/\s+/g, " "); //remove double spaces
   ref = ref.replace(/\s*[~–-]\s*/g, "-"); //remove spaces around dashes
   ref = ref.replace(/;(\S+)/g, "; $1"); //add space after semicolons
-
+  console.log({
+    ref: ref
+  });
   var cleanReference = ref.trim();
+  cleanReference = handleSingleChapterBookRefs(cleanReference);
+  if (!cleanReference.match(/:/)) cleanReference = cleanReference.replace(/,/, "; ");
   return cleanReference;
+};
+var handleSingleChapterBookRefs = function handleSingleChapterBookRefs(ref) {
+  var singleChapterBooks = Object.keys(raw_index).filter(function (book) {
+    return loadMaxChapter(book) == 1;
+  });
+  var matchingBooks = singleChapterBooks.filter(function (book) {
+    return ref.match(new RegExp("^".concat(book, " \\d+")));
+  });
+  ref = matchingBooks.reduce(function (ref, book) {
+    return ref.replace(new RegExp("^".concat(book, " (\\d+)")), "".concat(book, " 1:$1"));
+  }, ref);
+  return ref;
 };
 var splitReferences = function splitReferences(compoundReference) {
   var refs = compoundReference.split(/\s*;\s*/);

@@ -20,7 +20,6 @@ const findMatches = (content,books,lang_extra) => {
         return stringMatch;
     }).filter(x=>!!x);
 
-
     const bookSubStrings = fullBookMatches.map(bookMatch=>{
         const substrings = content.match(new RegExp(bookMatch,"ig")).flat();
         return substrings;
@@ -93,8 +92,9 @@ const findMatches = (content,books,lang_extra) => {
 
 
 function findMatchIndexes(content, matches,lookupReference, lang_extra) {
-    const tail = lang_extra.tail ? new RegExp(lang_extra.tail,"ig") : /[^0-9]+$/;
-    const indexes =  matches.map(i=>{
+    const tail = lang_extra.tail ? new RegExp(lang_extra.tail,"ig") : /[^,; 0-9]+$/;
+    const indexes =  matches
+    .map(i=>{
         const length = i.length;
         let positions = [];
         let strPos = content.indexOf(i);
@@ -108,8 +108,10 @@ function findMatchIndexes(content, matches,lookupReference, lang_extra) {
     .map(a=>{
 
         const substring = content.substring(a[0],a[1]).replace(tail,"").trim();
+        console.log({a,substring});
+        if(!substring) return false;
         const verse_ids = lookupReference(substring).verse_ids;
-         //console.log({a,substring,verse_ids});
+         console.log({a,substring,verse_ids});
         if(verse_ids.length > 0) return [a[0],a[0]+substring.length];
 
         return false;

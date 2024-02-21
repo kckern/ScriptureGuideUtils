@@ -185,7 +185,6 @@ const cleanReference = function(messyReference) {
     //Turn dots into colons
     ref = ref.replace(/[.]/g, ":");
     //Treat commas as semicolons in the absence of verses
-    if (!ref.match(/:/)) ref = ref.replace(/,/, "; ");
     //add spaces after semicolons
     ref = ref.replace(/;/g, "; ");
     //add space before numbers
@@ -228,10 +227,25 @@ const cleanReference = function(messyReference) {
     ref = ref.replace(/\s+/g, " "); //remove double spaces
     ref = ref.replace(/\s*[~–-]\s*/g, "-"); //remove spaces around dashes
     ref = ref.replace(/;(\S+)/g, "; $1"); //add space after semicolons
+    console.log({ref});
 
     let cleanReference = ref.trim();
+
+    cleanReference = handleSingleChapterBookRefs(cleanReference);
+    if (!cleanReference.match(/:/)) cleanReference = cleanReference.replace(/,/, "; ");
+
     return cleanReference;
 }
+
+const handleSingleChapterBookRefs = function(ref) {
+
+   const singleChapterBooks = Object.keys(raw_index).filter(book => loadMaxChapter(book) == 1);
+   const matchingBooks = singleChapterBooks.filter(book => ref.match(new RegExp(`^${book} \\d+`)));
+   ref = matchingBooks.reduce((ref,book) => ref.replace(new RegExp(`^${book} (\\d+)`),`${book} 1:$1`),ref);
+
+    return ref;
+}
+
 const splitReferences = function(compoundReference) {
     let refs = compoundReference.split(/\s*;\s*/);
     let runningBook = null;
