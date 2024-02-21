@@ -232,9 +232,7 @@ var cleanReference = function cleanReference(messyReference) {
   ref = ref.replace(/\s+/g, " "); //remove double spaces
   ref = ref.replace(/\s*[~–-]\s*/g, "-"); //remove spaces around dashes
   ref = ref.replace(/;(\S+)/g, "; $1"); //add space after semicolons
-  console.log({
-    ref: ref
-  });
+
   var cleanReference = ref.trim();
   cleanReference = handleSingleChapterBookRefs(cleanReference);
   if (!cleanReference.match(/:/)) cleanReference = cleanReference.replace(/,/, "; ");

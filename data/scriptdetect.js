@@ -110,7 +110,6 @@ function findMatchIndexes(content, matches,lookupReference, lang_extra) {
         const substring = content.substring(a[0],a[1]).trim().replace(tail,"").trim();
         if(!substring) return false;
         const verse_ids = lookupReference(substring).verse_ids;
-         console.log({a,substring,verse_ids});
         if(verse_ids.length > 0) return [a[0],a[0]+substring.length];
 
         return false;

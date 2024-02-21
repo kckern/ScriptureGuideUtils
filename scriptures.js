@@ -227,7 +227,6 @@ const cleanReference = function(messyReference) {
     ref = ref.replace(/\s+/g, " "); //remove double spaces
     ref = ref.replace(/\s*[~–-]\s*/g, "-"); //remove spaces around dashes
     ref = ref.replace(/;(\S+)/g, "; $1"); //add space after semicolons
-    console.log({ref});
 
     let cleanReference = ref.trim();
 
