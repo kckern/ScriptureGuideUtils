@@ -107,8 +107,7 @@ function findMatchIndexes(content, matches,lookupReference, lang_extra) {
     }).flat()
     .map(a=>{
 
-        const substring = content.substring(a[0],a[1]).replace(tail,"").trim();
-        console.log({a,substring});
+        const substring = content.substring(a[0],a[1]).trim().replace(tail,"").trim();
         if(!substring) return false;
         const verse_ids = lookupReference(substring).verse_ids;
          console.log({a,substring,verse_ids});
