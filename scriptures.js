@@ -91,7 +91,6 @@ const lookupReference = function(query) {
 }
 
 const lookupSingleRef = function(ref) {
-
     const booksWithDashRegex = /^(joseph|조셉)/i; // TODO: get from lang config
     //todo: better handling of multi-book ranges for unicode
     if (!booksWithDashRegex.test(ref) && ref.match(/[—-](\d\s)*[\D]/ig)) return lookupMultiBookRange(ref);
@@ -232,7 +231,6 @@ const cleanReference = function(messyReference) {
 
     cleanReference = handleSingleChapterBookRefs(cleanReference);
     if (!cleanReference.match(/:/)) cleanReference = cleanReference.replace(/,/, "; ");
-
     return cleanReference;
 }
 
@@ -247,13 +245,16 @@ const handleSingleChapterBookRefs = function(ref) {
 
 const splitReferences = function(compoundReference) {
     let refs = compoundReference.split(/\s*;\s*/);
-    let runningBook = null;
+    let runningBook = "";
     let completeRefs = [];
     for (let i in refs) {
-        let pieces = refs[i].split(/([0-9:,-]+)$/);
-        if (pieces[0].length > 0) runningBook = pieces[0].trim();
-        if (pieces[1] == undefined) pieces[1] = '';
-        completeRefs.push((runningBook + " " + pieces[1]).trim());
+        const ref = refs[i];
+        let pieces = ref.split(/([0-9:,-]+)$/);
+        const firstPiece = pieces[0].trim();
+        runningBook = bookExists(firstPiece) ? firstPiece : runningBook;
+        const needsPreBook = !bookExists(firstPiece);
+        const preBook = needsPreBook && runningBook ? runningBook : "";
+        completeRefs.push((preBook + " " + ref).trim());
     }
     return completeRefs;
 }

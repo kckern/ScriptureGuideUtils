@@ -252,13 +252,16 @@ var handleSingleChapterBookRefs = function handleSingleChapterBookRefs(ref) {
 };
 var splitReferences = function splitReferences(compoundReference) {
   var refs = compoundReference.split(/\s*;\s*/);
-  var runningBook = null;
+  var runningBook = "";
   var completeRefs = [];
   for (var i in refs) {
-    var pieces = refs[i].split(/([0-9:,-]+)$/);
-    if (pieces[0].length > 0) runningBook = pieces[0].trim();
-    if (pieces[1] == undefined) pieces[1] = '';
-    completeRefs.push((runningBook + " " + pieces[1]).trim());
+    var ref = refs[i];
+    var pieces = ref.split(/([0-9:,-]+)$/);
+    var firstPiece = pieces[0].trim();
+    runningBook = bookExists(firstPiece) ? firstPiece : runningBook;
+    var needsPreBook = !bookExists(firstPiece);
+    var preBook = needsPreBook && runningBook ? runningBook : "";
+    completeRefs.push((preBook + " " + ref).trim());
   }
   return completeRefs;
 };
