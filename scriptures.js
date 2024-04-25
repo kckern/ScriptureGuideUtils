@@ -567,6 +567,7 @@ module.exports = {
     verseId2Ref: generateReference,
 
     detect: detectReferences,
+    detectScriptureReferences: detectReferences,
     detectRefs: detectReferences,
     detectScriptures: detectReferences,
     linkRefs: detectReferences,

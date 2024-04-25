@@ -1,5 +1,7 @@
 
 const { setLanguage, detectReferences, lookupReference}= require("./scriptures.js");
+//clear console
+console.clear();
 const fs = require("fs");
 const paramLang = process.argv[2] || "en";
 const langs = fs.readdirSync(`${__dirname}/test/data`)
