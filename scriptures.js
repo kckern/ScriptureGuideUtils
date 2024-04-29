@@ -237,10 +237,9 @@ const cleanReference = function(messyReference) {
 const handleSingleChapterBookRefs = function(ref) {
 
    const singleChapterBooks = Object.keys(raw_index).filter(book => loadMaxChapter(book) == 1);
-   const matchingBooks = singleChapterBooks.filter(book => ref.match(new RegExp(`^${book} \\d+`)));
-   ref = matchingBooks.reduce((ref,book) => ref.replace(new RegExp(`^${book} (\\d+)`),`${book} 1:$1`),ref);
-
-    return ref;
+   const [matchingBook] = singleChapterBooks.filter(book => ref.match(new RegExp(`^${book} \\d+`)));
+   ref = ref.replace(new RegExp(`^${matchingBook} ([^:]+)$`),`${matchingBook} 1:$1`);
+   return ref;
 }
 
 const splitReferences = function(compoundReference) {
