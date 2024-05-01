@@ -11,7 +11,7 @@ const findMatches = (content,books,lang_extra) => {
     const tail = lang_extra.tail ? new RegExp(lang_extra.tail,"ig") : /[^0-9]+$/;
     const preBookMatch = lang_extra.book || `(First|I|1|1st|Second|II|2|2nd|Third|III|3|3rd|Fourth|IV|4|4th)*\\s*(books* of)*\\s*`;
     const matchingBooks = findMatchingBooks(content,books);
-    const postBookMatch = lang_extra.chapter || "([0-9:.;,~ —–]|cf|(?:&ndash;))*[0-9]+";  
+    const postBookMatch = lang_extra.chapter || "([0-9:.;,~ —–-]|cf|(?:&ndash;))*[0-9]+";  
 const fullBookMatches = matchingBooks.map(bookMatch=>{
         const patternString =  preBookMatch + bookMatch ;
         const pattern = (new RegExp(patternString,"ig"));
