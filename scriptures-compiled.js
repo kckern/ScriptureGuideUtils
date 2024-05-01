@@ -242,12 +242,12 @@ var handleSingleChapterBookRefs = function handleSingleChapterBookRefs(ref) {
   var singleChapterBooks = Object.keys(raw_index).filter(function (book) {
     return loadMaxChapter(book) == 1;
   });
-  var matchingBooks = singleChapterBooks.filter(function (book) {
-    return ref.match(new RegExp("^".concat(book, " \\d+")));
-  });
-  ref = matchingBooks.reduce(function (ref, book) {
-    return ref.replace(new RegExp("^".concat(book, " (\\d+)")), "".concat(book, " 1:$1"));
-  }, ref);
+  var _singleChapterBooks$f = singleChapterBooks.filter(function (book) {
+      return ref.match(new RegExp("^".concat(book, " \\d+")));
+    }),
+    _singleChapterBooks$f2 = _slicedToArray(_singleChapterBooks$f, 1),
+    matchingBook = _singleChapterBooks$f2[0];
+  ref = ref.replace(new RegExp("^".concat(matchingBook, " ([^:]+)$")), "".concat(matchingBook, " 1:$1"));
   return ref;
 };
 var splitReferences = function splitReferences(compoundReference) {
@@ -566,6 +566,7 @@ module.exports = {
   generate: generateReference,
   verseId2Ref: generateReference,
   detect: detectReferences,
+  detectScriptureReferences: detectReferences,
   detectRefs: detectReferences,
   detectScriptures: detectReferences,
   linkRefs: detectReferences
