@@ -239,6 +239,7 @@ const handleSingleChapterBookRefs = function(ref) {
    const singleChapterBooks = Object.keys(raw_index).filter(book => loadMaxChapter(book) == 1);
    const [matchingBook] = singleChapterBooks.filter(book => ref.match(new RegExp(`^${book} \\d+`)));
    if(new RegExp(`^${matchingBook} 1:`).test(ref)) return ref;
+   if(new RegExp(`^${matchingBook} 1$`).test(ref)) return ref;
    ref = ref.replace(new RegExp(`^${matchingBook} (\\d+)`), `${matchingBook} 1:$1`);
    return ref;
 }

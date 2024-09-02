@@ -248,6 +248,7 @@ var handleSingleChapterBookRefs = function handleSingleChapterBookRefs(ref) {
     _singleChapterBooks$f2 = _slicedToArray(_singleChapterBooks$f, 1),
     matchingBook = _singleChapterBooks$f2[0];
   if (new RegExp("^".concat(matchingBook, " 1:")).test(ref)) return ref;
+  if (new RegExp("^".concat(matchingBook, " 1$")).test(ref)) return ref;
   ref = ref.replace(new RegExp("^".concat(matchingBook, " (\\d+)")), "".concat(matchingBook, " 1:$1"));
   return ref;
 };
