@@ -32,7 +32,7 @@ var _require = require('./data/scriptdetect.js'),
   processReferenceDetection = _require.processReferenceDetection;
 var setLanguage = function setLanguage(language) {
   var _raw_lang$lang, _raw_lang$lang2, _raw_lang$lang3, _raw_lang$lang4, _raw_lang$lang5;
-  if (lang === language) return console.log("Language already set to ".concat(lang));
+  if (lang === language) return; // console.log(`Language already set to ${lang}`);
   lang = language;
   refIndex = null;
   verseIdIndex = null;
@@ -247,7 +247,8 @@ var handleSingleChapterBookRefs = function handleSingleChapterBookRefs(ref) {
     }),
     _singleChapterBooks$f2 = _slicedToArray(_singleChapterBooks$f, 1),
     matchingBook = _singleChapterBooks$f2[0];
-  ref = ref.replace(new RegExp("^".concat(matchingBook, " ([^:]+)$")), "".concat(matchingBook, " 1:$1"));
+  if (new RegExp("^".concat(matchingBook, " 1:")).test(ref)) return ref;
+  ref = ref.replace(new RegExp("^".concat(matchingBook, " (\\d+)")), "".concat(matchingBook, " 1:$1"));
   return ref;
 };
 var splitReferences = function splitReferences(compoundReference) {
