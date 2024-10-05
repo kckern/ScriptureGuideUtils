@@ -2,7 +2,7 @@ const {lookup, generateReference, setLanguage, detectReferences}= require("./scr
 
 
 
-setLanguage("kr");
+setLanguage("ko");
 //korean tests
 
 /*
@@ -16,6 +16,7 @@ Nov 15 06:08:11 bookofmormon.online /usr/local/bin/node  info: utils No verses f
 const lookUpTests = [
     "이더서 13:18",
     "니전5.2",
+    "제.4.니파이.1",
     "제3니파이 2장 8절",
     "제3니파이 23장 7절",
     "조셉 스미스—역사 1장 30절",

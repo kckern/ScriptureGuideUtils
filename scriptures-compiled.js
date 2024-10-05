@@ -186,7 +186,9 @@ var cleanReference = function cleanReference(messyReference) {
   }
 
   //Turn dots into colons
-  ref = ref.replace(/[.]/g, ":");
+  ref = ref.replace(/(\d+)[.](\d+)/g, "$1:$2");
+  ref = ref.replace(/[.]/g, "");
+
   //Treat commas as semicolons in the absence of verses
   //add spaces after semicolons
   ref = ref.replace(/;/g, "; ");
