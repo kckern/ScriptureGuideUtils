@@ -31,7 +31,7 @@ var _require = require('./data/scriptdetect.js'),
   preparePattern = _require.preparePattern,
   processReferenceDetection = _require.processReferenceDetection;
 var setLanguage = function setLanguage(language) {
-  var _raw_lang$lang, _raw_lang$lang2, _raw_lang$lang3, _raw_lang$lang4, _raw_lang$lang5;
+  var _raw_lang$lang, _raw_lang$lang2, _raw_lang$lang3, _raw_lang$lang4, _raw_lang$lang5, _raw_lang$lang6;
   if (lang === language) return; // console.log(`Language already set to ${lang}`);
   lang = language;
   refIndex = null;
@@ -66,10 +66,11 @@ var setLanguage = function setLanguage(language) {
   }
   raw_regex.pre_rules = ((_raw_lang$lang2 = raw_lang[lang]) === null || _raw_lang$lang2 === void 0 ? void 0 : _raw_lang$lang2.pre_rules) || raw_regex.pre_rules; //TODO: add replace/append options
   raw_regex.post_rules = ((_raw_lang$lang3 = raw_lang[lang]) === null || _raw_lang$lang3 === void 0 ? void 0 : _raw_lang$lang3.post_rules) || raw_regex.post_rules; //TODO: add replace/append options
+  raw_regex.spacing = ((_raw_lang$lang4 = raw_lang[lang]) === null || _raw_lang$lang4 === void 0 ? void 0 : _raw_lang$lang4.spacing) || ["", ""]; //TODO: Set spacing
 
   //TODO: Set booksWithDashRegex
 
-  if ((_raw_lang$lang4 = raw_lang[lang]) !== null && _raw_lang$lang4 !== void 0 && _raw_lang$lang4.matchRules) lang_extra = (_raw_lang$lang5 = raw_lang[lang]) === null || _raw_lang$lang5 === void 0 ? void 0 : _raw_lang$lang5.matchRules;
+  if ((_raw_lang$lang5 = raw_lang[lang]) !== null && _raw_lang$lang5 !== void 0 && _raw_lang$lang5.matchRules) lang_extra = (_raw_lang$lang6 = raw_lang[lang]) === null || _raw_lang$lang6 === void 0 ? void 0 : _raw_lang$lang6.matchRules;
 };
 var lookupReference = function lookupReference(query) {
   var _verse_ids;
@@ -198,9 +199,14 @@ var cleanReference = function cleanReference(messyReference) {
   ref = ref.replace(/([–-])(\D+)/g, " $1 $2 ");
 
   //Handle non-latin languages because \b only works for latin alphabet
-  var hasBeyondAlpha = !!ref.match(/[^\u0000-\u007F]/);
-  if (hasBeyondAlpha) wordBreak = "";
-  var buffer = wordBreak ? "" : " ";
+  var _ref = raw_regex.spacing || ["\\b", ""],
+    _ref2 = _slicedToArray(_ref, 2),
+    wordBreak = _ref2[0],
+    buffer = _ref2[1];
+  console.log({
+    wordBreak: wordBreak,
+    buffer: buffer
+  });
   var srcbooks = raw_regex.books;
   var dstbooks = buffer ? raw_regex.books.map(function (i) {
     return [i[1], i[1]];
