@@ -42,6 +42,7 @@ const setLanguage = function(language) {
     }
     raw_regex.pre_rules = raw_lang[lang]?.pre_rules || raw_regex.pre_rules;     //TODO: add replace/append options
     raw_regex.post_rules = raw_lang[lang]?.post_rules || raw_regex.post_rules;  //TODO: add replace/append options
+    raw_regex.spacing = raw_lang[lang]?.spacing || ["", ""]; //TODO: Set spacing
 
     //TODO: Set booksWithDashRegex
 
@@ -194,10 +195,9 @@ const cleanReference = function(messyReference) {
     ref = ref.replace(/([–-])(\D+)/g, " $1 $2 ");
 
     //Handle non-latin languages because \b only works for latin alphabet
-    const hasBeyondAlpha = !!ref.match(/[^\u0000-\u007F]/);
-    if(hasBeyondAlpha) wordBreak = "";
-    const buffer = wordBreak ? "" : " ";
-    
+    const [wordBreak, buffer] = raw_regex.spacing || ["\\b", ""];
+
+    console.log({wordBreak,buffer});
 
     let srcbooks = raw_regex.books;
     let dstbooks = buffer ? raw_regex.books.map(i => [i[1], i[1]]) : [];
