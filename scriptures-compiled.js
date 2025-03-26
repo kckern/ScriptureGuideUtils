@@ -203,10 +203,6 @@ var cleanReference = function cleanReference(messyReference) {
     _ref2 = _slicedToArray(_ref, 2),
     wordBreak = _ref2[0],
     buffer = _ref2[1];
-  console.log({
-    wordBreak: wordBreak,
-    buffer: buffer
-  });
   var srcbooks = raw_regex.books;
   var dstbooks = buffer ? raw_regex.books.map(function (i) {
     return [i[1], i[1]];
@@ -226,9 +222,7 @@ var cleanReference = function cleanReference(messyReference) {
     var re = new RegExp(wordBreak + buffer + regex[_i3][0] + buffer + "\\.*" + wordBreak, "ig");
     var replacement = hashCypher[regex[_i3][1]] || regex[_i3][1];
     ref = (buffer + ref + buffer).replace(re, replacement).trim();
-    //console.log({ref,re,hasBeyondAlpha,wordBreak,buffer});
   }
-
   var books = Object.keys(hashCypher);
   var hashes = Object.values(hashCypher);
   ref = ref.replace(new RegExp(hashes.join("|"), "g"), function (match) {

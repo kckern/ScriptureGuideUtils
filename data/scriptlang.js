@@ -304,7 +304,30 @@ module.exports  = {
     },
     eo: { 
         books: 
-        { "Genezo": ["Gen"], "Eliro": ["Eli"], "Levidoj": ["Lev"], "Nombroj": ["Nom"], "Readmono": ["Rea"], "Josuo": ["Jos"], "Juĝistoj": ["Juĝ"], "Rut": ["Rut"], "1 Samuel": ["1 Sam"], "2 Samuel": ["2 Sam"], "1 Reĝoj": ["1 Reĝ"], "2 Reĝoj": ["2 Reĝ"], "1 Kroniko": ["1 Kron"], "2 Kroniko": ["2 Kron"], "Ezra": ["Ezr"], "Neĥemja": ["Neĥ"], "Ester": ["Est"], "Ijob": ["Ijob"], "Psalmaro": ["Ps"], "Sentencoj": ["Sent"], "Predikanto": ["Pred"], "Alt Kanto": ["Alt"], "Jesaja": ["Jes"], "Jeremia": ["Jer"], "Plorkanto": ["Plork"], "Jeĥezkel": ["Jeĥ"], "Daniel": ["Dan"], "Hoŝea": ["Hoŝ"], "Joel": ["Joel"], "Amos": ["Amos"], "Obadja": ["Obad"], "Jona": ["Jon"], "Miĥa": ["Miĥ"], "Naĥum": ["Naĥ"], "Ĥabakuk": ["Ĥab"], "Cefanja": ["Cef"], "Ĥagaj": ["Ĥag"], "Zeĥarja": ["Zeĥ"], "Malaĥi": ["Mal"], "Mateo": ["Mat"], "Marko": ["Mar"], "Luko": ["Luk"], "Johano": ["Joh"], "Agoj": ["Agoj"], "Romanoj": ["Rom"], "1 Korintanoj": ["1 Kor"], "2 Korintanoj": ["2 Kor"], "Galatoj": ["Gal"], "Efesanoj": ["Ef"], "Filipianoj": ["Fil"], "Koloseanoj": ["Kol"], "1 Tesalonikanoj": ["1 Tes"], "2 Tesalonikanoj": ["2 Tes"], "1 Timoteo": ["1 Tim"], "2 Timoteo": ["2 Tim"], "Tito": ["Tit"], "Filemon": ["Fil"], "Hebreoj": ["Heb"], "Jakobo": ["Jak"], "1 Petro": ["1 Pet"], "2 Petro": ["2 Pet"], "1 Johano": ["1 Joh"], "2 Johano": ["2 Joh"], "3 Johano": ["3 Joh"], "Judas": ["Jud"], "Apokalipso": ["Apok"] 
+        { "Genezo": ["Gen"], "Eliro": ["Eli"], "Levidoj": ["Lev"], "Nombroj": ["Nom"], "Readmono": ["Rea"], "Josuo": ["Jos"], "Juĝistoj": ["Juĝ"], "Rut": ["Rut"], "1 Samuel": ["1 Sam"], "2 Samuel": ["2 Sam"], "1 Reĝoj": ["1 Reĝ"], "2 Reĝoj": ["2 Reĝ"], "1 Kroniko": ["1 Kron"], "2 Kroniko": ["2 Kron"], "Ezra": ["Ezr"], "Neĥemja": ["Neĥ"], "Ester": ["Est"], "Ijob": ["Ijob"], "Psalmaro": ["Ps"], "Sentencoj": ["Sent"], "Predikanto": ["Pred"], "Alt Kanto": ["Alt"], "Jesaja": ["Jes"], "Jeremia": ["Jer"], "Plorkanto": ["Plork"], "Jeĥezkel": ["Jeĥ"], "Daniel": ["Dan"], "Hoŝea": ["Hoŝ"], "Joel": ["Joel"], "Amos": ["Amos"], "Obadja": ["Obad"], "Jona": ["Jon"], "Miĥa": ["Miĥ"], "Naĥum": ["Naĥ"], "Ĥabakuk": ["Ĥab"], "Cefanja": ["Cef"], "Ĥagaj": ["Ĥag"], "Zeĥarja": ["Zeĥ"], "Malaĥi": ["Mal"], "Mateo": ["Mat"], "Marko": ["Mar"], "Luko": ["Luk"], "Johano": ["Joh"], "Agoj": ["Agoj"], "Romanoj": ["Rom"], "1 Korintanoj": ["1 Kor"], "2 Korintanoj": ["2 Kor"], "Galatoj": ["Gal"], "Efesanoj": ["Ef"], "Filipianoj": ["Fil"], "Koloseanoj": ["Kol"], "1 Tesalonikanoj": ["1 Tes"], "2 Tesalonikanoj": ["2 Tes"], "1 Timoteo": ["1 Tim"], "2 Timoteo": ["2 Tim"], "Tito": ["Tit"], "Filemon": ["Fil"], "Hebreoj": ["Heb"], "Jakobo": ["Jak"], "1 Petro": ["1 Pet"], "2 Petro": ["2 Pet"], "1 Johano": ["1 Joh"], "2 Johano": ["2 Joh"], "3 Johano": ["3 Joh"], "Judas": ["Jud"], "Apokalipso": ["Apok"] ,
+            // Additional LDS
+        "1 Nefi": ["1 Nef"], 
+        "2 Nefi": ["2 Nef"], 
+        "Jakobo": ["JakK"], 
+        "Enos": ["Eno"], 
+        "Jerom": ["Jerom"], 
+        "Omni": ["Omni"], 
+        "La Vortoj de Mormon": ["Vortoj Morm"], 
+        "Mosiah": ["Mos"], 
+        "Alma": ["Alma"], 
+        "Helaman": ["Hel"], 
+        "3 Nefi": ["3 Nef"], 
+        "4 Nefi": ["4 Nef"], 
+        "Mormon": ["Morm"], 
+        "Eter": ["Eter"], 
+        "Moroni": ["Moroni"], 
+        "Doktrino kaj Interligoj": ["D&I"], 
+        "Moseo": ["Mos"], 
+        "Abraham": ["Abr"], 
+        "Joseph Smith—Mateo": ["JS-Mat"], 
+        "Joseph Smith—Historio": ["JS-Historio"], 
+        "Kredo Artikoloj": ["KA"]
+
         } 
     }
 }

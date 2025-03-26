@@ -197,7 +197,7 @@ const cleanReference = function(messyReference) {
     //Handle non-latin languages because \b only works for latin alphabet
     const [wordBreak, buffer] = raw_regex.spacing || ["\\b", ""];
 
-    console.log({wordBreak,buffer});
+
 
     let srcbooks = raw_regex.books;
     let dstbooks = buffer ? raw_regex.books.map(i => [i[1], i[1]]) : [];
@@ -213,7 +213,6 @@ const cleanReference = function(messyReference) {
         var re = new RegExp( wordBreak + buffer + regex[i][0] + buffer + "\\.*"+wordBreak, "ig");
         let replacement = hashCypher[regex[i][1]] || regex[i][1];
         ref = (buffer+ref+buffer).replace(re, replacement).trim();
-        //console.log({ref,re,hasBeyondAlpha,wordBreak,buffer});
     }
     const books = Object.keys(hashCypher);
     const hashes = Object.values(hashCypher);
