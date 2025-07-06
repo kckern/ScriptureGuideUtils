@@ -2,7 +2,7 @@ const {lookup, generateReference, setLanguage, detectReferences}= require("./scr
 
 
 
-setLanguage("ko");
+setLanguage("tr");
 //korean tests
 
 /*
@@ -14,19 +14,35 @@ Nov 15 06:08:11 bookofmormon.online /usr/local/bin/node  info: utils No verses f
 */
 
 const lookUpTests = [
-    "이더서 13:18",
-    "니전5.2",
-    "제.4.니파이.1",
-    "제3니파이 2장 8절",
-    "제3니파이 23장 7절",
-    "조셉 스미스—역사 1장 30절",
-    "힐라맨서 6:40",
-    "2 Kings 17:18-20, 2 Chronicles 36:15-21, Jeremiah 39:1-10",
-    "4 Nephi 1:6-9",
-    "3 Ne. 8:8",
-    "3 Ne. 9:4",
-    "이더서 1장 32~35절, 이더서 7장 26절, 이더서 9장 23절",
-
+    "Ether 13:18",
+    "1 Nephi 5:2",
+    "4 Nephi 1",
+    "3 Nephi 2:8",
+    "3 Nephi 23:7",
+    "Joseph Smith—History 1:30",
+    "Helaman 6:40",
+    "2 Krallar 17:18-20, 2 Tarihler 36:15-21, Yeremya 39:1-10",
+    "4 Nefi 1:6-9",
+    "3 Nefi 8:8",
+    "3 Nefi 9:4",
+    "Ether 1:32-35, Ether 7:26, Ether 9:23",
+    "Yaratılış 1:1",
+    "Çıkış 20:1-17",
+    "Levililer 19:18",
+    "Sayılar 6:24-26",
+    "Tesniye 6:4-5",
+    "Yeşu 1:9",
+    "Mezmurlar 23:1-6",
+    "Süleyman'ın Özdeyişleri 3:5-6",
+    "İşaya 40:31",
+    "Yeremya 29:11",
+    "Matta 5:3-12",
+    "Yuhanna 3:16",
+    "Romalılar 8:28",
+    "1 Korintliler 13:4-7",
+    "Filipililer 4:6-7",
+    "İbraniler 11:1",
+    "Yakup 1:5",
 ];
 
 lookUpTests.forEach(t=>{
