@@ -16,8 +16,9 @@
   "scripts": {
     "start": "node test/test.js",
     "test": "node test/test.js",
-    "build": "babel scriptures.mjs -o scriptures.cjs",
-    "prepublishOnly": "npm run build && npm version patch"
+    "build": "node embed-data.cjs && npx babel scriptures.mjs -o scriptures.cjs",
+    "embed": "node embed-data.cjs",
+    "prepublishOnly": "npm version patch && npm run build"
   },
   "author": "",
   "license": "ISC",
@@ -45,8 +46,7 @@
   "files": [
     "scriptures.mjs",
     "scriptures.cjs",
-    "scriptures.d.ts",
-    "data/"
+    "scriptures.d.ts"
   ],
   "devDependencies": {
     "@babel/cli": "^7.24.7",
