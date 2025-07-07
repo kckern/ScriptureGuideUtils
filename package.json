@@ -2,20 +2,21 @@
   "name": "scripture-guide",
   "version": "1.0.68",
   "description": "A utility for biblical and scripture reference parsing that enables structured queries based on strings of traditional scripture references (e.g. John 3:16).  ",
-  "main": "scriptures-compiled.cjs",
+  "main": "scriptures.cjs",
+  "module": "scriptures.mjs",
   "types": "scriptures.d.ts",
   "type": "module",
   "exports": {
     ".": {
-      "import": "./scriptures.js",
-      "require": "./scriptures-compiled.cjs",
+      "import": "./scriptures.mjs",
+      "require": "./scriptures.cjs",
       "types": "./scriptures.d.ts"
     }
   },
   "scripts": {
     "start": "node test.js",
     "test": "node test.js",
-    "build": "babel scriptures.js --out-file scriptures-compiled.cjs",
+    "build": "babel scriptures.mjs -o scriptures.cjs",
     "prepublishOnly": "npm run build && npm version patch"
   },
   "author": "",
@@ -42,14 +43,14 @@
     "pearl of great price"
   ],
   "files": [
-    "scriptures.js",
+    "scriptures.mjs",
+    "scriptures.cjs",
     "scriptures.d.ts",
-    "scriptures-compiled.cjs",
     "data/"
   ],
   "devDependencies": {
-    "@babel/cli": "^7.23.0",
-    "@babel/core": "^7.23.2",
-    "@babel/preset-env": "^7.23.2"
+    "@babel/cli": "^7.24.7",
+    "@babel/core": "^7.24.7",
+    "@babel/preset-env": "^7.24.7"
   }
 }
