@@ -1,5 +1,5 @@
 
-import { setLanguage, detectReferences, lookupReference } from "./scriptures.js";
+import { setLanguage, detectReferences, lookupReference } from "../scriptures.mjs";
 //clear console
 console.clear();
 import fs from "fs";

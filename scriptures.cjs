@@ -5,10 +5,10 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.verseId2Ref = exports.setLanguage = exports.setLang = exports.ref2VerseId = exports.ref = exports.read = exports.parse = exports.lookupReference = exports.lookup = exports.linkRefs = exports.language = exports.lang = exports.generateReference = exports.generate = exports.gen = exports.detectScriptures = exports.detectScriptureReferences = exports.detectRefs = exports.detectReferences = exports.detect = void 0;
-var _scriptdata = _interopRequireDefault(require("./data/scriptdata.js"));
-var _scriptregex = _interopRequireDefault(require("./data/scriptregex.js"));
-var _scriptlang = _interopRequireDefault(require("./data/scriptlang.js"));
-var _scriptdetect = require("./data/scriptdetect.js");
+var _scriptdata = _interopRequireDefault(require("./data/scriptdata.mjs"));
+var _scriptregex = _interopRequireDefault(require("./data/scriptregex.mjs"));
+var _scriptlang = _interopRequireDefault(require("./data/scriptlang.mjs"));
+var _scriptdetect = require("./data/scriptdetect.mjs");
 function _interopRequireDefault(e) { return e && e.__esModule ? e : { "default": e }; }
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
 function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }

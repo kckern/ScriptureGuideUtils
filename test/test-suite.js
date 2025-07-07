@@ -1,10 +1,10 @@
-import testdata from "./data/testdata.js";
-import { lookupReference, setLanguage, generate, generateReference } from "./scriptures.js";
+import testdata from "./testdata.mjs";
+import { lookupReference, setLanguage, generate, generateReference } from "../scriptures.mjs";
 import fs from "fs";
 
 fs.mkdirSync("./test_results", {recursive:true});
 const timestamp = new Date().toISOString();
-const filename = `./test_results/test_results.html`;
+const filename = `./test/test_results.html`;
 fs.writeFileSync(filename, `<html>
 <head>
 <style>

@@ -1,6 +1,6 @@
 // node cmd "Genesis 1:1" [language]
 
-import { parse, generateReference } from "./scriptures.js";
+import { parse, generateReference } from "./scriptures.mjs";
 
 const input = process.argv[2]
 const lang = process.argv[3] || null;

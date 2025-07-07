@@ -1,4 +1,4 @@
-import { lookupReference, generateReference, detectReferences, setLanguage } from './scriptures.js';
+import { lookupReference, generateReference, detectReferences, setLanguage } from '../scriptures.mjs';
 
 // Simulate browser localStorage for testing
 global.localStorage = {

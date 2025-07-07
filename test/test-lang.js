@@ -1,4 +1,4 @@
-import { lookup, generateReference, setLanguage, detectReferences } from "./scriptures.js";
+import { lookup, generateReference, setLanguage, detectReferences } from "../scriptures.mjs";
 
 
 

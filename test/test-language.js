@@ -1,4 +1,4 @@
-import { lookupReference, generateReference, detectReferences } from './scriptures.js';
+import { lookupReference, generateReference, detectReferences } from '../scriptures.mjs';
 
 // Test English (default)
 console.log('Testing English:');

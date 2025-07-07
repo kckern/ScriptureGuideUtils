@@ -139,7 +139,7 @@ export default {
             ["3 NêPhi 1:1 - 3; 4 NêPhi 1:1 - 3; MMôn 3:1 - 3",{firstVerse:36050,lastVerse:36934,verseCount:9}, "3 Nephi 1:1-3; 4 Nephi 1:1-3; Mormon 3:1-3"],
             ["ÊThe 1:1; MRNi 2:2; GLGƯ 3:3",{firstVerse:37111,lastVerse:37751,verseCount:3}, "Ether 1:1; Moroni 2:2; Galatians 3:3"],
             ["MôiSe 1:1; ARHam 2:2; JS—MTƠ 3:3",{firstVerse:41361,lastVerse:41749,verseCount:2}, "Moses 1:1; Abraham 2:2; JS—Matthew 3:3"],
-            ["JS—LS 1:1- 3; NTĐ 1:1 - 3",{firstVerse:41908,lastVerse:41910,verseCount:3}, "JS—H 1:1-3; Aof 1:1-3"]
+            ["JS—LS 1:1- 3; NTĐ 1:1 - 3",{firstVerse:41908,lastVerse:41910,verseCount:3}, "JS—H 1:1-3; Aof 1:1-3"],
             ["1 Nê Phi 1:16", {firstVerse:31628,lastVerse:31628,verseCount:1}, "Other Books"],
         ],
         id2ref:[

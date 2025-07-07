@@ -1,4 +1,4 @@
-import { lookupReference, generateReference, detectReferences } from './scriptures.js';
+import { lookupReference, generateReference, detectReferences } from '../scriptures.mjs';
 
 // Test fallback behavior
 console.log('Testing fallback behavior:');
