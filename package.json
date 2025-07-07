@@ -2,13 +2,21 @@
   "name": "scripture-guide",
   "version": "1.0.64",
   "description": "A utility for biblical and scripture reference parsing that enables structured queries based on strings of traditional scripture references (e.g. John 3:16).  ",
-  "main": "scriptures-compiled.js",
+  "main": "scriptures-compiled.cjs",
+  "module": "scriptures-esm.js",
   "types": "scriptures-compiled.d.ts",
   "type": "module",
+  "exports": {
+    ".": {
+      "require": "./scriptures-compiled.cjs",
+      "import": "./scriptures-esm.js",
+      "types": "./scriptures-compiled.d.ts"
+    }
+  },
   "scripts": {
     "start": "node test.js",
     "test": "node test.js",
-    "build": "babel scriptures.js --out-file scriptures-compiled.js"
+    "build": "babel scriptures.js --out-file scriptures-compiled.cjs && node scripts/convert-to-esm.cjs"
   },
   "author": "",
   "license": "ISC",
@@ -34,7 +42,8 @@
     "pearl of great price"
   ],
   "files": [
-    "scriptures-compiled.js",
+    "scriptures-compiled.cjs",
+    "scriptures-esm.js",
     "scriptures-compiled.d.ts",
     "scriptures.d.ts",
     "data/"
