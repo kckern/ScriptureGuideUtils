@@ -1,22 +1,20 @@
 {
   "name": "scripture-guide",
-  "version": "1.0.64",
+  "version": "1.0.66",
   "description": "A utility for biblical and scripture reference parsing that enables structured queries based on strings of traditional scripture references (e.g. John 3:16).  ",
-  "main": "scriptures-compiled.cjs",
-  "module": "scriptures-esm.js",
-  "types": "scriptures-compiled.d.ts",
+  "main": "scriptures.js",
+  "types": "scriptures.d.ts",
   "type": "module",
   "exports": {
     ".": {
-      "require": "./scriptures-compiled.cjs",
-      "import": "./scriptures-esm.js",
-      "types": "./scriptures-compiled.d.ts"
+      "import": "./scriptures.js",
+      "types": "./scriptures.d.ts"
     }
   },
   "scripts": {
     "start": "node test.js",
     "test": "node test.js",
-    "build": "babel scriptures.js --out-file scriptures-compiled.cjs && node scripts/convert-to-esm.cjs"
+    "prepublishOnly": "npm version patch"
   },
   "author": "",
   "license": "ISC",
@@ -42,15 +40,9 @@
     "pearl of great price"
   ],
   "files": [
-    "scriptures-compiled.cjs",
-    "scriptures-esm.js",
-    "scriptures-compiled.d.ts",
+    "scriptures.js",
     "scriptures.d.ts",
     "data/"
   ],
-  "devDependencies": {
-    "@babel/cli": "^7.23.0",
-    "@babel/core": "^7.23.2",
-    "@babel/preset-env": "^7.23.2"
-  }
+  "devDependencies": {}
 }
