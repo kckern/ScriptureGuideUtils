@@ -253,6 +253,6 @@ const processReferenceDetection = (content,books,lang_extra,lookupReference,call
 
 
 
-module.exports = {
+export {
     processReferenceDetection
 }

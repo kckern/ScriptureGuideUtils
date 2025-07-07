@@ -1,4 +1,4 @@
-const {lookup, generateReference, setLanguage, detectReferences}= require("./scriptures.js");
+import { lookup, generateReference, setLanguage, detectReferences } from "./scriptures.js";
 
 
 

@@ -1,6 +1,6 @@
-const testdata = require("./data/testdata");
-const { lookupReference, setLanguage, generate, generateReference } = require("./scriptures");
-const fs = require("fs");
+import testdata from "./data/testdata.js";
+import { lookupReference, setLanguage, generate, generateReference } from "./scriptures.js";
+import fs from "fs";
 
 fs.mkdirSync("./test_results", {recursive:true});
 const timestamp = new Date().toISOString();

@@ -1,5 +1,14 @@
 "use strict";
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.verseId2Ref = exports.setLanguage = exports.setLang = exports.ref2VerseId = exports.ref = exports.read = exports.parse = exports.lookupReference = exports.lookup = exports.linkRefs = exports.language = exports.lang = exports.generateReference = exports.generate = exports.gen = exports.detectScriptures = exports.detectScriptureReferences = exports.detectRefs = exports.detectReferences = exports.detect = void 0;
+var _scriptdata = _interopRequireDefault(require("./data/scriptdata.js"));
+var _scriptregex = _interopRequireDefault(require("./data/scriptregex.js"));
+var _scriptlang = _interopRequireDefault(require("./data/scriptlang.js"));
+var _scriptdetect = require("./data/scriptdetect.js");
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -19,24 +28,19 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
 var lang = null;
 var wordBreak = "\\b";
 var lang_extra = {};
-var raw_index = require('./data/scriptdata.js');
-var raw_regex = require('./data/scriptregex.js');
+var raw_index = _scriptdata["default"];
+var raw_regex = _scriptregex["default"];
 var refIndex = null;
 var verseIdIndex = null;
-var orginal_raw_index = _objectSpread({}, raw_index);
-var orginal_raw_regex = _objectSpread({}, raw_regex);
-var raw_lang = require('./data/scriptlang.js');
-var _require = require('./data/scriptdetect.js'),
-  prepareBlacklist = _require.prepareBlacklist,
-  preparePattern = _require.preparePattern,
-  processReferenceDetection = _require.processReferenceDetection;
-var setLanguage = function setLanguage(language) {
+var orginal_raw_index = _objectSpread({}, _scriptdata["default"]);
+var orginal_raw_regex = _objectSpread({}, _scriptregex["default"]);
+var setLanguage = exports.setLang = exports.language = exports.lang = exports.setLanguage = function setLanguage(language) {
   var _raw_lang$lang, _raw_lang$lang2, _raw_lang$lang3, _raw_lang$lang4, _raw_lang$lang5, _raw_lang$lang6;
   if (lang === language) return; // console.log(`Language already set to ${lang}`);
   lang = language;
   refIndex = null;
   verseIdIndex = null;
-  if (!lang || !(raw_lang !== null && raw_lang !== void 0 && raw_lang[lang])) {
+  if (!lang || !(_scriptlang["default"] !== null && _scriptlang["default"] !== void 0 && _scriptlang["default"][lang])) {
     //revert to originals
     raw_index = _objectSpread({}, orginal_raw_index);
     raw_regex = _objectSpread({}, orginal_raw_regex);
@@ -44,17 +48,17 @@ var setLanguage = function setLanguage(language) {
     wordBreak = "\\b"; //TODO get from lang config?
     return;
   }
-  if ((_raw_lang$lang = raw_lang[lang]) !== null && _raw_lang$lang !== void 0 && _raw_lang$lang.books) {
+  if ((_raw_lang$lang = _scriptlang["default"][lang]) !== null && _raw_lang$lang !== void 0 && _raw_lang$lang.books) {
     raw_regex.books = [];
     var new_index = {};
-    var bookList = Object.keys(raw_lang[lang].books);
+    var bookList = Object.keys(_scriptlang["default"][lang].books);
     var _loop = function _loop() {
       var _Object$keys;
       var book = _bookList[_i];
       var book_index = bookList.indexOf(book);
       var original_bookname = (_Object$keys = Object.keys(orginal_raw_index)) === null || _Object$keys === void 0 ? void 0 : _Object$keys[book_index];
       new_index[book] = raw_index[original_bookname];
-      var matches = [book].concat(_toConsumableArray(raw_lang[lang].books[book])); //TODO, do I need the book in the list?
+      var matches = [book].concat(_toConsumableArray(_scriptlang["default"][lang].books[book])); //TODO, do I need the book in the list?
       raw_regex.books = raw_regex.books.concat(matches.map(function (i) {
         return [i, book];
       }));
@@ -64,15 +68,15 @@ var setLanguage = function setLanguage(language) {
     }
     raw_index = new_index;
   }
-  raw_regex.pre_rules = ((_raw_lang$lang2 = raw_lang[lang]) === null || _raw_lang$lang2 === void 0 ? void 0 : _raw_lang$lang2.pre_rules) || raw_regex.pre_rules; //TODO: add replace/append options
-  raw_regex.post_rules = ((_raw_lang$lang3 = raw_lang[lang]) === null || _raw_lang$lang3 === void 0 ? void 0 : _raw_lang$lang3.post_rules) || raw_regex.post_rules; //TODO: add replace/append options
-  raw_regex.spacing = ((_raw_lang$lang4 = raw_lang[lang]) === null || _raw_lang$lang4 === void 0 ? void 0 : _raw_lang$lang4.spacing) || ["", ""]; //TODO: Set spacing
+  raw_regex.pre_rules = ((_raw_lang$lang2 = _scriptlang["default"][lang]) === null || _raw_lang$lang2 === void 0 ? void 0 : _raw_lang$lang2.pre_rules) || raw_regex.pre_rules; //TODO: add replace/append options
+  raw_regex.post_rules = ((_raw_lang$lang3 = _scriptlang["default"][lang]) === null || _raw_lang$lang3 === void 0 ? void 0 : _raw_lang$lang3.post_rules) || raw_regex.post_rules; //TODO: add replace/append options
+  raw_regex.spacing = ((_raw_lang$lang4 = _scriptlang["default"][lang]) === null || _raw_lang$lang4 === void 0 ? void 0 : _raw_lang$lang4.spacing) || ["", ""]; //TODO: Set spacing
 
   //TODO: Set booksWithDashRegex
 
-  if ((_raw_lang$lang5 = raw_lang[lang]) !== null && _raw_lang$lang5 !== void 0 && _raw_lang$lang5.matchRules) lang_extra = (_raw_lang$lang6 = raw_lang[lang]) === null || _raw_lang$lang6 === void 0 ? void 0 : _raw_lang$lang6.matchRules;
+  if ((_raw_lang$lang5 = _scriptlang["default"][lang]) !== null && _raw_lang$lang5 !== void 0 && _raw_lang$lang5.matchRules) lang_extra = (_raw_lang$lang6 = _scriptlang["default"][lang]) === null || _raw_lang$lang6 === void 0 ? void 0 : _raw_lang$lang6.matchRules;
 };
-var lookupReference = function lookupReference(query) {
+var lookupReference = exports.ref2VerseId = exports.read = exports.parse = exports.lookup = exports.lookupReference = function lookupReference(query) {
   var _verse_ids;
   var isValidReference = query && typeof query === 'string' && query.length > 0;
   if (!isValidReference) return {
@@ -133,7 +137,7 @@ var validateVerseIds = function validateVerseIds(verse_ids) {
   }).length == verse_ids.length) return verse_ids;
   return false;
 };
-var generateReference = function generateReference(verse_ids) {
+var generateReference = exports.verseId2Ref = exports.generate = exports.gen = exports.ref = exports.generateReference = function generateReference(verse_ids) {
   verse_ids = validateVerseIds(verse_ids);
   if (!verse_ids) return '';
   var ranges = loadVerseStructure(verse_ids);
@@ -539,7 +543,7 @@ var loadMaxVerse = function loadMaxVerse(book, chapter) {
   if (!bookExists(book)) return 0;
   return raw_index[book][parseInt(chapter) - 1];
 };
-var detectReferences = function detectReferences(content, callBack) {
+var detectReferences = exports.linkRefs = exports.detectScriptures = exports.detectRefs = exports.detectScriptureReferences = exports.detect = exports.detectReferences = function detectReferences(content, callBack) {
   callBack = callBack ? callBack : function (i) {
     return "[".concat(i, "]");
   };
@@ -550,28 +554,5 @@ var detectReferences = function detectReferences(content, callBack) {
     return i[1];
   })));
   var books = [].concat(_toConsumableArray(dst), _toConsumableArray(src));
-  return processReferenceDetection(content, books, lang_extra, lookupReference, callBack);
-};
-module.exports = {
-  lookupReference: lookupReference,
-  generateReference: generateReference,
-  setLanguage: setLanguage,
-  detectReferences: detectReferences,
-  //Aliases for convenience
-  lang: setLanguage,
-  language: setLanguage,
-  setLang: setLanguage,
-  lookup: lookupReference,
-  parse: lookupReference,
-  read: lookupReference,
-  ref2VerseId: lookupReference,
-  ref: generateReference,
-  gen: generateReference,
-  generate: generateReference,
-  verseId2Ref: generateReference,
-  detect: detectReferences,
-  detectScriptureReferences: detectReferences,
-  detectRefs: detectReferences,
-  detectScriptures: detectReferences,
-  linkRefs: detectReferences
+  return (0, _scriptdetect.processReferenceDetection)(content, books, lang_extra, lookupReference, callBack);
 };

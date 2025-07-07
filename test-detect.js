@@ -1,8 +1,12 @@
 
-const { setLanguage, detectReferences, lookupReference}= require("./scriptures.js");
+import { setLanguage, detectReferences, lookupReference } from "./scriptures.js";
 //clear console
 console.clear();
-const fs = require("fs");
+import fs from "fs";
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 const paramLang = process.argv[2] || "en";
 const langs = fs.readdirSync(`${__dirname}/test/data`)
                 .filter(i=>/txt$/.test(i))

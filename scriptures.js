@@ -1,14 +1,17 @@
+import raw_index_orig from './data/scriptdata.js';
+import raw_regex_orig from './data/scriptregex.js';
+import raw_lang from './data/scriptlang.js';
+import { processReferenceDetection } from './data/scriptdetect.js';
+
 let lang = null;
 let wordBreak = "\\b";
 let lang_extra = {};
-let raw_index = require('./data/scriptdata.js');
-let raw_regex = require('./data/scriptregex.js');
+let raw_index = raw_index_orig;
+let raw_regex = raw_regex_orig;
 let refIndex = null
 let verseIdIndex = null
-const orginal_raw_index = {...raw_index};
-const orginal_raw_regex = {...raw_regex};
-let raw_lang = require('./data/scriptlang.js');
-let {prepareBlacklist, preparePattern,processReferenceDetection} = require('./data/scriptdetect.js');
+const orginal_raw_index = {...raw_index_orig};
+const orginal_raw_regex = {...raw_regex_orig};
 
 
 const setLanguage = function(language) {
@@ -547,30 +550,30 @@ const detectReferences = (content,callBack) => {
 
 
 
-module.exports = {
+export {
     lookupReference,
     generateReference,
     setLanguage,
     detectReferences,
 
     //Aliases for convenience
-    lang: setLanguage,
-    language: setLanguage,
-    setLang: setLanguage,
+    setLanguage as lang,
+    setLanguage as language,
+    setLanguage as setLang,
 
-    lookup: lookupReference,
-    parse: lookupReference,
-    read: lookupReference,
-    ref2VerseId: lookupReference,
+    lookupReference as lookup,
+    lookupReference as parse,
+    lookupReference as read,
+    lookupReference as ref2VerseId,
 
-    ref: generateReference,
-    gen: generateReference,
-    generate: generateReference,
-    verseId2Ref: generateReference,
+    generateReference as ref,
+    generateReference as gen,
+    generateReference as generate,
+    generateReference as verseId2Ref,
 
-    detect: detectReferences,
-    detectScriptureReferences: detectReferences,
-    detectRefs: detectReferences,
-    detectScriptures: detectReferences,
-    linkRefs: detectReferences,
-}
+    detectReferences as detect,
+    detectReferences as detectScriptureReferences,
+    detectReferences as detectRefs,
+    detectReferences as detectScriptures,
+    detectReferences as linkRefs,
+};

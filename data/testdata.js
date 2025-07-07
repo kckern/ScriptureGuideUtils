@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     en: {
         ref2id:[
             ["Genesis 1", {firstVerse:1,lastVerse:31,verseCount:31}, "Full book name and chapter"],

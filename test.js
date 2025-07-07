@@ -1,4 +1,4 @@
-const scriptures= require("./scriptures.js")
+import * as scriptures from "./scriptures.js";
 
 let output,ref;
 

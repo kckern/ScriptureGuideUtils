@@ -3,6 +3,8 @@
   "version": "1.0.63",
   "description": "A utility for biblical and scripture reference parsing that enables structured queries based on strings of traditional scripture references (e.g. John 3:16).  ",
   "main": "scriptures-compiled.js",
+  "types": "scriptures-compiled.d.ts",
+  "type": "module",
   "scripts": {
     "start": "node test.js",
     "test": "node test.js",
@@ -30,6 +32,12 @@
     "book of mormon",
     "doctrine and covenants",
     "pearl of great price"
+  ],
+  "files": [
+    "scriptures-compiled.js",
+    "scriptures-compiled.d.ts",
+    "scriptures.d.ts",
+    "data/"
   ],
   "devDependencies": {
     "@babel/cli": "^7.23.0",

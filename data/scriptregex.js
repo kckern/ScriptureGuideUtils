@@ -1,4 +1,4 @@
-module.exports  = {
+export default {
     "books":[
         ["gen\\.*(?:e*sis)*", "Genesis"],
         ["exo*\\.*(?:dus)*", "Exodus"],
