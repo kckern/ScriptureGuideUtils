@@ -40,7 +40,7 @@ export function lookupReference(query: string, language?: LanguageCode): LookupR
  * @param language - Optional language code. If not provided, uses setLanguage value or defaults to 'en'
  * @returns Formatted scripture reference string
  */
-export function generateReference(verseIds: number[], language?: LanguageCode): string;
+export function generateReference(verseIds: number | number[], language?: LanguageCode): string;
 
 /**
  * Sets the default language for scripture reference parsing
