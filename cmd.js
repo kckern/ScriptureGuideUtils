@@ -1,10 +1,10 @@
-// node cmd "Genesis 1:1"
+// node cmd "Genesis 1:1" [language]
 
-import { parse, setLanguage, generateReference } from "./scriptures.js";
+import { parse, generateReference } from "./scriptures.js";
 
 const input = process.argv[2]
 const lang = process.argv[3] || null;
-if(lang) setLanguage(lang);
 console.log("Input: ", input)
+console.log("Language: ", lang || "en (default)")
 const isVerseIds = /^[0-9,-]+$/.test(input);
-console.log(isVerseIds ? generateReference(input) : parse(input))
+console.log(isVerseIds ? generateReference(input, lang) : parse(input, lang))

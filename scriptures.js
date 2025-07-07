@@ -3,56 +3,47 @@ import raw_regex_orig from './data/scriptregex.js';
 import raw_lang from './data/scriptlang.js';
 import { processReferenceDetection } from './data/scriptdetect.js';
 
-let lang = null;
-let wordBreak = "\\b";
-let lang_extra = {};
-let raw_index = raw_index_orig;
-let raw_regex = raw_regex_orig;
-let refIndex = null
-let verseIdIndex = null
-const orginal_raw_index = {...raw_index_orig};
-const orginal_raw_regex = {...raw_regex_orig};
+// Browser localStorage key for language preference
+const LANGUAGE_STORAGE_KEY = 'scriptureGuideUtils_language';
 
+// Helper function to safely access localStorage
+const getStoredLanguage = () => {
+    try {
+        if (typeof localStorage !== 'undefined') {
+            return localStorage.getItem(LANGUAGE_STORAGE_KEY);
+        }
+    } catch (e) {
+        // localStorage might not be available in some environments
+    }
+    return null;
+};
+
+const setStoredLanguage = (language) => {
+    try {
+        if (typeof localStorage !== 'undefined') {
+            if (language) {
+                localStorage.setItem(LANGUAGE_STORAGE_KEY, language);
+            } else {
+                localStorage.removeItem(LANGUAGE_STORAGE_KEY);
+            }
+        }
+    } catch (e) {
+        // localStorage might not be available in some environments
+    }
+};
+
+// Global default language (can be overridden by localStorage)
+let defaultLanguage = null;
 
 const setLanguage = function(language) {
+    defaultLanguage = language;
+    setStoredLanguage(language);
+};
 
-    if(lang===language) return;// console.log(`Language already set to ${lang}`);
-    lang = language;
-    refIndex = null
-    verseIdIndex = null
-    if(!lang || !raw_lang?.[lang]) {
-        //revert to originals
-        raw_index = {...orginal_raw_index};
-        raw_regex = {...orginal_raw_regex};
-        lang_extra = {};
-        wordBreak = "\\b"; //TODO get from lang config?
-        return ;
-    }
-
-    if(raw_lang[lang]?.books)
-    {
-        raw_regex.books = [];
-        let new_index = {};
-        const bookList = Object.keys(raw_lang[lang].books);
-        for(let book of bookList) {
-            const book_index = bookList.indexOf(book);
-            const original_bookname = Object.keys(orginal_raw_index)?.[book_index];
-            new_index[book] = raw_index[original_bookname];
-            const matches = [book,...raw_lang[lang].books[book]]; //TODO, do I need the book in the list?
-            raw_regex.books = raw_regex.books.concat(matches.map(i => [i,book]));
-        }
-        raw_index = new_index;
-    }
-    raw_regex.pre_rules = raw_lang[lang]?.pre_rules || raw_regex.pre_rules;     //TODO: add replace/append options
-    raw_regex.post_rules = raw_lang[lang]?.post_rules || raw_regex.post_rules;  //TODO: add replace/append options
-    raw_regex.spacing = raw_lang[lang]?.spacing || ["", ""]; //TODO: Set spacing
-
-    //TODO: Set booksWithDashRegex
-
-    if(raw_lang[lang]?.matchRules) lang_extra = raw_lang[lang]?.matchRules;
-
-}
-
+const getEffectiveLanguage = function(explicitLanguage) {
+    // Priority: explicit parameter > stored language > default language > 'en'
+    return explicitLanguage || getStoredLanguage() || defaultLanguage || 'en';
+};
 
 const lookupReference = function(query, language = null) {
     const isValidReference = query && typeof query === 'string' && query.length > 0;
@@ -62,8 +53,9 @@ const lookupReference = function(query, language = null) {
         "verse_ids": []
     };
 
-    // Get language config without mutating global state
-    const config = getLanguageConfig(language);
+    // Get effective language (explicit > stored > default > 'en')
+    const effectiveLanguage = getEffectiveLanguage(language);
+    const config = getLanguageConfig(effectiveLanguage);
     
     //Cleanup
     let ref = cleanReference(query, config);
@@ -77,7 +69,7 @@ const lookupReference = function(query, language = null) {
     }
 
     // Fallback to English if no results found and language was specified
-    if(!verse_ids?.length && language && language !== 'en') {
+    if(!verse_ids?.length && effectiveLanguage && effectiveLanguage !== 'en') {
         const results = lookupReference(query, 'en');
         return results;
     }
@@ -120,7 +112,8 @@ const generateReference = function(verse_ids, language = null) {
     verse_ids = validateVerseIds(verse_ids);
     if(!verse_ids) return '';
 
-    const config = getLanguageConfig(language);
+    const effectiveLanguage = getEffectiveLanguage(language);
+    const config = getLanguageConfig(effectiveLanguage);
     let ranges = loadVerseStructure(verse_ids, config);
     let refs = loadRefsFromRanges(ranges, config);
 
@@ -540,11 +533,12 @@ const loadMaxVerse = function(book, chapter, config) {
 const detectReferences = (content, callBack, language = null) => {
 
     callBack = callBack ? callBack : (i)=>{return `[${i}]`};
-    const config = getLanguageConfig(language);
+    const effectiveLanguage = getEffectiveLanguage(language);
+    const config = getLanguageConfig(effectiveLanguage);
     const src = config.raw_regex.books.map(i => i[0]);
     const dst = [...new Set(config.raw_regex.books.map(i => i[1]))];
     const books = [...dst, ...src];
-    return processReferenceDetection(content, books, config.lang_extra, (query) => lookupReference(query, language), callBack);
+    return processReferenceDetection(content, books, config.lang_extra, (query) => lookupReference(query, effectiveLanguage), callBack);
 
 }
 
