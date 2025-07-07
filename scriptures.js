@@ -54,9 +54,7 @@ const setLanguage = function(language) {
 }
 
 
-const lookupReference = function(query) {
-
-
+const lookupReference = function(query, language = null) {
     const isValidReference = query && typeof query === 'string' && query.length > 0;
     if (!isValidReference) return {
         "query": query,
@@ -64,44 +62,41 @@ const lookupReference = function(query) {
         "verse_ids": []
     };
 
+    // Get language config without mutating global state
+    const config = getLanguageConfig(language);
+    
     //Cleanup
-    let ref = cleanReference(query);
+    let ref = cleanReference(query, config);
     //Break compound reference into array of single references
-    let refs = splitReferences(ref);
-
+    let refs = splitReferences(ref, config);
 
     //Lookup each single reference individually, return the set
     let verse_ids = [];
     for (let i in refs) {
-        verse_ids = verse_ids.concat(lookupSingleRef(refs[i]));
+        verse_ids = verse_ids.concat(lookupSingleRef(refs[i], config));
     }
 
-    if(!verse_ids?.length && lang)
-    {
-        const original_lang = lang+""; //clone
-        //try again with no language
-        setLanguage(null);
-        const results = lookupReference(query);
-        setLanguage(original_lang);
+    // Fallback to English if no results found and language was specified
+    if(!verse_ids?.length && language && language !== 'en') {
+        const results = lookupReference(query, 'en');
         return results;
     }
 
     return {
         "query": query,
         "ref": ref,
-       // "gen": generateReference(verse_ids),
         "verse_ids": verse_ids
     };
 }
 
-const lookupSingleRef = function(ref) {
-    const booksWithDashRegex = /^(joseph|조셉)/i; // TODO: get from lang config
+const lookupSingleRef = function(ref, config) {
+    const booksWithDashRegex = /^(joseph|조셉)/i; // TODO: get from config
     //todo: better handling of multi-book ranges for unicode
-    if (!booksWithDashRegex.test(ref) && ref.match(/[—-](\d\s)*[\D]/ig)) return lookupMultiBookRange(ref);
-    let book = getBook(ref);
+    if (!booksWithDashRegex.test(ref) && ref.match(/[—-](\d\s)*[\D]/ig)) return lookupMultiBookRange(ref, config);
+    let book = getBook(ref, config);
     if (!book) return [];
     let ranges = getRanges(ref, book);
-    let verse_ids = loadVerseIds(book, ranges);
+    let verse_ids = loadVerseIds(book, ranges, config);
     return verse_ids;
 
 }
@@ -120,13 +115,14 @@ const validateVerseIds = function(verse_ids) {
 
 }
 
-const generateReference = function(verse_ids) {
+const generateReference = function(verse_ids, language = null) {
 
     verse_ids = validateVerseIds(verse_ids);
     if(!verse_ids) return '';
 
-    let ranges = loadVerseStructure(verse_ids);
-    let refs = loadRefsFromRanges(ranges);
+    const config = getLanguageConfig(language);
+    let ranges = loadVerseStructure(verse_ids, config);
+    let refs = loadRefsFromRanges(ranges, config);
 
     let ref = refs.join("; ");
     return ref;
@@ -134,8 +130,7 @@ const generateReference = function(verse_ids) {
 }
 
 
-const lookupMultiBookRange = function(cleanRef) { //eg Matthew 15—Mark 2
-
+const lookupMultiBookRange = function(cleanRef, config) { //eg Matthew 15—Mark 2
 
     let range = cleanRef.split(/[—-]/);
     if (!range[0].match(/[:]/)) {
@@ -147,17 +142,17 @@ const lookupMultiBookRange = function(cleanRef) { //eg Matthew 15—Mark 2
         let matches = range[1].match(/(.*?)\s(\d+)$/);
         if (matches === null) {
             //find end of book
-            let maxChapter = loadMaxChapter(range[1]);
-            let maxverse = loadMaxVerse(range[1], maxChapter);
+            let maxChapter = loadMaxChapter(range[1], config);
+            let maxverse = loadMaxVerse(range[1], maxChapter, config);
             range[1] = range[1] + " " + maxChapter + ":" + maxverse;
            // console.log(range);
         } else {
-            let maxverse = loadMaxVerse(cleanReference(matches[1]), matches[2]);
+            let maxverse = loadMaxVerse(cleanReference(matches[1], config), matches[2], config);
             range[1] = range[1] + ":" + maxverse;
         }
     }
-    let start = lookupSingleRef(range[0])[0];
-    let end = lookupSingleRef(range[1])[0];
+    let start = lookupSingleRef(range[0], config)[0];
+    let end = lookupSingleRef(range[1], config)[0];
     let all_verse_ids = [];
     for (let i = start; i <= end; i++) all_verse_ids.push(i);
     return all_verse_ids;
@@ -174,12 +169,12 @@ const strToHash = function(str) {
 }
 
 
-const cleanReference = function(messyReference) {
+const cleanReference = function(messyReference, config) {
 
     let ref = messyReference.replace(/[\s]+/g, " ").trim();
 
     //Build Regex rules
-    let regex = raw_regex.pre_rules;
+    let regex = config.raw_regex.pre_rules;
     for (let i in regex) {
         var re = new RegExp(regex[i][0], "ig");
         ref = ref.replace(re, regex[i][1]);
@@ -198,12 +193,10 @@ const cleanReference = function(messyReference) {
     ref = ref.replace(/([–-])(\D+)/g, " $1 $2 ");
 
     //Handle non-latin languages because \b only works for latin alphabet
-    const [wordBreak, buffer] = raw_regex.spacing || ["\\b", ""];
+    const [wordBreak, buffer] = config.raw_regex.spacing || ["\\b", ""];
 
-
-
-    let srcbooks = raw_regex.books;
-    let dstbooks = buffer ? raw_regex.books.map(i => [i[1], i[1]]) : [];
+    let srcbooks = config.raw_regex.books;
+    let dstbooks = buffer ? config.raw_regex.books.map(i => [i[1], i[1]]) : [];
     let bookMatchList = [...dstbooks, ...srcbooks].sort((a, b) => b[0].length - a[0].length);
     regex = bookMatchList;
     let hashCypher = {};
@@ -233,14 +226,14 @@ const cleanReference = function(messyReference) {
 
     let cleanReference = ref.trim();
 
-    cleanReference = handleSingleChapterBookRefs(cleanReference);
+    cleanReference = handleSingleChapterBookRefs(cleanReference, config);
     if (!cleanReference.match(/:/)) cleanReference = cleanReference.replace(/,/, "; ");
     return cleanReference;
 }
 
-const handleSingleChapterBookRefs = function(ref) {
+const handleSingleChapterBookRefs = function(ref, config) {
 
-   const singleChapterBooks = Object.keys(raw_index).filter(book => loadMaxChapter(book) == 1);
+   const singleChapterBooks = Object.keys(config.raw_index).filter(book => loadMaxChapter(book, config) == 1);
    const [matchingBook] = singleChapterBooks.filter(book => ref.match(new RegExp(`^${book} \\d+`)));
    if(new RegExp(`^${matchingBook} 1:`).test(ref)) return ref;
    if(new RegExp(`^${matchingBook} 1$`).test(ref)) return ref;
@@ -248,7 +241,7 @@ const handleSingleChapterBookRefs = function(ref) {
    return ref;
 }
 
-const splitReferences = function(compoundReference) {
+const splitReferences = function(compoundReference, config) {
     let refs = compoundReference.split(/\s*;\s*/);
     let runningBook = "";
     let completeRefs = [];
@@ -256,17 +249,17 @@ const splitReferences = function(compoundReference) {
         const ref = refs[i];
         let pieces = ref.split(/([0-9:,-]+)$/);
         const firstPiece = pieces[0].trim();
-        runningBook = bookExists(firstPiece) ? firstPiece : runningBook;
-        const needsPreBook = !bookExists(firstPiece);
+        runningBook = bookExists(firstPiece, config) ? firstPiece : runningBook;
+        const needsPreBook = !bookExists(firstPiece, config);
         const preBook = needsPreBook && runningBook ? runningBook : "";
         completeRefs.push((preBook + " " + ref).trim());
     }
     return completeRefs;
 }
-const getBook = function(ref) {
+const getBook = function(ref, config) {
     let book = ref.replace(/([ 0-9:,-]+)$/, '').trim();
     book = book.replace(/-/g, "—");
-    if (bookExists(book)) return book;
+    if (bookExists(book, config)) return book;
     return false;
 }
 const getRanges = function(ref) {
@@ -377,8 +370,8 @@ const getRanges = function(ref) {
     };
     return ranges;
 }
-const loadVerseIds = function(book, ranges) {
-    if (refIndex == null) refIndex = loadRefIndex();
+const loadVerseIds = function(book, ranges, config) {
+    let refIndex = loadRefIndex(config);
     let verseList = [];
     for (let i in ranges) //Assumption: 1 range is within a single chapter
     {
@@ -389,7 +382,7 @@ const loadVerseIds = function(book, ranges) {
         let start = parseInt(matches[2]);
         let end = matches[3];
         if (end == '') end = start;
-        if (end == "X") end = loadMaxVerse(book, chapter);
+        if (end == "X") end = loadMaxVerse(book, chapter, config);
         else end = parseInt(end);
         for (let verse_num = start; verse_num <= end; verse_num++) {
             if (refIndex[book] == undefined) continue;
@@ -400,8 +393,8 @@ const loadVerseIds = function(book, ranges) {
     }
     return verseList;
 }
-const loadVerseStructure = function(verse_ids) {
-    if (verseIdIndex == null) verseIdIndex = loadVerseIdIndex();
+const loadVerseStructure = function(verse_ids, config) {
+    let verseIdIndex = loadVerseIdIndex(config);
     let segments = consecutiveSplitter(verse_ids);
     let structure = [];
     for (let i in segments) {
@@ -426,7 +419,7 @@ const consecutiveSplitter = function(verse_ids) {
     segments.push(segment);
     return segments;
 }
-const loadRefsFromRanges = function(ranges) {
+const loadRefsFromRanges = function(ranges, config) {
     let refs = [];
     let mostRecentBook, mostRecentChapter;
     for (let i in ranges) {
@@ -444,7 +437,7 @@ const loadRefsFromRanges = function(ranges) {
                 if (start_vs == end_vs) {
                     ref = start_bk + " " + start_ch + ":" + start_vs;
                 } else {
-                    if (start_vs == 1 && end_vs == loadMaxVerse(start_bk, start_ch)) //whole chapter
+                    if (start_vs == 1 && end_vs == loadMaxVerse(start_bk, start_ch, config)) //whole chapter
                     {
                         ref = start_bk + " " + start_ch;
                     } else {
@@ -452,16 +445,16 @@ const loadRefsFromRanges = function(ranges) {
                     }
                 }
             } else {
-                if (start_vs == 1 && end_vs == loadMaxVerse(end_bk, end_ch)) {
+                if (start_vs == 1 && end_vs == loadMaxVerse(end_bk, end_ch, config)) {
                     ref = start_bk + " " + start_ch + "-" + end_ch;
                 } else {
                     ref = start_bk + " " + start_ch + ":" + start_vs + "-" + end_ch + ":" + end_vs;
                 }
             }
         } else {
-            if (start_vs == 1 && end_vs == loadMaxVerse(end_bk, end_ch)) {
+            if (start_vs == 1 && end_vs == loadMaxVerse(end_bk, end_ch, config)) {
                 ref = start_bk + " " + start_ch + " - " + end_bk + " " + end_ch;
-            } else if (end_vs == loadMaxVerse(end_bk, end_ch)) {
+            } else if (end_vs == loadMaxVerse(end_bk, end_ch, config)) {
                 ref = start_bk + " " + start_ch + ":" + start_vs + " - " + end_bk + " " + end_ch;
             } else if (start_vs == 1) {
                 ref = start_bk + " " + start_ch + " - " + end_bk + " " + end_ch + ":" + end_vs;
@@ -472,42 +465,49 @@ const loadRefsFromRanges = function(ranges) {
         if (start_bk != '') mostRecentBook = start_bk;
         if (start_ch != '') mostRecentChapter = start_ch;
         ref = ref.replace(/^\s+:*/, '').trim();
+        
+        // Apply language-specific post rules
+        if (config.raw_regex.post_rules) {
+            for (let rule of config.raw_regex.post_rules) {
+                const re = new RegExp(rule[0], "ig");
+                ref = ref.replace(re, rule[1]);
+            }
+        }
+        
         refs.push(ref);
     }
     return refs;
 }
 
-const loadRefIndex = function() {
+const loadRefIndex = function(config) {
     let refIndex = {};
     let verse_id = 1;
-    let book_list = Object.keys(raw_index);
-    //if(raw_lang[lang]?.books) book_list = raw_lang[lang].books
+    let book_list = Object.keys(config.raw_index);
     for (let a in book_list) {
         let book_title = book_list[a];
         refIndex[book_title] = {};
-        for (let b in raw_index[book_title]) {
+        for (let b in config.raw_index[book_title]) {
             let chapter_num = parseInt(b) + 1;
-            let verse_max = raw_index[book_title][b];
+            let verse_max = config.raw_index[book_title][b];
             refIndex[book_title][chapter_num] = {};
             for (var verse_num = 1; verse_num <= verse_max; verse_num++) {
                 refIndex[book_title][chapter_num][verse_num] = verse_id;
                 verse_id++;
             }
         }
-
     }
     return refIndex;
 }
 
 
-const loadVerseIdIndex = function() {
+const loadVerseIdIndex = function(config) {
     let verseIdIndex = [null];
-    let book_list = Object.keys(raw_index);
+    let book_list = Object.keys(config.raw_index);
     for (let a in book_list) {
         let book_title = book_list[a];
-        for (let b in raw_index[book_title]) {
+        for (let b in config.raw_index[book_title]) {
             let chapter_num = parseInt(b) + 1;
-            let verse_max = raw_index[book_title][b];
+            let verse_max = config.raw_index[book_title][b];
             for (var verse_num = 1; verse_num <= verse_max; verse_num++) {
                 verseIdIndex.push([book_title, chapter_num, verse_num]);
             }
@@ -517,37 +517,81 @@ const loadVerseIdIndex = function() {
 }
 
 
-const bookExists = function(book) {
-    if (raw_index[book] === undefined) return false;
+const bookExists = function(book, config) {
+    if (config.raw_index[book] === undefined) return false;
     return true;
 }
 
 
-const loadMaxChapter = function(book) {
+const loadMaxChapter = function(book, config) {
 
-    if (!bookExists(book)) return 0;
-    return raw_index[book].length;
+    if (!bookExists(book, config)) return 0;
+    return config.raw_index[book].length;
 }
 
-const loadMaxVerse = function(book, chapter) {
+const loadMaxVerse = function(book, chapter, config) {
 
-    if (!bookExists(book)) return 0;
-    return raw_index[book][parseInt(chapter) - 1]
+    if (!bookExists(book, config)) return 0;
+    return config.raw_index[book][parseInt(chapter) - 1]
 }
 
 
 
-const detectReferences = (content,callBack) => {
+const detectReferences = (content, callBack, language = null) => {
 
     callBack = callBack ? callBack : (i)=>{return `[${i}]`};
-    const src = raw_regex.books.map(i => i[0]);
-    const dst = [...new Set(raw_regex.books.map(i => i[1]))];
+    const config = getLanguageConfig(language);
+    const src = config.raw_regex.books.map(i => i[0]);
+    const dst = [...new Set(config.raw_regex.books.map(i => i[1]))];
     const books = [...dst, ...src];
-    return processReferenceDetection(content,books,lang_extra,lookupReference,callBack);
+    return processReferenceDetection(content, books, config.lang_extra, (query) => lookupReference(query, language), callBack);
 
 }
 
+const getLanguageConfig = function(language) {
+    // Default to English if no language specified or not found
+    const effectiveLanguage = language && raw_lang[language] ? language : 'en';
+    
+    const config = {
+        language: effectiveLanguage,
+        raw_index: raw_index_orig,
+        raw_regex: {...raw_regex_orig},
+        lang_extra: {},
+        wordBreak: "\\b"
+    };
 
+    // For English or if language not found, use defaults
+    if (effectiveLanguage === 'en' || !raw_lang[effectiveLanguage]) {
+        return config;
+    }
+
+    // Process language-specific data
+    const langData = raw_lang[effectiveLanguage];
+    
+    if(langData.books) {
+        config.raw_regex.books = [];
+        let new_index = {};
+        const bookList = Object.keys(langData.books);
+        for(let book of bookList) {
+            const book_index = bookList.indexOf(book);
+            const original_bookname = Object.keys(raw_index_orig)?.[book_index];
+            if (original_bookname) {
+                new_index[book] = raw_index_orig[original_bookname];
+            }
+            const matches = [book, ...langData.books[book]];
+            config.raw_regex.books = config.raw_regex.books.concat(matches.map(i => [i, book]));
+        }
+        config.raw_index = new_index;
+    }
+
+    config.raw_regex.pre_rules = langData.pre_rules || config.raw_regex.pre_rules;
+    config.raw_regex.post_rules = langData.post_rules || config.raw_regex.post_rules;
+    config.raw_regex.spacing = langData.spacing || ["\\b", ""];
+    config.lang_extra = langData.matchRules || {};
+    config.wordBreak = langData.wordBreak || "\\b";
+
+    return config;
+}
 
 
 export {
