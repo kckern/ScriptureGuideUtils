@@ -1,5 +1,6 @@
 "use strict";
 
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -9,75 +10,63 @@ var _scriptregex = _interopRequireDefault(require("./data/scriptregex.js"));
 var _scriptlang = _interopRequireDefault(require("./data/scriptlang.js"));
 var _scriptdetect = require("./data/scriptdetect.js");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
 function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
 function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
 function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
-var lang = null;
-var wordBreak = "\\b";
-var lang_extra = {};
-var raw_index = _scriptdata["default"];
-var raw_regex = _scriptregex["default"];
-var refIndex = null;
-var verseIdIndex = null;
-var orginal_raw_index = _objectSpread({}, _scriptdata["default"]);
-var orginal_raw_regex = _objectSpread({}, _scriptregex["default"]);
-var setLanguage = exports.setLang = exports.language = exports.lang = exports.setLanguage = function setLanguage(language) {
-  var _raw_lang$lang, _raw_lang$lang2, _raw_lang$lang3, _raw_lang$lang4, _raw_lang$lang5, _raw_lang$lang6;
-  if (lang === language) return; // console.log(`Language already set to ${lang}`);
-  lang = language;
-  refIndex = null;
-  verseIdIndex = null;
-  if (!lang || !(_scriptlang["default"] !== null && _scriptlang["default"] !== void 0 && _scriptlang["default"][lang])) {
-    //revert to originals
-    raw_index = _objectSpread({}, orginal_raw_index);
-    raw_regex = _objectSpread({}, orginal_raw_regex);
-    lang_extra = {};
-    wordBreak = "\\b"; //TODO get from lang config?
-    return;
-  }
-  if ((_raw_lang$lang = _scriptlang["default"][lang]) !== null && _raw_lang$lang !== void 0 && _raw_lang$lang.books) {
-    raw_regex.books = [];
-    var new_index = {};
-    var bookList = Object.keys(_scriptlang["default"][lang].books);
-    var _loop = function _loop() {
-      var _Object$keys;
-      var book = _bookList[_i];
-      var book_index = bookList.indexOf(book);
-      var original_bookname = (_Object$keys = Object.keys(orginal_raw_index)) === null || _Object$keys === void 0 ? void 0 : _Object$keys[book_index];
-      new_index[book] = raw_index[original_bookname];
-      var matches = [book].concat(_toConsumableArray(_scriptlang["default"][lang].books[book])); //TODO, do I need the book in the list?
-      raw_regex.books = raw_regex.books.concat(matches.map(function (i) {
-        return [i, book];
-      }));
-    };
-    for (var _i = 0, _bookList = bookList; _i < _bookList.length; _i++) {
-      _loop();
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+// Browser localStorage key for language preference
+var LANGUAGE_STORAGE_KEY = 'scriptureGuideUtils_language';
+
+// Helper function to safely access localStorage
+var getStoredLanguage = function getStoredLanguage() {
+  try {
+    if (typeof localStorage !== 'undefined') {
+      return localStorage.getItem(LANGUAGE_STORAGE_KEY);
     }
-    raw_index = new_index;
+  } catch (e) {
+    // localStorage might not be available in some environments
   }
-  raw_regex.pre_rules = ((_raw_lang$lang2 = _scriptlang["default"][lang]) === null || _raw_lang$lang2 === void 0 ? void 0 : _raw_lang$lang2.pre_rules) || raw_regex.pre_rules; //TODO: add replace/append options
-  raw_regex.post_rules = ((_raw_lang$lang3 = _scriptlang["default"][lang]) === null || _raw_lang$lang3 === void 0 ? void 0 : _raw_lang$lang3.post_rules) || raw_regex.post_rules; //TODO: add replace/append options
-  raw_regex.spacing = ((_raw_lang$lang4 = _scriptlang["default"][lang]) === null || _raw_lang$lang4 === void 0 ? void 0 : _raw_lang$lang4.spacing) || ["", ""]; //TODO: Set spacing
+  return null;
+};
+var setStoredLanguage = function setStoredLanguage(language) {
+  try {
+    if (typeof localStorage !== 'undefined') {
+      if (language) {
+        localStorage.setItem(LANGUAGE_STORAGE_KEY, language);
+      } else {
+        localStorage.removeItem(LANGUAGE_STORAGE_KEY);
+      }
+    }
+  } catch (e) {
+    // localStorage might not be available in some environments
+  }
+};
 
-  //TODO: Set booksWithDashRegex
-
-  if ((_raw_lang$lang5 = _scriptlang["default"][lang]) !== null && _raw_lang$lang5 !== void 0 && _raw_lang$lang5.matchRules) lang_extra = (_raw_lang$lang6 = _scriptlang["default"][lang]) === null || _raw_lang$lang6 === void 0 ? void 0 : _raw_lang$lang6.matchRules;
+// Global default language (can be overridden by localStorage)
+var defaultLanguage = null;
+var setLanguage = exports.setLang = exports.language = exports.lang = exports.setLanguage = function setLanguage(language) {
+  defaultLanguage = language;
+  setStoredLanguage(language);
+};
+var getEffectiveLanguage = function getEffectiveLanguage(explicitLanguage) {
+  // Priority: explicit parameter > stored language > default language > 'en'
+  return explicitLanguage || getStoredLanguage() || defaultLanguage || 'en';
 };
 var lookupReference = exports.ref2VerseId = exports.read = exports.parse = exports.lookup = exports.lookupReference = function lookupReference(query) {
   var _verse_ids;
+  var language = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
   var isValidReference = query && typeof query === 'string' && query.length > 0;
   if (!isValidReference) return {
     "query": query,
@@ -85,39 +74,40 @@ var lookupReference = exports.ref2VerseId = exports.read = exports.parse = expor
     "verse_ids": []
   };
 
+  // Get effective language (explicit > stored > default > 'en')
+  var effectiveLanguage = getEffectiveLanguage(language);
+  var config = getLanguageConfig(effectiveLanguage);
+
   //Cleanup
-  var ref = cleanReference(query);
+  var ref = cleanReference(query, config);
   //Break compound reference into array of single references
-  var refs = splitReferences(ref);
+  var refs = splitReferences(ref, config);
 
   //Lookup each single reference individually, return the set
   var verse_ids = [];
   for (var i in refs) {
-    verse_ids = verse_ids.concat(lookupSingleRef(refs[i]));
+    verse_ids = verse_ids.concat(lookupSingleRef(refs[i], config));
   }
-  if (!((_verse_ids = verse_ids) !== null && _verse_ids !== void 0 && _verse_ids.length) && lang) {
-    var original_lang = lang + ""; //clone
-    //try again with no language
-    setLanguage(null);
-    var results = lookupReference(query);
-    setLanguage(original_lang);
+
+  // Fallback to English if no results found and language was specified
+  if (!((_verse_ids = verse_ids) !== null && _verse_ids !== void 0 && _verse_ids.length) && effectiveLanguage && effectiveLanguage !== 'en') {
+    var results = lookupReference(query, 'en');
     return results;
   }
   return {
     "query": query,
     "ref": ref,
-    // "gen": generateReference(verse_ids),
     "verse_ids": verse_ids
   };
 };
-var lookupSingleRef = function lookupSingleRef(ref) {
-  var booksWithDashRegex = /^(joseph|조셉)/i; // TODO: get from lang config
+var lookupSingleRef = function lookupSingleRef(ref, config) {
+  var booksWithDashRegex = /^(joseph|조셉)/i; // TODO: get from config
   //todo: better handling of multi-book ranges for unicode
-  if (!booksWithDashRegex.test(ref) && ref.match(/[—-](\d\s)*[\D]/ig)) return lookupMultiBookRange(ref);
-  var book = getBook(ref);
+  if (!booksWithDashRegex.test(ref) && ref.match(/[—-](\d\s)*[\D]/ig)) return lookupMultiBookRange(ref, config);
+  var book = getBook(ref, config);
   if (!book) return [];
   var ranges = getRanges(ref, book);
-  var verse_ids = loadVerseIds(book, ranges);
+  var verse_ids = loadVerseIds(book, ranges, config);
   return verse_ids;
 };
 var validateVerseIds = function validateVerseIds(verse_ids) {
@@ -138,14 +128,17 @@ var validateVerseIds = function validateVerseIds(verse_ids) {
   return false;
 };
 var generateReference = exports.verseId2Ref = exports.generate = exports.gen = exports.ref = exports.generateReference = function generateReference(verse_ids) {
+  var language = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
   verse_ids = validateVerseIds(verse_ids);
   if (!verse_ids) return '';
-  var ranges = loadVerseStructure(verse_ids);
-  var refs = loadRefsFromRanges(ranges);
+  var effectiveLanguage = getEffectiveLanguage(language);
+  var config = getLanguageConfig(effectiveLanguage);
+  var ranges = loadVerseStructure(verse_ids, config);
+  var refs = loadRefsFromRanges(ranges, config);
   var ref = refs.join("; ");
   return ref;
 };
-var lookupMultiBookRange = function lookupMultiBookRange(cleanRef) {
+var lookupMultiBookRange = function lookupMultiBookRange(cleanRef, config) {
   //eg Matthew 15—Mark 2
 
   var range = cleanRef.split(/[—-]/);
@@ -156,17 +149,17 @@ var lookupMultiBookRange = function lookupMultiBookRange(cleanRef) {
     var matches = range[1].match(/(.*?)\s(\d+)$/);
     if (matches === null) {
       //find end of book
-      var maxChapter = loadMaxChapter(range[1]);
-      var maxverse = loadMaxVerse(range[1], maxChapter);
+      var maxChapter = loadMaxChapter(range[1], config);
+      var maxverse = loadMaxVerse(range[1], maxChapter, config);
       range[1] = range[1] + " " + maxChapter + ":" + maxverse;
       // console.log(range);
     } else {
-      var _maxverse = loadMaxVerse(cleanReference(matches[1]), matches[2]);
+      var _maxverse = loadMaxVerse(cleanReference(matches[1], config), matches[2], config);
       range[1] = range[1] + ":" + _maxverse;
     }
   }
-  var start = lookupSingleRef(range[0])[0];
-  var end = lookupSingleRef(range[1])[0];
+  var start = lookupSingleRef(range[0], config)[0];
+  var end = lookupSingleRef(range[1], config)[0];
   var all_verse_ids = [];
   for (var i = start; i <= end; i++) all_verse_ids.push(i);
   return all_verse_ids;
@@ -180,11 +173,11 @@ var strToHash = function strToHash(str) {
   }
   return "==".concat(hash, "==");
 };
-var cleanReference = function cleanReference(messyReference) {
+var cleanReference = function cleanReference(messyReference, config) {
   var ref = messyReference.replace(/[\s]+/g, " ").trim();
 
   //Build Regex rules
-  var regex = raw_regex.pre_rules;
+  var regex = config.raw_regex.pre_rules;
   for (var i in regex) {
     var re = new RegExp(regex[i][0], "ig");
     ref = ref.replace(re, regex[i][1]);
@@ -203,12 +196,12 @@ var cleanReference = function cleanReference(messyReference) {
   ref = ref.replace(/([–-])(\D+)/g, " $1 $2 ");
 
   //Handle non-latin languages because \b only works for latin alphabet
-  var _ref = raw_regex.spacing || ["\\b", ""],
+  var _ref = config.raw_regex.spacing || ["\\b", ""],
     _ref2 = _slicedToArray(_ref, 2),
     wordBreak = _ref2[0],
     buffer = _ref2[1];
-  var srcbooks = raw_regex.books;
-  var dstbooks = buffer ? raw_regex.books.map(function (i) {
+  var srcbooks = config.raw_regex.books;
+  var dstbooks = buffer ? config.raw_regex.books.map(function (i) {
     return [i[1], i[1]];
   }) : [];
   var bookMatchList = [].concat(_toConsumableArray(dstbooks), _toConsumableArray(srcbooks)).sort(function (a, b) {
@@ -216,15 +209,15 @@ var cleanReference = function cleanReference(messyReference) {
   });
   regex = bookMatchList;
   var hashCypher = {};
-  for (var _i2 in regex) {
-    var _regex$_i = _slicedToArray(regex[_i2], 2),
+  for (var _i in regex) {
+    var _regex$_i = _slicedToArray(regex[_i], 2),
       book = _regex$_i[1];
     var hash = strToHash(book);
     hashCypher[book] = hash;
   }
-  for (var _i3 in regex) {
-    var re = new RegExp(wordBreak + buffer + regex[_i3][0] + buffer + "\\.*" + wordBreak, "ig");
-    var replacement = hashCypher[regex[_i3][1]] || regex[_i3][1];
+  for (var _i2 in regex) {
+    var re = new RegExp(wordBreak + buffer + regex[_i2][0] + buffer + "\\.*" + wordBreak, "ig");
+    var replacement = hashCypher[regex[_i2][1]] || regex[_i2][1];
     ref = (buffer + ref + buffer).replace(re, replacement).trim();
   }
   var books = Object.keys(hashCypher);
@@ -240,13 +233,13 @@ var cleanReference = function cleanReference(messyReference) {
   ref = ref.replace(/;(\S+)/g, "; $1"); //add space after semicolons
 
   var cleanReference = ref.trim();
-  cleanReference = handleSingleChapterBookRefs(cleanReference);
+  cleanReference = handleSingleChapterBookRefs(cleanReference, config);
   if (!cleanReference.match(/:/)) cleanReference = cleanReference.replace(/,/, "; ");
   return cleanReference;
 };
-var handleSingleChapterBookRefs = function handleSingleChapterBookRefs(ref) {
-  var singleChapterBooks = Object.keys(raw_index).filter(function (book) {
-    return loadMaxChapter(book) == 1;
+var handleSingleChapterBookRefs = function handleSingleChapterBookRefs(ref, config) {
+  var singleChapterBooks = Object.keys(config.raw_index).filter(function (book) {
+    return loadMaxChapter(book, config) == 1;
   });
   var _singleChapterBooks$f = singleChapterBooks.filter(function (book) {
       return ref.match(new RegExp("^".concat(book, " \\d+")));
@@ -258,7 +251,7 @@ var handleSingleChapterBookRefs = function handleSingleChapterBookRefs(ref) {
   ref = ref.replace(new RegExp("^".concat(matchingBook, " (\\d+)")), "".concat(matchingBook, " 1:$1"));
   return ref;
 };
-var splitReferences = function splitReferences(compoundReference) {
+var splitReferences = function splitReferences(compoundReference, config) {
   var refs = compoundReference.split(/\s*;\s*/);
   var runningBook = "";
   var completeRefs = [];
@@ -266,17 +259,17 @@ var splitReferences = function splitReferences(compoundReference) {
     var ref = refs[i];
     var pieces = ref.split(/([0-9:,-]+)$/);
     var firstPiece = pieces[0].trim();
-    runningBook = bookExists(firstPiece) ? firstPiece : runningBook;
-    var needsPreBook = !bookExists(firstPiece);
+    runningBook = bookExists(firstPiece, config) ? firstPiece : runningBook;
+    var needsPreBook = !bookExists(firstPiece, config);
     var preBook = needsPreBook && runningBook ? runningBook : "";
     completeRefs.push((preBook + " " + ref).trim());
   }
   return completeRefs;
 };
-var getBook = function getBook(ref) {
+var getBook = function getBook(ref, config) {
   var book = ref.replace(/([ 0-9:,-]+)$/, '').trim();
   book = book.replace(/-/g, "—");
-  if (bookExists(book)) return book;
+  if (bookExists(book, config)) return book;
   return false;
 };
 var getRanges = function getRanges(ref) {
@@ -319,8 +312,8 @@ var getRanges = function getRanges(ref) {
     var _startChapter = parseInt(_chapterStartandEnd[0], 0);
     var _endChapter = parseInt(_chapterStartandEnd[1], 0);
     var _chapterRange = [];
-    for (var _i4 = _startChapter; _i4 <= _endChapter; _i4++) {
-      _chapterRange.push(_i4);
+    for (var _i3 = _startChapter; _i3 <= _endChapter; _i3++) {
+      _chapterRange.push(_i3);
     }
     ranges = _chapterRange.map(function (chapter) {
       return chapter + ": 1-X";
@@ -336,17 +329,17 @@ var getRanges = function getRanges(ref) {
     var split = numbers.split(/,/);
     var chapter = null;
     var verses = null;
-    for (var _i5 in split) {
+    for (var _i4 in split) {
       // 2:2   OR   1:1-4
-      if (split[_i5].match(/:/)) {
-        var pieces = split[_i5].split(/:/);
+      if (split[_i4].match(/:/)) {
+        var pieces = split[_i4].split(/:/);
         chapter = mostRecentChapter = pieces[0];
         verses = pieces[1];
       }
       //3   or 6-7
       else {
         chapter = mostRecentChapter;
-        verses = split[_i5];
+        verses = split[_i4];
       }
       ranges.push(chapter + ": " + verses.trim());
     }
@@ -357,9 +350,9 @@ var getRanges = function getRanges(ref) {
     var _mostRecentChapter = null;
     var _chapter = null;
     var _verses = null;
-    for (var _i6 in _split) {
+    for (var _i5 in _split) {
       //Genesis 1:1-5
-      if (_split[_i6].match(/:/)) {
+      if (_split[_i5].match(/:/)) {
         var _pieces = numbers.split(/:/);
         _chapter = _mostRecentChapter = _pieces[0];
         _verses = _pieces[1];
@@ -367,7 +360,7 @@ var getRanges = function getRanges(ref) {
       //10
       else {
         _chapter = _mostRecentChapter;
-        _verses = _split[_i6];
+        _verses = _split[_i5];
       }
       ranges.push(_chapter + ": " + _verses.trim());
     }
@@ -383,12 +376,12 @@ var getRanges = function getRanges(ref) {
     _verses2 = _verses2.map(function (v) {
       return parseInt(v.replace(/\D/g, '').trim());
     });
-    for (var _i7 = _chapters[0]; _i7 <= _chapters[1]; _i7++) {
+    for (var _i6 = _chapters[0]; _i6 <= _chapters[1]; _i6++) {
       var start = 1;
       var end = "X";
-      if (_chapters[0] == _i7) start = _verses2[0];
-      if (_chapters[1] == _i7) end = _verses2[_verses2.length - 1];
-      ranges.push(_i7 + ": " + start + "-" + end);
+      if (_chapters[0] == _i6) start = _verses2[0];
+      if (_chapters[1] == _i6) end = _verses2[_verses2.length - 1];
+      ranges.push(_i6 + ": " + start + "-" + end);
     }
   } else {
     ranges = [numbers];
@@ -396,8 +389,8 @@ var getRanges = function getRanges(ref) {
   ;
   return ranges;
 };
-var loadVerseIds = function loadVerseIds(book, ranges) {
-  if (refIndex == null) refIndex = loadRefIndex();
+var loadVerseIds = function loadVerseIds(book, ranges, config) {
+  var refIndex = loadRefIndex(config);
   var verseList = [];
   for (var i in ranges)
   //Assumption: 1 range is within a single chapter
@@ -409,7 +402,7 @@ var loadVerseIds = function loadVerseIds(book, ranges) {
     var start = parseInt(matches[2]);
     var end = matches[3];
     if (end == '') end = start;
-    if (end == "X") end = loadMaxVerse(book, chapter);else end = parseInt(end);
+    if (end == "X") end = loadMaxVerse(book, chapter, config);else end = parseInt(end);
     for (var verse_num = start; verse_num <= end; verse_num++) {
       if (refIndex[book] == undefined) continue;
       if (refIndex[book][chapter] == undefined) continue;
@@ -419,8 +412,8 @@ var loadVerseIds = function loadVerseIds(book, ranges) {
   }
   return verseList;
 };
-var loadVerseStructure = function loadVerseStructure(verse_ids) {
-  if (verseIdIndex == null) verseIdIndex = loadVerseIdIndex();
+var loadVerseStructure = function loadVerseStructure(verse_ids, config) {
+  var verseIdIndex = loadVerseIdIndex(config);
   var segments = consecutiveSplitter(verse_ids);
   var structure = [];
   for (var i in segments) {
@@ -445,7 +438,7 @@ var consecutiveSplitter = function consecutiveSplitter(verse_ids) {
   segments.push(segment);
   return segments;
 };
-var loadRefsFromRanges = function loadRefsFromRanges(ranges) {
+var loadRefsFromRanges = function loadRefsFromRanges(ranges, config) {
   var refs = [];
   var mostRecentBook, mostRecentChapter;
   for (var i in ranges) {
@@ -463,7 +456,7 @@ var loadRefsFromRanges = function loadRefsFromRanges(ranges) {
         if (start_vs == end_vs) {
           ref = start_bk + " " + start_ch + ":" + start_vs;
         } else {
-          if (start_vs == 1 && end_vs == loadMaxVerse(start_bk, start_ch))
+          if (start_vs == 1 && end_vs == loadMaxVerse(start_bk, start_ch, config))
             //whole chapter
             {
               ref = start_bk + " " + start_ch;
@@ -472,16 +465,16 @@ var loadRefsFromRanges = function loadRefsFromRanges(ranges) {
           }
         }
       } else {
-        if (start_vs == 1 && end_vs == loadMaxVerse(end_bk, end_ch)) {
+        if (start_vs == 1 && end_vs == loadMaxVerse(end_bk, end_ch, config)) {
           ref = start_bk + " " + start_ch + "-" + end_ch;
         } else {
           ref = start_bk + " " + start_ch + ":" + start_vs + "-" + end_ch + ":" + end_vs;
         }
       }
     } else {
-      if (start_vs == 1 && end_vs == loadMaxVerse(end_bk, end_ch)) {
+      if (start_vs == 1 && end_vs == loadMaxVerse(end_bk, end_ch, config)) {
         ref = start_bk + " " + start_ch + " - " + end_bk + " " + end_ch;
-      } else if (end_vs == loadMaxVerse(end_bk, end_ch)) {
+      } else if (end_vs == loadMaxVerse(end_bk, end_ch, config)) {
         ref = start_bk + " " + start_ch + ":" + start_vs + " - " + end_bk + " " + end_ch;
       } else if (start_vs == 1) {
         ref = start_bk + " " + start_ch + " - " + end_bk + " " + end_ch + ":" + end_vs;
@@ -492,21 +485,37 @@ var loadRefsFromRanges = function loadRefsFromRanges(ranges) {
     if (start_bk != '') mostRecentBook = start_bk;
     if (start_ch != '') mostRecentChapter = start_ch;
     ref = ref.replace(/^\s+:*/, '').trim();
+
+    // Apply language-specific post rules
+    if (config.raw_regex.post_rules) {
+      var _iterator = _createForOfIteratorHelper(config.raw_regex.post_rules),
+        _step;
+      try {
+        for (_iterator.s(); !(_step = _iterator.n()).done;) {
+          var rule = _step.value;
+          var re = new RegExp(rule[0], "ig");
+          ref = ref.replace(re, rule[1]);
+        }
+      } catch (err) {
+        _iterator.e(err);
+      } finally {
+        _iterator.f();
+      }
+    }
     refs.push(ref);
   }
   return refs;
 };
-var loadRefIndex = function loadRefIndex() {
+var loadRefIndex = function loadRefIndex(config) {
   var refIndex = {};
   var verse_id = 1;
-  var book_list = Object.keys(raw_index);
-  //if(raw_lang[lang]?.books) book_list = raw_lang[lang].books
+  var book_list = Object.keys(config.raw_index);
   for (var a in book_list) {
     var book_title = book_list[a];
     refIndex[book_title] = {};
-    for (var b in raw_index[book_title]) {
+    for (var b in config.raw_index[book_title]) {
       var chapter_num = parseInt(b) + 1;
-      var verse_max = raw_index[book_title][b];
+      var verse_max = config.raw_index[book_title][b];
       refIndex[book_title][chapter_num] = {};
       for (var verse_num = 1; verse_num <= verse_max; verse_num++) {
         refIndex[book_title][chapter_num][verse_num] = verse_id;
@@ -516,14 +525,14 @@ var loadRefIndex = function loadRefIndex() {
   }
   return refIndex;
 };
-var loadVerseIdIndex = function loadVerseIdIndex() {
+var loadVerseIdIndex = function loadVerseIdIndex(config) {
   var verseIdIndex = [null];
-  var book_list = Object.keys(raw_index);
+  var book_list = Object.keys(config.raw_index);
   for (var a in book_list) {
     var book_title = book_list[a];
-    for (var b in raw_index[book_title]) {
+    for (var b in config.raw_index[book_title]) {
       var chapter_num = parseInt(b) + 1;
-      var verse_max = raw_index[book_title][b];
+      var verse_max = config.raw_index[book_title][b];
       for (var verse_num = 1; verse_num <= verse_max; verse_num++) {
         verseIdIndex.push([book_title, chapter_num, verse_num]);
       }
@@ -531,28 +540,80 @@ var loadVerseIdIndex = function loadVerseIdIndex() {
   }
   return verseIdIndex;
 };
-var bookExists = function bookExists(book) {
-  if (raw_index[book] === undefined) return false;
+var bookExists = function bookExists(book, config) {
+  if (config.raw_index[book] === undefined) return false;
   return true;
 };
-var loadMaxChapter = function loadMaxChapter(book) {
-  if (!bookExists(book)) return 0;
-  return raw_index[book].length;
+var loadMaxChapter = function loadMaxChapter(book, config) {
+  if (!bookExists(book, config)) return 0;
+  return config.raw_index[book].length;
 };
-var loadMaxVerse = function loadMaxVerse(book, chapter) {
-  if (!bookExists(book)) return 0;
-  return raw_index[book][parseInt(chapter) - 1];
+var loadMaxVerse = function loadMaxVerse(book, chapter, config) {
+  if (!bookExists(book, config)) return 0;
+  return config.raw_index[book][parseInt(chapter) - 1];
 };
 var detectReferences = exports.linkRefs = exports.detectScriptures = exports.detectRefs = exports.detectScriptureReferences = exports.detect = exports.detectReferences = function detectReferences(content, callBack) {
+  var language = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
   callBack = callBack ? callBack : function (i) {
     return "[".concat(i, "]");
   };
-  var src = raw_regex.books.map(function (i) {
+  var effectiveLanguage = getEffectiveLanguage(language);
+  var config = getLanguageConfig(effectiveLanguage);
+  var src = config.raw_regex.books.map(function (i) {
     return i[0];
   });
-  var dst = _toConsumableArray(new Set(raw_regex.books.map(function (i) {
+  var dst = _toConsumableArray(new Set(config.raw_regex.books.map(function (i) {
     return i[1];
   })));
   var books = [].concat(_toConsumableArray(dst), _toConsumableArray(src));
-  return (0, _scriptdetect.processReferenceDetection)(content, books, lang_extra, lookupReference, callBack);
+  return (0, _scriptdetect.processReferenceDetection)(content, books, config.lang_extra, function (query) {
+    return lookupReference(query, effectiveLanguage);
+  }, callBack);
+};
+var getLanguageConfig = function getLanguageConfig(language) {
+  // Default to English if no language specified or not found
+  var effectiveLanguage = language && _scriptlang["default"][language] ? language : 'en';
+  var config = {
+    language: effectiveLanguage,
+    raw_index: _scriptdata["default"],
+    raw_regex: _objectSpread({}, _scriptregex["default"]),
+    lang_extra: {},
+    wordBreak: "\\b"
+  };
+
+  // For English or if language not found, use defaults
+  if (effectiveLanguage === 'en' || !_scriptlang["default"][effectiveLanguage]) {
+    return config;
+  }
+
+  // Process language-specific data
+  var langData = _scriptlang["default"][effectiveLanguage];
+  if (langData.books) {
+    config.raw_regex.books = [];
+    var new_index = {};
+    var bookList = Object.keys(langData.books);
+    var _loop = function _loop() {
+      var _Object$keys;
+      var book = _bookList[_i7];
+      var book_index = bookList.indexOf(book);
+      var original_bookname = (_Object$keys = Object.keys(_scriptdata["default"])) === null || _Object$keys === void 0 ? void 0 : _Object$keys[book_index];
+      if (original_bookname) {
+        new_index[book] = _scriptdata["default"][original_bookname];
+      }
+      var matches = [book].concat(_toConsumableArray(langData.books[book]));
+      config.raw_regex.books = config.raw_regex.books.concat(matches.map(function (i) {
+        return [i, book];
+      }));
+    };
+    for (var _i7 = 0, _bookList = bookList; _i7 < _bookList.length; _i7++) {
+      _loop();
+    }
+    config.raw_index = new_index;
+  }
+  config.raw_regex.pre_rules = langData.pre_rules || config.raw_regex.pre_rules;
+  config.raw_regex.post_rules = langData.post_rules || config.raw_regex.post_rules;
+  config.raw_regex.spacing = langData.spacing || ["\\b", ""];
+  config.lang_extra = langData.matchRules || {};
+  config.wordBreak = langData.wordBreak || "\\b";
+  return config;
 };
