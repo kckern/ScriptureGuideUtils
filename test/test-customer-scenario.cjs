@@ -37,7 +37,7 @@ try {
 console.log('\nTest 2: Testing package.json exports field');
 try {
     // This should automatically pick the right version based on import vs require
-    const scriptureGuide = require('../scriptures');  // This uses the package.json exports
+    const scriptureGuide = require('scripture-guide');  // This uses the package.json exports
     console.log('✅ Package.json exports working for CommonJS');
     
     const result = scriptureGuide.lookupReference('Doctrine and Covenants 76:22-24');
@@ -45,6 +45,8 @@ try {
     
 } catch (error) {
     console.error('❌ Package.json exports failed:', error.message);
+    console.log('   Note: This test requires the package to be installed globally or linked');
+    console.log('   Run: npm link (in this directory) then npm link scripture-guide');
 }
 
 console.log('\n🏁 Customer scenario test complete!');
