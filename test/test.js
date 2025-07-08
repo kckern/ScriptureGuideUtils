@@ -1,4 +1,4 @@
-import * as scriptures from "../scriptures.mjs";
+import * as scriptures from "../src/scriptures.mjs";
 
 let output,ref;
 
