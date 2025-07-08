@@ -16,7 +16,7 @@
   "scripts": {
     "start": "node test/test.js",
     "test": "node test/test.js",
-    "build": "node build/build.cjs && npx babel dist/scriptures.mjs -o dist/scriptures.cjs",
+    "build": "node build/build.cjs",
     "embed": "node build/build.cjs",
     "prepublishOnly": "npm version patch && npm run build"
   },
