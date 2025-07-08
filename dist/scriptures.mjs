@@ -1,7 +1,7 @@
-import raw_index_orig from './data/scriptdata.mjs';
-import raw_regex_orig from './data/scriptregex.mjs';
-import raw_lang from './data/scriptlang.mjs';
-import { processReferenceDetection } from './data/scriptdetect.mjs';
+import raw_index_orig from '../data/scriptdata.mjs';
+import raw_regex_orig from '../data/scriptregex.mjs';
+import raw_lang from '../data/scriptlang.mjs';
+import { processReferenceDetection } from './scriptdetect.mjs';
 
 // Browser localStorage key for language preference
 const LANGUAGE_STORAGE_KEY = 'scriptureGuideUtils_language';

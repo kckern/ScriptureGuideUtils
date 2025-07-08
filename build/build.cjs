@@ -6,17 +6,17 @@ const path = require('path');
 console.log('Creating browser-compatible scriptures.mjs with embedded data...');
 
 // Read all the data files and extract their content
-const scriptdata = fs.readFileSync(path.join(__dirname, 'data/scriptdata.mjs'), 'utf8')
+const scriptdata = fs.readFileSync(path.join(__dirname, '../data/scriptdata.mjs'), 'utf8')
     .replace(/^export default\s+/, '').replace(/;\s*$/, '');
 
-const scriptregex = fs.readFileSync(path.join(__dirname, 'data/scriptregex.mjs'), 'utf8')  
+const scriptregex = fs.readFileSync(path.join(__dirname, '../data/scriptregex.mjs'), 'utf8')
     .replace(/^export default\s+/, '').replace(/;\s*$/, '');
 
-const scriptlang = fs.readFileSync(path.join(__dirname, 'data/scriptlang.mjs'), 'utf8')
+const scriptlang = fs.readFileSync(path.join(__dirname, '../data/scriptlang.mjs'), 'utf8')
     .replace(/^export default\s+/, '').replace(/;\s*$/, '');
 
 // Get the processReferenceDetection function
-const scriptdetect = fs.readFileSync(path.join(__dirname, 'data/scriptdetect.mjs'), 'utf8');
+const scriptdetect = fs.readFileSync(path.join(__dirname, '../src/scriptdetect.mjs'), 'utf8');
 
 // Extract the entire file content and remove exports
 const processReferenceDetectionCode = scriptdetect
@@ -24,7 +24,7 @@ const processReferenceDetectionCode = scriptdetect
     .trim();
 
 // Read the original scriptures file
-const originalContent = fs.readFileSync(path.join(__dirname, 'scriptures-original.mjs.backup'), 'utf8');
+const originalContent = fs.readFileSync(path.join(__dirname, '../src/scriptures.mjs'), 'utf8');
 
 // Replace imports with embedded data
 const updatedContent = originalContent
@@ -38,7 +38,7 @@ const updatedContent = originalContent
              `${processReferenceDetectionCode}\n`);
 
 // Write the updated file
-fs.writeFileSync(path.join(__dirname, 'scriptures.mjs'), updatedContent);
+fs.writeFileSync(path.join(__dirname, '../dist/scriptures.mjs'), updatedContent);
 
 console.log('✅ Updated scriptures.mjs with embedded data');
 console.log('✅ Now works in browsers, Node.js, and bundlers without external dependencies!');

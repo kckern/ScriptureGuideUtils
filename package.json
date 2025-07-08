@@ -2,22 +2,22 @@
   "name": "scripture-guide",
   "version": "1.0.75",
   "description": "A utility for biblical and scripture reference parsing that enables structured queries based on strings of traditional scripture references (e.g. John 3:16).  ",
-  "main": "scriptures.cjs",
-  "module": "scriptures.mjs",
-  "types": "scriptures.d.ts",
+  "main": "dist/scriptures.cjs",
+  "module": "dist/scriptures.mjs",
+  "types": "dist/scriptures.d.ts",
   "type": "module",
   "exports": {
     ".": {
-      "import": "./scriptures.mjs",
-      "require": "./scriptures.cjs",
-      "types": "./scriptures.d.ts"
+      "import": "./dist/scriptures.mjs",
+      "require": "./dist/scriptures.cjs",
+      "types": "./dist/scriptures.d.ts"
     }
   },
   "scripts": {
     "start": "node test/test.js",
     "test": "node test/test.js",
-    "build": "node embed-data.cjs && npx babel scriptures.mjs -o scriptures.cjs",
-    "embed": "node embed-data.cjs",
+    "build": "node build/build.cjs && npx babel dist/scriptures.mjs -o dist/scriptures.cjs",
+    "embed": "node build/build.cjs",
     "prepublishOnly": "npm version patch && npm run build"
   },
   "author": "",
