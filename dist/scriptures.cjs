@@ -947,7 +947,6 @@ const lookupReference = function(query, language = null, lookupConfig = {}) {
 
     // Get effective language (explicit > stored > default > 'en')
     const effectiveLanguage = getEffectiveLanguage(language);
-    console.log(`Lookup reference: ${query} in ${effectiveLanguage}`);
     
     // Try lookup in the requested language first
     const verse_ids = lookupInLanguage(query, effectiveLanguage);
