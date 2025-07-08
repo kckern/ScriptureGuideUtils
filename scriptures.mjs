@@ -808,8 +808,6 @@ function findMatchIndexes(content, matches,lookupReference, lang_extra) {
 
 const processReferenceDetection = (content,books,lang_extra,lookupReference,callback) =>
 {
-    let joiners = null;
-    let i = 0;
     try{
     lang_extra = lang_extra || {};
     const matches = findMatches(content,books,lang_extra);
@@ -879,7 +877,7 @@ const processReferenceDetection = (content,books,lang_extra,lookupReference,call
    const maxCount = Math.max(cutItems.length,negativeItems.length);
    //merge by alternating cutItems and negativeItems.  run the callback on the cut items
    const merged = [];
-   for(i=0;i<maxCount;i++){
+   for(let i=0;i<maxCount;i++){
     const firstItem = firstReferenceIsAtStart ? cutItems[i] : negativeItems[i];
     const secondItem = firstReferenceIsAtStart ? negativeItems[i] : cutItems[i];
     if(firstItem) merged.push(firstItem);
