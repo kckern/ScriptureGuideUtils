@@ -808,6 +808,8 @@ function findMatchIndexes(content, matches,lookupReference, lang_extra) {
 
 const processReferenceDetection = (content,books,lang_extra,lookupReference,callback) =>
 {
+    let joiners = null;
+    let i = 0;
     try{
     lang_extra = lang_extra || {};
     const matches = findMatches(content,books,lang_extra);
@@ -821,7 +823,7 @@ const processReferenceDetection = (content,books,lang_extra,lookupReference,call
     },[]);
     const gapStrings = gapsBetweenIndeces.map(([start,end])=>content.substring(start,end).trim());
     //console.log({matches,matchIndeces,gapsBetweenIndeces,gapStrings});
-    const joiners = lang_extra.joiners || ["^[;, ]*(and|c\\.*f\\.*)*$"];
+    joiners = lang_extra.joiners || ["^[;, ]*(and|c\\.*f\\.*)*$"];
     const gapThatMayBeMerged = gapsBetweenIndeces.map(([start,end],i)=>{
         const gapString = gapStrings[i];
         const canBeMerged =  joiners.some(joiner=>(new RegExp(joiner,"ig")).test(gapString));
@@ -877,7 +879,7 @@ const processReferenceDetection = (content,books,lang_extra,lookupReference,call
    const maxCount = Math.max(cutItems.length,negativeItems.length);
    //merge by alternating cutItems and negativeItems.  run the callback on the cut items
    const merged = [];
-   for(let i=0;i<maxCount;i++){
+   for(i=0;i<maxCount;i++){
     const firstItem = firstReferenceIsAtStart ? cutItems[i] : negativeItems[i];
     const secondItem = firstReferenceIsAtStart ? negativeItems[i] : cutItems[i];
     if(firstItem) merged.push(firstItem);
