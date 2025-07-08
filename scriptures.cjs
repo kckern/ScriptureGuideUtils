@@ -1419,7 +1419,7 @@ var processReferenceDetection = function processReferenceDetection(content, book
       return content.substring(start, end).trim();
     });
     //console.log({matches,matchIndeces,gapsBetweenIndeces,gapStrings});
-    joiners = lang_extra.joiners || ["^[;, ]*(and|c\\.*f\\.*)*$"];
+    var joiners = lang_extra.joiners || ["^[;, ]*(and|c\\.*f\\.*)*$"];
     var gapThatMayBeMerged = gapsBetweenIndeces.map(function (_ref15, i) {
       var _ref16 = _slicedToArray(_ref15, 2),
         start = _ref16[0],
@@ -1485,7 +1485,7 @@ var processReferenceDetection = function processReferenceDetection(content, book
     var maxCount = Math.max(cutItems.length, negativeItems.length);
     //merge by alternating cutItems and negativeItems.  run the callback on the cut items
     var merged = [];
-    for (i = 0; i < maxCount; i++) {
+    for (var i = 0; i < maxCount; i++) {
       var firstItem = firstReferenceIsAtStart ? cutItems[i] : negativeItems[i];
       var secondItem = firstReferenceIsAtStart ? negativeItems[i] : cutItems[i];
       if (firstItem) merged.push(firstItem);
@@ -1555,8 +1555,8 @@ var _lookupReference = exports.ref2VerseId = exports.read = exports.parse = expo
 
   //Lookup each single reference individually, return the set
   var verse_ids = [];
-  for (var _i in refs) {
-    verse_ids = verse_ids.concat(lookupSingleRef(refs[_i], config));
+  for (var i in refs) {
+    verse_ids = verse_ids.concat(lookupSingleRef(refs[i], config));
   }
 
   // Fallback to English if no results found and language was specified
@@ -1631,13 +1631,13 @@ var lookupMultiBookRange = function lookupMultiBookRange(cleanRef, config) {
   var start = lookupSingleRef(range[0], config)[0];
   var end = lookupSingleRef(range[1], config)[0];
   var all_verse_ids = [];
-  for (var _i2 = start; _i2 <= end; _i2++) all_verse_ids.push(_i2);
+  for (var i = start; i <= end; i++) all_verse_ids.push(i);
   return all_verse_ids;
 };
 var strToHash = function strToHash(str) {
   var hash = 0;
-  for (var _i3 = 0; _i3 < str.length; _i3++) {
-    hash = hash * 31 + str.charCodeAt(_i3);
+  for (var i = 0; i < str.length; i++) {
+    hash = hash * 31 + str.charCodeAt(i);
     //max 32
     if (hash > 2147483647) hash = hash % 2147483647;
   }
@@ -1648,9 +1648,9 @@ var cleanReference = function cleanReference(messyReference, config) {
 
   //Build Regex rules
   var regex = config.raw_regex.pre_rules;
-  for (var _i4 in regex) {
-    var re = new RegExp(regex[_i4][0], "ig");
-    ref = ref.replace(re, regex[_i4][1]);
+  for (var i in regex) {
+    var re = new RegExp(regex[i][0], "ig");
+    ref = ref.replace(re, regex[i][1]);
   }
 
   //Turn dots into colons
@@ -1679,15 +1679,15 @@ var cleanReference = function cleanReference(messyReference, config) {
   });
   regex = bookMatchList;
   var hashCypher = {};
-  for (var _i5 in regex) {
-    var _regex$_i = _slicedToArray(regex[_i5], 2),
+  for (var _i in regex) {
+    var _regex$_i = _slicedToArray(regex[_i], 2),
       book = _regex$_i[1];
     var hash = strToHash(book);
     hashCypher[book] = hash;
   }
-  for (var _i6 in regex) {
-    var re = new RegExp(wordBreak + buffer + regex[_i6][0] + buffer + "\\.*" + wordBreak, "ig");
-    var replacement = hashCypher[regex[_i6][1]] || regex[_i6][1];
+  for (var _i2 in regex) {
+    var re = new RegExp(wordBreak + buffer + regex[_i2][0] + buffer + "\\.*" + wordBreak, "ig");
+    var replacement = hashCypher[regex[_i2][1]] || regex[_i2][1];
     ref = (buffer + ref + buffer).replace(re, replacement).trim();
   }
   var books = Object.keys(hashCypher);
@@ -1725,8 +1725,8 @@ var splitReferences = function splitReferences(compoundReference, config) {
   var refs = compoundReference.split(/\s*;\s*/);
   var runningBook = "";
   var completeRefs = [];
-  for (var _i7 in refs) {
-    var ref = refs[_i7];
+  for (var i in refs) {
+    var ref = refs[i];
     var pieces = ref.split(/([0-9:,-]+)$/);
     var firstPiece = pieces[0].trim();
     runningBook = bookExists(firstPiece, config) ? firstPiece : runningBook;
@@ -1752,20 +1752,20 @@ var getRanges = function getRanges(ref) {
   // Genesis 1,3-5
   if (isChaptersOnly && isSplit && isRange) {
     var chapterRanges = numbers.split(/,/);
-    for (var _i8 in chapterRanges) {
+    for (var i in chapterRanges) {
       //3-5
-      if (chapterRanges[_i8].match(/-/)) {
-        var chapterStartandEnd = chapterRanges[_i8].split(/-/);
+      if (chapterRanges[i].match(/-/)) {
+        var chapterStartandEnd = chapterRanges[i].split(/-/);
         var startChapter = parseInt(chapterStartandEnd[0], 0);
         var endChapter = parseInt(chapterStartandEnd[1], 0);
         var chapterRange = [];
-        for (leti = startChapter; _i8 <= endChapter; _i8++) {
-          ranges.push(_i8 + ": 1-X");
+        for (leti = startChapter; i <= endChapter; i++) {
+          ranges.push(i + ": 1-X");
         }
       }
       //1
       else {
-        ranges.push(chapterRanges[_i8] + ": 1-X");
+        ranges.push(chapterRanges[i] + ": 1-X");
       }
     }
   }
@@ -1782,8 +1782,8 @@ var getRanges = function getRanges(ref) {
     var _startChapter = parseInt(_chapterStartandEnd[0], 0);
     var _endChapter = parseInt(_chapterStartandEnd[1], 0);
     var _chapterRange = [];
-    for (var _i9 = _startChapter; _i9 <= _endChapter; _i9++) {
-      _chapterRange.push(_i9);
+    for (var _i3 = _startChapter; _i3 <= _endChapter; _i3++) {
+      _chapterRange.push(_i3);
     }
     ranges = _chapterRange.map(function (chapter) {
       return chapter + ": 1-X";
@@ -1799,17 +1799,17 @@ var getRanges = function getRanges(ref) {
     var split = numbers.split(/,/);
     var chapter = null;
     var verses = null;
-    for (var _i0 in split) {
+    for (var _i4 in split) {
       // 2:2   OR   1:1-4
-      if (split[_i0].match(/:/)) {
-        var pieces = split[_i0].split(/:/);
+      if (split[_i4].match(/:/)) {
+        var pieces = split[_i4].split(/:/);
         chapter = mostRecentChapter = pieces[0];
         verses = pieces[1];
       }
       //3   or 6-7
       else {
         chapter = mostRecentChapter;
-        verses = split[_i0];
+        verses = split[_i4];
       }
       ranges.push(chapter + ": " + verses.trim());
     }
@@ -1820,9 +1820,9 @@ var getRanges = function getRanges(ref) {
     var _mostRecentChapter = null;
     var _chapter = null;
     var _verses = null;
-    for (var _i1 in _split) {
+    for (var _i5 in _split) {
       //Genesis 1:1-5
-      if (_split[_i1].match(/:/)) {
+      if (_split[_i5].match(/:/)) {
         var _pieces = numbers.split(/:/);
         _chapter = _mostRecentChapter = _pieces[0];
         _verses = _pieces[1];
@@ -1830,7 +1830,7 @@ var getRanges = function getRanges(ref) {
       //10
       else {
         _chapter = _mostRecentChapter;
-        _verses = _split[_i1];
+        _verses = _split[_i5];
       }
       ranges.push(_chapter + ": " + _verses.trim());
     }
@@ -1846,12 +1846,12 @@ var getRanges = function getRanges(ref) {
     _verses2 = _verses2.map(function (v) {
       return parseInt(v.replace(/\D/g, '').trim());
     });
-    for (var _i10 = _chapters[0]; _i10 <= _chapters[1]; _i10++) {
+    for (var _i6 = _chapters[0]; _i6 <= _chapters[1]; _i6++) {
       var start = 1;
       var end = "X";
-      if (_chapters[0] == _i10) start = _verses2[0];
-      if (_chapters[1] == _i10) end = _verses2[_verses2.length - 1];
-      ranges.push(_i10 + ": " + start + "-" + end);
+      if (_chapters[0] == _i6) start = _verses2[0];
+      if (_chapters[1] == _i6) end = _verses2[_verses2.length - 1];
+      ranges.push(_i6 + ": " + start + "-" + end);
     }
   } else {
     ranges = [numbers];
@@ -1862,10 +1862,10 @@ var getRanges = function getRanges(ref) {
 var loadVerseIds = function loadVerseIds(book, ranges, config) {
   var refIndex = loadRefIndex(config);
   var verseList = [];
-  for (var _i11 in ranges)
+  for (var i in ranges)
   //Assumption: 1 range is within a single chapter
   {
-    var range = ranges[_i11];
+    var range = ranges[i];
     var matches = range.match(/(\d+): *([\dX]+)-*([\dX]*)/);
     if (!matches) continue;
     var chapter = parseInt(matches[1]);
@@ -1886,9 +1886,9 @@ var loadVerseStructure = function loadVerseStructure(verse_ids, config) {
   var verseIdIndex = loadVerseIdIndex(config);
   var segments = consecutiveSplitter(verse_ids);
   var structure = [];
-  for (var _i12 in segments) {
-    var min = segments[_i12][0];
-    var max = segments[_i12][segments[_i12].length - 1];
+  for (var i in segments) {
+    var min = segments[i][0];
+    var max = segments[i][segments[i].length - 1];
     structure.push([verseIdIndex[min], verseIdIndex[max]]);
   }
   return structure;
@@ -1897,13 +1897,13 @@ var consecutiveSplitter = function consecutiveSplitter(verse_ids) {
   var segments = [];
   var segment = [];
   var previousVerseId = 0;
-  for (var _i13 in verse_ids) {
-    if (verse_ids[_i13] != previousVerseId + 1 && previousVerseId != 0) {
+  for (var i in verse_ids) {
+    if (verse_ids[i] != previousVerseId + 1 && previousVerseId != 0) {
       segments.push(segment);
       segment = [];
     }
-    segment.push(verse_ids[_i13]);
-    previousVerseId = verse_ids[_i13];
+    segment.push(verse_ids[i]);
+    previousVerseId = verse_ids[i];
   }
   segments.push(segment);
   return segments;
@@ -1911,14 +1911,14 @@ var consecutiveSplitter = function consecutiveSplitter(verse_ids) {
 var loadRefsFromRanges = function loadRefsFromRanges(ranges, config) {
   var refs = [];
   var mostRecentBook, mostRecentChapter;
-  for (var _i14 in ranges) {
+  for (var i in ranges) {
     var ref = '';
-    var start_bk = ranges[_i14][0][0];
-    var end_bk = ranges[_i14][1][0];
-    var start_ch = ranges[_i14][0][1];
-    var end_ch = ranges[_i14][1][1];
-    var start_vs = ranges[_i14][0][2];
-    var end_vs = ranges[_i14][1][2];
+    var start_bk = ranges[i][0][0];
+    var end_bk = ranges[i][1][0];
+    var start_ch = ranges[i][0][1];
+    var end_ch = ranges[i][1][1];
+    var start_vs = ranges[i][0][2];
+    var end_vs = ranges[i][1][2];
     if (start_bk == end_bk) {
       if (start_ch == end_ch) {
         if (start_bk == mostRecentBook) start_bk = '';
@@ -2064,7 +2064,7 @@ var getLanguageConfig = function getLanguageConfig(language) {
     var bookList = Object.keys(langData.books);
     var _loop = function _loop() {
       var _Object$keys;
-      var book = _bookList[_i15];
+      var book = _bookList[_i7];
       var book_index = bookList.indexOf(book);
       var original_bookname = (_Object$keys = Object.keys(raw_index_orig)) === null || _Object$keys === void 0 ? void 0 : _Object$keys[book_index];
       if (original_bookname) {
@@ -2075,7 +2075,7 @@ var getLanguageConfig = function getLanguageConfig(language) {
         return [i, book];
       }));
     };
-    for (var _i15 = 0, _bookList = bookList; _i15 < _bookList.length; _i15++) {
+    for (var _i7 = 0, _bookList = bookList; _i7 < _bookList.length; _i7++) {
       _loop();
     }
     config.raw_index = new_index;

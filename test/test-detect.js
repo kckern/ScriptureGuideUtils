@@ -2,7 +2,6 @@
 import { setLanguage, detectReferences, lookupReference } from "../scriptures.mjs";
 //clear console
 console.clear();
-console.log("✅ CHECKPOINT 1: Script started");
 import fs from "fs";
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
@@ -32,7 +31,8 @@ for(const lang of langs){
     if(hasAsterix) lines = lines.filter(i=>/^[*]/.test(i)).map(i=>i.replace(/^[*]/,"").trim())
     for(const line of lines){
         const i = detectReferences(line,callback);
-        console.log([i]);
+        const testPassed = /❰/.test(i);
+        console.log(testPassed ? "✅" : "❌", line, i);
     }
 }
 
