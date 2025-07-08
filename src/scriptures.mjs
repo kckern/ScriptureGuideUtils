@@ -45,7 +45,7 @@ const getEffectiveLanguage = function(explicitLanguage) {
     return explicitLanguage || getStoredLanguage() || defaultLanguage || 'en';
 };
 
-const lookupReference = function(query, language = null) {
+const lookupReference = function(query, language = null, lookupConfig = {}) {
     const isValidReference = query && typeof query === 'string' && query.length > 0;
     if (!isValidReference) return {
         "query": query,
@@ -55,31 +55,73 @@ const lookupReference = function(query, language = null) {
 
     // Get effective language (explicit > stored > default > 'en')
     const effectiveLanguage = getEffectiveLanguage(language);
-    const config = getLanguageConfig(effectiveLanguage);
+    console.log(`Lookup reference: ${query} in ${effectiveLanguage}`);
     
-    //Cleanup
-    let ref = cleanReference(query, config);
-    //Break compound reference into array of single references
-    let refs = splitReferences(ref, config);
-
-    //Lookup each single reference individually, return the set
-    let verse_ids = [];
-    for (let i in refs) {
-        verse_ids = verse_ids.concat(lookupSingleRef(refs[i], config));
+    // Try lookup in the requested language first
+    const verse_ids = lookupInLanguage(query, effectiveLanguage);
+    
+    if (verse_ids?.length) {
+        return {
+            "query": query,
+            "ref": generateReference(verse_ids, effectiveLanguage),
+            "verse_ids": verse_ids
+        };
     }
 
-    // Fallback to English if no results found and language was specified
-    if(!verse_ids?.length && effectiveLanguage && effectiveLanguage !== 'en') {
-        const results = lookupReference(query, 'en');
-        return results;
+    // If no results and multi-language lookup is allowed, try fallback languages
+    if (!lookupConfig.noMulti) {
+        return lookupWithLanguageFallback(query, effectiveLanguage);
     }
 
     return {
         "query": query,
-        "ref": ref,
-        "verse_ids": verse_ids
+        "ref": "",
+        "verse_ids": []
     };
 }
+
+const lookupInLanguage = function(query, language) {
+    const config = getLanguageConfig(language);
+    
+    // Cleanup and process the reference
+    let ref = cleanReference(query, config);
+    let refs = splitReferences(ref, config);
+
+    // Lookup each single reference individually, return the set
+    let verse_ids = [];
+    for (let i in refs) {
+        verse_ids = verse_ids.concat(lookupSingleRef(refs[i], config));
+    }
+    
+    return verse_ids;
+}
+
+const lookupWithLanguageFallback = function(query, targetLanguage) {
+    // Define fallback order: English first (if not already tried), then all other languages
+    const fallbackLanguages = targetLanguage !== 'en' 
+        ? ['en', ...Object.keys(raw_lang).filter(lang => lang !== 'en' && lang !== targetLanguage)]
+        : Object.keys(raw_lang).filter(lang => lang !== targetLanguage);
+
+    for (const lang of fallbackLanguages) {
+        const verse_ids = lookupInLanguage(query, lang);
+        if (verse_ids?.length) {
+            // Generate reference in the target language
+            const refInTargetLanguage = generateReference(verse_ids, targetLanguage);
+            return {
+                "query": query,
+                "ref": refInTargetLanguage,
+                "verse_ids": verse_ids
+            };
+        }
+    }
+
+    return {
+        "query": query,
+        "ref": "",
+        "verse_ids": []
+    };
+}
+
 
 const lookupSingleRef = function(ref, config) {
     const booksWithDashRegex = /^(joseph|조셉)/i; // TODO: get from config
