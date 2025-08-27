@@ -2,3 +2,5 @@
 node_modules
 **/test_results/*
 test_results/test_results.html
+/test
+/test

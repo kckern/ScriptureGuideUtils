@@ -53,5 +53,8 @@
     "@babel/core": "^7.24.7",
     "@babel/plugin-transform-modules-commonjs": "^7.27.1",
     "@babel/preset-env": "^7.24.7"
+  },
+  "dependencies": {
+    "js-yaml": "^4.1.0"
   }
 }
