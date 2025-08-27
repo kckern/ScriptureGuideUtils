@@ -2,26 +2,59 @@
 
 
 const findMatchingBooks = (content,books) => {
-    const matchingBooks = books.filter(i=>(new RegExp(i,"ig")).test(content));
+    const matchingBooks = books.filter(book => {
+        try {
+            // For Vietnamese and other languages, handle more flexible matching
+            let pattern = book;
+            
+            // Replace * with optional space/separator patterns
+            pattern = pattern.replace(/\*/g, '');
+            
+            // Make separators very flexible - handle spaces, hyphens, dots, etc.
+            pattern = pattern.replace(/[\s\-–—\.]+/g, '[\\s\\-–—\\.]*');
+            
+            const regex = new RegExp(pattern, "ig");
+            const result = regex.test(content);
+            
+            return result;
+        } catch (e) {
+            // Fallback to original logic if regex fails
+            return (new RegExp(book,"ig")).test(content);
+        }
+    });
     return matchingBooks;
 }
 
 const findMatches = (content,books,lang_extra) => {
+    // Pre-process content to normalize HTML entities to Unicode dashes
+    const htmlEntityMap = {
+        '&ndash;': '–',
+        '&mdash;': '—', 
+        '&minus;': '–',  // Treat minus as en dash for scripture ranges
+        '&#8211;': '–',
+        '&#8212;': '—',
+        '&#8722;': '–'   // Treat minus as en dash for scripture ranges
+    };
+    
+    let normalizedContent = content;
+    Object.entries(htmlEntityMap).forEach(([entity, unicode]) => {
+        normalizedContent = normalizedContent.replace(new RegExp(entity, 'g'), unicode);
+    });
 
     const tail = lang_extra.tail ? new RegExp(lang_extra.tail,"ig") : /[^0-9]+$/;
     const preBookMatch = lang_extra.book || `(First|I|1|1st|Second|II|2|2nd|Third|III|3|3rd|Fourth|IV|4|4th)*\\s*(books* of)*\\s*`;
-    const matchingBooks = findMatchingBooks(content,books);
-    const postBookMatch = lang_extra.chapter || "([0-9:.;,~ —–-]|cf|(?:&ndash;))*[0-9]+";  
-const fullBookMatches = matchingBooks.map(bookMatch=>{
+    const matchingBooks = findMatchingBooks(normalizedContent,books);
+    const postBookMatch = lang_extra.chapter || "([0-9:.;,~ —–-]|cf)*[0-9]+";
+    const fullBookMatches = matchingBooks.map(bookMatch=>{
         const patternString =  preBookMatch + bookMatch ;
         const pattern = (new RegExp(patternString,"ig"));
-        const stringMatch = pattern.test(content) ? patternString : null;
+        const stringMatch = pattern.test(normalizedContent) ? patternString : null;
         //console.log({pattern,content,stringMatch});
         return stringMatch;
     }).filter(x=>!!x);
 
     const bookSubStrings = fullBookMatches.map(bookMatch=>{
-        const substrings = content.match(new RegExp(bookMatch,"ig")).flat();
+        const substrings = normalizedContent.match(new RegExp(bookMatch,"ig")).flat();
         return substrings;
     }).flat().reduce((prev,current)=>{
         if(prev.includes(current)) return prev;
@@ -29,13 +62,13 @@ const fullBookMatches = matchingBooks.map(bookMatch=>{
     },[]).filter(i=>!!i).map(substring=>{
         substring = substring.trim();
         let positions = [];
-        let index = content.indexOf(substring);
+        let index = normalizedContent.indexOf(substring);
         while (index != -1) {
             positions.push(index);
-            index = content.indexOf(substring, index + 1);
+            index = normalizedContent.indexOf(substring, index + 1);
         }        return [substring,positions];
     }).map(([substring,positions])=>{
-        const preChars = positions.map(i=>content.substring(i-1,i));
+        const preChars = positions.map(i=>normalizedContent.substring(i-1,i));
         positions = positions.filter((i,index)=>{
             const charRightBeforeMatch = preChars[index];
             const leadingCharIsInvalid = !/^(\s|\W|)$/.test(charRightBeforeMatch);  
@@ -53,7 +86,7 @@ const fullBookMatches = matchingBooks.map(bookMatch=>{
             }catch(e){
                 return null;
             }
-            const match = content.slice(i).match(pattern)?.[0]?.replace(tail,"").trim();
+            const match = normalizedContent.slice(i).match(pattern)?.[0]?.replace(tail,"").trim();
             if(!match) return null;
             const len = match.length;
             const pos = i;
@@ -66,12 +99,12 @@ const fullBookMatches = matchingBooks.map(bookMatch=>{
         const overLappingItems = possiblyOverlappingMatches.filter(([s,s1,e1])=>s!==string && s1<end && e1>end);
         const hasOverlap = overLappingItems.length > 0;
         const newEnd = hasOverlap ? Math.min(...overLappingItems.map(([s,s1,e1])=>s1)) : end;
-        const newString = content.slice(start,newEnd);
+        const newString = normalizedContent.slice(start,newEnd);
         return newString.replace(tail,"").trim();
     }).filter(i=>!!i);
     const matches =  matchesWithReferences.map(string=>{
         const pattern = (new RegExp(string,"ig"));
-        const matches = content.match(pattern)?.map(i=>i.trim().replace(tail,""));
+        const matches = normalizedContent.match(pattern)?.map(i=>i.trim().replace(tail,""));
         //console.log({string,matches,tail});
         return matches;
     }).flat()
@@ -79,7 +112,7 @@ const fullBookMatches = matchingBooks.map(bookMatch=>{
         if(prev.includes(current)) return prev;
         return [...prev,current]
     },[]).filter(i=>!!i);
-    return matches;
+    return {matches, normalizedContent};
 }
 
 
@@ -171,8 +204,8 @@ const processReferenceDetection = (content,books,lang_extra,lookupReference,call
 {
     try{
     lang_extra = lang_extra || {};
-    const matches = findMatches(content,books,lang_extra);
-    const matchIndeces = findMatchIndexes(content,matches,lookupReference,lang_extra);
+    const {matches, normalizedContent} = findMatches(content,books,lang_extra);
+    const matchIndeces = findMatchIndexes(normalizedContent,matches,lookupReference,lang_extra);
     if(!matchIndeces) return content;
     const gapsBetweenIndeces = matchIndeces.reduce((prev,current,index)=>{
         if(index === 0) return prev;
@@ -180,7 +213,7 @@ const processReferenceDetection = (content,books,lang_extra,lookupReference,call
         const gap = [lastPair[1],current[0]];
         return [...prev,gap];
     },[]);
-    const gapStrings = gapsBetweenIndeces.map(([start,end])=>content.substring(start,end).trim());
+    const gapStrings = gapsBetweenIndeces.map(([start,end])=>normalizedContent.substring(start,end).trim());
     //console.log({matches,matchIndeces,gapsBetweenIndeces,gapStrings});
     const joiners = lang_extra.joiners || ["^[;, ]*(and|c\\.*f\\.*)*$"];
     const gapThatMayBeMerged = gapsBetweenIndeces.map(([start,end],i)=>{
@@ -229,11 +262,11 @@ const processReferenceDetection = (content,books,lang_extra,lookupReference,call
 
     //check content between matches.  If puctuation only (or 'and'), then merge
     const cutItems = mergedIndeces.map(([start,end])=>{
-        const string = content.substring(start,end);
+        const string = normalizedContent.substring(start,end);
         return lookupReference(string).query
     }).map(callback);
 
-   const negativeItems = negativeSpace.map(([start,end])=>content.substring(start,end));
+   const negativeItems = negativeSpace.map(([start,end])=>normalizedContent.substring(start,end));
    const firstReferenceIsAtStart = mergedIndeces[0][0] === 0;
    const maxCount = Math.max(cutItems.length,negativeItems.length);
    //merge by alternating cutItems and negativeItems.  run the callback on the cut items
