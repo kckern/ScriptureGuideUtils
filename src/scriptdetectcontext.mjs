@@ -88,9 +88,8 @@ export const detectReferencesWithContext = (content, books, lang_extra, lookupRe
         
         // Use the stored reference and verse IDs
         const cutItems = mergedIndices.map(([start, end, originalText, verseIds]) => {
-            // Generate the rendered reference from verse IDs
-            const renderedText = generateReference ? generateReference(verseIds) : originalText;
-            return callback(originalText, renderedText);
+            // Pass verseIds to callback for compatibility with expected signature
+            return callback(originalText, verseIds);
         });
         
         const negativeItems = negativeSpace.map(([start, end]) => content.substring(start, end));
