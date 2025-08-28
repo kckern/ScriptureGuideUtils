@@ -1,27 +1,10 @@
 
 
 
+import { removeOverlaps, calculateGaps, calculateNegativeSpace, mergeAdjacentMatches, buildFinalOutput, defaultTieBreaker } from './scriptlib.mjs';
+
 const findMatchingBooks = (content,books) => {
-    const matchingBooks = books.filter(book => {
-        try {
-            // For Vietnamese and other languages, handle more flexible matching
-            let pattern = book;
-            
-            // Replace * with optional space/separator patterns
-            pattern = pattern.replace(/\*/g, '');
-            
-            // Make separators very flexible - handle spaces, hyphens, dots, etc.
-            pattern = pattern.replace(/[\s\-–—\.]+/g, '[\\s\\-–—\\.]*');
-            
-            const regex = new RegExp(pattern, "ig");
-            const result = regex.test(content);
-            
-            return result;
-        } catch (e) {
-            // Fallback to original logic if regex fails
-            return (new RegExp(book,"ig")).test(content);
-        }
-    });
+    const matchingBooks = books.filter(i=>(new RegExp(i,"ig")).test(content));
     return matchingBooks;
 }
 
@@ -30,10 +13,10 @@ const findMatches = (content,books,lang_extra) => {
     const htmlEntityMap = {
         '&ndash;': '–',
         '&mdash;': '—', 
-        '&minus;': '–',  // Treat minus as en dash for scripture ranges
+        '&minus;': '−',
         '&#8211;': '–',
         '&#8212;': '—',
-        '&#8722;': '–'   // Treat minus as en dash for scripture ranges
+        '&#8722;': '−'
     };
     
     let normalizedContent = content;
@@ -112,7 +95,7 @@ const findMatches = (content,books,lang_extra) => {
         if(prev.includes(current)) return prev;
         return [...prev,current]
     },[]).filter(i=>!!i);
-    return {matches, normalizedContent};
+    return matches;
 }
 
 
@@ -152,43 +135,10 @@ function findMatchIndexes(content, matches,lookupReference, lang_extra) {
 
     if(!indexes.length) return false;
 
-
-    const tieBreaker = (pair1,pair2)=>{
-        const string1 = content.substring(pair1[0],pair1[1]);
-        const string2 = content.substring(pair2[0],pair2[1]);
-
-        // if one pair is all lower case, return the other one
-        if(/[^A-Z]/.test(string1) && !/[^A-Z]/.test(string2)) return pair2;
-        if(/[^A-Z]/.test(string2) && !/[^A-Z]/.test(string1)) return pair1;
-
-        if(string1.length > string2.length) return pair1;
-        if(string2.length > string1.length) return pair2;
-
-        return pair1;
-    }
-
-
-    const nonOverlappingIndeces = indexes.reduce((prev, current) => {
-        if (prev.length === 0) {
-            return [current];
-        }
-        const lastPair = prev[prev.length - 1];
-        if (current[0] < lastPair[1]) { // They overlap
-            const chosenPair = tieBreaker(lastPair, current);
-            if (chosenPair === lastPair) {
-                // Keep the last pair, discard the current one
-                return prev;
-            } else {
-                // Replace the last pair with the current one
-                prev.pop();
-                return [...prev, current];
-            }
-        } else {
-            // They don't overlap, add the current pair
-            return [...prev, current];
-        }
-    }, []).filter(([start,end])=>start!==end);
-
+    // Use shared overlap removal with custom tie-breaker
+    const preferenceResolver = (pair1, pair2, content) => defaultTieBreaker(pair1, pair2, content);
+    const nonOverlappingIndeces = removeOverlaps(indexes, content, preferenceResolver)
+        .filter(([start,end])=>start!==end);
 
     return nonOverlappingIndeces;
 
@@ -204,16 +154,12 @@ const processReferenceDetection = (content,books,lang_extra,lookupReference,call
 {
     try{
     lang_extra = lang_extra || {};
-    const {matches, normalizedContent} = findMatches(content,books,lang_extra);
-    const matchIndeces = findMatchIndexes(normalizedContent,matches,lookupReference,lang_extra);
+    const matches = findMatches(content,books,lang_extra);
+    const matchIndeces = findMatchIndexes(content,matches,lookupReference,lang_extra);
     if(!matchIndeces) return content;
-    const gapsBetweenIndeces = matchIndeces.reduce((prev,current,index)=>{
-        if(index === 0) return prev;
-        const lastPair = matchIndeces[index-1];
-        const gap = [lastPair[1],current[0]];
-        return [...prev,gap];
-    },[]);
-    const gapStrings = gapsBetweenIndeces.map(([start,end])=>normalizedContent.substring(start,end).trim());
+    
+    const gapsBetweenIndeces = calculateGaps(matchIndeces);
+    const gapStrings = gapsBetweenIndeces.map(([start,end])=>content.substring(start,end).trim());
     //console.log({matches,matchIndeces,gapsBetweenIndeces,gapStrings});
     const joiners = lang_extra.joiners || ["^[;, ]*(and|c\\.*f\\.*)*$"];
     const gapThatMayBeMerged = gapsBetweenIndeces.map(([start,end],i)=>{
@@ -224,61 +170,22 @@ const processReferenceDetection = (content,books,lang_extra,lookupReference,call
         return canBeMerged;
     });
 
+    // Use shared merge logic
+    const mergedIndeces = mergeAdjacentMatches(matchIndeces, gapThatMayBeMerged);
 
-    // new incexes
-    const mergedIndeces = matchIndeces.reduce((prev, current, index) => {
-        if (index === 0) {
-            return [current];
-        } else {
-            const prevIndex = prev[prev.length - 1];
-            if (gapThatMayBeMerged[index - 1]) {
-                const merged = [prevIndex[0], current[1]];
-                prev[prev.length - 1] = merged;
-            } else {
-                prev.push(current);
-            }
-            return prev;
-        }
-    }, []);
-
-    //get the gaps and the front/end bumpers if any
-    const negativeSpace = mergedIndeces.reduce((prev, current, index, array) => {
-        if (index !== 0) {
-            const prevIndex = array[index - 1];
-            const gap = [prevIndex[1], current[0]];
-            prev.push(gap);
-        }
-        return prev;
-    }, []);
-
-    if (mergedIndeces[0][0] !== 0) {
-        negativeSpace.unshift([0, mergedIndeces[0][0]]);
-    }
-
-    if (mergedIndeces[mergedIndeces.length - 1][1] !== content.length) {
-        negativeSpace.push([mergedIndeces[mergedIndeces.length - 1][1], content.length]);
-    }
-
+    // Use shared negative space calculation
+    const negativeSpace = calculateNegativeSpace(mergedIndeces, content.length);
 
     //check content between matches.  If puctuation only (or 'and'), then merge
     const cutItems = mergedIndeces.map(([start,end])=>{
-        const string = normalizedContent.substring(start,end);
+        const string = content.substring(start,end);
         return lookupReference(string).query
     }).map(callback);
 
-   const negativeItems = negativeSpace.map(([start,end])=>normalizedContent.substring(start,end));
+   const negativeItems = negativeSpace.map(([start,end])=>content.substring(start,end));
    const firstReferenceIsAtStart = mergedIndeces[0][0] === 0;
-   const maxCount = Math.max(cutItems.length,negativeItems.length);
-   //merge by alternating cutItems and negativeItems.  run the callback on the cut items
-   const merged = [];
-   for(let i=0;i<maxCount;i++){
-    const firstItem = firstReferenceIsAtStart ? cutItems[i] : negativeItems[i];
-    const secondItem = firstReferenceIsAtStart ? negativeItems[i] : cutItems[i];
-    if(firstItem) merged.push(firstItem);
-    if(secondItem) merged.push(secondItem);
-   }
-
-   return merged.join("");
+   
+   return buildFinalOutput(cutItems, negativeItems, firstReferenceIsAtStart);
     }catch(e){
         return content;
     }
@@ -287,5 +194,7 @@ const processReferenceDetection = (content,books,lang_extra,lookupReference,call
 
 
 export {
-    processReferenceDetection
+    processReferenceDetection,
+    findMatches,
+    findMatchIndexes
 }

@@ -1,7 +1,8 @@
 import raw_index_orig from '../data/scriptdata.mjs';
 import raw_regex_orig from '../data/scriptregex.mjs';
 import raw_lang from '../data/scriptlang.mjs';
-import { processReferenceDetection } from './scriptdetect.mjs';
+import { processReferenceDetection, findMatches, findMatchIndexes } from './scriptdetect.mjs';
+import { findBookContexts, getNearestBookContext, findImpliedReferences, detectReferencesWithContext } from './scriptdetectcontext.mjs';
 
 // Browser localStorage key for language preference
 const LANGUAGE_STORAGE_KEY = 'scriptureGuideUtils_language';
@@ -569,18 +570,39 @@ const loadMaxVerse = function(book, chapter, config) {
     return config.raw_index[book][parseInt(chapter) - 1]
 }
 
-
-
-const detectReferences = (content, callBack, language = null) => {
-
+const detectReferences = (content, callBack, options = null) => {
+    // Handle legacy API: (content, callback, language)
+    if (typeof options === 'string' || options === null) {
+        const language = options;
+        options = { language };
+    }
+    
+    // Default options
+    const defaultOptions = {
+        language: null,
+        contextAware: true,
+        contextScope: 'sentence',
+        maxContextDistance: 500,
+        enableImpliedBooks: true,
+        enableVerseAbbrev: true
+    };
+    
+    const finalOptions = { ...defaultOptions, ...options };
     callBack = callBack ? callBack : (i)=>{return `[${i}]`};
-    const effectiveLanguage = getEffectiveLanguage(language);
+    
+    const effectiveLanguage = getEffectiveLanguage(finalOptions.language);
     const config = getLanguageConfig(effectiveLanguage);
     const src = config.raw_regex.books.map(i => i[0]);
     const dst = [...new Set(config.raw_regex.books.map(i => i[1]))];
     const books = [...dst, ...src];
+    
+    // Use enhanced processing if context-aware mode is enabled
+    if (finalOptions.contextAware) {
+        return detectReferencesWithContext(content, books, config.lang_extra, (query) => lookupReference(query, effectiveLanguage), callBack, finalOptions, generateReference);
+    }
+    
+    // Fallback to original processing
     return processReferenceDetection(content, books, config.lang_extra, (query) => lookupReference(query, effectiveLanguage), callBack);
-
 }
 
 const getLanguageConfig = function(language) {
