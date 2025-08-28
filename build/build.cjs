@@ -18,15 +18,34 @@ const scriptlang = fs.readFileSync(path.join(__dirname, '../data/scriptlang.mjs'
 // Get the processReferenceDetection function
 const scriptdetect = fs.readFileSync(path.join(__dirname, '../src/scriptdetect.mjs'), 'utf8');
 
-// Extract the entire file content and remove exports
+// Get the context detection functions
+const scriptdetectcontext = fs.readFileSync(path.join(__dirname, '../src/scriptdetectcontext.mjs'), 'utf8');
+
+// Get the shared library functions
+const scriptlib = fs.readFileSync(path.join(__dirname, '../src/scriptlib.mjs'), 'utf8');
+
+// Extract the entire file content and remove exports from all modules
+const scriptLibCode = scriptlib
+    .replace(/export\s*\{[\s\S]*?\}/, '')  // Remove exports
+    .replace(/export\s+const\s+/g, 'const ')  // Convert export const to const
+    .replace(/export\s+function\s+/g, 'function ')  // Convert export function to function
+    .trim();
+
 const processReferenceDetectionCode = scriptdetect
+    .replace(/import\s*{[^}]*}\s*from\s*['"'][^'"]*['"];?\s*/g, '')  // Remove import statements
     .replace(/export\s*\{[\s\S]*?\}/, '')
+    .trim();
+
+const contextDetectionCode = scriptdetectcontext
+    .replace(/import\s*{[^}]*}\s*from\s*['"'][^'"]*['"];?\s*/g, '')  // Remove import statements
+    .replace(/export\s*\{[\s\S]*?\}/, '')  // Remove exports
+    .replace(/export\s+const\s+/g, 'const ')  // Convert export const to const
     .trim();
 
 // Read the original scriptures file
 const originalContent = fs.readFileSync(path.join(__dirname, '../src/scriptures.mjs'), 'utf8');
 
-// Replace imports with embedded data
+// Replace imports with embedded data and add modules in dependency order
 const updatedContent = originalContent
     .replace(/import raw_index_orig from '\.\.\/data\/scriptdata\.mjs';\s*/, 
              `const raw_index_orig = ${scriptdata};\n`)
@@ -34,8 +53,11 @@ const updatedContent = originalContent
              `const raw_regex_orig = ${scriptregex};\n`)
     .replace(/import raw_lang from '\.\.\/data\/scriptlang\.mjs';\s*/, 
              `const raw_lang = ${scriptlang};\n`)
-    .replace(/import { processReferenceDetection } from '\.\/scriptdetect\.mjs';\s*/, 
-             `${processReferenceDetectionCode}\n`);
+    .replace(/import { processReferenceDetection, findMatches, findMatchIndexes } from '\.\/scriptdetect\.mjs';\s*/, 
+             `// Shared utility functions\n${scriptLibCode}\n\n// Script detection functions\n${processReferenceDetectionCode}\n`)
+    .replace(/import { findBookContexts, getNearestBookContext, findImpliedReferences, detectReferencesWithContext } from '\.\/scriptdetectcontext\.mjs';\s*/, 
+             `// Context detection functions\n${contextDetectionCode}\n`)
+    .replace(/import { [^}]+ } from '\.\/scriptlib\.mjs';\s*/, '');
 
 // Write the updated file
 fs.writeFileSync(path.join(__dirname, '../dist/scriptures.mjs'), updatedContent);
