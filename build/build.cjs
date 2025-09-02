@@ -53,9 +53,9 @@ const updatedContent = originalContent
              `const raw_regex_orig = ${scriptregex};\n`)
     .replace(/import raw_lang from '\.\.\/data\/scriptlang\.mjs';\s*/, 
              `const raw_lang = ${scriptlang};\n`)
-    .replace(/import { processReferenceDetection, findMatches, findMatchIndexes } from '\.\/scriptdetect\.mjs';\s*/, 
+    .replace(/import { processReferenceDetection[^}]*} from '\.\/scriptdetect\.mjs';\s*/, 
              `// Shared utility functions\n${scriptLibCode}\n\n// Script detection functions\n${processReferenceDetectionCode}\n`)
-    .replace(/import { findBookContexts, getNearestBookContext, findImpliedReferences, detectReferencesWithContext } from '\.\/scriptdetectcontext\.mjs';\s*/, 
+    .replace(/import { [^}]*detectReferencesWithContext[^}]*} from '\.\/scriptdetectcontext\.mjs';\s*/, 
              `// Context detection functions\n${contextDetectionCode}\n`)
     .replace(/import { [^}]+ } from '\.\/scriptlib\.mjs';\s*/, '');
 
