@@ -137,9 +137,20 @@ export const mergeAdjacentMatches = (matches, gapMergeFlags, compatibilityCheck 
             }
             
             if (shouldMerge) {
-                // Merge logic - keep first position, extend to second end, preserve first match data
-                const merged = [prevIndex[0], current[1], ...(prevIndex.slice(2))];
-                prev[prev.length - 1] = merged;
+                // Merge logic - keep first position, extend to second end, combine text and verse IDs
+                if (prevIndex.length > 2 && current.length > 2) {
+                    // Extended format: [start, end, text, verseIds]
+                    const startPos = prevIndex[0];
+                    const endPos = current[1];
+                    const combinedText = prevIndex[2] + ";" + current[2]; // Combine with semicolon
+                    const combinedVerseIds = [...(prevIndex[3] || []), ...(current[3] || [])]; // Merge verse ID arrays
+                    const merged = [startPos, endPos, combinedText, combinedVerseIds];
+                    prev[prev.length - 1] = merged;
+                } else {
+                    // Basic format: [start, end]
+                    const merged = [prevIndex[0], current[1], ...(prevIndex.slice(2))];
+                    prev[prev.length - 1] = merged;
+                }
             } else {
                 prev.push(current);
             }

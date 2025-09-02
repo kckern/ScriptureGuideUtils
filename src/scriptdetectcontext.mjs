@@ -56,27 +56,8 @@ export const detectReferencesWithContext = (content, books, lang_extra, lookupRe
         
         // Compatibility check for merging references
         const compatibilityCheck = (prevIndex, current) => {
-            if (!prevIndex[3] || !current[3]) return true; // Allow merge if no verse IDs
-            if (!generateReference) return true; // Allow merge if no generateReference function
-            
-            // For implied references, we need to generate the reference from verse IDs to compare
-            const prevRefText = generateReference(prevIndex[3]) || prevIndex[2];
-            const currentRefText = generateReference(current[3]) || current[2];
-            
-            // Extract book and chapter from references
-            const prevParts = prevRefText.match(/^(.+?)\s+(\d+):/);
-            const currentParts = currentRefText.match(/^(.+?)\s+(\d+):/);
-            
-            if (prevParts && currentParts) {
-                const prevBook = prevParts[1];
-                const prevChapter = prevParts[2];
-                const currentBook = currentParts[1];
-                const currentChapter = currentParts[2];
-                
-                // Don't merge if different books or chapters
-                return prevBook === currentBook && prevChapter === currentChapter;
-            }
-            
+            // Always allow merging for explicit references separated by joiners
+            // The user's intention is clear when they list references like "Isa 45.22;Morm 3.18;Moro 10.24"
             return true;
         };
         

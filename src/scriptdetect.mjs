@@ -179,8 +179,9 @@ const processReferenceDetection = (content,books,lang_extra,lookupReference,call
     //check content between matches.  If puctuation only (or 'and'), then merge
     const cutItems = mergedIndeces.map(([start,end])=>{
         const string = content.substring(start,end);
-        return lookupReference(string).query
-    }).map(callback);
+        const lookupResult = lookupReference(string);
+        return callback(lookupResult.query, lookupResult.verse_ids);
+    });
 
    const negativeItems = negativeSpace.map(([start,end])=>content.substring(start,end));
    const firstReferenceIsAtStart = mergedIndeces[0][0] === 0;

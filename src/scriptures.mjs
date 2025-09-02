@@ -1,8 +1,8 @@
 import raw_index_orig from '../data/scriptdata.mjs';
 import raw_regex_orig from '../data/scriptregex.mjs';
 import raw_lang from '../data/scriptlang.mjs';
-import { processReferenceDetection, findMatches, findMatchIndexes } from './scriptdetect.mjs';
-import { findBookContexts, getNearestBookContext, findImpliedReferences, detectReferencesWithContext } from './scriptdetectcontext.mjs';
+import { processReferenceDetection } from './scriptdetect.mjs';
+import {  detectReferencesWithContext } from './scriptdetectcontext.mjs';
 
 // Browser localStorage key for language preference
 const LANGUAGE_STORAGE_KEY = 'scriptureGuideUtils_language';
