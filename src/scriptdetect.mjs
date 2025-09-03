@@ -161,7 +161,7 @@ const processReferenceDetection = (content,books,lang_extra,lookupReference,call
     const gapsBetweenIndeces = calculateGaps(matchIndeces);
     const gapStrings = gapsBetweenIndeces.map(([start,end])=>content.substring(start,end).trim());
     //console.log({matches,matchIndeces,gapsBetweenIndeces,gapStrings});
-    const joiners = lang_extra.joiners || ["^[;, ]*(and|c\\.*f\\.*)*$"];
+    const joiners = lang_extra.joiners || ["^[;, &]*(and|c\\.*f\\.*|&|cited\\s+at|see\\s+also|compare|cf|see)*\\s*$"];
     const gapThatMayBeMerged = gapsBetweenIndeces.map(([start,end],i)=>{
         const gapString = gapStrings[i];
         const canBeMerged =  joiners.some(joiner=>(new RegExp(joiner,"ig")).test(gapString));

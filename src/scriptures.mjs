@@ -619,6 +619,7 @@ const getLanguageConfig = function(language) {
 
     // For English or if language not found, use defaults
     if (effectiveLanguage === 'en' || !raw_lang[effectiveLanguage]) {
+        config.lang_extra.joiners = config.raw_regex.joiners;
         return config;
     }
 
@@ -645,6 +646,7 @@ const getLanguageConfig = function(language) {
     config.raw_regex.post_rules = langData.post_rules || config.raw_regex.post_rules;
     config.raw_regex.spacing = langData.spacing || ["\\b", ""];
     config.lang_extra = langData.matchRules || {};
+    config.lang_extra.joiners = config.lang_extra.joiners || config.raw_regex.joiners;
     config.wordBreak = langData.wordBreak || "\\b";
 
     return config;

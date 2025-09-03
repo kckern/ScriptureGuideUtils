@@ -204,5 +204,8 @@ export default {
         ["\\s+"," "],
         ["([a-z]\\s*\\d+)(-\\d+:\\d+)","$1:1$2"],
         ["--","\u2014"]
+    ],
+    "joiners": [
+        "^[;, &]*(and|c\\.*f\\.*|&|cited\\s+at|see\\s+also|compare|cf|see)*\\s*$"
     ]
 }

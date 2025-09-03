@@ -48,7 +48,7 @@ export const detectReferencesWithContext = (content, books, lang_extra, lookupRe
         // Step 5: Apply the same gap merging logic as original
         const gapsBetweenIndices = calculateGaps(nonOverlappingMatches);
         
-        const joiners = lang_extra.joiners || ["^[;]*(and|cf\\.)*$", "^\\s*[;,]\\s*$"];  // More restrictive joiners
+        const joiners = lang_extra.joiners || ["^[;, &]$"];
         const gapThatMayBeMerged = gapsBetweenIndices.map(([start, end]) => {
             const gapString = content.substring(start, end).trim();
             return joiners.some(joiner => (new RegExp(joiner, "ig")).test(gapString));
