@@ -32,7 +32,11 @@ test/
 ├── fixtures/                   # AI-generated, human-validated
 │   ├── en.yml                  # ~130 cases per language
 │   ├── ko.yml
-│   └── ... (12 languages)
+│   ├── ... (12 languages)
+│   └── detect-prose/           # Prose paragraph fixtures
+│       ├── en.yml
+│       ├── ko.yml
+│       └── ...
 ├── lookup/
 │   ├── lookup.critical.test.js
 │   ├── lookup.edge-cases.test.js
@@ -40,14 +44,26 @@ test/
 ├── generate/
 │   └── ... (same pattern)
 ├── detect/
-│   └── ... (same pattern)
+│   ├── detect.critical.test.js
+│   ├── detect.edge-cases.test.js
+│   ├── detect.known-issues.test.js
+│   ├── detect-prose.critical.test.js   # Paragraph-level tests
+│   ├── detect-prose.edge-cases.test.js
+│   └── detect-snapshots.test.js        # Full-file regression
 ├── roundtrip/
 │   ├── roundtrip.critical.test.js
 │   ├── roundtrip.edge-cases.test.js
 │   └── cross-language.test.js
-└── language/
-    ├── fallback.test.js
-    └── explicit.test.js
+├── language/
+│   ├── fallback.test.js
+│   └── explicit.test.js
+└── prose-samples/              # Real-world text files for snapshots
+    ├── en/
+    │   ├── vvtest-en.txt
+    │   ├── testDetect.en.txt
+    │   └── commentary-sample.txt
+    └── ko/
+        └── vvtest-ko.txt
 
 scripts/
 ├── generate-fixtures.mjs       # Prompt builder for LLM generation
@@ -350,6 +366,318 @@ describe('Cross-Language Round-trip', () => {
   });
 });
 ```
+
+## Prose Detection Testing
+
+The `detectReferences` function requires special testing because it operates on real-world prose with:
+- Context-dependent verse abbreviations (`vv. 18-21` resolving to earlier book)
+- Packed references without spaces (`Isa 45.22;Morm 3.18;Moro 10.24for`)
+- False positives to avoid (`Narration.js:761`, times like `3:16 PM`)
+- HTML/markup interleaved with text
+- Chapter anchors followed by verse-only references
+
+### Prose Fixture Format
+
+```yaml
+# test/fixtures/detect-prose/en.yml
+language: en
+meta:
+  generated: "2025-01-12"
+  source: "Real-world commentary samples"
+
+paragraphs:
+  critical:
+    - id: en-prose-001
+      description: Context-dependent verse abbreviations
+      input: |
+        He sought for, obtained, and heeded the word of the Lord given through
+        the living prophet (see Alma 43:23–26).
+        He was vitally concerned for the welfare of those who served under his
+        command (see vv. 18–21, 48:7–10, 49:18–20, 50:1–4).
+      expected_refs:
+        - ref: "Alma 43:23-26"
+          ids: [12345, 12346, 12347, 12348]
+        - ref: "Alma 43:18-21"
+          ids: [12340, 12341, 12342, 12343]
+          context_required: true  # only detected with contextAware: true
+        - ref: "Alma 48:7-10"
+          ids: [12400, 12401, 12402, 12403]
+        - ref: "Alma 49:18-20"
+          ids: [12450, 12451, 12452]
+        - ref: "Alma 50:1-4"
+          ids: [12500, 12501, 12502, 12503]
+      context_variations:
+        contextAware_true:
+          ref_count: 5
+          description: "vv. 18-21 resolves to Alma via context"
+        contextAware_false:
+          ref_count: 4
+          description: "vv. 18-21 not detected without context"
+
+    - id: en-prose-002
+      description: Chapter with subsequent verse references
+      input: |
+        While it is often called "the vision," Doctrine and Covenants 76 is a series
+        of visions combined into one grand revelation: a vision of the glory of the
+        Son (vv. 20–24); a vision of the fall of Satan (vv. 25–49); a vision of those
+        who inherit the celestial glory (vv. 50–70).
+      expected_refs:
+        - ref: "Doctrine and Covenants 76"
+          type: chapter_anchor
+        - ref: "Doctrine and Covenants 76:20-24"
+          context_required: true
+        - ref: "Doctrine and Covenants 76:25-49"
+          context_required: true
+        - ref: "Doctrine and Covenants 76:50-70"
+          context_required: true
+
+  edge_cases:
+    - id: en-prose-edge-001
+      description: Packed refs without spaces, period delimiters
+      input: "see also Isa 45.22;Morm 3.18;Moro 10.24for prophets"
+      expected_refs:
+        - ref: "Isaiah 45:22"
+        - ref: "Mormon 3:18"
+        - ref: "Moroni 10:24"
+      tags: [no-spaces, semicolon-packed, period-delimiter]
+
+    - id: en-prose-edge-002
+      description: HTML mixed with references
+      input: |
+        <i>loved the world</i> (Jn 3.16) and <i>draw all men unto him</i>
+        (Jn 12.32; see 3 Ne 27.14n).
+      expected_refs:
+        - ref: "John 3:16"
+        - ref: "John 12:32"
+        - ref: "3 Nephi 27:14"
+      tags: [html-entities, parenthetical, note-suffix]
+
+    - id: en-prose-edge-003
+      description: Cross-reference chains
+      input: "Isa 11.11; cited at 2 Ne 21.11; 29.1"
+      expected_refs:
+        - ref: "Isaiah 11:11"
+        - ref: "2 Nephi 21:11"
+        - ref: "2 Nephi 29:1"
+          context_required: true
+      tags: [cross-reference, implicit-book]
+
+  false_positives:
+    - id: en-prose-fp-001
+      description: JavaScript file references should NOT match
+      input: "react-dom.development.js:65 Warning: Invalid DOM property"
+      expected_refs: []
+      tags: [false-positive, code-noise]
+
+    - id: en-prose-fp-002
+      description: Time notation should NOT match
+      input: "The meeting is at 3:16 PM in room 12:30"
+      expected_refs: []
+      tags: [false-positive, time-format]
+
+    - id: en-prose-fp-003
+      description: Version numbers should NOT match
+      input: "Updated to version 1:2:3 and release 4.5.6"
+      expected_refs: []
+      tags: [false-positive, version-number]
+```
+
+### Prose Test Runner
+
+```javascript
+// test/detect/detect-prose.critical.test.js
+import { detectReferences, generateReference } from '../../dist/scriptures.mjs';
+import { loadProseFixtures } from '../helpers/fixture-loader.js';
+
+const fixtures = loadProseFixtures('en');
+
+describe('detectReferences - Prose Paragraphs', () => {
+
+  describe.each(fixtures.paragraphs.critical)('$id: $description', (tc) => {
+
+    test('contextAware: true - finds all expected refs', () => {
+      const foundRefs = [];
+
+      detectReferences(
+        tc.input,
+        (originalText, verseIds) => {
+          foundRefs.push({
+            original: originalText,
+            ids: verseIds,
+            canonical: generateReference(verseIds, tc.language || 'en')
+          });
+          return `[${originalText}]`;
+        },
+        { language: 'en', contextAware: true }
+      );
+
+      const expectedCount = tc.context_variations?.contextAware_true?.ref_count
+        || tc.expected_refs.length;
+      expect(foundRefs.length).toBe(expectedCount);
+
+      // Verify each expected ref was found
+      for (const expected of tc.expected_refs) {
+        if (!expected.context_required || true) {
+          const found = foundRefs.find(f =>
+            JSON.stringify(f.ids) === JSON.stringify(expected.ids)
+          );
+          expect(found).toBeDefined();
+        }
+      }
+    });
+
+    test('contextAware: false - finds only explicit refs', () => {
+      const foundRefs = [];
+
+      detectReferences(
+        tc.input,
+        (originalText, verseIds) => {
+          foundRefs.push({
+            original: originalText,
+            ids: verseIds
+          });
+          return `[${originalText}]`;
+        },
+        { language: 'en', contextAware: false }
+      );
+
+      const expectedCount = tc.context_variations?.contextAware_false?.ref_count
+        || tc.expected_refs.filter(r => !r.context_required).length;
+      expect(foundRefs.length).toBe(expectedCount);
+    });
+  });
+});
+
+describe('detectReferences - False Positives', () => {
+
+  describe.each(fixtures.paragraphs.false_positives)('$id: $description', (tc) => {
+
+    test('should NOT detect any references', () => {
+      const foundRefs = [];
+
+      detectReferences(
+        tc.input,
+        (originalText, verseIds) => {
+          foundRefs.push({ original: originalText, ids: verseIds });
+          return `[${originalText}]`;
+        },
+        { language: 'en', contextAware: true }
+      );
+
+      expect(foundRefs).toEqual([]);
+    });
+  });
+});
+```
+
+### Full File Snapshot Testing
+
+For regression testing against real-world prose files, use Jest snapshots:
+
+```javascript
+// test/detect/detect-snapshots.test.js
+import { detectReferences, generateReference } from '../../dist/scriptures.mjs';
+import { readFileSync } from 'fs';
+import { join } from 'path';
+
+const loadProseSample = (lang, filename) => {
+  return readFileSync(join('test/prose-samples', lang, filename), 'utf8');
+};
+
+describe('detectReferences - Snapshot Regression', () => {
+
+  describe('English prose samples', () => {
+    test('vvtest-en.txt produces expected output', () => {
+      const content = loadProseSample('en', 'vvtest-en.txt');
+      const result = detectReferences(
+        content,
+        (originalText, verseIds) => {
+          const canonical = generateReference(verseIds, 'en');
+          return `[${originalText}|${canonical}]`;
+        },
+        { language: 'en', contextAware: true }
+      );
+
+      expect(result).toMatchSnapshot();
+    });
+
+    test('testDetect.en.txt produces expected output', () => {
+      const content = loadProseSample('en', 'testDetect.en.txt');
+      const result = detectReferences(
+        content,
+        (originalText, verseIds) => {
+          const canonical = generateReference(verseIds, 'en');
+          return `[${originalText}|${canonical}]`;
+        },
+        { language: 'en', contextAware: true }
+      );
+
+      expect(result).toMatchSnapshot();
+    });
+
+    test('testDetect.en.txt with contextAware: false', () => {
+      const content = loadProseSample('en', 'testDetect.en.txt');
+      const result = detectReferences(
+        content,
+        (originalText, verseIds) => {
+          const canonical = generateReference(verseIds, 'en');
+          return `[${originalText}|${canonical}]`;
+        },
+        { language: 'en', contextAware: false }
+      );
+
+      expect(result).toMatchSnapshot();
+    });
+  });
+
+  describe('Korean prose samples', () => {
+    test('vvtest-ko.txt produces expected output', () => {
+      const content = loadProseSample('ko', 'vvtest-ko.txt');
+      const result = detectReferences(
+        content,
+        (originalText, verseIds) => {
+          const canonical = generateReference(verseIds, 'ko');
+          return `[${originalText}|${canonical}]`;
+        },
+        { language: 'ko', contextAware: true }
+      );
+
+      expect(result).toMatchSnapshot();
+    });
+  });
+});
+```
+
+### Helper Function Extension
+
+```javascript
+// test/helpers/fixture-loader.js (addition)
+
+export function loadProseFixtures(language = null) {
+  const pattern = language
+    ? `test/fixtures/detect-prose/${language}.yml`
+    : 'test/fixtures/detect-prose/*.yml';
+
+  const files = glob.sync(pattern);
+  if (files.length === 0) {
+    throw new Error(`No prose fixtures found for pattern: ${pattern}`);
+  }
+
+  return files.map(file => {
+    const content = readFileSync(file, 'utf8');
+    return parse(content);
+  })[0]; // Return single language fixture
+}
+```
+
+### Prose Test Categories
+
+| Test Type | Purpose | File Pattern |
+|-----------|---------|--------------|
+| **Prose paragraphs** | Multi-sentence with context-dependent refs | `detect-prose.critical.test.js` |
+| **False positives** | Ensure code paths, times, versions don't match | `detect-prose.critical.test.js` |
+| **Snapshot tests** | Lock full-file output for regression | `detect-snapshots.test.js` |
+| **Edge cases** | HTML, packed refs, implicit books | `detect-prose.edge-cases.test.js` |
 
 ## CI Configuration
 
@@ -657,10 +985,14 @@ if (errors.length > 0) {
 | lookup.invalid | 10 | 120 |
 | generate.critical | 20 | 240 |
 | generate.edge_cases | 15 | 180 |
-| detect.critical | 15 | 180 |
-| detect.edge_cases | 20 | 240 |
+| detect.critical (inline) | 15 | 180 |
+| detect.edge_cases (inline) | 20 | 240 |
+| detect-prose.critical | 10 | 120 |
+| detect-prose.edge_cases | 15 | 180 |
+| detect-prose.false_positives | 10 | 120 |
+| snapshot tests | 3-5 files | ~50 |
 | known_issues | varies | ~50 |
-| **Total** | **~130** | **~1,600+** |
+| **Total** | **~170** | **~2,100+** |
 
 ## CI/CD Tiers Summary
 
@@ -673,23 +1005,29 @@ if (errors.length > 0) {
 ## Implementation Steps
 
 1. Install Jest and yaml dependencies
-2. Create directory structure
-3. Implement fixture-loader helper
+2. Create directory structure (including `detect-prose/` and `prose-samples/`)
+3. Implement fixture-loader helper (including `loadProseFixtures`)
 4. Generate initial en.yml fixture file
 5. Implement lookup test files (critical, edge-cases, known-issues)
 6. Implement generate test files
-7. Implement detect test files
-8. Implement roundtrip test files
-9. Implement language fallback tests
-10. Configure Jest
-11. Add npm scripts
-12. Set up GitHub Actions workflow
-13. Generate fixtures for remaining languages
-14. Run validation script
-15. Achieve 80% coverage threshold
+7. Implement detect inline test files
+8. Migrate existing prose samples to `test/prose-samples/en/`
+9. Create prose fixture file `test/fixtures/detect-prose/en.yml`
+10. Implement detect-prose test files (critical, edge-cases)
+11. Implement detect-snapshots.test.js for full-file regression
+12. Implement roundtrip test files
+13. Implement language fallback tests
+14. Configure Jest (including snapshot settings)
+15. Add npm scripts
+16. Set up GitHub Actions workflow
+17. Generate fixtures for remaining languages
+18. Generate prose fixtures for remaining languages
+19. Run validation script
+20. Achieve 80% coverage threshold
 
 ## Open Questions
 
-- Should we add snapshot testing for detectReferences output?
 - Do we need performance benchmarks as part of the test suite?
 - Should fixtures be versioned separately from code?
+- Should prose samples be collected from additional real-world sources (commentaries, study guides)?
+- How should we handle snapshot updates when intentional changes are made to detection output?
