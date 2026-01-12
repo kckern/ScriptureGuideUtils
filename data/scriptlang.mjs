@@ -299,7 +299,7 @@ export default {
             // Additional LDS Scriptures
             "1 Nefi": ["1 Nef"], 
             "2 Nefi": ["2 Nef"], 
-            "Yakup": ["Yakup"], 
+            "Yakup (MK)": ["Yakup MK", "Yakub"],
             "Enos": ["Enos"], 
             "Yarom": ["Yarom"], 
             "Omni": ["Omni"], 
@@ -422,7 +422,7 @@ export default {
             // Additional LDS
         "1 Nefi": ["1 Nef"], 
         "2 Nefi": ["2 Nef"], 
-        "Jakobo": ["JakK"], 
+        "Jakobo (ML)": ["JakK", "Jakobo ML"],
         "Enos": ["Eno"], 
         "Jerom": ["Jerom"], 
         "Omni": ["Omni"], 

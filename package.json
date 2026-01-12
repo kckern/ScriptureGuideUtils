@@ -8,16 +8,16 @@
   "type": "module",
   "exports": {
     ".": {
+      "types": "./dist/scriptures.d.ts",
       "import": "./dist/scriptures.mjs",
-      "require": "./dist/scriptures.cjs",
-      "types": "./dist/scriptures.d.ts"
+      "require": "./dist/scriptures.cjs"
     }
   },
   "scripts": {
-    "start": "node test/test.js",
-    "test": "node test/test.js",
-    "build": "node build/build.cjs",
-    "embed": "node build/build.cjs",
+    "start": "node test/test.mjs",
+    "test": "node test/test.mjs",
+    "build": "node build/build.mjs",
+    "embed": "node build/build.mjs",
     "generate-coc-mapping": "node build/generate-coc-mapping.cjs",
     "prepublishOnly": "npm version patch && npm run build"
   },
@@ -50,10 +50,7 @@
     "scriptures.d.ts"
   ],
   "devDependencies": {
-    "@babel/cli": "^7.24.7",
-    "@babel/core": "^7.24.7",
-    "@babel/plugin-transform-modules-commonjs": "^7.27.1",
-    "@babel/preset-env": "^7.24.7"
+    "esbuild": "^0.27.2"
   },
   "dependencies": {
     "js-yaml": "^4.1.0"
