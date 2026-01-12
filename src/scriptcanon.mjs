@@ -47,3 +47,29 @@ export const convertToLds = (cocIds) => {
 
   return result;
 };
+
+/**
+ * Convert LDS verse_ids to COC verse_ids
+ * @param {number[]} ldsIds - Array of LDS verse_ids
+ * @returns {{ verse_ids: string[], partial: boolean }}
+ */
+export const convertToCoc = (ldsIds) => {
+  const result = { verse_ids: [], partial: false };
+  const seen = new Set();
+
+  for (const ldsId of ldsIds) {
+    const mapping = cocMapping.ldsToCoc[ldsId];
+
+    if (mapping) {
+      for (const cocNum of mapping.coc) {
+        if (!seen.has(cocNum)) {
+          seen.add(cocNum);
+          result.verse_ids.push(formatCocId(cocNum));
+        }
+      }
+      if (mapping.partial) result.partial = true;
+    }
+  }
+
+  return result;
+};
