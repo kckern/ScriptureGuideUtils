@@ -73,3 +73,41 @@ export const convertToCoc = (ldsIds) => {
 
   return result;
 };
+
+/**
+ * Convert verse_ids between canons
+ * Auto-detects source canon from ID format
+ * @param {(string|number)[]} verseIds
+ * @param {{ to: 'lds'|'coc' }} options
+ * @returns {{ verse_ids: (string|number)[], partial: boolean, error?: string }}
+ */
+export const convertCanon = (verseIds, options = {}) => {
+  const { to } = options;
+
+  if (!to) {
+    return { verse_ids: [], partial: false, error: 'missing_target_canon' };
+  }
+
+  // Detect canons of all inputs
+  const canons = verseIds.map(detectCanon);
+  const uniqueCanons = [...new Set(canons.filter(c => c !== null))];
+
+  // Check for mixed input
+  if (uniqueCanons.length > 1) {
+    return { verse_ids: [], partial: false, error: 'mixed_canon_input' };
+  }
+
+  const sourceCanon = uniqueCanons[0];
+
+  // Check for same-canon conversion
+  if (sourceCanon === to) {
+    return { verse_ids: [], partial: false, error: 'same_canon_conversion' };
+  }
+
+  // Perform conversion
+  if (to === 'lds') {
+    return convertToLds(verseIds);
+  } else {
+    return convertToCoc(verseIds);
+  }
+};

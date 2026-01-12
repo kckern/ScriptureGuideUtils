@@ -1,5 +1,5 @@
 // test/test-scriptcanon.js
-import { detectCanon, formatCocId, parseCocId, convertToLds, convertToCoc } from '../src/scriptcanon.mjs';
+import { detectCanon, formatCocId, parseCocId, convertToLds, convertToCoc, convertCanon } from '../src/scriptcanon.mjs';
 import cocMapping from '../data/coc-mapping.mjs';
 
 const tests = [];
@@ -113,6 +113,28 @@ test('convertToCoc handles multiple LDS ids', () => {
 test('convertToCoc returns empty for unknown id', () => {
   const result = convertToCoc([999999]);
   if (result.verse_ids.length !== 0) throw new Error('Expected empty array');
+});
+
+// convertCanon tests
+test('convertCanon auto-detects COC and converts to LDS', () => {
+  const result = convertCanon(['C00002'], { to: 'lds' });
+  if (result.verse_ids[0] !== 31105) throw new Error('Expected 31105');
+});
+
+test('convertCanon auto-detects LDS and converts to COC', () => {
+  const result = convertCanon([31105], { to: 'coc' });
+  if (result.verse_ids[0] !== 'C00002') throw new Error('Expected C00002');
+});
+
+test('convertCanon returns error for mixed input', () => {
+  const result = convertCanon(['C00001', 31105], { to: 'lds' });
+  if (!result.error) throw new Error('Expected error for mixed input');
+  if (result.error !== 'mixed_canon_input') throw new Error('Expected mixed_canon_input error');
+});
+
+test('convertCanon returns error for same-canon conversion', () => {
+  const result = convertCanon(['C00001'], { to: 'coc' });
+  if (!result.error) throw new Error('Expected error for same-canon');
 });
 
 run();
