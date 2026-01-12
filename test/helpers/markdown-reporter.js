@@ -277,6 +277,8 @@ class MarkdownReporter {
     // ========== DETECT TESTS ==========
     lines.push('### 🔍 Detect Reference Tests');
     lines.push('');
+    lines.push('This section shows what references were detected in each input text, including the original matched text, resolved verse IDs, and canonical reference.');
+    lines.push('');
 
     if (this.fixtures.detect?.critical) {
       lines.push('#### Critical');
@@ -291,6 +293,43 @@ class MarkdownReporter {
         lines.push('```');
         lines.push('');
 
+        // Collect detailed detection info
+        const detections = [];
+        try {
+          detectReferences(
+            tc.input,
+            (originalText, verseIds) => {
+              detections.push({
+                originalText,
+                verseIds: [...verseIds],
+                canonical: generateReference(verseIds, 'en'),
+                verseCount: verseIds.length
+              });
+              return `[${generateReference(verseIds, 'en')}]`;
+            },
+            { language: 'en', contextAware: true }
+          );
+        } catch (e) {
+          lines.push(`❌ Detection error: ${e.message}`);
+        }
+
+        if (detections.length > 0) {
+          lines.push('**Detected References:**');
+          lines.push('');
+          lines.push('| # | Original Text | Verse IDs | Canonical Reference |');
+          lines.push('|:-:|---------------|-----------|---------------------|');
+          detections.forEach((d, i) => {
+            const idsDisplay = d.verseIds.length > 5
+              ? `[${d.verseIds.slice(0, 3).join(', ')}, ... ${d.verseIds.length} total]`
+              : `[${d.verseIds.join(', ')}]`;
+            lines.push(`| ${i + 1} | \`${this.escapeMarkdown(d.originalText)}\` | ${idsDisplay} | ${d.canonical} |`);
+          });
+          lines.push('');
+        } else {
+          lines.push('_No references detected_');
+          lines.push('');
+        }
+
         // Test contextAware: true
         if (tc.context_variations?.contextAware_true) {
           try {
@@ -302,7 +341,7 @@ class MarkdownReporter {
             const expected = tc.context_variations.contextAware_true.expected_output;
             const match = result === expected;
 
-            lines.push('**contextAware: true**');
+            lines.push('**Output (contextAware: true):**');
             lines.push('| Expected | Actual | Status |');
             lines.push('|----------|--------|:------:|');
             lines.push(`| \`${this.escapeMarkdown(expected)}\` | \`${this.escapeMarkdown(result)}\` | ${match ? '✅' : '❌'} |`);
@@ -324,7 +363,7 @@ class MarkdownReporter {
             const expected = tc.context_variations.contextAware_false.expected_output;
             const match = result === expected;
 
-            lines.push('**contextAware: false**');
+            lines.push('**Output (contextAware: false):**');
             lines.push('| Expected | Actual | Status |');
             lines.push('|----------|--------|:------:|');
             lines.push(`| \`${this.escapeMarkdown(expected)}\` | \`${this.escapeMarkdown(result)}\` | ${match ? '✅' : '❌'} |`);
@@ -349,25 +388,48 @@ class MarkdownReporter {
         lines.push('**Tags:** ' + (tc.tags || []).map(t => `\`${t}\``).join(', '));
         lines.push('');
 
+        // Collect detailed detection info
+        const detections = [];
         try {
-          const foundRefs = [];
           detectReferences(
             tc.input,
-            (text, ids) => {
-              foundRefs.push(generateReference(ids, 'en'));
-              return `[${text}]`;
+            (originalText, verseIds) => {
+              detections.push({
+                originalText,
+                verseIds: [...verseIds],
+                canonical: generateReference(verseIds, 'en'),
+                verseCount: verseIds.length
+              });
+              return `[${originalText}]`;
             },
             { language: 'en', contextAware: true }
           );
+        } catch (e) {
+          lines.push(`❌ Detection error: ${e.message}`);
+        }
 
+        if (detections.length > 0) {
+          lines.push('**Detected References:**');
+          lines.push('');
+          lines.push('| # | Original Text | Verse IDs | Canonical Reference |');
+          lines.push('|:-:|---------------|-----------|---------------------|');
+          detections.forEach((d, i) => {
+            const idsDisplay = d.verseIds.length > 5
+              ? `[${d.verseIds.slice(0, 3).join(', ')}, ... ${d.verseIds.length} total]`
+              : `[${d.verseIds.join(', ')}]`;
+            lines.push(`| ${i + 1} | \`${this.escapeMarkdown(d.originalText)}\` | ${idsDisplay} | ${d.canonical} |`);
+          });
+          lines.push('');
+
+          const foundRefs = detections.map(d => d.canonical);
           const match = JSON.stringify(foundRefs) === JSON.stringify(tc.expected_refs);
 
           lines.push('| Expected Refs | Actual Refs | Status |');
           lines.push('|---------------|-------------|:------:|');
           lines.push(`| ${tc.expected_refs?.join(', ')} | ${foundRefs.join(', ')} | ${match ? '✅' : '❌'} |`);
           lines.push('');
-        } catch (e) {
-          lines.push(`❌ ERROR: ${e.message}`);
+        } else {
+          lines.push('_No references detected_');
           lines.push('');
         }
       }
