@@ -89,8 +89,8 @@ generate:
 
     - id: en-gen-003
       input_ids: [26137, 26139]
-      expected: "John 3:16, 18"
-      description: Non-consecutive verses use comma
+      expected: "John 3:16; 3:18"
+      description: Non-consecutive verses use semicolon
 
     - id: en-gen-004
       input_ids: [1, 2, 3]
@@ -105,7 +105,7 @@ generate:
   edge_cases:
     - id: en-gen-edge-001
       input_ids: [26137, 26138, 26140]
-      expected: "John 3:16-17, 19"
+      expected: "John 3:16-17; 3:19"
       tags: [mixed-range]
       description: Mixed consecutive and non-consecutive
 
