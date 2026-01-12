@@ -1,0 +1,140 @@
+language: en
+meta:
+  generated: "2025-01-12"
+  version: "1.0.0"
+
+lookup:
+  critical:
+    - id: en-lookup-001
+      input: "John 3:16"
+      expected_ids: [26137]
+      expected_ref: "John 3:16"
+      description: Simple single verse
+
+    - id: en-lookup-002
+      input: "Jn 3:16"
+      expected_ids: [26137]
+      expected_ref: "John 3:16"
+      description: Common abbreviation
+
+    - id: en-lookup-003
+      input: "Genesis 1:1"
+      expected_ids: [1]
+      expected_ref: "Genesis 1:1"
+      description: First verse in Bible
+
+    - id: en-lookup-004
+      input: "Gen 1:1-3"
+      expected_ids: [1, 2, 3]
+      expected_ref: "Genesis 1:1-3"
+      description: Verse range
+
+    - id: en-lookup-005
+      input: "Exodus 20:1-10"
+      expected_ids: [2053, 2054, 2055, 2056, 2057, 2058, 2059, 2060, 2061, 2062]
+      expected_ref: "Exodus 20:1-10"
+      description: Ten Commandments opening
+
+  edge_cases:
+    - id: en-lookup-edge-001
+      input: "Jn  3:16"
+      expected_ids: [26137]
+      expected_ref: "John 3:16"
+      tags: [whitespace, double-space]
+      description: Double space between book and chapter
+
+    - id: en-lookup-edge-002
+      input: "Jn 3.16"
+      expected_ids: [26137]
+      expected_ref: "John 3:16"
+      tags: [delimiter, period]
+      description: Period instead of colon
+
+    - id: en-lookup-edge-003
+      input: "1 Jn 1:1"
+      expected_ids: [30542]
+      expected_ref: "1 John 1:1"
+      tags: [numbered-book]
+      description: Numbered book with abbreviation
+
+  invalid:
+    - id: en-lookup-invalid-001
+      input: "Nosuchbook 1:1"
+      expected_ids: []
+      description: Non-existent book
+
+    - id: en-lookup-invalid-002
+      input: ""
+      expected_ids: []
+      description: Empty string
+
+    - id: en-lookup-invalid-003
+      input: "John 999:999"
+      expected_ids: []
+      description: Invalid chapter and verse
+
+  known_issues: []
+
+generate:
+  critical:
+    - id: en-gen-001
+      input_ids: [26137]
+      expected: "John 3:16"
+      description: Single verse
+
+    - id: en-gen-002
+      input_ids: [26137, 26138, 26139]
+      expected: "John 3:16-18"
+      description: Consecutive verses collapse to range
+
+    - id: en-gen-003
+      input_ids: [26137, 26139]
+      expected: "John 3:16, 18"
+      description: Non-consecutive verses use comma
+
+    - id: en-gen-004
+      input_ids: [1, 2, 3]
+      expected: "Genesis 1:1-3"
+      description: First verses of Bible
+
+    - id: en-gen-005
+      input_ids: []
+      expected: ""
+      description: Empty array returns empty string
+
+  edge_cases:
+    - id: en-gen-edge-001
+      input_ids: [26137, 26138, 26140]
+      expected: "John 3:16-17, 19"
+      tags: [mixed-range]
+      description: Mixed consecutive and non-consecutive
+
+detect:
+  critical:
+    - id: en-detect-001
+      input: "Read John 3:16 for comfort."
+      expected_refs: ["John 3:16"]
+      expected_ids: [[26137]]
+      context_variations:
+        contextAware_true:
+          expected_output: "Read [John 3:16] for comfort."
+        contextAware_false:
+          expected_output: "Read [John 3:16] for comfort."
+      description: Simple inline reference
+
+    - id: en-detect-002
+      input: "See Genesis 1:1 and Exodus 20:1."
+      expected_refs: ["Genesis 1:1", "Exodus 20:1"]
+      context_variations:
+        contextAware_true:
+          expected_output: "See [Genesis 1:1] and [Exodus 20:1]."
+        contextAware_false:
+          expected_output: "See [Genesis 1:1] and [Exodus 20:1]."
+      description: Multiple references in one sentence
+
+  edge_cases:
+    - id: en-detect-edge-001
+      input: "cf. Jn 3.16; Mt 5.1"
+      expected_refs: ["John 3:16", "Matthew 5:1"]
+      tags: [abbreviation, period-delimiter]
+      description: Abbreviated refs with period delimiters
