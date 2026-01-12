@@ -1,5 +1,5 @@
 // test/test-scriptcanon.js
-import { detectCanon, formatCocId, parseCocId } from '../src/scriptcanon.mjs';
+import { detectCanon, formatCocId, parseCocId, convertToLds } from '../src/scriptcanon.mjs';
 import cocMapping from '../data/coc-mapping.mjs';
 
 const tests = [];
@@ -62,6 +62,32 @@ test('coc-mapping has ldsToCoc object', () => {
 
 test('coc-mapping sample entry exists', () => {
   if (!cocMapping.cocToLds[1]) throw new Error('Missing entry for COC verse 1');
+});
+
+// convertToLds tests
+test('convertToLds converts single COC id', () => {
+  const result = convertToLds(['C00002']);
+  if (result.verse_ids[0] !== 31105) throw new Error(`Expected 31105, got ${result.verse_ids[0]}`);
+  if (result.partial !== false) throw new Error('Expected partial: false');
+});
+
+test('convertToLds expands partial mapping', () => {
+  const result = convertToLds(['C00001']);
+  if (result.verse_ids.length !== 2) throw new Error(`Expected 2 verses, got ${result.verse_ids.length}`);
+  if (result.verse_ids[0] !== 31103) throw new Error('Expected 31103 first');
+  if (result.verse_ids[1] !== 31104) throw new Error('Expected 31104 second');
+  if (result.partial !== true) throw new Error('Expected partial: true');
+});
+
+test('convertToLds handles multiple COC ids', () => {
+  const result = convertToLds(['C00001', 'C00002']);
+  if (result.verse_ids.length !== 3) throw new Error(`Expected 3 verses, got ${result.verse_ids.length}`);
+  if (result.partial !== true) throw new Error('Expected partial: true (from C00001)');
+});
+
+test('convertToLds returns empty for unknown id', () => {
+  const result = convertToLds(['C99999']);
+  if (result.verse_ids.length !== 0) throw new Error('Expected empty array');
 });
 
 run();

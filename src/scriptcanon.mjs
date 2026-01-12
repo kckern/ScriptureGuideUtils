@@ -1,4 +1,5 @@
 // src/scriptcanon.mjs
+import cocMapping from '../data/coc-mapping.mjs';
 
 /**
  * Detect canon from verse_id format
@@ -25,3 +26,24 @@ export const formatCocId = (num) => `C${String(num).padStart(5, '0')}`;
  * @returns {number}
  */
 export const parseCocId = (id) => parseInt(id.slice(1), 10);
+
+/**
+ * Convert COC verse_ids to LDS verse_ids
+ * @param {string[]} cocIds - Array of COC ids like ['C00001', 'C00002']
+ * @returns {{ verse_ids: number[], partial: boolean }}
+ */
+export const convertToLds = (cocIds) => {
+  const result = { verse_ids: [], partial: false };
+
+  for (const cocId of cocIds) {
+    const num = parseCocId(cocId);
+    const mapping = cocMapping.cocToLds[num];
+
+    if (mapping) {
+      result.verse_ids.push(...mapping.lds);
+      if (mapping.partial) result.partial = true;
+    }
+  }
+
+  return result;
+};
