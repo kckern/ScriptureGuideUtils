@@ -14,5 +14,9 @@ export default {
   ],
   setupFilesAfterEnv: ['./test/setup.js'],
   testPathIgnorePatterns: ['/node_modules/', '/test/_archive/'],
-  verbose: true
+  verbose: true,
+  reporters: [
+    'default',
+    ['./test/helpers/markdown-reporter.js', { outputFile: 'test-results.md' }]
+  ]
 };
