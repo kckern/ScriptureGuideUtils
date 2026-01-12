@@ -124,17 +124,17 @@ detect:
 
     - id: en-detect-002
       input: "See Genesis 1:1 and Exodus 20:1."
-      expected_refs: ["Genesis 1:1", "Exodus 20:1"]
+      expected_refs: ["Genesis 1:1; Exodus 20:1"]
       context_variations:
         contextAware_true:
-          expected_output: "See [Genesis 1:1] and [Exodus 20:1]."
+          expected_output: "See [Genesis 1:1; Exodus 20:1]."
         contextAware_false:
-          expected_output: "See [Genesis 1:1] and [Exodus 20:1]."
-      description: Multiple references in one sentence
+          expected_output: "See [Genesis 1:1; Exodus 20:1]."
+      description: Multiple references grouped together
 
   edge_cases:
     - id: en-detect-edge-001
       input: "cf. Jn 3.16; Mt 5.1"
-      expected_refs: ["John 3:16", "Matthew 5:1"]
+      expected_refs: ["John 3:16; Matthew 5:1"]
       tags: [abbreviation, period-delimiter]
-      description: Abbreviated refs with period delimiters
+      description: Abbreviated refs with period delimiters grouped together
