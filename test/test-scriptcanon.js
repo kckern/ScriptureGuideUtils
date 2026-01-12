@@ -72,17 +72,19 @@ test('convertToLds converts single COC id', () => {
 });
 
 test('convertToLds expands partial mapping', () => {
-  const result = convertToLds(['C00001']);
+  // COC verse 9 maps to LDS [31112, 31113] in real data
+  const result = convertToLds(['C00009']);
   if (result.verse_ids.length !== 2) throw new Error(`Expected 2 verses, got ${result.verse_ids.length}`);
-  if (result.verse_ids[0] !== 31103) throw new Error('Expected 31103 first');
-  if (result.verse_ids[1] !== 31104) throw new Error('Expected 31104 second');
+  if (result.verse_ids[0] !== 31112) throw new Error('Expected 31112 first');
+  if (result.verse_ids[1] !== 31113) throw new Error('Expected 31113 second');
   if (result.partial !== true) throw new Error('Expected partial: true');
 });
 
 test('convertToLds handles multiple COC ids', () => {
-  const result = convertToLds(['C00001', 'C00002']);
+  // COC 9 is partial (2 verses), COC 10 is exact (1 verse)
+  const result = convertToLds(['C00009', 'C00010']);
   if (result.verse_ids.length !== 3) throw new Error(`Expected 3 verses, got ${result.verse_ids.length}`);
-  if (result.partial !== true) throw new Error('Expected partial: true (from C00001)');
+  if (result.partial !== true) throw new Error('Expected partial: true (from C00009)');
 });
 
 test('convertToLds returns empty for unknown id', () => {
@@ -98,10 +100,10 @@ test('convertToCoc converts single LDS id', () => {
 });
 
 test('convertToCoc deduplicates partial mappings', () => {
-  // Both 31103 and 31104 map to COC 1
-  const result = convertToCoc([31103, 31104]);
+  // Both 31112 and 31113 map to COC 9 in real data
+  const result = convertToCoc([31112, 31113]);
   if (result.verse_ids.length !== 1) throw new Error(`Expected 1 verse, got ${result.verse_ids.length}`);
-  if (result.verse_ids[0] !== 'C00001') throw new Error('Expected C00001');
+  if (result.verse_ids[0] !== 'C00009') throw new Error('Expected C00009');
   if (result.partial !== true) throw new Error('Expected partial: true');
 });
 
