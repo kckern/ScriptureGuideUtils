@@ -14,8 +14,8 @@
     }
   },
   "scripts": {
-    "start": "node test/test.js",
-    "test": "node test/test.js",
+    "start": "node test/test.mjs",
+    "test": "node test/test.mjs",
     "build": "node build/build.mjs",
     "embed": "node build/build.mjs",
     "prepublishOnly": "npm version patch && npm run build"
@@ -49,7 +49,7 @@
     "scriptures.d.ts"
   ],
   "devDependencies": {
-    "esbuild": "^0.24.0"
+    "esbuild": "^0.27.2"
   },
   "dependencies": {
     "js-yaml": "^4.1.0"
