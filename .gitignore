@@ -1,5 +1,6 @@
 
 node_modules
+.worktrees/
 **/test_results/*
 test_results/test_results.html
 /test
