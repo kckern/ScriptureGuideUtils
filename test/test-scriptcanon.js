@@ -1,5 +1,6 @@
 // test/test-scriptcanon.js
 import { detectCanon, formatCocId, parseCocId } from '../src/scriptcanon.mjs';
+import cocMapping from '../data/coc-mapping.mjs';
 
 const tests = [];
 const test = (name, fn) => tests.push({ name, fn });
@@ -48,6 +49,19 @@ test('parseCocId extracts number', () => {
   if (parseCocId('C00001') !== 1) throw new Error('Expected 1');
   if (parseCocId('C00050') !== 50) throw new Error('Expected 50');
   if (parseCocId('C06839') !== 6839) throw new Error('Expected 6839');
+});
+
+// coc-mapping tests
+test('coc-mapping has cocToLds object', () => {
+  if (typeof cocMapping.cocToLds !== 'object') throw new Error('Missing cocToLds');
+});
+
+test('coc-mapping has ldsToCoc object', () => {
+  if (typeof cocMapping.ldsToCoc !== 'object') throw new Error('Missing ldsToCoc');
+});
+
+test('coc-mapping sample entry exists', () => {
+  if (!cocMapping.cocToLds[1]) throw new Error('Missing entry for COC verse 1');
 });
 
 run();
