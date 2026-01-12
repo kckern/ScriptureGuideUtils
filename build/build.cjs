@@ -15,6 +15,14 @@ const scriptregex = fs.readFileSync(path.join(__dirname, '../data/scriptregex.mj
 const scriptlang = fs.readFileSync(path.join(__dirname, '../data/scriptlang.mjs'), 'utf8')
     .replace(/^export default\s+/, '').replace(/;\s*$/, '');
 
+// Read COC-related data files
+const cocMapping = fs.readFileSync(path.join(__dirname, '../data/coc-mapping.mjs'), 'utf8')
+    .replace(/^\/\/.*\n/gm, '')  // Remove comments
+    .replace(/export default\s*/, '').replace(/;\s*$/, '').trim();
+
+const cocData = fs.readFileSync(path.join(__dirname, '../data/coc.mjs'), 'utf8')
+    .replace(/^export default\s+/, '').replace(/;\s*$/, '');
+
 // Get the processReferenceDetection function
 const scriptdetect = fs.readFileSync(path.join(__dirname, '../src/scriptdetect.mjs'), 'utf8');
 
@@ -23,6 +31,9 @@ const scriptdetectcontext = fs.readFileSync(path.join(__dirname, '../src/scriptd
 
 // Get the shared library functions
 const scriptlib = fs.readFileSync(path.join(__dirname, '../src/scriptlib.mjs'), 'utf8');
+
+// Get the scriptcanon module
+const scriptcanon = fs.readFileSync(path.join(__dirname, '../src/scriptcanon.mjs'), 'utf8');
 
 // Extract the entire file content and remove exports from all modules
 const scriptLibCode = scriptlib
@@ -42,22 +53,34 @@ const contextDetectionCode = scriptdetectcontext
     .replace(/export\s+const\s+/g, 'const ')  // Convert export const to const
     .trim();
 
+// Process scriptcanon code - needs cocMapping reference replaced
+const scriptcanonCode = scriptcanon
+    .replace(/import\s+cocMapping\s+from\s*['"'][^'"]*['"];?\s*/g, '')  // Remove import statement
+    .replace(/export\s*\{[\s\S]*?\}/, '')  // Remove exports
+    .replace(/export\s+const\s+/g, 'const ')  // Convert export const to const
+    .trim();
+
 // Read the original scriptures file
 const originalContent = fs.readFileSync(path.join(__dirname, '../src/scriptures.mjs'), 'utf8');
 
 // Replace imports with embedded data and add modules in dependency order
 const updatedContent = originalContent
-    .replace(/import raw_index_orig from '\.\.\/data\/scriptdata\.mjs';\s*/, 
+    .replace(/import raw_index_orig from '\.\.\/data\/scriptdata\.mjs';\s*/,
              `const raw_index_orig = ${scriptdata};\n`)
-    .replace(/import raw_regex_orig from '\.\.\/data\/scriptregex\.mjs';\s*/, 
+    .replace(/import raw_regex_orig from '\.\.\/data\/scriptregex\.mjs';\s*/,
              `const raw_regex_orig = ${scriptregex};\n`)
-    .replace(/import raw_lang from '\.\.\/data\/scriptlang\.mjs';\s*/, 
+    .replace(/import raw_lang from '\.\.\/data\/scriptlang\.mjs';\s*/,
              `const raw_lang = ${scriptlang};\n`)
-    .replace(/import { processReferenceDetection[^}]*} from '\.\/scriptdetect\.mjs';\s*/, 
+    .replace(/import { processReferenceDetection[^}]*} from '\.\/scriptdetect\.mjs';\s*/,
              `// Shared utility functions\n${scriptLibCode}\n\n// Script detection functions\n${processReferenceDetectionCode}\n`)
-    .replace(/import { [^}]*detectReferencesWithContext[^}]*} from '\.\/scriptdetectcontext\.mjs';\s*/, 
+    .replace(/import { [^}]*detectReferencesWithContext[^}]*} from '\.\/scriptdetectcontext\.mjs';\s*/,
              `// Context detection functions\n${contextDetectionCode}\n`)
-    .replace(/import { [^}]+ } from '\.\/scriptlib\.mjs';\s*/, '');
+    .replace(/import { [^}]+ } from '\.\/scriptlib\.mjs';\s*/, '')
+    // Handle COC-related imports
+    .replace(/import\s*{\s*detectCanon[^}]*}\s*from\s*'\.\/scriptcanon\.mjs';\s*/,
+             `// COC mapping data\nconst cocMapping = ${cocMapping};\n\n// Script canon functions\n${scriptcanonCode}\n`)
+    .replace(/import\s+cocData\s+from\s*'\.\.\/data\/coc\.mjs';\s*/,
+             `const cocData = ${cocData};\n`);
 
 // Write the updated file
 fs.writeFileSync(path.join(__dirname, '../dist/scriptures.mjs'), updatedContent);
@@ -96,7 +119,8 @@ module.exports = {
     detectRefs: detectReferences,
     detectScriptureReferences: detectReferences,
     detectScriptures: detectReferences,
-    linkRefs: detectReferences
+    linkRefs: detectReferences,
+    convertCanon
 };
 `;
 
