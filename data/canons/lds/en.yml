@@ -1,0 +1,98 @@
+canon: lds
+language: en
+
+books:
+  1_nephi:
+    name: "1 Nephi"
+    abbreviations: ["1 ne", "1ne", "1 nep"]
+    alternates: ["first nephi", "I nephi"]
+
+  2_nephi:
+    name: "2 Nephi"
+    abbreviations: ["2 ne", "2ne", "2 nep"]
+    alternates: ["second nephi", "II nephi"]
+
+  jacob:
+    name: "Jacob"
+    abbreviations: ["jacob", "jac"]
+
+  enos:
+    name: "Enos"
+    abbreviations: ["enos"]
+
+  jarom:
+    name: "Jarom"
+    abbreviations: ["jarom", "jar"]
+
+  omni:
+    name: "Omni"
+    abbreviations: ["omni", "om"]
+
+  words_of_mormon:
+    name: "Words of Mormon"
+    abbreviations: ["w of m", "wom"]
+
+  mosiah:
+    name: "Mosiah"
+    abbreviations: ["mosiah", "mos"]
+
+  alma:
+    name: "Alma"
+    abbreviations: ["alma", "al"]
+
+  helaman:
+    name: "Helaman"
+    abbreviations: ["hel", "helaman"]
+
+  3_nephi:
+    name: "3 Nephi"
+    abbreviations: ["3 ne", "3ne", "3 nep"]
+    alternates: ["third nephi", "III nephi"]
+
+  4_nephi:
+    name: "4 Nephi"
+    abbreviations: ["4 ne", "4ne", "4 nep"]
+    alternates: ["fourth nephi", "IV nephi"]
+
+  mormon:
+    name: "Mormon"
+    abbreviations: ["morm", "mormon"]
+
+  ether:
+    name: "Ether"
+    abbreviations: ["ether", "eth"]
+
+  moroni:
+    name: "Moroni"
+    abbreviations: ["moro", "moroni"]
+
+  doctrine_and_covenants:
+    name: "Doctrine and Covenants"
+    abbreviations: ["d&c", "dc", "d and c", "d&c"]
+    chapter_label: "section"
+
+  moses:
+    name: "Moses"
+    abbreviations: ["moses", "mos"]
+
+  abraham:
+    name: "Abraham"
+    abbreviations: ["abr", "abraham"]
+
+  joseph_smith_matthew:
+    name: "Joseph Smith—Matthew"
+    abbreviations: ["js-m", "jsm", "js-matt"]
+
+  joseph_smith_history:
+    name: "Joseph Smith—History"
+    abbreviations: ["js-h", "jsh", "js-hist"]
+
+  articles_of_faith:
+    name: "Articles of Faith"
+    abbreviations: ["a of f", "aof", "af"]
+
+pre_rules:
+  - pattern: "\\bgospel\\s+(?:of|according\\s+to)\\s+"
+    replacement: ""
+  - pattern: "\\bepistle\\s+(?:of|to(?:\\s+the)?)\\s+(?!jeremiah)"
+    replacement: ""

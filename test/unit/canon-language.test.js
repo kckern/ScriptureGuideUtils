@@ -27,4 +27,17 @@ describe('Canon Language Loading', () => {
     // From canon
     expect(full.books.genesis.name).toBe('Genesis');
   });
+
+  test('loads LDS English with Bible books via inheritance', () => {
+    const full = loadFullLanguage('lds', 'en');
+
+    // From Bible (via inheritance)
+    expect(full.books.genesis.name).toBe('Genesis');
+
+    // From LDS
+    expect(full.books['1_nephi']).toBeDefined();
+    expect(full.books['1_nephi'].name).toBe('1 Nephi');
+    expect(full.books.doctrine_and_covenants).toBeDefined();
+    expect(full.books.doctrine_and_covenants.chapter_label).toBe('section');
+  });
 });
