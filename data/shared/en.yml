@@ -1,0 +1,51 @@
+language: en
+
+delimiters:
+  chapter_verse: [":", "."]
+  range: ["-", "–", "—", "through", "to"]
+  list: [",", ";", "and"]
+
+numerals:
+  roman:
+    I: 1
+    II: 2
+    III: 3
+    IV: 4
+  spelled:
+    first: 1
+    second: 2
+    third: 3
+    fourth: 4
+
+labels:
+  chapter: ["chapter", "ch", "chap"]
+  verse: ["verse", "v", "vv", "vs"]
+
+joiners:
+  patterns: ["and", ";", ",", "compare", "see also", "cf"]
+
+pre_rules:
+  - pattern: "\\bIV\\s+(?=[A-Za-z])"
+    replacement: "4 "
+  - pattern: "\\bIII\\s+(?=[A-Za-z])"
+    replacement: "3 "
+  - pattern: "\\bII\\s+(?=[A-Za-z])"
+    replacement: "2 "
+  - pattern: "\\bI\\s+(?=[A-Za-z])"
+    replacement: "1 "
+  - pattern: "\\bfirst\\s+(?=[A-Za-z])"
+    replacement: "1 "
+  - pattern: "\\bsecond\\s+(?=[A-Za-z])"
+    replacement: "2 "
+  - pattern: "\\bthird\\s+(?=[A-Za-z])"
+    replacement: "3 "
+  - pattern: "\\bfourth\\s+(?=[A-Za-z])"
+    replacement: "4 "
+  - pattern: "\\bchapter\\s+(\\d+),?\\s*verse\\s+(\\d+)"
+    replacement: "$1:$2"
+  - pattern: "\\bchapter\\s+(\\d+),?\\s*verses?\\s+(\\d+)\\s*(?:through|to|-)\\s*(\\d+)"
+    replacement: "$1:$2-$3"
+
+post_rules:
+  - pattern: "\\s+"
+    replacement: " "
