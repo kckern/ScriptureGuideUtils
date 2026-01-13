@@ -3,96 +3,135 @@ language: en
 
 books:
   1_nephi:
-    name: "1 Nephi"
-    abbreviations: ["1 ne", "1ne", "1 nep"]
-    alternates: ["first nephi", "I nephi"]
+    name: 1 Nephi
+    pattern: "ne\\.*(?:phi)*"
+    alt: [1 ne, 1ne, 1 nep, first nephi, I nephi]
 
   2_nephi:
-    name: "2 Nephi"
-    abbreviations: ["2 ne", "2ne", "2 nep"]
-    alternates: ["second nephi", "II nephi"]
+    name: 2 Nephi
+    pattern: "ne\\.*(?:phi)*"
+    alt: [2 ne, 2ne, 2 nep, second nephi, II nephi]
 
   jacob:
-    name: "Jacob"
-    abbreviations: ["jacob", "jac"]
+    name: Jacob
+    pattern: "jac\\.*(?:ob)*"
+    alt: [jacob, jac]
 
   enos:
-    name: "Enos"
-    abbreviations: ["enos"]
+    name: Enos
+    pattern: "en\\.*(?:os)*"
+    alt: [enos]
 
   jarom:
-    name: "Jarom"
-    abbreviations: ["jarom", "jar"]
+    name: Jarom
+    pattern: "jar\\.*(?:om)*"
+    alt: [jarom, jar]
 
   omni:
-    name: "Omni"
-    abbreviations: ["omni", "om"]
+    name: Omni
+    pattern: "om\\.*(?:ni)*"
+    alt: [omni, om]
 
   words_of_mormon:
-    name: "Words of Mormon"
-    abbreviations: ["w of m", "wom"]
+    name: Words of Mormon
+    pattern: "(?:the *)*w(?:ords)*[ _-]*o[ _-f]*m(?:ormon)*"
+    alt: [w of m, wom]
 
   mosiah:
-    name: "Mosiah"
-    abbreviations: ["mosiah", "mos"]
+    name: Mosiah
+    pattern: "mos\\.*(?:iah)*"
+    alt: [mosiah, mos]
 
   alma:
-    name: "Alma"
-    abbreviations: ["alma", "al"]
+    name: Alma
+    pattern: "alma"
+    alt: [alma, al]
 
   helaman:
-    name: "Helaman"
-    abbreviations: ["hel", "helaman"]
+    name: Helaman
+    pattern: "hela*\\.*(?:a*man)*"
+    alt: [hel, helaman]
 
   3_nephi:
-    name: "3 Nephi"
-    abbreviations: ["3 ne", "3ne", "3 nep"]
-    alternates: ["third nephi", "III nephi"]
+    name: 3 Nephi
+    pattern: "ne\\.*(?:phi)*"
+    alt: [3 ne, 3ne, 3 nep, third nephi, III nephi]
 
   4_nephi:
-    name: "4 Nephi"
-    abbreviations: ["4 ne", "4ne", "4 nep"]
-    alternates: ["fourth nephi", "IV nephi"]
+    name: 4 Nephi
+    pattern: "ne\\.*(?:phi)*"
+    alt: [4 ne, 4ne, 4 nep, fourth nephi, IV nephi]
 
   mormon:
-    name: "Mormon"
-    abbreviations: ["morm", "mormon"]
+    name: Mormon
+    pattern: "morm\\.*(?:on)*"
+    alt: [morm, mormon]
 
   ether:
-    name: "Ether"
-    abbreviations: ["ether", "eth"]
+    name: Ether
+    pattern: "eth\\.*(?:er)*"
+    alt: [ether, eth]
 
   moroni:
-    name: "Moroni"
-    abbreviations: ["moro", "moroni"]
+    name: Moroni
+    pattern: "moro\\.*(?:ni)*"
+    alt: [moro, moroni]
 
   doctrine_and_covenants:
-    name: "Doctrine and Covenants"
-    abbreviations: ["d&c", "dc", "d and c", "d&c"]
-    chapter_label: "section"
+    name: Doctrine and Covenants
+    pattern: "d(?:octrine)*\\.* *(?:&amp;|&|and)* *c(?:ovenants)*(?:\\s*\\bSec(?:tion)*)*\\.*"
+    alt: [d&c, dc, d and c, dee and see]
+    chapter_label: section
 
   moses:
-    name: "Moses"
-    abbreviations: ["moses", "mos"]
+    name: Moses
+    pattern: "moses"
+    alt: [moses]
 
   abraham:
-    name: "Abraham"
-    abbreviations: ["abr", "abraham"]
+    name: Abraham
+    pattern: "Abra*\\.*(?:ham)*"
+    alt: [abr, abraham]
 
   joseph_smith_matthew:
     name: "Joseph Smith—Matthew"
-    abbreviations: ["js-m", "jsm", "js-matt"]
+    pattern: "Jos(?:eph)*\\.* Smith(?:[–—\\- ]+Matthew)"
+    alt: [js-m, jsm, js-matt, JS—M]
 
   joseph_smith_history:
     name: "Joseph Smith—History"
-    abbreviations: ["js-h", "jsh", "js-hist"]
+    pattern: "Jos(?:eph)*\\.* Smith(?:[–—\\- ]+History)"
+    alt: [js-h, jsh, js-hist, JS—H]
 
   articles_of_faith:
-    name: "Articles of Faith"
-    abbreviations: ["a of f", "aof", "af"]
+    name: Articles of Faith
+    pattern: "a(?:rticles)*[ _-]*o[ _-f]*f(?:aith)*"
+    alt: [a of f, aof, af]
+
+  # Additional LDS-related texts
+  lectures_on_faith:
+    name: Lectures on Faith
+    pattern: "lect*(?:ures*)*(?: on faith)*\\.*"
+    alt: [l on f, lof, lec]
+
+  book_of_commandments:
+    name: Book of Commandments
+    pattern: "(?:book of )*com(?:mandments)*"
+    alt: [boc]
+
+  jst:
+    name: JST
+    pattern: "Jos(eph)*\\.* Smith('s)* Translation,*( of)*\\s*"
+    alt: [jst, joseph smith translation]
 
 pre_rules:
-  - pattern: "\\bgospel\\s+(?:of|according\\s+to)\\s+"
-    replacement: ""
-  - pattern: "\\bepistle\\s+(?:of|to(?:\\s+the)?)\\s+(?!jeremiah)"
-    replacement: ""
+  - ["\\bgospel\\s+(?:of|according\\s+to)\\s+", ""]
+  - ["\\bepistle\\s+(?:of|to(?:\\s+the)?)\\s+(?!jeremiah)", ""]
+  - [",* *jst", "JST"]
+  - ["JST *,*[ —-]+", "JST "]
+  - ["jst(,| of )", "JST "]
+  - ["jst([a-z])", "JST $1"]
+  - ["([^;-]*?)\\s*jst\\s*", "JST $1"]
+  - ["JST Genesis 0", "Moses 1"]
+  - ["([—-])h", "—H"]
+  - ["([—-])m", "—M"]

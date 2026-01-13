@@ -1,372 +1,334 @@
 canon: bible
 language: en
+
 books:
   genesis:
     name: Genesis
-    abbreviations:
-      - gen
-      - gn
+    pattern: "gen\\.*(?:e*sis)*"
+    alt: [gen, gn]
+
   exodus:
     name: Exodus
-    abbreviations:
-      - ex
-      - exod
-      - exo
+    pattern: "exo*\\.*(?:dus)*"
+    alt: [ex, exod, exo]
+
   leviticus:
     name: Leviticus
-    abbreviations:
-      - lev
-      - lv
+    pattern: "levi*t*\\.*(?:icus)*"
+    alt: [lev, lv]
+
   numbers:
     name: Numbers
-    abbreviations:
-      - num
-      - nu
-      - nm
+    pattern: "num\\.*(?:bers)*"
+    alt: [num, nu, nm]
+
   deuteronomy:
     name: Deuteronomy
-    abbreviations:
-      - deut
-      - dt
+    pattern: "deut\\.*(?:eronomy)*"
+    alt: [deut, dt]
+
   joshua:
     name: Joshua
-    abbreviations:
-      - josh
-      - jos
+    pattern: "josh\\.*(?:ua)*"
+    alt: [josh, jos]
+
   judges:
     name: Judges
-    abbreviations:
-      - judg
-      - jdg
+    pattern: "judg\\.*(?:es)*"
+    alt: [judg, jdg]
+
   ruth:
     name: Ruth
-    abbreviations:
-      - ruth
-      - ru
+    pattern: "rut*h*\\.*"
+    alt: [ruth, ru]
+
   1_samuel:
     name: 1 Samuel
-    abbreviations:
-      - 1 sam
-      - 1sam
-      - 1 sm
+    pattern: "sam*u*\\.*(?:el)*"
+    alt: [1 sam, 1sam, 1 sm]
+
   2_samuel:
     name: 2 Samuel
-    abbreviations:
-      - 2 sam
-      - 2sam
-      - 2 sm
+    pattern: "sam*u*\\.*(?:el)*"
+    alt: [2 sam, 2sam, 2 sm]
+
   1_kings:
     name: 1 Kings
-    abbreviations:
-      - 1 kgs
-      - 1kgs
-      - 1 ki
+    pattern: "ki*n*gs*\\.*"
+    alt: [1 kgs, 1kgs, 1 ki]
+
   2_kings:
     name: 2 Kings
-    abbreviations:
-      - 2 kgs
-      - 2kgs
-      - 2 ki
+    pattern: "ki*n*gs*\\.*"
+    alt: [2 kgs, 2kgs, 2 ki]
+
   1_chronicles:
     name: 1 Chronicles
-    abbreviations:
-      - 1 chr
-      - 1chr
-      - 1 ch
+    pattern: "chr*o*n*\\.*(?:icles)*"
+    alt: [1 chr, 1chr, 1 ch]
+
   2_chronicles:
     name: 2 Chronicles
-    abbreviations:
-      - 2 chr
-      - 2chr
-      - 2 ch
+    pattern: "chr*o*n*\\.*(?:icles)*"
+    alt: [2 chr, 2chr, 2 ch]
+
   ezra:
     name: Ezra
-    abbreviations:
-      - ezr
+    pattern: "ezr*\\.*(?:a)*"
+    alt: [ezr]
+
   nehemiah:
     name: Nehemiah
-    abbreviations:
-      - neh
-      - ne
+    pattern: "neh\\.*(?:emiah)*"
+    alt: [neh, ne]
+
   esther:
     name: Esther
-    abbreviations:
-      - est
-      - esth
+    pattern: "esth*\\.*(?:er)*"
+    alt: [est, esth]
+
   job:
     name: Job
-    abbreviations:
-      - job
-      - jb
+    pattern: "job"
+    alt: [job, jb]
+
   psalms:
     name: Psalms
-    abbreviations:
-      - ps
-      - pss
-      - psa
-      - psalm
+    pattern: "ps\\.*(?:a)*\\.*(?:lm)*\\.*(?:s)*"
+    alt: [ps, pss, psa, psalm]
     singular: Psalm
+
   proverbs:
     name: Proverbs
-    abbreviations:
-      - prov
-      - prv
-      - pr
+    pattern: "prov\\.*(?:erbs)*"
+    alt: [prov, prv, pr]
+
   ecclesiastes:
     name: Ecclesiastes
-    abbreviations:
-      - eccl
-      - ecc
-      - ec
+    pattern: "eccl*\\.*(?:esiastes)*"
+    alt: [eccl, ecc, ec]
+
   song_of_solomon:
     name: Song of Solomon
-    abbreviations:
-      - song
-      - sos
-      - ss
-    alternates:
-      - song of songs
-      - canticles
+    pattern: "(?<!solomon's )(the )*song*\\.*(?: *of *solomon)*"
+    alt: [song, sos, ss, song of songs, canticles]
+
   isaiah:
     name: Isaiah
-    abbreviations:
-      - isa
-      - is
+    pattern: "isa\\.*(?:iah)*"
+    alt: [isa, is]
+
   jeremiah:
     name: Jeremiah
-    abbreviations:
-      - jer
-      - je
+    pattern: "jer\\.*(?:emiah)*"
+    alt: [jer, je]
+
   lamentations:
     name: Lamentations
-    abbreviations:
-      - lam
-      - la
+    pattern: "lame*n*t*\\.*(?:ations)*"
+    alt: [lam, la]
+
   ezekiel:
     name: Ezekiel
-    abbreviations:
-      - ezek
-      - eze
-      - ez
+    pattern: "eze*k*\\.*(?:iel)*"
+    alt: [ezek, eze, ez]
+
   daniel:
     name: Daniel
-    abbreviations:
-      - dan
-      - dn
+    pattern: "dan\\.*(?:iel)*"
+    alt: [dan, dn]
+
   hosea:
     name: Hosea
-    abbreviations:
-      - hos
-      - ho
+    pattern: "hos*\\.*(?:ea)*"
+    alt: [hos, ho]
+
   joel:
     name: Joel
-    abbreviations:
-      - joel
-      - jl
+    pattern: "joel*\\.*"
+    alt: [joel, jl]
+
   amos:
     name: Amos
-    abbreviations:
-      - amos
-      - am
+    pattern: "amos*\\.*"
+    alt: [amos, am]
+
   obadiah:
     name: Obadiah
-    abbreviations:
-      - obad
-      - ob
+    pattern: "obad\\.*(?:iah)*"
+    alt: [obad, ob]
+
   jonah:
     name: Jonah
-    abbreviations:
-      - jonah
-      - jon
+    pattern: "jon*\\.*(?:ah)*"
+    alt: [jonah, jon]
+
   micah:
     name: Micah
-    abbreviations:
-      - mic
-      - mc
+    pattern: "mic*\\.*(?:ah)*"
+    alt: [mic, mc]
+
   nahum:
     name: Nahum
-    abbreviations:
-      - nah
-      - na
+    pattern: "nah*\\.*(?:um)*"
+    alt: [nah, na]
+
   habakkuk:
     name: Habakkuk
-    abbreviations:
-      - hab
-      - hb
+    pattern: "hab*\\.*(?:akuk)*"
+    alt: [hab, hb]
+
   zephaniah:
     name: Zephaniah
-    abbreviations:
-      - zeph
-      - zep
+    pattern: "zeph*\\.*(?:aniah)*"
+    alt: [zeph, zep]
+
   haggai:
     name: Haggai
-    abbreviations:
-      - hag
-      - hg
+    pattern: "hag\\.*(?:gai)*"
+    alt: [hag, hg]
+
   zechariah:
     name: Zechariah
-    abbreviations:
-      - zech
-      - zec
+    pattern: "zech*\\.*(?:ariah)*"
+    alt: [zech, zec]
+
   malachi:
     name: Malachi
-    abbreviations:
-      - mal
-      - ml
+    pattern: "mal*\\.*(?:achi)*"
+    alt: [mal, ml]
+
   matthew:
     name: Matthew
-    abbreviations:
-      - matt
-      - mat
-      - mt
+    pattern: "(?:mat*t*h*|mt)\\.*(?:ew)*"
+    alt: [matt, mat, mt]
+
   mark:
     name: Mark
-    abbreviations:
-      - mark
-      - mrk
-      - mk
+    pattern: "m(ar)*k"
+    alt: [mark, mrk, mk]
+
   luke:
     name: Luke
-    abbreviations:
-      - luke
-      - luk
-      - lk
+    pattern: "lu*k*e*\\.*"
+    alt: [luke, luk, lk]
+
   john:
     name: John
-    abbreviations:
-      - john
-      - jhn
-      - jn
+    pattern: "jo*h*n\\.*"
+    alt: [john, jhn, jn]
+
   acts:
     name: Acts
-    abbreviations:
-      - acts
-      - act
-    alternates:
-      - acts of the apostles
+    pattern: "(?:the )*act*s*\\.*(?: of the apostles)*"
+    alt: [acts, act, acts of the apostles]
+
   romans:
     name: Romans
-    abbreviations:
-      - rom
-      - ro
+    pattern: "rom*\\.*(?:ans)*"
+    alt: [rom, ro]
+
   1_corinthians:
     name: 1 Corinthians
-    abbreviations:
-      - 1 cor
-      - 1cor
-      - 1 co
+    pattern: "cor\\.*(?:inthians)*"
+    alt: [1 cor, 1cor, 1 co]
+
   2_corinthians:
     name: 2 Corinthians
-    abbreviations:
-      - 2 cor
-      - 2cor
-      - 2 co
+    pattern: "cor\\.*(?:inthians)*"
+    alt: [2 cor, 2cor, 2 co]
+
   galatians:
     name: Galatians
-    abbreviations:
-      - gal
-      - ga
+    pattern: "gal*a*\\.*(?:tians)*"
+    alt: [gal, ga]
+
   ephesians:
     name: Ephesians
-    abbreviations:
-      - eph
-      - ep
+    pattern: "ephe*\\.*(?:sians)*"
+    alt: [eph, ep]
+
   philippians:
     name: Philippians
-    abbreviations:
-      - phil
-      - php
+    pattern: "phili*p*\\.*(?:ippians)*"
+    alt: [phil, php]
+
   colossians:
     name: Colossians
-    abbreviations:
-      - col
-      - co
+    pattern: "colo*s*\\.*(?:sians)*"
+    alt: [col, co]
+
   1_thessalonians:
     name: 1 Thessalonians
-    abbreviations:
-      - 1 thess
-      - 1thess
-      - 1 th
+    pattern: "thess*\\.*(?:alonians)*"
+    alt: [1 thess, 1thess, 1 th]
+
   2_thessalonians:
     name: 2 Thessalonians
-    abbreviations:
-      - 2 thess
-      - 2thess
-      - 2 th
+    pattern: "thess*\\.*(?:alonians)*"
+    alt: [2 thess, 2thess, 2 th]
+
   1_timothy:
     name: 1 Timothy
-    abbreviations:
-      - 1 tim
-      - 1tim
-      - 1 ti
+    pattern: "tim\\.*(?:othy)*"
+    alt: [1 tim, 1tim, 1 ti]
+
   2_timothy:
     name: 2 Timothy
-    abbreviations:
-      - 2 tim
-      - 2tim
-      - 2 ti
+    pattern: "tim\\.*(?:othy)*"
+    alt: [2 tim, 2tim, 2 ti]
+
   titus:
     name: Titus
-    abbreviations:
-      - titus
-      - tit
+    pattern: "tit*\\.*(?:us)*"
+    alt: [titus, tit]
+
   philemon:
     name: Philemon
-    abbreviations:
-      - phlm
-      - phm
+    pattern: "philem*o*n*\\.*"
+    alt: [phlm, phm]
+
   hebrews:
     name: Hebrews
-    abbreviations:
-      - heb
-      - he
+    pattern: "he\\.*(?:b)*\\.*(?:rews)*"
+    alt: [heb, he]
+
   james:
     name: James
-    abbreviations:
-      - james
-      - jas
-      - jm
+    pattern: "ja\\.*(?:me)*s"
+    alt: [james, jas, jm]
+
   1_peter:
     name: 1 Peter
-    abbreviations:
-      - 1 pet
-      - 1pet
-      - 1 pe
+    pattern: "pet*\\.*(?:er)*"
+    alt: [1 pet, 1pet, 1 pe]
+
   2_peter:
     name: 2 Peter
-    abbreviations:
-      - 2 pet
-      - 2pet
-      - 2 pe
+    pattern: "pet*\\.*(?:er)*"
+    alt: [2 pet, 2pet, 2 pe]
+
   1_john:
     name: 1 John
-    abbreviations:
-      - 1 john
-      - 1john
-      - 1 jn
+    pattern: "jo*h*n\\.*"
+    alt: [1 john, 1john, 1 jn]
+
   2_john:
     name: 2 John
-    abbreviations:
-      - 2 john
-      - 2john
-      - 2 jn
+    pattern: "jo*h*n\\.*"
+    alt: [2 john, 2john, 2 jn]
+
   3_john:
     name: 3 John
-    abbreviations:
-      - 3 john
-      - 3john
-      - 3 jn
+    pattern: "jo*h*n\\.*"
+    alt: [3 john, 3john, 3 jn]
+
   jude:
     name: Jude
-    abbreviations:
-      - jude
-      - jud
+    pattern: "ju\\.*(?:d)*\\.*(?:e)*"
+    alt: [jude, jud]
+
   revelation:
     name: Revelation
-    abbreviations:
-      - rev
-      - re
-      - apoc
-    alternates:
-      - revelations
-      - apocalypse
+    pattern: "rev\\.*(?:elation)*"
+    alt: [rev, re, apoc, revelations, apocalypse]

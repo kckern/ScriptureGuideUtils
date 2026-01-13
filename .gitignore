@@ -1,6 +1,9 @@
-
 node_modules
 .worktrees/
+_archive/
+coverage/
 **/test_results/*
 test_results/test_results.html
-/dist
+/dist/*.cjs
+/dist/*.mjs
+/dist/*.map

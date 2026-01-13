@@ -6,46 +6,90 @@ delimiters:
   list: [",", ";", "and"]
 
 numerals:
-  roman:
-    I: 1
-    II: 2
-    III: 3
-    IV: 4
-  spelled:
-    first: 1
-    second: 2
-    third: 3
-    fourth: 4
+  roman: { I: 1, II: 2, III: 3, IV: 4 }
+  spelled: { first: 1, second: 2, third: 3, fourth: 4 }
 
 labels:
   chapter: ["chapter", "ch", "chap"]
   verse: ["verse", "v", "vv", "vs"]
+  section: ["section", "sec"]
 
-joiners:
-  patterns: ["and", ";", ",", "compare", "see also", "cf"]
+joiners: ["and", ";", ",", "&", "compare", "see also", "cf", "cited at"]
 
 pre_rules:
-  - pattern: "\\bIV\\s+(?=[A-Za-z])"
-    replacement: "4 "
-  - pattern: "\\bIII\\s+(?=[A-Za-z])"
-    replacement: "3 "
-  - pattern: "\\bII\\s+(?=[A-Za-z])"
-    replacement: "2 "
-  - pattern: "\\bI\\s+(?=[A-Za-z])"
-    replacement: "1 "
-  - pattern: "\\bfirst\\s+(?=[A-Za-z])"
-    replacement: "1 "
-  - pattern: "\\bsecond\\s+(?=[A-Za-z])"
-    replacement: "2 "
-  - pattern: "\\bthird\\s+(?=[A-Za-z])"
-    replacement: "3 "
-  - pattern: "\\bfourth\\s+(?=[A-Za-z])"
-    replacement: "4 "
-  - pattern: "\\bchapter\\s+(\\d+),?\\s*verse\\s+(\\d+)"
-    replacement: "$1:$2"
-  - pattern: "\\bchapter\\s+(\\d+),?\\s*verses?\\s+(\\d+)\\s*(?:through|to|-)\\s*(\\d+)"
-    replacement: "$1:$2-$3"
+  # Strip Gospel/Epistle prefixes
+  - ["\\bgospel\\s+(?:of|according\\s+to)\\s+", ""]
+  - ["\\bepistle\\s+(?:of|to(?:\\s+the)?)\\s+(?!jeremiah)", ""]
+  - ["\\bletter\\s+(?:of|to(?:\\s+the)?)\\s+(?!jeremiah)", ""]
+  # Alternate book names
+  - ["\\bsong of songs\\b", "Solomon's Song"]
+  - ["\\bcanticle of canticles\\b", "Solomon's Song"]
+  # Roman numerals to Arabic
+  - ["\\bIV\\s+(?=[A-Za-z])", "4 "]
+  - ["\\bIII\\s+(?=[A-Za-z])", "3 "]
+  - ["\\bII\\s+(?=[A-Za-z])", "2 "]
+  - ["\\bI\\s+(?=[A-Za-z])", "1 "]
+  # Spelled ordinals
+  - ["\\bfirst\\s+(?=[A-Za-z])", "1 "]
+  - ["\\bsecond\\s+(?=[A-Za-z])", "2 "]
+  - ["\\bthird\\s+(?=[A-Za-z])", "3 "]
+  - ["\\bfourth\\s+(?=[A-Za-z])", "4 "]
+  # Punctuation normalization
+  - ["[.]{2,}", ";"]
+  - ["(\\d+) (\\d+)", "$1.$2"]
+  - ["([0-9])[.]\\s*([0-9])", "$1:$2"]
+  - ["([a-z])[ .-]*0+", "$1"]
+  - ["^(\\d+)-", "$1"]
+  - [" ", " "]
+  # Ordinal suffixes
+  - ["([0-9])th\\b", "$1"]
+  - ["([1-4])(st|nd|d|rd|th)\\b", "$1"]
+  # Spelled delimiters
+  - ["\\bchapter\\s+(\\d+),?\\s*verses?\\s+(\\d+)\\s*(?:through|to|-)\\s*(\\d+)", "$1:$2-$3"]
+  - ["\\bchapter\\s+(\\d+),?\\s*verse\\s+(\\d+)", "$1:$2"]
+  - ["\\bch\\.?\\s+(\\d+),?\\s*v(?:v|s)?\\.?\\s+(\\d+)", "$1:$2"]
+  - ["\\bverses?\\s+(\\d+)\\s+(?:through|to)\\s+(\\d+)", ":$1-$2"]
+  - ["\\bverses?\\s+(\\d+)\\s*,\\s*(\\d+)", ":$1,$2"]
+  # Chapter/section stripping
+  - [",*\\s*\\b(?:ch\\b|chap(?:t*er)*s*)\\.\\,*\\s*(\\d+)", "$1"]
+  - [",*\\s*\\b(?:sec\\b|section)\\.\\s*(\\d+)", "$1"]
+  - ["([0-9]),*\\s*\\b(?:chapt*ers*|ch|chptrs*)\\.?,*\\s*([0-9])", "$1:$2"]
+  - ["([a-z]),*\\s*\\b(?:chapt*ers*|ch|chptrs*)\\s*([0-9])", "$1 $2"]
+  # Entity/punctuation cleanup
+  - ["[()]+", " "]
+  - ["(?:&(?:ndash|mdash|minus)|&#(?:8211|8212|8722))", "-"]
+  - ["[\\s.]*[–—−\\-]+[\\s.]*", "-"]
+  - ["([;,])\\s*and\\s*", "$1"]
+  - ["([0-9])[ .]*and[ .]*", "$1,"]
+  - ["(\\d)(\\.|: )(\\d)", "$1:$3"]
+  - ["\\s+(\\d+)[-–—](\\d+:\\d+)", " $1:1-$2"]
+  - ["(\\d)([A-Z])", "$1 $2"]
+  - ["(\\d) ([A-Z])$", "$1$2"]
+  - ["([0-9]),\\s*([1-4]*\\s*[a-z])", "$1; $2"]
+  - ["([a-z]), ([0-9])", "$1 $2"]
+  - ["\\.", " "]
+  - [" - ", " "]
+  - ["; ", ";"]
+  - [": ", ":"]
+  - ["(\\D)-(\\d)", "$1 $2"]
+  - ["([a-z]),", "$1"]
+  - [",\\s*((?:\\d+\\s)*[a-z])", "; $1"]
+  - ["\\bv*ve*r*s*e*s*\\s*([0-9])", ":$1"]
+  - ["(, *)*\\bverses*\\s*([0-9])", ":$1"]
+  - ["\\s*:", ":"]
+  - [";\\s*:", ":"]
+  - ["(\\d+) *to *(\\d+)", "$1-$2"]
+  - ["([A-za-z])(\\d)", "$1 $2"]
+  - ["([0-9]),\\s*([1-4]*\\s*[a-z])", "$1; $2"]
+  - ["o([nf])", "o$1"]
+  - ["([;,])", "$1 "]
+  - ["(the )*book of", ""]
+  - [",\\s*([0-9]+)\\s*:", "; $1:"]
+  - ["\\b\\s*cf[:.]*\\s*\\b", " "]
 
 post_rules:
-  - pattern: "\\s+"
-    replacement: " "
+  - ["(Words of Mormon|Articles of Faith|4 Nephi|Jarom|Enos|Omni|Obadiah|2 John|3 John|Philemon|Jude|First Vision|Joseph Smith—.+)\\s+([2-9]|(\\d\\d+))", "$1 1:$2"]
+  - ["(^|;\\s*)(Nephi|cor|kings|chron|thes|pet|tim)", "$1 1 $2"]
+  - ["\\s+", " "]
+  - ["([a-z]\\s*\\d+)(-\\d+:\\d+)", "$1:1$2"]
+  - ["--", "—"]

@@ -14,7 +14,7 @@ describe('Canon Language Loading', () => {
     expect(bibleEn.books).toBeDefined();
     expect(bibleEn.books.genesis).toBeDefined();
     expect(bibleEn.books.genesis.name).toBe('Genesis');
-    expect(bibleEn.books.genesis.abbreviations).toContain('gen');
+    expect(bibleEn.books.genesis.alt).toContain('gen');
   });
 
   test('loadFullLanguage merges shared + canon', () => {
