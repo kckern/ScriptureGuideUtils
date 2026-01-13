@@ -152,6 +152,12 @@ export default {
         ["\\bII\\s+(?=[A-Za-z])", "2 "],          // II Corinthians -> 2 Corinthians
         ["\\bI\\s+(?=[A-Za-z])", "1 "],           // I John -> 1 John
 
+        // Spelled ordinals - full words (case-insensitive, with lookahead for book names)
+        ["\\bfirst\\s+(?=[A-Za-z])", "1 "],       // First Corinthians -> 1 Corinthians
+        ["\\bsecond\\s+(?=[A-Za-z])", "2 "],      // Second Samuel -> 2 Samuel
+        ["\\bthird\\s+(?=[A-Za-z])", "3 "],       // Third John -> 3 John
+        ["\\bfourth\\s+(?=[A-Za-z])", "4 "],      // Fourth Nephi -> 4 Nephi
+
         ["[.]{2,}", ";"],
         ["(\\d+) (\\d+)", "$1.$2"],
         ["([0-9])[.]\\s*([0-9])", "$1:$2"],
