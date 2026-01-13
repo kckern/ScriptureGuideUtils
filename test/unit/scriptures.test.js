@@ -112,3 +112,17 @@ describe('lookupReference - Input Validation', () => {
     expect(result).toBeDefined();
   });
 });
+
+describe('lookupReference - Error Reporting', () => {
+  test('reports error for unrecognized book', () => {
+    const result = lookupReference('Xyzzy 1:1');
+    expect(result.verse_ids).toEqual([]);
+    expect(result.error).toContain('not recognized');
+  });
+
+  test('returns valid result for known book', () => {
+    const result = lookupReference('John 3:16');
+    expect(result.verse_ids.length).toBe(1);
+    expect(result.error).toBeUndefined();
+  });
+});

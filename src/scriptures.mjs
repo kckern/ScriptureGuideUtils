@@ -102,11 +102,15 @@ const lookupReference = function(query, language = null, lookupConfig = {}) {
     const useCoc = canon === 'coc';
 
     // Try lookup in the requested language first
+    let lookupResult;
     let verse_ids;
+    let errors;
     if (useCoc) {
         verse_ids = lookupInLanguageCoc(query, effectiveLanguage);
     } else {
-        verse_ids = lookupInLanguage(query, effectiveLanguage);
+        lookupResult = lookupInLanguage(query, effectiveLanguage);
+        verse_ids = lookupResult.verse_ids;
+        errors = lookupResult.errors;
     }
 
     if (verse_ids?.length) {
@@ -146,13 +150,19 @@ const lookupReference = function(query, language = null, lookupConfig = {}) {
 
     // If no results and multi-language lookup is allowed, try fallback languages
     if (!lookupConfig.noMulti) {
-        return lookupWithLanguageFallback(query, effectiveLanguage);
+        const fallbackResult = lookupWithLanguageFallback(query, effectiveLanguage);
+        // If fallback also found no results and we have errors, include them
+        if (fallbackResult.verse_ids.length === 0 && errors) {
+            fallbackResult.error = errors.join('; ');
+        }
+        return fallbackResult;
     }
 
     return {
         "query": query,
         "ref": "",
-        "verse_ids": []
+        "verse_ids": [],
+        error: errors ? errors.join('; ') : undefined
     };
 }
 
@@ -165,11 +175,22 @@ const lookupInLanguage = function(query, language) {
 
     // Lookup each single reference individually, return the set
     let verse_ids = [];
+    let errors = [];
     for (let i in refs) {
-        verse_ids = verse_ids.concat(lookupSingleRef(refs[i], config));
+        const result = lookupSingleRef(refs[i], config);
+        if (result && result.error) {
+            errors.push(result.error);
+        } else if (Array.isArray(result)) {
+            verse_ids = verse_ids.concat(result);
+        } else if (result && result.verse_ids) {
+            verse_ids = verse_ids.concat(result.verse_ids);
+        }
     }
 
-    return verse_ids;
+    return {
+        verse_ids,
+        errors: errors.length > 0 ? errors : undefined
+    };
 }
 
 const lookupInLanguageCoc = function(query, language) {
@@ -411,12 +432,13 @@ const loadRefsFromRangesCoc = function(ranges, config) {
 
 const lookupWithLanguageFallback = function(query, targetLanguage) {
     // Define fallback order: English first (if not already tried), then all other languages
-    const fallbackLanguages = targetLanguage !== 'en' 
+    const fallbackLanguages = targetLanguage !== 'en'
         ? ['en', ...Object.keys(raw_lang).filter(lang => lang !== 'en' && lang !== targetLanguage)]
         : Object.keys(raw_lang).filter(lang => lang !== targetLanguage);
 
     for (const lang of fallbackLanguages) {
-        const verse_ids = lookupInLanguage(query, lang);
+        const lookupResult = lookupInLanguage(query, lang);
+        const verse_ids = lookupResult.verse_ids;
         if (verse_ids?.length) {
             // Generate reference in the target language
             const refInTargetLanguage = generateReference(verse_ids, targetLanguage);
@@ -441,7 +463,12 @@ const lookupSingleRef = function(ref, config) {
     //todo: better handling of multi-book ranges for unicode
     if (!booksWithDashRegex.test(ref) && ref.match(/[—-](\d\s)*[\D]/ig)) return lookupMultiBookRange(ref, config);
     let book = getBook(ref, config);
-    if (!book) return [];
+    if (!book) {
+        return {
+            verse_ids: [],
+            error: `Book not recognized in reference: "${ref}"`
+        };
+    }
     let ranges = getRanges(ref, book);
     let verse_ids = loadVerseIds(book, ranges, config);
     return verse_ids;
