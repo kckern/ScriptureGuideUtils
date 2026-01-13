@@ -1,0 +1,32 @@
+import { loadCanonStructure } from '../../src/lib/canon-loader.mjs';
+
+describe('Canon Structure Loading', () => {
+  test('loads Bible structure', () => {
+    const bible = loadCanonStructure('bible');
+
+    expect(bible).not.toBeNull();
+    expect(bible.canon).toBe('bible');
+    expect(bible.id_start).toBe(1);
+    expect(bible.id_end).toBe(31102);
+    expect(bible.books).toBeDefined();
+    expect(Array.isArray(bible.books)).toBe(true);
+    expect(bible.books.length).toBe(66);
+
+    // Check first book
+    const genesis = bible.books.find(b => b.key === 'genesis');
+    expect(genesis).toBeDefined();
+    expect(genesis.order).toBe(1);
+    expect(genesis.chapters).toBe(50);
+    expect(genesis.first_verse_id).toBe(1);
+
+    // Check last book
+    const revelation = bible.books.find(b => b.key === 'revelation');
+    expect(revelation).toBeDefined();
+    expect(revelation.order).toBe(66);
+  });
+
+  test('returns null for unknown canon', () => {
+    const unknown = loadCanonStructure('nonexistent');
+    expect(unknown).toBeNull();
+  });
+});
