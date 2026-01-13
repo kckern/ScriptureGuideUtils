@@ -586,7 +586,7 @@ const getRanges = function(ref) {
                 let startChapter = parseInt(chapterStartandEnd[0], 0);
                 let endChapter = parseInt(chapterStartandEnd[1], 0);
                 let chapterRange = [];
-                for (leti = startChapter; i <= endChapter; i++) {
+                for (let i = startChapter; i <= endChapter; i++) {
                     ranges.push(i + ": 1-X");
                 }
             }
