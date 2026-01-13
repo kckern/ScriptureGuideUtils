@@ -1,0 +1,84 @@
+canon: coc
+language: en
+
+# COC/RLDS Book of Mormon uses same book names as LDS but different versification
+books:
+  1_nephi:
+    name: 1 Nephi
+    pattern: "ne\\.*(?:phi)*"
+    alt: [1 ne, 1ne, 1 nep, first nephi, I nephi]
+
+  2_nephi:
+    name: 2 Nephi
+    pattern: "ne\\.*(?:phi)*"
+    alt: [2 ne, 2ne, 2 nep, second nephi, II nephi]
+
+  jacob:
+    name: Jacob
+    pattern: "jac\\.*(?:ob)*"
+    alt: [jacob, jac]
+
+  enos:
+    name: Enos
+    pattern: "en\\.*(?:os)*"
+    alt: [enos]
+
+  jarom:
+    name: Jarom
+    pattern: "jar\\.*(?:om)*"
+    alt: [jarom, jar]
+
+  omni:
+    name: Omni
+    pattern: "om\\.*(?:ni)*"
+    alt: [omni, om]
+
+  words_of_mormon:
+    name: Words of Mormon
+    pattern: "(?:the *)*w(?:ords)*[ _-]*o[ _-f]*m(?:ormon)*"
+    alt: [w of m, wom]
+
+  mosiah:
+    name: Mosiah
+    pattern: "mos\\.*(?:iah)*"
+    alt: [mosiah, mos]
+
+  alma:
+    name: Alma
+    pattern: "alma"
+    alt: [alma, al]
+
+  helaman:
+    name: Helaman
+    pattern: "hela*\\.*(?:a*man)*"
+    alt: [hel, helaman]
+
+  3_nephi:
+    name: 3 Nephi
+    pattern: "ne\\.*(?:phi)*"
+    alt: [3 ne, 3ne, 3 nep, third nephi, III nephi]
+
+  4_nephi:
+    name: 4 Nephi
+    pattern: "ne\\.*(?:phi)*"
+    alt: [4 ne, 4ne, 4 nep, fourth nephi, IV nephi]
+
+  mormon:
+    name: Mormon
+    pattern: "morm\\.*(?:on)*"
+    alt: [morm, mormon]
+
+  ether:
+    name: Ether
+    pattern: "eth\\.*(?:er)*"
+    alt: [ether, eth]
+
+  moroni:
+    name: Moroni
+    pattern: "moro\\.*(?:ni)*"
+    alt: [moro, moroni]
+
+pre_rules:
+  - ["\\bgospel\\s+(?:of|according\\s+to)\\s+", ""]
+  - ["\\brlds\\s+", ""]
+  - ["\\bcommunity\\s+of\\s+christ\\s+", ""]
