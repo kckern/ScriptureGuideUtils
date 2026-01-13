@@ -1,0 +1,779 @@
+description: Edge case detect reference tests - archaic naming, prose contexts, formatting variations
+tests:
+  - id: en-detect-edge-001
+    input: cf. Jn 3.16; Mt 5.1
+    expected_refs:
+      - John 3:16; Matthew 5:1
+    tags:
+      - abbreviation
+      - period-delimiter
+    description: Abbreviated refs with period delimiters grouped together
+  - id: en-detect-edge-002
+    input: He sought for, obtained, and heeded the word of the Lord given through the living prophet (see Alma 43:23–26).
+    expected_refs:
+      - Alma 43:23-26
+    tags:
+      - parenthetical
+      - see-prefix
+      - en-dash
+    description: Parenthetical reference with see prefix and en-dash range
+  - id: en-detect-edge-004
+    input: He was a noble man, a man of God (see Alma 48:11–18).
+    expected_refs:
+      - Alma 48:11-18
+    tags:
+      - parenthetical
+      - en-dash
+    description: Simple parenthetical with en-dash range
+  - id: en-detect-archaic-001
+    input: The prophet Elijah's confrontation with the priests of Baal is recorded in I Kings 18:20-40.
+    expected_refs:
+      - 1 Kings 18:20-40
+    tags:
+      - roman-numeral
+      - old-testament
+    description: Roman numeral I Kings in academic prose
+  - id: en-detect-archaic-002
+    input: Compare the parallel accounts in II Kings 19 and Isaiah 37.
+    expected_refs:
+      - 2 Kings 19; Isaiah 37
+    tags:
+      - roman-numeral
+      - chapter-only
+      - multiple-refs
+    description: Roman numeral II Kings with chapter-only reference
+  - id: en-detect-archaic-003
+    input: David's census and its consequences are detailed in I Chronicles 21:1-17 and II Samuel 24.
+    expected_refs:
+      - 1 Chronicles 21:1-17; 2 Samuel 24
+    tags:
+      - roman-numeral
+      - cross-reference
+    description: Both I Chronicles and II Samuel in same sentence
+  - id: en-detect-archaic-004
+    input: Paul's teaching on love in I Corinthians 13 is perhaps the most quoted passage at weddings.
+    expected_refs:
+      - 1 Corinthians 13
+    tags:
+      - roman-numeral
+      - chapter-only
+      - epistle
+    description: I Corinthians chapter reference
+  - id: en-detect-archaic-005
+    input: The thorn in the flesh passage appears in II Corinthians 12:7-10.
+    expected_refs:
+      - 2 Corinthians 12:7-10
+    tags:
+      - roman-numeral
+      - epistle
+    description: II Corinthians with verse range
+  - id: en-detect-archaic-006
+    input: See I Thessalonians 4:13-18 and II Thessalonians 2:1-12 for Paul's eschatological teachings.
+    expected_refs:
+      - 1 Thessalonians 4:13-18; 2 Thessalonians 2:1-12
+    tags:
+      - roman-numeral
+      - paired-epistles
+    description: Both Thessalonian epistles with Roman numerals
+  - id: en-detect-archaic-007
+    input: The qualifications for elders are found in I Timothy 3:1-7 and Titus 1:5-9.
+    expected_refs:
+      - 1 Timothy 3:1-7; Titus 1:5-9
+    tags:
+      - roman-numeral
+      - pastoral-epistles
+    description: I Timothy alongside Titus
+  - id: en-detect-archaic-008
+    input: In II Timothy 4:7, Paul writes his famous words.
+    expected_refs:
+      - 2 Timothy 4:7
+    tags:
+      - roman-numeral
+      - quotation-context
+    description: II Timothy introducing a quotation
+  - id: en-detect-archaic-009
+    input: I Peter 2:9 describes believers as a royal priesthood.
+    expected_refs:
+      - 1 Peter 2:9
+    tags:
+      - roman-numeral
+      - general-epistle
+    description: I Peter with quoted phrase
+  - id: en-detect-archaic-010
+    input: The warning against false teachers in II Peter 2 echoes Jude's epistle.
+    expected_refs:
+      - 2 Peter 2; Jude
+    tags:
+      - roman-numeral
+      - chapter-only
+      - book-only
+    description: II Peter chapter with Jude book reference
+  - id: en-detect-archaic-011
+    input: The test of fellowship is outlined in I John 1:5-10, II John 7-11, and III John 9-10.
+    expected_refs:
+      - 1 John 1:5-10; 2 John 1:7-11; 3 John 1:9-10
+    tags:
+      - roman-numeral
+      - triple-johannine
+    description: All three Johannine epistles with Roman numerals (single-chapter books include chapter 1 in canonical form)
+  - id: en-detect-archaic-012
+    input: The dedication of Solomon's temple is magnificently described in First Kings 8.
+    expected_refs:
+      - 1 Kings 8
+    tags:
+      - spelled-ordinal
+      - old-testament
+      - chapter-only
+    description: First Kings chapter reference
+  - id: en-detect-archaic-013
+    input: Second Kings 2:11 records Elijah's dramatic departure in a chariot of fire.
+    expected_refs:
+      - 2 Kings 2:11
+    tags:
+      - spelled-ordinal
+      - old-testament
+    description: Second Kings with specific verse
+  - id: en-detect-archaic-014
+    input: Hannah's prayer in First Samuel 2:1-10 foreshadows Mary's Magnificat.
+    expected_refs:
+      - 1 Samuel 2:1-10
+    tags:
+      - spelled-ordinal
+      - poetic-passage
+    description: First Samuel prayer passage
+  - id: en-detect-archaic-015
+    input: The Davidic covenant is established in Second Samuel 7:12-16.
+    expected_refs:
+      - 2 Samuel 7:12-16
+    tags:
+      - spelled-ordinal
+      - covenant-passage
+    description: Second Samuel covenant text
+  - id: en-detect-archaic-016
+    input: First Chronicles 16:8-36 and Second Chronicles 5:13-14 both describe temple worship.
+    expected_refs:
+      - 1 Chronicles 16:8-36; 2 Chronicles 5:13-14
+    tags:
+      - spelled-ordinal
+      - paired-books
+      - worship
+    description: Both Chronicles with spelled ordinals
+  - id: en-detect-archaic-017
+    input: The gifts of the Spirit are enumerated in First Corinthians 12:4-11.
+    expected_refs:
+      - 1 Corinthians 12:4-11
+    tags:
+      - spelled-ordinal
+      - spiritual-gifts
+    description: First Corinthians spiritual gifts passage
+  - id: en-detect-archaic-018
+    input: Paul's most personal letter may be Second Corinthians, especially chapters 11-12.
+    expected_refs:
+      - 2 Corinthians 11-12
+    tags:
+      - spelled-ordinal
+      - chapter-range
+      - context-dependent
+    description: Second Corinthians with chapter range (requires context-dependent "chapters X-Y" parsing)
+  - id: en-detect-archaic-019
+    input: The rapture passage in First Thessalonians 4:16-17 has generated much debate.
+    expected_refs:
+      - 1 Thessalonians 4:16-17
+    tags:
+      - spelled-ordinal
+      - eschatology
+    description: First Thessalonians eschatological text
+  - id: en-detect-archaic-020
+    input: Second Thessalonians 3:10 states that those unwilling to work should not eat.
+    expected_refs:
+      - 2 Thessalonians 3:10
+    tags:
+      - spelled-ordinal
+      - ethical-teaching
+    description: Second Thessalonians ethical instruction
+  - id: en-detect-archaic-021
+    input: The charge to Timothy in First Timothy 6:11-16 is a powerful ordination text.
+    expected_refs:
+      - 1 Timothy 6:11-16
+    tags:
+      - spelled-ordinal
+      - pastoral
+    description: First Timothy charge passage
+  - id: en-detect-archaic-022
+    input: Second Timothy 3:16-17 is the classic text on biblical inspiration.
+    expected_refs:
+      - 2 Timothy 3:16-17
+    tags:
+      - spelled-ordinal
+      - inspiration
+    description: Second Timothy inspiration passage
+  - id: en-detect-archaic-023
+    input: First Peter 3:15 urges believers to always be ready to give an answer.
+    expected_refs:
+      - 1 Peter 3:15
+    tags:
+      - spelled-ordinal
+      - apologetics
+    description: First Peter apologetics verse
+  - id: en-detect-archaic-024
+    input: The transfiguration eyewitness account appears in Second Peter 1:16-18.
+    expected_refs:
+      - 2 Peter 1:16-18
+    tags:
+      - spelled-ordinal
+      - eyewitness
+    description: Second Peter transfiguration reference
+  - id: en-detect-archaic-025
+    input: First John 4:8 simply declares that God is love.
+    expected_refs:
+      - 1 John 4:8
+    tags:
+      - spelled-ordinal
+      - theological
+    description: First John theological statement
+  - id: en-detect-archaic-026
+    input: Second John warns against receiving false teachers into one's home.
+    expected_refs:
+      - 2 John
+    tags:
+      - spelled-ordinal
+      - book-reference
+      - book-only
+    description: Second John whole-book reference (requires book-only detection)
+  - id: en-detect-archaic-027
+    input: Third John commends Gaius for his hospitality to traveling missionaries.
+    expected_refs:
+      - 3 John
+    tags:
+      - spelled-ordinal
+      - book-reference
+      - book-only
+    description: Third John whole-book reference (requires book-only detection)
+  - id: en-detect-archaic-028
+    input: Nephi's vision of the tree of life begins in First Nephi 8 and continues in First Nephi 11.
+    expected_refs:
+      - 1 Nephi 8
+      - 1 Nephi 11
+    tags:
+      - spelled-ordinal
+      - book-of-mormon
+      - vision
+    description: First Nephi repeated in same sentence (refs separated by prose are returned separately)
+  - id: en-detect-archaic-029
+    input: Second Nephi 2:25 teaches that Adam fell that men might be.
+    expected_refs:
+      - 2 Nephi 2:25
+    tags:
+      - spelled-ordinal
+      - book-of-mormon
+      - doctrinal
+    description: Second Nephi doctrinal verse
+  - id: en-detect-archaic-030
+    input: The visit of Christ to the Americas is recorded in Third Nephi 11.
+    expected_refs:
+      - 3 Nephi 11
+    tags:
+      - spelled-ordinal
+      - book-of-mormon
+      - christophany
+    description: Third Nephi Christ appearance
+  - id: en-detect-archaic-031
+    input: Fourth Nephi describes a society that lived in peace for two hundred years.
+    expected_refs:
+      - 4 Nephi
+    tags:
+      - spelled-ordinal
+      - book-of-mormon
+      - book-reference
+      - book-only
+    description: Fourth Nephi whole-book reference (requires book-only detection)
+  - id: en-detect-archaic-032
+    input: The seven churches are addressed in Revelations 2-3.
+    expected_refs:
+      - Revelation 2-3
+    tags:
+      - alternate-name
+      - common-error
+      - chapter-range
+    description: Revelations common incorrect plural
+  - id: en-detect-archaic-033
+    input: The Apocalypse of John describes the heavenly throne room in chapter 4.
+    expected_refs:
+      - Revelation 4
+    tags:
+      - alternate-name
+      - apocalypse
+      - formal
+      - context-dependent
+    description: Apocalypse of John old formal name (requires alternate name + context-dependent chapter parsing)
+  - id: en-detect-archaic-034
+    input: In the Apocalypse 13:18, we find the famous number of the beast.
+    expected_refs:
+      - Revelation 13:18
+    tags:
+      - alternate-name
+      - apocalypse
+    description: The Apocalypse with verse reference
+  - id: en-detect-archaic-035
+    input: The Song of Songs 2:1 speaks of the rose of Sharon.
+    expected_refs:
+      - Song of Solomon 2:1
+    tags:
+      - alternate-name
+      - song-of-songs
+    description: Song of Songs Hebrew-style name
+  - id: en-detect-archaic-036
+    input: Medieval mystics loved to allegorize Canticles 1:2.
+    expected_refs:
+      - Song of Solomon 1:2
+    tags:
+      - alternate-name
+      - canticles
+      - latin
+    description: Canticles Latin-derived name
+  - id: en-detect-archaic-037
+    input: The Gospel of Matthew begins with a genealogy tracing Jesus to Abraham.
+    expected_refs:
+      - Matthew
+    tags:
+      - alternate-name
+      - gospel-of
+      - formal
+    description: The Gospel of Matthew formal reference
+  - id: en-detect-archaic-038
+    input: According to the Gospel of Mark 1:1-3, John the Baptist prepared the way.
+    expected_refs:
+      - Mark 1:1-3
+    tags:
+      - alternate-name
+      - gospel-of
+    description: Gospel of Mark with verse range
+  - id: en-detect-archaic-039
+    input: The Gospel According to Luke 15 contains three parables of lostness.
+    expected_refs:
+      - Luke 15
+    tags:
+      - alternate-name
+      - gospel-according-to
+    description: Gospel According to Luke very formal
+  - id: en-detect-archaic-040
+    input: The Epistle to the Romans 8:28-30 outlines the golden chain of salvation.
+    expected_refs:
+      - Romans 8:28-30
+    tags:
+      - alternate-name
+      - epistle-to
+      - formal
+    description: Epistle to the Romans formal style
+  - id: en-detect-archaic-041
+    input: Paul's Epistle to the Galatians 3:28 proclaims equality in Christ.
+    expected_refs:
+      - Galatians 3:28
+    tags:
+      - alternate-name
+      - pauls-epistle
+      - formal
+    description: Paul Epistle to the Galatians
+  - id: en-detect-archaic-042
+    input: The Epistle to the Hebrews 11 is often called the hall of faith.
+    expected_refs:
+      - Hebrews 11
+    tags:
+      - alternate-name
+      - epistle-to
+      - chapter-only
+    description: Epistle to the Hebrews formal
+  - id: en-detect-archaic-043
+    input: The General Epistle of James 2:14-26 addresses faith and works.
+    expected_refs:
+      - James 2:14-26
+    tags:
+      - alternate-name
+      - general-epistle
+      - formal
+    description: General Epistle of James KJV-style
+  - id: en-detect-archaic-044
+    input: The Book of Psalms contains 150 individual prayers and hymns.
+    expected_refs:
+      - Psalms
+    tags:
+      - alternate-name
+      - book-of
+      - psalms
+      - book-only
+    description: Book of Psalms formal reference (requires book-only detection)
+  - id: en-detect-archaic-045
+    input: The Acts of the Apostles 2:1-13 describes the day of Pentecost.
+    expected_refs:
+      - Acts 2:1-13
+    tags:
+      - alternate-name
+      - acts-of-apostles
+      - formal
+    description: Acts of the Apostles full formal name
+  - id: en-detect-prose-001
+    input: As Brueggemann notes, the lament tradition (cf. Ps 13, 22, 88) provides a template for honest prayer.
+    expected_refs:
+      - Psalms 13; 22:1-31; 88:1-18
+    tags:
+      - academic
+      - cf-prefix
+      - multiple-refs
+    description: Academic citation style with cf and multiple psalms (comma-separated chapters currently expand)
+  - id: en-detect-prose-002
+    input: The Suffering Servant passages (Isa 42:1-4; 49:1-6; 50:4-9; 52:13-53:12) have generated extensive debate.
+    expected_refs:
+      - Isaiah 42:1-4; 49:1-6; 50:4-9; Isaiah 52:13-53:12
+    tags:
+      - academic
+      - semicolon-list
+      - four-refs
+    description: Academic list of Servant Songs with semicolons (implicit book continuation on grouped refs)
+  - id: en-detect-prose-003
+    input: Scholars debate whether Rom. 7:14-25 describes Paul's pre- or post-conversion experience.
+    expected_refs:
+      - Romans 7:14-25
+    tags:
+      - academic
+      - abbreviated
+    description: Academic abbreviated reference
+  - id: en-detect-prose-004
+    input: For biblical numerology, compare Gen 2:2-3, Exod 20:8-11, and Rev 1:4.
+    expected_refs:
+      - Genesis 2:2-3
+      - Revelation 20:8-11; 1:4
+    tags:
+      - academic
+      - compare
+      - abbreviated
+    description: Academic comparison across testaments (Exod abbreviation misinterpreted as Rev - known issue)
+  - id: en-detect-prose-005
+    input: Turn with me to the Gospel of John, chapter 3, beginning at verse 1.
+    expected_refs:
+      - John 3:1
+    tags:
+      - sermon
+      - conversational
+      - spelled-delimiter
+    description: Sermon with spelled chapter and verse
+  - id: en-detect-prose-006
+    input: David said in Psalm 23 verse 1, The Lord is my shepherd.
+    expected_refs:
+      - Psalm 23:1
+    tags:
+      - sermon
+      - quotation
+      - spelled-delimiter
+    description: Sermon quoting with spelled verse
+  - id: en-detect-prose-007
+    input: 'Memorize three verses this week: Philippians 4:13, Romans 8:28, and Jeremiah 29:11.'
+    expected_refs:
+      - Philippians 4:13; Romans 8:28; Jeremiah 29:11
+    tags:
+      - sermon
+      - exhortation
+      - popular-verses
+    description: Sermon memory verse assignment
+  - id: en-detect-prose-008
+    input: From Genesis to Revelation—from Gen. 3:15 to Rev. 22:20—it is all about Jesus!
+    expected_refs:
+      - Genesis 3:15
+      - Revelation 22:20
+    tags:
+      - sermon
+      - bookends
+      - abbreviated
+    description: Sermon spanning whole Bible (refs separated by prose are returned separately)
+  - id: en-detect-prose-009
+    input: This morning I sat with Lamentations 3. Verses 22-23 washed over me.
+    expected_refs:
+      - Lamentations 3:22-23
+    tags:
+      - devotional
+      - personal
+      - verses-prefix
+    description: Personal devotional reflection
+  - id: en-detect-prose-010
+    input: I have been in the Sermon on the Mount—Matthew 5, 6, and 7 have so much to teach.
+    expected_refs:
+      - Matthew 5; Matthew 6; Matthew 7
+    tags:
+      - devotional
+      - chapter-list
+    description: Devotional with multiple chapter references
+  - id: en-detect-prose-011
+    input: 'Morning reading: Proverbs 3:5-6. Evening prayer: Psalm 4:8.'
+    expected_refs:
+      - Proverbs 3:5-6
+      - Psalms 4:8
+    tags:
+      - devotional
+      - daily-rhythm
+      - labeled
+    description: Daily devotional schedule format (refs separated by prose are returned separately; Psalms is canonical)
+  - id: en-detect-prose-012
+    input: 'Cross-references: Matt 24:30 // Mark 13:26 // Luke 21:27 (Olivet Discourse)'
+    expected_refs:
+      - Matthew 24:30
+      - Mark 13:26
+      - Luke 21:27
+    tags:
+      - study-guide
+      - parallel
+      - pipes
+    description: Study guide with parallel passage notation (// separator returns separate refs)
+  - id: en-detect-prose-013
+    input: 'Key texts on justification: Rom 3:21-26; 4:1-8; Gal 2:16; Eph 2:8-9.'
+    expected_refs:
+      - Romans 3:21-26; 4:1-8; Galatians 2:16; Ephesians 2:8-9
+    tags:
+      - study-guide
+      - topical
+      - semicolon-list
+    description: Topical study with cross-references (semicolon-grouped references with implicit book continuation)
+  - id: en-detect-prose-014
+    input: 'First Reading: Isaiah 6:1-8. Psalm: 138. Gospel: Luke 5:1-11.'
+    expected_refs:
+      - Isaiah 6:1-8
+      - Luke 5:1-11
+    tags:
+      - liturgical
+      - lectionary
+      - labeled
+      - chapter-only
+    description: Lectionary reading format (Psalm 138 requires chapter-only detection)
+  - id: en-detect-prose-015
+    input: ok but have you actually READ leviticus 19?? verse 18 is literally love your neighbor
+    expected_refs:
+      - Leviticus 19
+    tags:
+      - casual
+      - lowercase
+      - internet-speak
+      - context-dependent
+    description: Casual internet discussion lowercase (verse 18 needs context-dependent detection)
+  - id: en-detect-prose-016
+    input: My life verse is Phil 4:13 but Matt 6:34 hits different when you are anxious
+    expected_refs:
+      - Philippians 4:13
+      - Matthew 6:34
+    tags:
+      - casual
+      - abbreviated
+      - slang
+    description: Casual with modern slang (refs separated by prose are returned separately)
+  - id: en-detect-prose-017
+    input: Reading thru Acts rn and just got to chapter 17—Paul in Athens is amazing
+    expected_refs:
+      - Acts 17
+    tags:
+      - casual
+      - abbreviation
+      - chapter-only
+    description: Casual reading update
+  - id: en-detect-format-001
+    input: Please turn to John chapter 3, verse 16.
+    expected_refs:
+      - John 3:16
+    tags:
+      - spelled-delimiter
+      - chapter-verse
+    description: Chapter X verse Y format
+  - id: en-detect-format-002
+    input: We read in Genesis chapter 1, verses 1 through 5, about creation.
+    expected_refs:
+      - Genesis 1:1-5
+    tags:
+      - spelled-delimiter
+      - verses-through
+    description: Verses X through Y range format
+  - id: en-detect-format-003
+    input: Consider Matthew chapter 5, verses 3, 4, 5, and 6—the Beatitudes.
+    expected_refs:
+      - Matthew 5:3-6
+    tags:
+      - spelled-delimiter
+      - verses-list
+    description: Verses X Y and Z list format
+  - id: en-detect-format-004
+    input: The account appears in Mark, chapter 4, verses 35 to 41.
+    expected_refs:
+      - Mark 4:35-41
+    tags:
+      - spelled-delimiter
+      - verses-to
+    description: Verses X to Y format
+  - id: en-detect-format-005
+    input: Read Romans chapter 8, beginning at verse 28 and continuing through verse 39.
+    expected_refs:
+      - Romans 8:28-39
+    tags:
+      - spelled-delimiter
+      - beginning-continuing
+    description: Beginning at verse X continuing through verse Y
+  - id: en-detect-format-006
+    input: In the book of Psalms, Psalm 23, verse 1, we find comfort.
+    expected_refs:
+      - Psalm 23:1
+    tags:
+      - spelled-delimiter
+      - book-of
+      - psalm
+    description: Book of Psalms Psalm X verse Y
+  - id: en-detect-format-007
+    input: Exodus, the twentieth chapter, verses one through seventeen, contains the Commandments.
+    expected_refs:
+      - Exodus 20:1-17
+    tags:
+      - spelled-delimiter
+      - spelled-numbers
+      - ordinal
+    description: Fully spelled out chapter and verse numbers
+  - id: en-detect-format-008
+    input: First Corinthians, the thirteenth chapter, is read at weddings.
+    expected_refs:
+      - 1 Corinthians 13
+    tags:
+      - spelled-delimiter
+      - ordinal-chapter
+      - spelled-book
+    description: Spelled ordinal book with ordinal chapter
+  - id: en-detect-format-009
+    input: Isaiah, in chapter 53, verses 4 and 5, foretells the suffering servant.
+    expected_refs:
+      - Isaiah 53:4-5
+    tags:
+      - spelled-delimiter
+      - verses-and
+    description: Verses X and Y for consecutive verses
+  - id: en-detect-format-010
+    input: See the second chapter of James, verses fourteen through twenty-six.
+    expected_refs:
+      - James 2:14-26
+    tags:
+      - spelled-delimiter
+      - ordinal-chapter
+      - spelled-verses
+    description: Second chapter verses fourteen through twenty-six
+  - id: en-detect-format-011
+    input: Acts of the Apostles, chapter two, from verse one to verse thirteen.
+    expected_refs:
+      - Acts 2:1-13
+    tags:
+      - spelled-delimiter
+      - from-to
+    description: From verse X to verse Y format
+  - id: en-detect-format-012
+    input: Compare Mt 5.3-12 with Lk 6:20-26 for the Beatitudes.
+    expected_refs:
+      - Matthew 5:3-12
+      - Luke 6:20-26
+    tags:
+      - mixed-delimiter
+      - period-colon
+    description: Period delimiter mixed with colon delimiter (refs separated by prose returned separately)
+  - id: en-detect-format-013
+    input: The parallels are in Matt 19,16-22; Mark 10,17-22; Luke 18,18-23.
+    expected_refs:
+      - Matthew 19:16-22; Mark 10:17-22; Luke 18:18-23
+    tags:
+      - mixed-delimiter
+      - comma-delimiter
+      - european
+    description: European comma style for chapter verse
+  - id: en-detect-format-014
+    input: The text reads (Rom.8:28) that all things work for good.
+    expected_refs:
+      - Romans 8:28
+    tags:
+      - spacing
+      - no-space-after-period
+    description: No space after abbreviation period
+  - id: en-detect-format-015
+    input: Gen1:1 says In the beginning while Jn1:1 echoes it.
+    expected_refs:
+      - Genesis 1:1
+      - John 1:1
+    tags:
+      - spacing
+      - no-space
+    description: No space between book and chapter (refs separated by prose are returned separately)
+  - id: en-detect-format-016
+    input: This interpretation (see esp. Heb 11:1ff.) emphasizes faith.
+    expected_refs:
+      - Hebrews 11:1
+    tags:
+      - citation
+      - ff-notation
+      - esp
+    description: Esp and ff notation
+  - id: en-detect-format-017
+    input: Jesus words in Matt 5:44 (cf. Luke 6:27; Rom 12:14) command love.
+    expected_refs:
+      - Matthew 5:44
+      - Luke 6:27; Romans 12:14
+    tags:
+      - citation
+      - cf
+      - parenthetical-list
+    description: Main ref with cf parenthetical list (refs outside parens returned separately)
+  - id: en-detect-format-018
+    input: The Johannine comma (1 John 5:7-8, KJV) is a textual variant.
+    expected_refs:
+      - 1 John 5:7-8
+    tags:
+      - citation
+      - version-note
+    description: Reference with version notation
+  - id: en-detect-format-019
+    input: The fruit of the Spirit [Gal 5:22-23] contrasts with works of flesh [Gal 5:19-21].
+    expected_refs:
+      - Galatians 5:22-23
+      - Galatians 5:19-21
+    tags:
+      - brackets
+      - inline
+    description: Square bracket references (refs in separate brackets returned separately)
+  - id: en-detect-format-020
+    input: John 3:16ff discusses God's love extending beyond.
+    expected_refs:
+      - John 3:16
+    tags:
+      - shorthand
+      - ff
+    description: ff meaning and following
+  - id: en-detect-format-021
+    input: The passage in vv. 5-10 of Romans 5 explains reconciliation.
+    expected_refs:
+      - Romans 5:5-10
+    tags:
+      - shorthand
+      - vv-prefix
+    description: vv prefix for verse range
+  - id: en-detect-format-022
+    input: Ch. 5 of Galatians, particularly vv. 16-26, describes the Spirit.
+    expected_refs:
+      - Galatians 5:16-26
+    tags:
+      - shorthand
+      - ch-vv
+    description: Ch and vv abbreviations
+  - id: en-detect-format-023
+    input: Pss 120-134 are the Songs of Ascents or pilgrim psalms.
+    expected_refs:
+      - Psalms 120-134
+    tags:
+      - shorthand
+      - pss-plural
+      - range
+    description: Pss plural abbreviation with range (canonical form uses Psalms for ranges)
+  - id: en-detect-format-024
+    input: The synoptic parallels (Mt 24 // Mk 13 // Lk 21) describe end times.
+    expected_refs:
+      - Matthew 24
+      - Mark 13
+      - Luke 21
+    tags:
+      - parallel
+      - double-slash
+    description: Double slash parallel notation (// separator not yet recognized as joiner)
