@@ -18,7 +18,8 @@ export default {
         ["ps\\.*(?:a)*\\.*(?:lm)*\\.*(?:s)*", "Psalms"],
         ["prov\\.*(?:erbs)*", "Proverbs"],
         ["eccl*\\.*(?:esiastes)*", "Ecclesiastes"],
-        ["(the )*song*\\.*(?: *of *solomon)*", "Solomon's Song"],
+        ["canticles*", "Solomon's Song"],
+        ["(?<!solomon's )(the )*song*\\.*(?: *of *solomon)*", "Solomon's Song"],
         ["isa\\.*(?:iah)*", "Isaiah"],
         ["jer\\.*(?:emiah)*", "Jeremiah"],
         ["lame*n*t*\\.*(?:ations)*", "Lamentations"],
@@ -57,6 +58,9 @@ export default {
         ["pet*\\.*(?:er)*", "Peter"],
         ["ju\\.*(?:d)*\\.*(?:e)*", "Jude"],
         ["rev\\.*(?:elation)*", "Revelation"],
+        ["revelations", "Revelation"],  // Common error: plural
+        ["apocalypse", "Revelation"],   // Alternative name
+        ["apoc\\.*", "Revelation"],     // Abbreviation
 
 
         ["1\\s*esd\\.*(?:ras)*", "1 Esdras"],
@@ -144,6 +148,15 @@ export default {
         ["(Solomon's )+", "Solomon's "]
     ],
     "pre_rules":[
+
+        // Strip Gospel/Epistle prefixes
+        ["\\bgospel\\s+(?:of|according\\s+to)\\s+", ""],
+        ["\\bepistle\\s+(?:of|to(?:\\s+the)?)\\s+", ""],
+        ["\\bletter\\s+(?:of|to(?:\\s+the)?)\\s+", ""],
+
+        // Alternate book names (must be pre-rules to run before pattern matching)
+        ["\\bsong of songs\\b", "Solomon's Song"],
+        ["\\bcanticle of canticles\\b", "Solomon's Song"],
 
         // Roman numeral to Arabic numeral conversion (for numbered books)
         // These must come before the existing ordinal rules
