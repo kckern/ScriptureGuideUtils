@@ -145,6 +145,13 @@ export default {
     ],
     "pre_rules":[
 
+        // Roman numeral to Arabic numeral conversion (for numbered books)
+        // These must come before the existing ordinal rules
+        ["\\bIV\\s+(?=[A-Za-z])", "4 "],          // IV Nephi -> 4 Nephi
+        ["\\bIII\\s+(?=[A-Za-z])", "3 "],         // III John -> 3 John
+        ["\\bII\\s+(?=[A-Za-z])", "2 "],          // II Corinthians -> 2 Corinthians
+        ["\\bI\\s+(?=[A-Za-z])", "1 "],           // I John -> 1 John
+
         ["[.]{2,}", ";"],
         ["(\\d+) (\\d+)", "$1.$2"],
         ["([0-9])[.]\\s*([0-9])", "$1:$2"],
