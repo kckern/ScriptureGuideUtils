@@ -399,7 +399,10 @@ const loadVerseStructureCoc = function(verse_ids) {
     for (let i in segments) {
         let min = segments[i][0];
         let max = segments[i][segments[i].length - 1];
-        structure.push([verseIdIndex[min], verseIdIndex[max]]);
+        // Check if values exist before pushing to structure (handles out-of-range COC IDs)
+        if (verseIdIndex[min] && verseIdIndex[max]) {
+            structure.push([verseIdIndex[min], verseIdIndex[max]]);
+        }
     }
     return structure;
 }
@@ -425,6 +428,8 @@ const loadRefsFromRangesCoc = function(ranges, config) {
     let refs = [];
     let mostRecentBook, mostRecentChapter;
     for (let i in ranges) {
+        // Skip invalid ranges (defense-in-depth for out-of-range COC IDs)
+        if (!ranges[i] || !ranges[i][0] || !ranges[i][1]) continue;
         let ref = '';
         let start_bk = ranges[i][0][0];
         let end_bk = ranges[i][1][0];
@@ -565,6 +570,13 @@ const generateReference = function(verse_ids, language = null, options = {}) {
     // Auto-detect if these are COC IDs
     const { ids, canon: detectedCanon } = validateVerseIdsMixed(verse_ids);
     if(!ids) return '';
+
+    // Handle canon mismatch: if explicit canon conflicts with detected canon, return empty
+    // This prevents crashes when e.g. COC IDs are passed with canon: 'lds' or vice versa
+    if (canon && detectedCanon && canon !== detectedCanon) {
+        console.warn(`Canon mismatch: requested ${canon} but IDs are ${detectedCanon}`);
+        return '';
+    }
 
     // Determine which canon to use: explicit option > auto-detected
     const effectiveCanon = canon || detectedCanon;
