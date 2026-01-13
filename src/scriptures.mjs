@@ -23,6 +23,11 @@ const hashConfig = (config) => {
   return config?.language || 'en';
 };
 
+// Safety limits
+const MAX_RANGE_SIZE = 1000; // Maximum verses to return in a single lookup
+const MAX_CHAPTER = 200;     // No book has more than 150 chapters
+const MAX_VERSE = 200;       // No chapter has more than 176 verses
+
 // Browser localStorage key for language preference
 const LANGUAGE_STORAGE_KEY = 'scriptureGuideUtils_language';
 
@@ -185,20 +190,33 @@ const loadVerseIdsCoc = function(book, ranges) {
     const cocRefIndex = loadCocRefIndex();
 
     for (let i in ranges) {
+        // Bounds check: stop if we've collected enough
+        if (verseList.length >= MAX_RANGE_SIZE) break;
+
         let range = ranges[i];
         let matches = range.match(/(\d+): *([\dX]+)-*([\dX]*)/);
         if (!matches) continue;
+
         let chapter = parseInt(matches[1]);
         let start = parseInt(matches[2]);
         let end = matches[3];
-        if (end == '') end = start;
-        if (end == "X") end = loadMaxVerseCoc(book, chapter);
+
+        // Validate chapter bounds
+        if (chapter < 1 || chapter > MAX_CHAPTER) continue;
+
+        if (end === '') end = start;
+        if (end === 'X') end = loadMaxVerseCoc(book, chapter);
         else end = parseInt(end);
+
+        // Validate verse bounds
+        start = Math.max(1, Math.min(start, MAX_VERSE));
+        end = Math.max(start, Math.min(end, MAX_VERSE));
+
         for (let verse_num = start; verse_num <= end; verse_num++) {
-            if (cocRefIndex[book] == undefined) continue;
-            if (cocRefIndex[book][chapter] == undefined) continue;
-            if (cocRefIndex[book][chapter][verse_num] == undefined) continue;
-            verseList.push(cocRefIndex[book][chapter][verse_num]);
+            if (verseList.length >= MAX_RANGE_SIZE) break;
+            if (cocRefIndex[book]?.[chapter]?.[verse_num]) {
+                verseList.push(cocRefIndex[book][chapter][verse_num]);
+            }
         }
     }
     return verseList;
@@ -496,7 +514,10 @@ const lookupMultiBookRange = function(cleanRef, config) { //eg Matthew 15—Mark
     let start = lookupSingleRef(range[0], config)[0];
     let end = lookupSingleRef(range[1], config)[0];
     let all_verse_ids = [];
-    for (let i = start; i <= end; i++) all_verse_ids.push(i);
+    for (let i = start; i <= end; i++) {
+        if (all_verse_ids.length >= MAX_RANGE_SIZE) break;
+        all_verse_ids.push(i);
+    }
     return all_verse_ids;
 }
 
@@ -715,22 +736,35 @@ const getRanges = function(ref) {
 const loadVerseIds = function(book, ranges, config) {
     let refIndex = loadRefIndex(config);
     let verseList = [];
-    for (let i in ranges) //Assumption: 1 range is within a single chapter
-    {
+
+    for (let i in ranges) {
+        // Bounds check: stop if we've collected enough
+        if (verseList.length >= MAX_RANGE_SIZE) break;
+
         let range = ranges[i];
         let matches = range.match(/(\d+): *([\dX]+)-*([\dX]*)/);
-        if(!matches) continue;
+        if (!matches) continue;
+
         let chapter = parseInt(matches[1]);
         let start = parseInt(matches[2]);
         let end = matches[3];
-        if (end == '') end = start;
-        if (end == "X") end = loadMaxVerse(book, chapter, config);
+
+        // Validate chapter bounds
+        if (chapter < 1 || chapter > MAX_CHAPTER) continue;
+
+        if (end === '') end = start;
+        if (end === 'X') end = loadMaxVerse(book, chapter, config);
         else end = parseInt(end);
+
+        // Validate verse bounds
+        start = Math.max(1, Math.min(start, MAX_VERSE));
+        end = Math.max(start, Math.min(end, MAX_VERSE));
+
         for (let verse_num = start; verse_num <= end; verse_num++) {
-            if (refIndex[book] == undefined) continue;
-            if (refIndex[book][chapter] == undefined) continue;
-            if (refIndex[book][chapter][verse_num] == undefined) continue;
-            verseList.push(refIndex[book][chapter][verse_num]);
+            if (verseList.length >= MAX_RANGE_SIZE) break;
+            if (refIndex[book]?.[chapter]?.[verse_num]) {
+                verseList.push(refIndex[book][chapter][verse_num]);
+            }
         }
     }
     return verseList;

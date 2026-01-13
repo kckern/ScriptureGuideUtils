@@ -54,3 +54,26 @@ describe('lookupReference - Performance', () => {
     expect(elapsed).toBeLessThan(1000);
   });
 });
+
+describe('lookupReference - Bounds Safety', () => {
+  test('handles excessively large ranges gracefully', () => {
+    const start = Date.now();
+
+    // This should not hang or crash
+    const result = lookupReference('Genesis 1:1-999999');
+
+    const elapsed = Date.now() - start;
+    // Should complete quickly (bounded)
+    expect(elapsed).toBeLessThan(1000);
+    // Should return some results but be bounded
+    expect(result.verse_ids.length).toBeLessThanOrEqual(1000);
+  });
+
+  test('handles negative numbers gracefully', () => {
+    const result = lookupReference('Genesis -5:1');
+    expect(result).toBeDefined();
+    expect(result.verse_ids).toBeDefined();
+    // Should return empty or valid verses, not crash
+    expect(Array.isArray(result.verse_ids)).toBe(true);
+  });
+});
