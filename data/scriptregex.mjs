@@ -151,8 +151,8 @@ export default {
 
         // Strip Gospel/Epistle prefixes
         ["\\bgospel\\s+(?:of|according\\s+to)\\s+", ""],
-        ["\\bepistle\\s+(?:of|to(?:\\s+the)?)\\s+", ""],
-        ["\\bletter\\s+(?:of|to(?:\\s+the)?)\\s+", ""],
+        ["\\bepistle\\s+(?:of|to(?:\\s+the)?)\\s+(?!jeremiah)", ""],
+        ["\\bletter\\s+(?:of|to(?:\\s+the)?)\\s+(?!jeremiah)", ""],
 
         // Alternate book names (must be pre-rules to run before pattern matching)
         ["\\bsong of songs\\b", "Solomon's Song"],
