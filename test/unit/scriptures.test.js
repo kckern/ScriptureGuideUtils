@@ -1,7 +1,7 @@
 /**
  * Unit tests for scriptures.mjs core functions
  */
-import { lookupReference } from '../../dist/scriptures.mjs';
+import { lookupReference, generateReference } from '../../dist/scriptures.mjs';
 
 describe('lookupReference - Chapter Ranges', () => {
   test('handles chapter range with comma and dash: Genesis 1,3-5', () => {
@@ -140,5 +140,21 @@ describe('lookupReference - Canon Support', () => {
     expect(result.verse_ids.length).toBe(1);
     // COC IDs start with 'C'
     expect(String(result.verse_ids[0]).startsWith('C')).toBe(true);
+  });
+});
+
+describe('generateReference - Canon Support', () => {
+  test('generates LDS format reference', () => {
+    // Get a verse ID first
+    const lookup = lookupReference('John 3:16', 'en');
+    const result = generateReference(lookup.verse_ids, 'en');
+    expect(result).toContain('John');
+    expect(result).toContain('3:16');
+  });
+
+  test('generates from options object with canon', () => {
+    const lookup = lookupReference('John 3:16', 'en');
+    const result = generateReference(lookup.verse_ids, 'en', { canon: 'lds' });
+    expect(result).toContain('John');
   });
 });

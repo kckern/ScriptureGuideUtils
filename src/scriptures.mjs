@@ -559,14 +559,18 @@ const validateVerseIdsMixed = function(verse_ids) {
     }
 }
 
-const generateReference = function(verse_ids, language = null) {
+const generateReference = function(verse_ids, language = null, options = {}) {
+    const canon = options.canon || null;
 
     // Auto-detect if these are COC IDs
-    const { ids, canon } = validateVerseIdsMixed(verse_ids);
+    const { ids, canon: detectedCanon } = validateVerseIdsMixed(verse_ids);
     if(!ids) return '';
 
-    // Use COC generator if COC IDs detected
-    if (canon === 'coc') {
+    // Determine which canon to use: explicit option > auto-detected
+    const effectiveCanon = canon || detectedCanon;
+
+    // Use COC generator if COC canon specified or detected
+    if (effectiveCanon === 'coc') {
         return generateReferenceCoc(ids, language);
     }
 
