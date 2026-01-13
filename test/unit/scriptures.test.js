@@ -34,3 +34,23 @@ describe('lookupReference - Chapter Ranges', () => {
     expect(result.verse_ids.length).toBe(87);
   });
 });
+
+describe('lookupReference - Performance', () => {
+  test('multiple lookups should be fast (cached)', () => {
+    const start = Date.now();
+
+    // First lookup - may be slower (cache miss)
+    lookupReference('Genesis 1:1');
+
+    // Subsequent lookups should be fast (cache hit)
+    for (let i = 0; i < 100; i++) {
+      lookupReference('John 3:16');
+      lookupReference('Romans 8:28');
+      lookupReference('Psalm 23:1');
+    }
+
+    const elapsed = Date.now() - start;
+    // 300 lookups should complete in under 1 second with caching
+    expect(elapsed).toBeLessThan(1000);
+  });
+});

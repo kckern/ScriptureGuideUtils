@@ -6,6 +6,23 @@ import {  detectReferencesWithContext } from './scriptdetectcontext.mjs';
 import { detectCanon, formatCocId, parseCocId, convertToLds, convertToCoc, convertCanon } from './scriptcanon.mjs';
 import cocData from '../data/coc.mjs';
 
+// Module-level caches for performance
+const indexCache = {
+  refIndex: null,
+  verseIdIndex: null,
+  configHash: null
+};
+
+const cocIndexCache = {
+  refIndex: null,
+  verseIdIndex: null
+};
+
+const hashConfig = (config) => {
+  // Hash based on language for proper cache invalidation
+  return config?.language || 'en';
+};
+
 // Browser localStorage key for language preference
 const LANGUAGE_STORAGE_KEY = 'scriptureGuideUtils_language';
 
@@ -188,6 +205,11 @@ const loadVerseIdsCoc = function(book, ranges) {
 }
 
 const loadCocRefIndex = function() {
+    // Return cached if available
+    if (cocIndexCache.refIndex) {
+        return cocIndexCache.refIndex;
+    }
+
     let refIndex = {};
     let verse_num_global = 1;
     const book_list = Object.keys(cocData.books);
@@ -204,10 +226,19 @@ const loadCocRefIndex = function() {
             }
         }
     }
+
+    // Cache the result
+    cocIndexCache.refIndex = refIndex;
+
     return refIndex;
 }
 
 const loadCocVerseIdIndex = function() {
+    // Return cached if available
+    if (cocIndexCache.verseIdIndex) {
+        return cocIndexCache.verseIdIndex;
+    }
+
     let verseIdIndex = {};
     let verse_num_global = 1;
     const book_list = Object.keys(cocData.books);
@@ -223,6 +254,10 @@ const loadCocVerseIdIndex = function() {
             }
         }
     }
+
+    // Cache the result
+    cocIndexCache.verseIdIndex = verseIdIndex;
+
     return verseIdIndex;
 }
 
@@ -787,6 +822,13 @@ const loadRefsFromRanges = function(ranges, config) {
 }
 
 const loadRefIndex = function(config) {
+    const configHash = hashConfig(config);
+
+    // Return cached if available and config unchanged
+    if (indexCache.refIndex && indexCache.configHash === configHash) {
+        return indexCache.refIndex;
+    }
+
     let refIndex = {};
     let verse_id = 1;
     let book_list = Object.keys(config.raw_index);
@@ -803,12 +845,24 @@ const loadRefIndex = function(config) {
             }
         }
     }
+
+    // Cache the result
+    indexCache.refIndex = refIndex;
+    indexCache.configHash = configHash;
+
     return refIndex;
 }
 
 
 const loadVerseIdIndex = function(config) {
-    let verseIdIndex = [null];
+    const configHash = hashConfig(config);
+
+    // Return cached if available and config unchanged
+    if (indexCache.verseIdIndex && indexCache.configHash === configHash) {
+        return indexCache.verseIdIndex;
+    }
+
+    let verseIdIndex = [null]; // 1-indexed
     let book_list = Object.keys(config.raw_index);
     for (let a in book_list) {
         let book_title = book_list[a];
@@ -820,6 +874,11 @@ const loadVerseIdIndex = function(config) {
             }
         }
     }
+
+    // Cache the result
+    indexCache.verseIdIndex = verseIdIndex;
+    indexCache.configHash = configHash;
+
     return verseIdIndex;
 }
 
