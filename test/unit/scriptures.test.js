@@ -126,3 +126,19 @@ describe('lookupReference - Error Reporting', () => {
     expect(result.error).toBeUndefined();
   });
 });
+
+describe('lookupReference - Canon Support', () => {
+  test('LDS canon lookup works', () => {
+    const result = lookupReference('John 3:16', 'en', { canon: 'lds' });
+    expect(result.verse_ids.length).toBe(1);
+    expect(result.verse_ids[0]).toBeGreaterThan(0);
+  });
+
+  test('COC canon lookup works', () => {
+    // Use a Book of Mormon reference since COC only has BofM versification
+    const result = lookupReference('1 Nephi 1:1', 'en', { canon: 'coc' });
+    expect(result.verse_ids.length).toBe(1);
+    // COC IDs start with 'C'
+    expect(String(result.verse_ids[0]).startsWith('C')).toBe(true);
+  });
+});

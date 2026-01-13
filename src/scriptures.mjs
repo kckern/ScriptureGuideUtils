@@ -324,6 +324,56 @@ const loadMaxVerseCoc = function(book, chapter) {
     return cocData.books[book][parseInt(chapter) - 1] || 0;
 }
 
+/**
+ * Load reference index for specified canon
+ * @param {string} canon - 'lds' or 'coc'
+ * @param {Object} config - Configuration object (required for LDS)
+ * @returns {Object} Reference index: refIndex[book][chapter][verse] = id
+ */
+const loadRefIndexByCanon = function(canon, config = null) {
+    if (canon === 'coc') {
+        return loadCocRefIndex();
+    }
+    if (!config) {
+        throw new Error('Config required for LDS canon');
+    }
+    return loadRefIndex(config);
+};
+
+/**
+ * Load verse ID index for specified canon
+ * @param {string} canon - 'lds' or 'coc'
+ * @param {Object} config - Configuration object (required for LDS)
+ * @returns {Object|Array} Verse ID to [book, chapter, verse] mapping
+ */
+const loadVerseIdIndexByCanon = function(canon, config = null) {
+    if (canon === 'coc') {
+        return loadCocVerseIdIndex();
+    }
+    if (!config) {
+        throw new Error('Config required for LDS canon');
+    }
+    return loadVerseIdIndex(config);
+};
+
+/**
+ * Get max verse for book/chapter in specified canon
+ * @param {string} book - Book name
+ * @param {number} chapter - Chapter number
+ * @param {string} canon - 'lds' or 'coc'
+ * @param {Object} config - Configuration (required for LDS)
+ * @returns {number} Maximum verse number
+ */
+const loadMaxVerseByCanon = function(book, chapter, canon, config = null) {
+    if (canon === 'coc') {
+        return loadMaxVerseCoc(book, chapter);
+    }
+    if (!config) {
+        throw new Error('Config required for LDS canon');
+    }
+    return loadMaxVerse(book, chapter, config);
+};
+
 const generateReferenceCoc = function(verse_ids, language = null) {
     if (!verse_ids || verse_ids.length === 0) return '';
 
