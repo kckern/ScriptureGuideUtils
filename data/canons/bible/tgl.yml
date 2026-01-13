@@ -1,0 +1,333 @@
+canon: bible
+language: tgl
+
+books:
+  genesis:
+    name: Genesis
+    pattern: "[Gg]enesis"
+    alt: [Gen.]
+
+  exodus:
+    name: Exodo
+    pattern: "[Ee]xodo"
+    alt: [Ex.]
+
+  leviticus:
+    name: Levitico
+    pattern: "[Ll]evitico"
+    alt: [Lev.]
+
+  numbers:
+    name: Mga Bilang
+    pattern: "[Mm]ga *[Bb]ilang"
+    alt: [Blg.]
+
+  deuteronomy:
+    name: Deuteronomio
+    pattern: "[Dd]euteronomio"
+    alt: [Deut.]
+
+  joshua:
+    name: Josue
+    pattern: "[Jj]osue"
+    alt: [Jos.]
+
+  judges:
+    name: Mga Hukom
+    pattern: "[Mm]ga *[Hh]ukom"
+    alt: [Huk.]
+
+  ruth:
+    name: Ruth
+    pattern: "[Rr]uth"
+    alt: [Ruth]
+
+  1_samuel:
+    name: 1 Samuel
+    pattern: "1 *[Ss]amuel"
+    alt: [1 Sam.]
+
+  2_samuel:
+    name: 2 Samuel
+    pattern: "2 *[Ss]amuel"
+    alt: [2 Sam.]
+
+  1_kings:
+    name: 1 Mga Hari
+    pattern: "1 *[Mm]ga *[Hh]ari"
+    alt: [1 Hari]
+
+  2_kings:
+    name: 2 Mga Hari
+    pattern: "2 *[Mm]ga *[Hh]ari"
+    alt: [2 Hari]
+
+  1_chronicles:
+    name: 1 Mga Cronica
+    pattern: "1 *[Mm]ga *[Cc]ronica"
+    alt: [1 Cron.]
+
+  2_chronicles:
+    name: 2 Mga Cronica
+    pattern: "2 *[Mm]ga *[Cc]ronica"
+    alt: [2 Cron.]
+
+  ezra:
+    name: Ezra
+    pattern: "[Ee]zra"
+    alt: [Ezra]
+
+  nehemiah:
+    name: Nehemias
+    pattern: "[Nn]ehemias"
+    alt: [Neh.]
+
+  esther:
+    name: Esther
+    pattern: "[Ee]sther"
+    alt: [Est.]
+
+  job:
+    name: Job
+    pattern: "[Jj]ob"
+    alt: [Job]
+
+  psalms:
+    name: Mga Awit
+    pattern: "[Mm]ga *[Aa]wit"
+    alt: [Awit]
+
+  proverbs:
+    name: Mga Kawikaan
+    pattern: "[Mm]ga *[Kk]awikaan"
+    alt: [Kaw.]
+
+  ecclesiastes:
+    name: Eclesiastes
+    pattern: "[Ee]clesiastes"
+    alt: [Ec.]
+
+  song_of_solomon:
+    name: Awit ni Solomon
+    pattern: "[Aa]wit *ni *[Ss]olomon"
+    alt: [A ni S]
+
+  isaiah:
+    name: Isaias
+    pattern: "[Ii]saias"
+    alt: [Is.]
+
+  jeremiah:
+    name: Jeremias
+    pattern: "[Jj]eremias"
+    alt: [Jer.]
+
+  lamentations:
+    name: Mga Panaghoy
+    pattern: "[Mm]ga *[Pp]anaghoy"
+    alt: [Panag.]
+
+  ezekiel:
+    name: Ezekiel
+    pattern: "[Ee]zekiel"
+    alt: [Ez.]
+
+  daniel:
+    name: Daniel
+    pattern: "[Dd]aniel"
+    alt: [Dan.]
+
+  hosea:
+    name: Oseas
+    pattern: "[Oo]seas"
+    alt: [Os.]
+
+  joel:
+    name: Joel
+    pattern: "[Jj]oel"
+    alt: [Joel]
+
+  amos:
+    name: Amos
+    pattern: "[Aa]mos"
+    alt: [Amos]
+
+  obadiah:
+    name: Obadias
+    pattern: "[Oo]badias"
+    alt: [Obad.]
+
+  jonah:
+    name: Jonas
+    pattern: "[Jj]onas"
+    alt: [Jon.]
+
+  micah:
+    name: Mikas
+    pattern: "[Mm]ikas"
+    alt: [Mi.]
+
+  nahum:
+    name: Nahum
+    pattern: "[Nn]ahum"
+    alt: [Nah.]
+
+  habakkuk:
+    name: Habacuc
+    pattern: "[Hh]abacuc"
+    alt: [Hab.]
+
+  zephaniah:
+    name: Zefanias
+    pattern: "[Zz]efanias"
+    alt: [Zef.]
+
+  haggai:
+    name: Hagai
+    pattern: "[Hh]agai"
+    alt: [Hag.]
+
+  zechariah:
+    name: Zacarias
+    pattern: "[Zz]acarias"
+    alt: [Zac.]
+
+  malachi:
+    name: Malakias
+    pattern: "[Mm]alakias"
+    alt: [Mal.]
+
+  matthew:
+    name: Mateo
+    pattern: "[Mm]ateo"
+    alt: [Mat.]
+
+  mark:
+    name: Marcos
+    pattern: "[Mm]arcos"
+    alt: [Mar.]
+
+  luke:
+    name: Lucas
+    pattern: "[Ll]ucas"
+    alt: [Lu.]
+
+  john:
+    name: Juan
+    pattern: "[Jj]uan"
+    alt: [Juan]
+
+  acts:
+    name: Mga Gawa
+    pattern: "[Mm]ga *[Gg]awa"
+    alt: [Gawa]
+
+  romans:
+    name: Mga Taga-Roma
+    pattern: "[Mm]ga *[Tt]aga-*[Rr]oma"
+    alt: [Rom.]
+
+  1_corinthians:
+    name: 1 Mga Taga-Corinto
+    pattern: "1 *[Mm]ga *[Tt]aga-*[Cc]orinto"
+    alt: [1 Cor.]
+
+  2_corinthians:
+    name: 2 Mga Taga-Corinto
+    pattern: "2 *[Mm]ga *[Tt]aga-*[Cc]orinto"
+    alt: [2 Cor.]
+
+  galatians:
+    name: Mga Taga-Galacia
+    pattern: "[Mm]ga *[Tt]aga-*[Gg]alacia"
+    alt: [Gal.]
+
+  ephesians:
+    name: Mga Taga-Efeso
+    pattern: "[Mm]ga *[Tt]aga-*[Ee]feso"
+    alt: [Ef.]
+
+  philippians:
+    name: Mga Taga-Filipos
+    pattern: "[Mm]ga *[Tt]aga-*[Ff]ilipos"
+    alt: [Fil.]
+
+  colossians:
+    name: Mga Taga-Colosas
+    pattern: "[Mm]ga *[Tt]aga-*[Cc]olosas"
+    alt: [Col.]
+
+  1_thessalonians:
+    name: 1 Mga Taga-Tesalonica
+    pattern: "1 *[Mm]ga *[Tt]aga-*[Tt]esalonica"
+    alt: [1 Tes.]
+
+  2_thessalonians:
+    name: 2 Mga Taga-Tesalonica
+    pattern: "2 *[Mm]ga *[Tt]aga-*[Tt]esalonica"
+    alt: [2 Tes.]
+
+  1_timothy:
+    name: 1 Kay Timoteo
+    pattern: "1 *[Kk]ay *[Tt]imoteo"
+    alt: [1 Tim.]
+
+  2_timothy:
+    name: 2 Kay Timoteo
+    pattern: "2 *[Kk]ay *[Tt]imoteo"
+    alt: [2 Tim.]
+
+  titus:
+    name: Kay Tito
+    pattern: "[Kk]ay *[Tt]ito"
+    alt: [Tit.]
+
+  philemon:
+    name: Kay Filemon
+    pattern: "[Kk]ay *[Ff]ilemon"
+    alt: [Flm.]
+
+  hebrews:
+    name: Sa mga Hebreo
+    pattern: "[Ss]a *[Mm]ga *[Hh]ebreo"
+    alt: [Heb.]
+
+  james:
+    name: Santiago
+    pattern: "[Ss]antiago"
+    alt: [Sant.]
+
+  1_peter:
+    name: 1 Pedro
+    pattern: "1 *[Pp]edro"
+    alt: [1 Ped.]
+
+  2_peter:
+    name: 2 Pedro
+    pattern: "2 *[Pp]edro"
+    alt: [2 Ped.]
+
+  1_john:
+    name: 1 Juan
+    pattern: "1 *[Jj]uan"
+    alt: [1 Juan]
+
+  2_john:
+    name: 2 Juan
+    pattern: "2 *[Jj]uan"
+    alt: [2 Juan]
+
+  3_john:
+    name: 3 Juan
+    pattern: "3 *[Jj]uan"
+    alt: [3 Juan]
+
+  jude:
+    name: Judas
+    pattern: "[Jj]udas"
+    alt: [Jud.]
+
+  revelation:
+    name: Apocalipsis
+    pattern: "[Aa]pocalipsis"
+    alt: [Apoc.]

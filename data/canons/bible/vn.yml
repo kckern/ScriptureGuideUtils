@@ -1,0 +1,333 @@
+canon: bible
+language: vn
+
+books:
+  genesis:
+    name: Sáng Thế
+    pattern: "S[áa]ng[ -]*Th[ếe][ -]*(K[yý])*"
+    alt: [STK, Sáng Thế Ký]
+
+  exodus:
+    name: Xuất Ê Díp Tô
+    pattern: "X[úu]at[ -]*Ê[ -]*D[íi]p[ -]*T[ôo][ -]*(K[yý])*"
+    alt: [XÊDT, Xuất hành]
+
+  leviticus:
+    name: Lê Vi
+    pattern: "L[êe][ -]*Vi[ -]*(K[yý])*"
+    alt: [LV]
+
+  numbers:
+    name: Dân Số
+    pattern: "D[âa]n[ -]*S[ốo][ -]*(K[yý])*"
+    alt: [DS]
+
+  deuteronomy:
+    name: Phục Truyền Luật Lệ
+    pattern: "Ph[úu]c[ -]*Truy[ềe]n[ -]*Lu[ậa]t[ -]*L[ệe][ -]*(K[yý])*"
+    alt: [PTLL]
+
+  joshua:
+    name: Giô Suê
+    pattern: "Gi[ôo][ -]*Su[êe]"
+    alt: [Giô Suê]
+
+  judges:
+    name: Các Quan Xét
+    pattern: "C[áa]c[ -]*Quan[ -]*X[ée]t"
+    alt: [QXét]
+
+  ruth:
+    name: Ru Tơ
+    pattern: "Ru[ -]*T[ơo]"
+    alt: [Ru Tơ]
+
+  1_samuel:
+    name: 1 Sa Mu Ên
+    pattern: "1[ -]*Sa[ -]*Mu[ -]*Ên"
+    alt: [1 SMÊn]
+
+  2_samuel:
+    name: 2 Sa Mu Ên
+    pattern: "2[ -]*Sa[ -]*Mu[ -]*Ên"
+    alt: [2 SMÊn]
+
+  1_kings:
+    name: 1 Các Vua
+    pattern: "1[ -]*C[áa]c[ -]*Vua"
+    alt: [1 Vua]
+
+  2_kings:
+    name: 2 Các Vua
+    pattern: "2[ -]*C[áa]c[ -]*Vua"
+    alt: [2 Vua]
+
+  1_chronicles:
+    name: 1 Sử Ký
+    pattern: "1[ -]*S[ửu][ -]*K[yý]"
+    alt: [1 Sử Ký]
+
+  2_chronicles:
+    name: 2 Sử Ký
+    pattern: "2[ -]*S[ửu][ -]*K[yý]"
+    alt: [2 Sử Ký]
+
+  ezra:
+    name: E Xơ Ra
+    pattern: "E[ -]*X[ơo][ -]*Ra"
+    alt: [E Xơ Ra]
+
+  nehemiah:
+    name: Nê Hê Mi
+    pattern: "N[êe][ -]*H[êe][ -]*Mi"
+    alt: [Nê Hê Mi]
+
+  esther:
+    name: Ê Xơ Tê
+    pattern: "Ê[ -]*X[ơo][ -]*T[êe]"
+    alt: [Ê Xơ Tê]
+
+  job:
+    name: Gióp
+    pattern: "Gi[óo]p"
+    alt: [Gióp]
+
+  psalms:
+    name: Thi Thiên
+    pattern: "Th*i*[ -]*Thi[êe]n"
+    alt: [Thi Thiên]
+
+  proverbs:
+    name: Châm Ngôn
+    pattern: "Ch[âa]m[ -]*Ng[ôo]n"
+    alt: [CNgôn]
+
+  ecclesiastes:
+    name: Truyền Đạo
+    pattern: "Truy[ềe]n[ -]*[ĐD]a[ọo]"
+    alt: [TĐạo]
+
+  song_of_solomon:
+    name: Nhã Ca
+    pattern: "Nh[ãa][ -]*Ca"
+    alt: [Nhã Ca]
+
+  isaiah:
+    name: Ê Sai
+    pattern: "[ÊE][ -]*Sai"
+    alt: [Ê Sai]
+
+  jeremiah:
+    name: Giê Rê Mi
+    pattern: "Gi[êe][ -]*R[êe][ -]*Mi"
+    alt: [GRMi]
+
+  lamentations:
+    name: Ca Thương
+    pattern: "Ca[ -]*Th[ưu]ng"
+    alt: [CThương]
+
+  ezekiel:
+    name: Ê Xê Chi Ên
+    pattern: "Ê[ -]*X[êe][ -]*Chi[ -]*[ÊE]n"
+    alt: [ÊXCÊn]
+
+  daniel:
+    name: Đa Ni Ên
+    pattern: "[ĐD]a[ -]*Ni[ -]*[ÊE]n"
+    alt: [ĐNÊn]
+
+  hosea:
+    name: Ô Sê
+    pattern: "[ÔO][ -]*S[êe]"
+    alt: [Ô Sê]
+
+  joel:
+    name: Giô Ên
+    pattern: "Gi[ôo][ -]*[ÊE]n"
+    alt: [Giô Ên]
+
+  amos:
+    name: A Mốt
+    pattern: "A[ -]*M[ốo]t"
+    alt: [A Mốt]
+
+  obadiah:
+    name: Áp Đia
+    pattern: "[ÁA]p[ -]*Đia"
+    alt: [Áp Đia]
+
+  jonah:
+    name: Giô Na
+    pattern: "Gi[ôo][ -]*Na"
+    alt: [Giô Na]
+
+  micah:
+    name: Mi Chê
+    pattern: "Mi[ -]*Ch[êe]"
+    alt: [Mi Chê]
+
+  nahum:
+    name: Na Hum
+    pattern: "Na[ -]*Hum"
+    alt: [Na Hum]
+
+  habakkuk:
+    name: Ha Ba Cúc
+    pattern: "Ha[ -]*Ba[ -]*C[úu]c"
+    alt: [HBCuc]
+
+  zephaniah:
+    name: Sô Phô Ni
+    pattern: "S[ôo]*[ -]*Ph*[ôo]*[ -]*Ni"
+    alt: [Sô Phô Ni]
+
+  haggai:
+    name: A Ghê
+    pattern: "A[ -]*Gh[êe]"
+    alt: [A Ghê]
+
+  zechariah:
+    name: Xa Cha Ri
+    pattern: "Xa*[ -]*Ch*a*[ -]*Ri"
+    alt: [Xa Cha Ri]
+
+  malachi:
+    name: Ma La Chi
+    pattern: "Ma*[ -]*La*[ -]*Chi"
+    alt: [Ma La Chi]
+
+  matthew:
+    name: Ma Thi Ơ
+    pattern: "Ma[ -]*Thi[ -]*[ƠO]"
+    alt: [MTƠ]
+
+  mark:
+    name: Mác
+    pattern: "M[áa]c"
+    alt: [Mác]
+
+  luke:
+    name: Lu Ca
+    pattern: "Lu[ -]*Ca"
+    alt: [Lu Ca]
+
+  john:
+    name: Giăng
+    pattern: "Gio*[ăa]ng*"
+    alt: [Giăng]
+
+  acts:
+    name: Công Vụ Các Sứ Đồ
+    pattern: "C[ôo]ng[ -]*Vụ[ -]*C[áa]c[ -]*Sứ[ -]*Đ[ồo]"
+    alt: [CVCSĐ]
+
+  romans:
+    name: Rô Ma
+    pattern: "R[ôo][ -]*Ma"
+    alt: [Rô Ma]
+
+  1_corinthians:
+    name: 1 Cô Rinh Tô
+    pattern: "1[ -]*C[ôo]*[ -]*Ri*n*h*[ -]*T[ôo]"
+    alt: [1 Cô Rinh Tô]
+
+  2_corinthians:
+    name: 2 Cô Rinh Tô
+    pattern: "2[ -]*C[ôo]*[ -]*Ri*n*h*[ -]*T[ôo]"
+    alt: [2 Cô Rinh Tô]
+
+  galatians:
+    name: Ga La Ti
+    pattern: "Ga[ -]*La[ -]*Ti"
+    alt: [Ga La Ti]
+
+  ephesians:
+    name: Ê Phê Sô
+    pattern: "[ÊE][ -]*Ph[êe][ -]*S[ôo]"
+    alt: [ÊPSÔ]
+
+  philippians:
+    name: Phi Líp
+    pattern: "Phi[ -]*L[íi]p"
+    alt: [Phi Líp]
+
+  colossians:
+    name: Cô Lô Se
+    pattern: "C[ôo][ -]*L[ôo][ -]*Se"
+    alt: [CLÔSe]
+
+  1_thessalonians:
+    name: 1 Tê Sa Lô Ni Ca
+    pattern: "1[ -]*Tê[ -]*Sa[ -]*L[ôo][ -]*Ni[ -]*Ca"
+    alt: [1 TSLNCa]
+
+  2_thessalonians:
+    name: 2 Tê Sa Lô Ni Ca
+    pattern: "2[ -]*Tê[ -]*Sa[ -]*L[ôo][ -]*Ni[ -]*Ca"
+    alt: [2 TSLNCa]
+
+  1_timothy:
+    name: 1 Ti Mô Thê
+    pattern: "1[ -]*Ti[ -]*Mô[ -]*Th[êe]"
+    alt: [1 TMThÊ]
+
+  2_timothy:
+    name: 2 Ti Mô Thê
+    pattern: "2[ -]*Ti[ -]*Mô[ -]*Th[êe]"
+    alt: [2 TMThÊ]
+
+  titus:
+    name: Tít
+    pattern: "T[íi]t"
+    alt: [Tít]
+
+  philemon:
+    name: Phi Lê Môn
+    pattern: "Phi[ -]*L[êe][ -]*Môn"
+    alt: [PLÊMÔn]
+
+  hebrews:
+    name: Hê Bơ Rơ
+    pattern: "H[êe][ -]*Bơ[ -]*Rơ"
+    alt: [HBRƠ]
+
+  james:
+    name: Gia Cơ
+    pattern: "Gia[ -]*C[ơo]"
+    alt: [Gia Cơ]
+
+  1_peter:
+    name: 1 Phi E Rơ
+    pattern: "1[ -]*Phi[ -]*E[ -]*R[ơo]"
+    alt: [1 PERƠ]
+
+  2_peter:
+    name: 2 Phi E Rơ
+    pattern: "2[ -]*Phi[ -]*E[ -]*R[ơo]"
+    alt: [2 PERƠ]
+
+  1_john:
+    name: 1 Giăng
+    pattern: "1[ -]*Gio*[ăa]ng*"
+    alt: [1 Giăng]
+
+  2_john:
+    name: 2 Giăng
+    pattern: "2[ -]*Gio*[ăa]ng*"
+    alt: [2 Giăng]
+
+  3_john:
+    name: 3 Giăng
+    pattern: "3[ -]*Gio*[ăa]ng*"
+    alt: [3 Giăng]
+
+  jude:
+    name: Giu Đe
+    pattern: "Giu[ -]*[ĐD]e"
+    alt: [Giu Đe]
+
+  revelation:
+    name: Khải Huyền
+    pattern: "Kh[ảa]i[ -]*Huy[ềe]n"
+    alt: [KHuyền]

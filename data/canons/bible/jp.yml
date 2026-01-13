@@ -1,0 +1,333 @@
+canon: bible
+language: jp
+
+books:
+  genesis:
+    name: 創世記
+    pattern: "創世記*"
+    alt: [創世]
+
+  exodus:
+    name: 出エジプト記
+    pattern: "出エジプト記*"
+    alt: [出エ]
+
+  leviticus:
+    name: レビ記
+    pattern: "レビ記*"
+    alt: [レビ]
+
+  numbers:
+    name: 民数記
+    pattern: "民数記*"
+    alt: [民数]
+
+  deuteronomy:
+    name: 申命記
+    pattern: "申命記*"
+    alt: [申命]
+
+  joshua:
+    name: ヨシュア記
+    pattern: "ヨシュア記*"
+    alt: [ヨシ]
+
+  judges:
+    name: 士師記
+    pattern: "士師記*"
+    alt: [士師]
+
+  ruth:
+    name: ルツ記
+    pattern: "ルツ記*"
+    alt: [ルツ]
+
+  1_samuel:
+    name: サムエル記上
+    pattern: "サムエル記*上"
+    alt: [サ上]
+
+  2_samuel:
+    name: サムエル記下
+    pattern: "サムエル記*下"
+    alt: [サ下]
+
+  1_kings:
+    name: 列王紀上
+    pattern: "列王紀*上"
+    alt: [列上]
+
+  2_kings:
+    name: 列王紀下
+    pattern: "列王紀*下"
+    alt: [列下]
+
+  1_chronicles:
+    name: 歴代志上
+    pattern: "歴代志*上"
+    alt: [歴上]
+
+  2_chronicles:
+    name: 歴代志下
+    pattern: "歴代志*下"
+    alt: [歴下]
+
+  ezra:
+    name: エズラ記
+    pattern: "エズラ記*"
+    alt: [エズ]
+
+  nehemiah:
+    name: ネヘミヤ記
+    pattern: "ネヘミヤ記*"
+    alt: [ネヘ]
+
+  esther:
+    name: エステル記
+    pattern: "エステル記*"
+    alt: [エス]
+
+  job:
+    name: ヨブ記
+    pattern: "ヨブ記*"
+    alt: [ヨブ]
+
+  psalms:
+    name: 詩篇
+    pattern: "詩篇*"
+    alt: [詩篇]
+
+  proverbs:
+    name: 箴言
+    pattern: "箴言*"
+    alt: [箴言]
+
+  ecclesiastes:
+    name: 伝道の書
+    pattern: "伝道の*書*"
+    alt: [伝道]
+
+  song_of_solomon:
+    name: 雅歌
+    pattern: "雅歌*"
+    alt: [雅歌]
+
+  isaiah:
+    name: イザヤ書
+    pattern: "イザヤ書*"
+    alt: [イザ]
+
+  jeremiah:
+    name: エレミヤ書
+    pattern: "エレミヤ書*"
+    alt: [エレ]
+
+  lamentations:
+    name: 哀歌
+    pattern: "哀歌*"
+    alt: [哀歌]
+
+  ezekiel:
+    name: エゼキエル書
+    pattern: "エゼキエル書*"
+    alt: [エゼ]
+
+  daniel:
+    name: ダニエル書
+    pattern: "ダニエル書*"
+    alt: [ダニ]
+
+  hosea:
+    name: ホセア書
+    pattern: "ホセア書*"
+    alt: [ホセ]
+
+  joel:
+    name: ヨエル書
+    pattern: "ヨエル書*"
+    alt: [ヨエ]
+
+  amos:
+    name: アモス書
+    pattern: "アモス書*"
+    alt: [アモ]
+
+  obadiah:
+    name: オバデヤ書
+    pattern: "オバデヤ書*"
+    alt: [オバ]
+
+  jonah:
+    name: ヨナ書
+    pattern: "ヨナ書*"
+    alt: [ヨナ]
+
+  micah:
+    name: ミカ書
+    pattern: "ミカ書*"
+    alt: [ミカ]
+
+  nahum:
+    name: ナホム書
+    pattern: "ナホム書*"
+    alt: [ナホ]
+
+  habakkuk:
+    name: ハバクク書
+    pattern: "ハバクク書*"
+    alt: [ハバ]
+
+  zephaniah:
+    name: ゼパニヤ書
+    pattern: "ゼパニヤ書*"
+    alt: [ゼパ]
+
+  haggai:
+    name: ハガイ書
+    pattern: "ハガイ書*"
+    alt: [ハガ]
+
+  zechariah:
+    name: ゼカリヤ書
+    pattern: "ゼカリヤ書*"
+    alt: [ゼカ]
+
+  malachi:
+    name: マラキ書
+    pattern: "マラキ書*"
+    alt: [マラ]
+
+  matthew:
+    name: マタイによる福音書
+    pattern: "マタイ(による)*(福音書)*"
+    alt: [マタ]
+
+  mark:
+    name: マルコによる福音書
+    pattern: "マルコ(による)*(福音書)*"
+    alt: [マコ]
+
+  luke:
+    name: ルカによる福音書
+    pattern: "ルカ(による)*(福音書)*"
+    alt: [ルカ]
+
+  john:
+    name: ヨハネによる福音書
+    pattern: "ヨハネ(による)*(福音書)*"
+    alt: [ヨハ]
+
+  acts:
+    name: 使徒行伝
+    pattern: "使徒行伝*"
+    alt: [使徒]
+
+  romans:
+    name: ローマ人への手紙
+    pattern: "ローマ(人への)*(手紙)*"
+    alt: [ロマ]
+
+  1_corinthians:
+    name: コリント人への第一の手紙
+    pattern: "コリント(人への)*(第一の)*(手紙)*"
+    alt: [1コリ]
+
+  2_corinthians:
+    name: コリント人への第二の手紙
+    pattern: "コリント(人への)*(第二の)*(手紙)*"
+    alt: [2コリ]
+
+  galatians:
+    name: ガラテヤ人への手紙
+    pattern: "ガラテヤ(人への)*(手紙)*"
+    alt: [ガラ]
+
+  ephesians:
+    name: エペソ人への手紙
+    pattern: "エペソ(人への)*(手紙)*"
+    alt: [エペ]
+
+  philippians:
+    name: ピリピ人への手紙
+    pattern: "ピリピ(人への)*(手紙)*"
+    alt: [ピリ]
+
+  colossians:
+    name: コロサイ人への手紙
+    pattern: "コロサイ(人への)*(手紙)*"
+    alt: [コロ]
+
+  1_thessalonians:
+    name: テサロニケ人への第一の手紙
+    pattern: "テサロニケ(人への)*(第一の)*(手紙)*"
+    alt: [1テサ]
+
+  2_thessalonians:
+    name: テサロニケ人への第二の手紙
+    pattern: "テサロニケ(人への)*(第二の)*(手紙)*"
+    alt: [2テサ]
+
+  1_timothy:
+    name: テモテへの第一の手紙
+    pattern: "テモテ(への)*(第一の)*(手紙)*"
+    alt: [1テモ]
+
+  2_timothy:
+    name: テモテへの第二の手紙
+    pattern: "テモテ(への)*(第二の)*(手紙)*"
+    alt: [2テモ]
+
+  titus:
+    name: テトスへの手紙
+    pattern: "テトス(への)*(手紙)*"
+    alt: [テト]
+
+  philemon:
+    name: ピレモンへの手紙
+    pattern: "ピレモン(への)*(手紙)*"
+    alt: [ピレ]
+
+  hebrews:
+    name: ヘブル人への手紙
+    pattern: "ヘブル(人への)*(手紙)*"
+    alt: [ヘブ]
+
+  james:
+    name: ヤコブの手紙
+    pattern: "ヤコブ(の)*(手紙)*"
+    alt: [新ヤコ]
+
+  1_peter:
+    name: ペテロの第一の手紙
+    pattern: "ペテロ(の)*(第一の)*(手紙)*"
+    alt: [1ペテ]
+
+  2_peter:
+    name: ペテロの第二の手紙
+    pattern: "ペテロ(の)*(第二の)*(手紙)*"
+    alt: [2ペテ]
+
+  1_john:
+    name: ヨハネの第一の手紙
+    pattern: "ヨハネ(の)*(第一の)*(手紙)*"
+    alt: [1ヨハ]
+
+  2_john:
+    name: ヨハネの第二の手紙
+    pattern: "ヨハネ(の)*(第二の)*(手紙)*"
+    alt: [2ヨハ]
+
+  3_john:
+    name: ヨハネの第三の手紙
+    pattern: "ヨハネ(の)*(第三の)*(手紙)*"
+    alt: [3ヨハ]
+
+  jude:
+    name: ユダの手紙
+    pattern: "ユダ(の)*(手紙)*"
+    alt: [ユダ]
+
+  revelation:
+    name: ヨハネの黙示録
+    pattern: "ヨハネ(の)*(黙示録)*"
+    alt: [黙示]

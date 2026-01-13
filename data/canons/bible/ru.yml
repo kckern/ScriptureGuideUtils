@@ -1,0 +1,333 @@
+canon: bible
+language: ru
+
+books:
+  genesis:
+    name: Бытие
+    pattern: "[Бб]ытие"
+    alt: [быт]
+
+  exodus:
+    name: Исход
+    pattern: "[Ии]сход"
+    alt: [исх]
+
+  leviticus:
+    name: Левит
+    pattern: "[Лл]евит"
+    alt: [лев]
+
+  numbers:
+    name: Числа
+    pattern: "[Чч]исла"
+    alt: [числ]
+
+  deuteronomy:
+    name: Второзаконие
+    pattern: "[Вв]торозаконие"
+    alt: [втор]
+
+  joshua:
+    name: Иисус Навин
+    pattern: "[Ии]исус [Нн]авин"
+    alt: [нав]
+
+  judges:
+    name: Книга Судей
+    pattern: "[Кк]нига [Сс]удей"
+    alt: [суд]
+
+  ruth:
+    name: Руфь
+    pattern: "[Рр]уфь"
+    alt: [руфь]
+
+  1_samuel:
+    name: 1я Царств
+    pattern: "[1I][яЯ]*[еЕкК]* ?[Цц]арств"
+    alt: [1 цар]
+
+  2_samuel:
+    name: 2я Царств
+    pattern: "[2II][яЯ]*[еЕкК]* ?[Цц]арств"
+    alt: [2 цар]
+
+  1_kings:
+    name: 3я Царств
+    pattern: "[3III][яЯ]*[еЕкК]* ?[Цц]арств"
+    alt: [3 цар]
+
+  2_kings:
+    name: 4-я Царств
+    pattern: "4[яЯ]* ?[Цц]арств"
+    alt: [4 цар]
+
+  1_chronicles:
+    name: 1я Паралипоменон
+    pattern: "[1I][яЯ]*[еЕкК]* ?[Пп]аралипоменон"
+    alt: [1 пар]
+
+  2_chronicles:
+    name: 2я Паралипоменон
+    pattern: "[2II][яЯ]*[еЕкК]* ?[Пп]аралипоменон"
+    alt: [2 пар]
+
+  ezra:
+    name: Ездра
+    pattern: "[Ее]здра"
+    alt: [езд]
+
+  nehemiah:
+    name: Неемия
+    pattern: "[Нн]еемия"
+    alt: [неем]
+
+  esther:
+    name: Есфирь
+    pattern: "[Ее]сфирь"
+    alt: [есф]
+
+  job:
+    name: Иов
+    pattern: "[Ии]ов"
+    alt: [иов]
+
+  psalms:
+    name: Псалтирь
+    pattern: "[Пп]салтирь"
+    alt: [пс]
+
+  proverbs:
+    name: Притчи
+    pattern: "[Пп]ритчи"
+    alt: [притч]
+
+  ecclesiastes:
+    name: Екклесиаст
+    pattern: "[Ее]кклесиаст"
+    alt: [еккл]
+
+  song_of_solomon:
+    name: Песня Песней
+    pattern: "[Пп]есня [Пп]есней"
+    alt: [песн]
+
+  isaiah:
+    name: Исаия
+    pattern: "[Ии]саия"
+    alt: [ис]
+
+  jeremiah:
+    name: Иеремия
+    pattern: "[Ии]еремия"
+    alt: [иер]
+
+  lamentations:
+    name: Плач Иеремии
+    pattern: "[Пп]лач [Ии]еремии"
+    alt: [плач]
+
+  ezekiel:
+    name: Иезекииль
+    pattern: "[Ии]езекииль"
+    alt: [иез]
+
+  daniel:
+    name: Даниил
+    pattern: "[Дд]аниил"
+    alt: [дан]
+
+  hosea:
+    name: Осия
+    pattern: "[Оо]сия"
+    alt: [ос]
+
+  joel:
+    name: Иоиль
+    pattern: "[Ии]оиль"
+    alt: [иоиль]
+
+  amos:
+    name: Амос
+    pattern: "[Аа]мос"
+    alt: [ам]
+
+  obadiah:
+    name: Авдий
+    pattern: "[Аа]вдий"
+    alt: [авд]
+
+  jonah:
+    name: Иона
+    pattern: "[Ии]она"
+    alt: [иона]
+
+  micah:
+    name: Михей
+    pattern: "[Мм]ихей"
+    alt: [мих]
+
+  nahum:
+    name: Наум
+    pattern: "[Нн]аум"
+    alt: [наум]
+
+  habakkuk:
+    name: Аввакум
+    pattern: "[Аа]ввакум"
+    alt: [авв]
+
+  zephaniah:
+    name: Софония
+    pattern: "[Сс]офония"
+    alt: [соф]
+
+  haggai:
+    name: Аггей
+    pattern: "[Аa]ггей"
+    alt: [агг]
+
+  zechariah:
+    name: Захария
+    pattern: "[Зз]ахария"
+    alt: [зах]
+
+  malachi:
+    name: Малахия
+    pattern: "[Мм]алахия"
+    alt: [мал]
+
+  matthew:
+    name: От Матфея
+    pattern: "[Оо]т [Мм]атфея"
+    alt: [мф]
+
+  mark:
+    name: От Марка
+    pattern: "[Оо]т [Мм]арка"
+    alt: [мк]
+
+  luke:
+    name: От Луки
+    pattern: "[Оо]т [Лл]уки"
+    alt: [лк]
+
+  john:
+    name: От Иоанна
+    pattern: "[Оо]т [Ии]оанна"
+    alt: [ин]
+
+  acts:
+    name: Деяния
+    pattern: "[Дд]еяния"
+    alt: [деян]
+
+  romans:
+    name: К Римлянам
+    pattern: "[Кк] [Рр]имлянам"
+    alt: [рим]
+
+  1_corinthians:
+    name: 1е к Коринфянам
+    pattern: "[1I][еЕяЯ]* к [Кк]оринфянам"
+    alt: [1 кор]
+
+  2_corinthians:
+    name: 2е к Коринфянам
+    pattern: "[2II][еЕяЯ]* к [Кк]оринфянам"
+    alt: [2 кор]
+
+  galatians:
+    name: К Галатам
+    pattern: "[Кк] [Гг]алатам"
+    alt: [гал]
+
+  ephesians:
+    name: К Ефесянам
+    pattern: "[Кк] [Ее]фесянам"
+    alt: [еф]
+
+  philippians:
+    name: К Филиппийцам
+    pattern: "[Кк] [Фф]илиппийцам"
+    alt: [флп]
+
+  colossians:
+    name: К Колоссянам
+    pattern: "[Кк] [Кк]олоссянам"
+    alt: [кол]
+
+  1_thessalonians:
+    name: 1е к Фессалоникийцам
+    pattern: "[1I][еЕяЯ]* *к* *[Фф]ессалоникийцам"
+    alt: [1 фес]
+
+  2_thessalonians:
+    name: 2е к Фессалоникийцам
+    pattern: "[2II][еЕяЯ]* к [Фф]ессалоникийцам"
+    alt: [2 фес]
+
+  1_timothy:
+    name: 1е к Тимофею
+    pattern: "[1I][еЕяЯ]* к [Тт]имофею"
+    alt: [1 тим]
+
+  2_timothy:
+    name: 2е к Тимофею
+    pattern: "[2II][еЕяЯ]* к [Тт]имофею"
+    alt: [2 тим]
+
+  titus:
+    name: К Титу
+    pattern: "[Кк] [Тт]иту"
+    alt: [тит]
+
+  philemon:
+    name: К Филимону
+    pattern: "[Кк] [Фф]илимону"
+    alt: [флм]
+
+  hebrews:
+    name: К Евреям
+    pattern: "[Кк] [Ее]вреям"
+    alt: [евр]
+
+  james:
+    name: Иакова
+    pattern: "[Ии]акова"
+    alt: [иак]
+
+  1_peter:
+    name: 1е Петра
+    pattern: "[1I][еЕяЯ]* [Пп]етра"
+    alt: [1 пет]
+
+  2_peter:
+    name: 2е Петра
+    pattern: "[2II][еЕяЯ]* [Пп]етра"
+    alt: [2 пет]
+
+  1_john:
+    name: 1е Иоанна
+    pattern: "[1I][еЕяЯ]* [Ии]оанна"
+    alt: [1 ин]
+
+  2_john:
+    name: 2е Иоанна
+    pattern: "[2II][еЕяЯ]* [Ии]оанна"
+    alt: [2 ин]
+
+  3_john:
+    name: 3е Иоанна
+    pattern: "[3III][еЕяЯ]* [Ии]оанна"
+    alt: [3 ин]
+
+  jude:
+    name: Иуды
+    pattern: "[Ии]уды"
+    alt: [иуд]
+
+  revelation:
+    name: Откровение
+    pattern: "[Оо]ткровение"
+    alt: [откр]

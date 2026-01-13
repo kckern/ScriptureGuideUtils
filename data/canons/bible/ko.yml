@@ -1,0 +1,333 @@
+canon: bible
+language: ko
+
+books:
+  genesis:
+    name: 창세기
+    pattern: "창세기"
+    alt: [창]
+
+  exodus:
+    name: 출애굽기
+    pattern: "출애굽기"
+    alt: [출, 탈출기]
+
+  leviticus:
+    name: 레위기
+    pattern: "레위기"
+    alt: [레]
+
+  numbers:
+    name: 민수기
+    pattern: "민수기"
+    alt: [민]
+
+  deuteronomy:
+    name: 신명기
+    pattern: "신명기"
+    alt: [신]
+
+  joshua:
+    name: 여호수아
+    pattern: "여호수아"
+    alt: [수]
+
+  judges:
+    name: 사사기
+    pattern: "사사기"
+    alt: [삿, 판관기]
+
+  ruth:
+    name: 룻기
+    pattern: "룻기"
+    alt: [룻]
+
+  1_samuel:
+    name: 사무엘상
+    pattern: "사무엘상"
+    alt: [삼상]
+
+  2_samuel:
+    name: 사무엘하
+    pattern: "사무엘하"
+    alt: [삼하]
+
+  1_kings:
+    name: 열왕기상
+    pattern: "열왕기상"
+    alt: [왕상]
+
+  2_kings:
+    name: 열왕기하
+    pattern: "열왕기하"
+    alt: [왕하]
+
+  1_chronicles:
+    name: 역대상
+    pattern: "(역대기 *상|역대상)"
+    alt: [대상]
+
+  2_chronicles:
+    name: 역대하
+    pattern: "(역대기 *하|역대하)"
+    alt: [대하]
+
+  ezra:
+    name: 에스라
+    pattern: "에스라"
+    alt: [스, 에즈라]
+
+  nehemiah:
+    name: 느헤미야
+    pattern: "느헤미야"
+    alt: [느]
+
+  esther:
+    name: 에스더
+    pattern: "에스더"
+    alt: [에, 에스텔]
+
+  job:
+    name: 욥기
+    pattern: "욥기"
+    alt: [욥]
+
+  psalms:
+    name: 시편
+    pattern: "시편"
+    alt: [시]
+
+  proverbs:
+    name: 잠언
+    pattern: "잠언"
+    alt: [잠]
+
+  ecclesiastes:
+    name: 전도서
+    pattern: "전도서"
+    alt: [전, 코헬렛]
+
+  song_of_solomon:
+    name: 아가
+    pattern: "아가"
+    alt: [아]
+
+  isaiah:
+    name: 이사야
+    pattern: "이사야서*"
+    alt: [사]
+
+  jeremiah:
+    name: 예레미야
+    pattern: "예레미야서*"
+    alt: [렘]
+
+  lamentations:
+    name: 예레미야애가
+    pattern: "예레미야애가"
+    alt: [애]
+
+  ezekiel:
+    name: 에스겔
+    pattern: "에스겔"
+    alt: [겔, 에제키엘]
+
+  daniel:
+    name: 다니엘
+    pattern: "다니엘서*"
+    alt: [단]
+
+  hosea:
+    name: 호세아
+    pattern: "호세아서*"
+    alt: [호]
+
+  joel:
+    name: 요엘
+    pattern: "요엘서*"
+    alt: [욜]
+
+  amos:
+    name: 아모스
+    pattern: "아모스서*"
+    alt: [암]
+
+  obadiah:
+    name: 오바댜
+    pattern: "오바댜서*"
+    alt: [옵, 오바디야]
+
+  jonah:
+    name: 요나
+    pattern: "요나서*"
+    alt: [욘]
+
+  micah:
+    name: 미가
+    pattern: "미가서*"
+    alt: [미]
+
+  nahum:
+    name: 나훔
+    pattern: "나훔서*"
+    alt: [나]
+
+  habakkuk:
+    name: 하박국
+    pattern: "[하합]박[꾹국]서*"
+    alt: [합]
+
+  zephaniah:
+    name: 스바냐
+    pattern: "스바냐서*"
+    alt: [습, 스바니야]
+
+  haggai:
+    name: 학개
+    pattern: "학개서*"
+    alt: [학, 하깨]
+
+  zechariah:
+    name: 스가랴
+    pattern: "스가랴서*"
+    alt: [슥, 즈가리야]
+
+  malachi:
+    name: 말라기
+    pattern: "말라기서*"
+    alt: [말]
+
+  matthew:
+    name: 마태복음
+    pattern: "(마태복음|마태오 *복음서)"
+    alt: [마, 마태, 마태오의 복음서]
+
+  mark:
+    name: 마가복음
+    pattern: "(마가복음|마르코 *복음서)"
+    alt: [막, 마가]
+
+  luke:
+    name: 누가복음
+    pattern: "([루누][가카] *복음서*|누가복음)"
+    alt: [눅]
+
+  john:
+    name: 요한복음
+    pattern: "요한 *복음서*"
+    alt: [요, 요한]
+
+  acts:
+    name: 사도행전
+    pattern: "사*도*행전"
+    alt: [악]
+
+  romans:
+    name: 로마서
+    pattern: "로마서"
+    alt: [롬, 로마인들에게 보낸 편지]
+
+  1_corinthians:
+    name: 고린도전서
+    pattern: "고린도전서"
+    alt: [고전, 코린토1서]
+
+  2_corinthians:
+    name: 고린도후서
+    pattern: "고린도후서"
+    alt: [고후, 코린토2서]
+
+  galatians:
+    name: 갈라디아서
+    pattern: "갈라디아서"
+    alt: [갈]
+
+  ephesians:
+    name: 에베소서
+    pattern: "에베소서"
+    alt: [엡, 에페소인들에게 보낸 편지]
+
+  philippians:
+    name: 빌립보서
+    pattern: "빌립보서"
+    alt: [빌, 필리피서]
+
+  colossians:
+    name: 골로새서
+    pattern: "골로새서"
+    alt: [골, 콜로새서]
+
+  1_thessalonians:
+    name: 데살로니가전서
+    pattern: "데살로니가전서"
+    alt: [살전, 테살로니카1서]
+
+  2_thessalonians:
+    name: 데살로니가후서
+    pattern: "데살로니가후서"
+    alt: [살후, 테살로니카2서]
+
+  1_timothy:
+    name: 디모데전서
+    pattern: "디모데전서"
+    alt: [딤전, 티모테오1서]
+
+  2_timothy:
+    name: 디모데후서
+    pattern: "디모데후서"
+    alt: [딤후, 티모테오2서, 티모테후서]
+
+  titus:
+    name: 디도서
+    pattern: "디도서"
+    alt: [딛, 티토서]
+
+  philemon:
+    name: 빌레몬서
+    pattern: "빌레몬서"
+    alt: [몬, 필레몬서]
+
+  hebrews:
+    name: 히브리서
+    pattern: "히브리서"
+    alt: [히]
+
+  james:
+    name: 야고보서
+    pattern: "야고보서"
+    alt: [약]
+
+  1_peter:
+    name: 베드로전서
+    pattern: "베드로전서"
+    alt: [벧전, 베드로1서]
+
+  2_peter:
+    name: 베드로후서
+    pattern: "베드로후서"
+    alt: [벧후, 베드로2서]
+
+  1_john:
+    name: 요한일서
+    pattern: "요한일서|요(일|1)"
+    alt: [요1]
+
+  2_john:
+    name: 요한이서
+    pattern: "요한이서|요(이|2)"
+    alt: [요2]
+
+  3_john:
+    name: 요한삼서
+    pattern: "요한삼서|요(삼|3)"
+    alt: [요3]
+
+  jude:
+    name: 유다서
+    pattern: "유다서"
+    alt: [유다, 유다의 편지]
+
+  revelation:
+    name: 요한 계시록
+    pattern: "요한 *[묵계]시록"
+    alt: [계시록]

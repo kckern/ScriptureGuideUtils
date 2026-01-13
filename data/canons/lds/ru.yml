@@ -1,0 +1,108 @@
+canon: lds
+language: ru
+
+books:
+  1_nephi:
+    name: 1 Нефий
+    pattern: "[1I] ?[Нн]ефий"
+    alt: [1 неф]
+
+  2_nephi:
+    name: 2 Нефий
+    pattern: "[2II] ?[Нн]ефий"
+    alt: [2 неф]
+
+  jacob:
+    name: Якоб
+    pattern: "[Яя]коб"
+    alt: [як]
+
+  enos:
+    name: Енос
+    pattern: "[Ее]нос"
+    alt: [енос]
+
+  jarom:
+    name: Иаром
+    pattern: "[Ии]аром"
+    alt: [иаром]
+
+  omni:
+    name: Омний
+    pattern: "[Оо]мний"
+    alt: [омний]
+
+  words_of_mormon:
+    name: Слова Мормона
+    pattern: "[Сс]лова [Мм]ормона"
+    alt: [сл м]
+
+  mosiah:
+    name: Мосия
+    pattern: "[Мм]осия"
+    alt: [мосия]
+
+  alma:
+    name: Алма
+    pattern: "[Аа]лма"
+    alt: [алма]
+
+  helaman:
+    name: Геламан
+    pattern: "[Гг]еламан"
+    alt: [гел]
+
+  3_nephi:
+    name: 3 Нефий
+    pattern: "[3III] ?[Нн]ефий"
+    alt: [3 неф]
+
+  4_nephi:
+    name: 4 Нефий
+    pattern: "4 ?[Нн]ефий"
+    alt: [4 неф]
+
+  mormon:
+    name: Мормон
+    pattern: "[Мм]ормон"
+    alt: [морм]
+
+  ether:
+    name: Ефер
+    pattern: "[Ее]фер"
+    alt: [ефер]
+
+  moroni:
+    name: Мороний
+    pattern: "[Мм]ороний"
+    alt: [морон]
+
+  doctrine_and_covenants:
+    name: Учение и Заветы
+    pattern: "[Уу]чение и [Зз]аветы"
+    alt: [у и з]
+
+  moses:
+    name: Моисей
+    pattern: "[Мм]оисей"
+    alt: [моис]
+
+  abraham:
+    name: Авраам
+    pattern: "[Аа]враам"
+    alt: [авр]
+
+  joseph_smith_matthew:
+    name: Джозеф Смит – от Матфея
+    pattern: "[Дд]жозеф [Сс]мит – [оО]т [Мм]атфея"
+    alt: [джС–Мф]
+
+  joseph_smith_history:
+    name: Джозеф Смит – История
+    pattern: "[Дд]жозеф [Сс]мит – [Ии]стория"
+    alt: [джС–Ист]
+
+  articles_of_faith:
+    name: Символы веры
+    pattern: "[Сс]имволы [вВ]еры"
+    alt: [с в]

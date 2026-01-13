@@ -1,0 +1,108 @@
+canon: lds
+language: tgl
+
+books:
+  1_nephi:
+    name: 1 Nephi
+    pattern: "1 *[Nn]ephi"
+    alt: [1 Ne.]
+
+  2_nephi:
+    name: 2 Nephi
+    pattern: "2 *[Nn]ephi"
+    alt: [2 Ne.]
+
+  jacob:
+    name: Jacob
+    pattern: "[Jj]acob"
+    alt: [Jac.]
+
+  enos:
+    name: Enos
+    pattern: "[Ee]nos"
+    alt: [Enos]
+
+  jarom:
+    name: Jarom
+    pattern: "[Jj]arom"
+    alt: [Jar.]
+
+  omni:
+    name: Omni
+    pattern: "[Oo]mni"
+    alt: [Omni]
+
+  words_of_mormon:
+    name: Mga Salita ni Mormon
+    pattern: "[Mm]ga *[Ss]alita *ni *[Mm]ormon"
+    alt: [S ni M]
+
+  mosiah:
+    name: Mosias
+    pattern: "[Mm]osias"
+    alt: [Mos.]
+
+  alma:
+    name: Alma
+    pattern: "[Aa]lma"
+    alt: [Alma]
+
+  helaman:
+    name: Helaman
+    pattern: "[Hh]elaman"
+    alt: [Hel.]
+
+  3_nephi:
+    name: 3 Nephi
+    pattern: "3 *[Nn]ephi"
+    alt: [3 Ne.]
+
+  4_nephi:
+    name: 4 Nephi
+    pattern: "4 *[Nn]ephi"
+    alt: [4 Ne.]
+
+  mormon:
+    name: Mormon
+    pattern: "[Mm]ormon"
+    alt: [Morm.]
+
+  ether:
+    name: Eter
+    pattern: "[Ee]ter"
+    alt: [Eter]
+
+  moroni:
+    name: Moroni
+    pattern: "[Mm]oroni"
+    alt: [Moro.]
+
+  doctrine_and_covenants:
+    name: Doktrina at mga Tipan
+    pattern: "[Dd]oktrina *at *[Mm]ga *[Tt]ipan"
+    alt: [D at T]
+
+  moses:
+    name: Moises
+    pattern: "[Mm]oises"
+    alt: [Moi.]
+
+  abraham:
+    name: Abraham
+    pattern: "[Aa]braham"
+    alt: [Abr.]
+
+  joseph_smith_matthew:
+    name: Joseph Smith—Mateo
+    pattern: "[Jj]oseph *[Ss]mith[—-][Mm]ateo"
+    alt: [JS—M]
+
+  joseph_smith_history:
+    name: Joseph Smith—Kasaysayan
+    pattern: "[Jj]oseph *[Ss]mith[—-][Kk]asaysayan"
+    alt: [JS—K]
+
+  articles_of_faith:
+    name: Ang mga Saligan ng Pananampalataya
+    pattern: "[Aa]ng *[Mm]ga *[Ss]aligan *ng *[Pp]ananampalataya"
+    alt: [S ng P]

@@ -1,0 +1,333 @@
+canon: bible
+language: tr
+
+books:
+  genesis:
+    name: Tekvin
+    pattern: "[Tt]ekvin"
+    alt: [Tek, Yaratılış]
+
+  exodus:
+    name: Çıkış
+    pattern: "[Çç]ıkış"
+    alt: [Çık]
+
+  leviticus:
+    name: Levililer
+    pattern: "[Ll]evililer"
+    alt: [Lev]
+
+  numbers:
+    name: Sayılar
+    pattern: "[Ss]ayılar"
+    alt: [Say]
+
+  deuteronomy:
+    name: Tesniye
+    pattern: "[Tt]esniye"
+    alt: [Tes, Yasa]
+
+  joshua:
+    name: Yeşu
+    pattern: "[Yy]eşu"
+    alt: [Yeş]
+
+  judges:
+    name: Hakimler
+    pattern: "[Hh]akimler"
+    alt: [Hak]
+
+  ruth:
+    name: Rut
+    pattern: "[Rr]ut"
+    alt: [Rut]
+
+  1_samuel:
+    name: 1 Samuel
+    pattern: "1 *[Ss]amuel"
+    alt: [1 Sam]
+
+  2_samuel:
+    name: 2 Samuel
+    pattern: "2 *[Ss]amuel"
+    alt: [2 Sam]
+
+  1_kings:
+    name: 1 Krallar
+    pattern: "1 *[Kk]rallar"
+    alt: [1 Kr]
+
+  2_kings:
+    name: 2 Krallar
+    pattern: "2 *[Kk]rallar"
+    alt: [2 Kr]
+
+  1_chronicles:
+    name: 1 Tarihler
+    pattern: "1 *[Tt]arihler"
+    alt: [1 Tar]
+
+  2_chronicles:
+    name: 2 Tarihler
+    pattern: "2 *[Tt]arihler"
+    alt: [2 Tar]
+
+  ezra:
+    name: Ezra
+    pattern: "[Ee]zra"
+    alt: [Ezr]
+
+  nehemiah:
+    name: Nehemya
+    pattern: "[Nn]ehemya"
+    alt: [Neh]
+
+  esther:
+    name: Ester
+    pattern: "[Ee]ster"
+    alt: [Est]
+
+  job:
+    name: Eyub
+    pattern: "[Ee]yub"
+    alt: [Eyü]
+
+  psalms:
+    name: Mezmurlar
+    pattern: "[Mm]ezmurlar"
+    alt: [Mez]
+
+  proverbs:
+    name: Süleyman'ın Özdeyişleri
+    pattern: "[Ss]üleyman'ın *[Öö]zdeyişleri"
+    alt: [Özd, Sül Öz]
+
+  ecclesiastes:
+    name: Vaiz
+    pattern: "[Vv]aiz"
+    alt: [Vaiz]
+
+  song_of_solomon:
+    name: Ezgiler Ezgisi
+    pattern: "[Ee]zgiler *[Ee]zgisi"
+    alt: [Ezg]
+
+  isaiah:
+    name: Yeşaya
+    pattern: "[Yy]eşaya"
+    alt: [Yeş]
+
+  jeremiah:
+    name: Yeremya
+    pattern: "[Yy]eremya"
+    alt: [Yer]
+
+  lamentations:
+    name: Ağıtlar
+    pattern: "[Aa]ğıtlar"
+    alt: [Ağıt]
+
+  ezekiel:
+    name: Hezekiel
+    pattern: "[Hh]ezekiel"
+    alt: [Hez]
+
+  daniel:
+    name: Daniel
+    pattern: "[Dd]aniel"
+    alt: [Dan]
+
+  hosea:
+    name: Hoşea
+    pattern: "[Hh]oşea"
+    alt: [Hoş]
+
+  joel:
+    name: Yoel
+    pattern: "[Yy]oel"
+    alt: [Yoel]
+
+  amos:
+    name: Amos
+    pattern: "[Aa]mos"
+    alt: [Amos]
+
+  obadiah:
+    name: Ovadya
+    pattern: "[Oo]vadya"
+    alt: [Ova]
+
+  jonah:
+    name: Yunus
+    pattern: "[Yy]unus"
+    alt: [Yun]
+
+  micah:
+    name: Mika
+    pattern: "[Mm]ika"
+    alt: [Mika]
+
+  nahum:
+    name: Nahum
+    pattern: "[Nn]ahum"
+    alt: [Nah]
+
+  habakkuk:
+    name: Habakuk
+    pattern: "[Hh]abakuk"
+    alt: [Hab]
+
+  zephaniah:
+    name: Sefanya
+    pattern: "[Ss]efanya"
+    alt: [Sef]
+
+  haggai:
+    name: Hagay
+    pattern: "[Hh]agay"
+    alt: [Hag]
+
+  zechariah:
+    name: Zekeriya
+    pattern: "[Zz]ekeriya"
+    alt: [Zek]
+
+  malachi:
+    name: Malaki
+    pattern: "[Mm]alaki"
+    alt: [Mal]
+
+  matthew:
+    name: Matta
+    pattern: "[Mm]atta"
+    alt: [Mat]
+
+  mark:
+    name: Markos
+    pattern: "[Mm]arkos"
+    alt: [Mar]
+
+  luke:
+    name: Luka
+    pattern: "[Ll]uka"
+    alt: [Luk]
+
+  john:
+    name: Yuhanna
+    pattern: "[Yy]uhanna"
+    alt: [Yuh]
+
+  acts:
+    name: Elçilerin İşleri
+    pattern: "[Ee]lçilerin *[İi]şleri"
+    alt: [Elç]
+
+  romans:
+    name: Romalılar
+    pattern: "[Rr]omalılar"
+    alt: [Rom]
+
+  1_corinthians:
+    name: 1 Korintliler
+    pattern: "1 *[Kk]orintliler"
+    alt: [1 Kor]
+
+  2_corinthians:
+    name: 2 Korintliler
+    pattern: "2 *[Kk]orintliler"
+    alt: [2 Kor]
+
+  galatians:
+    name: Galatyalılar
+    pattern: "[Gg]alatyalılar"
+    alt: [Gal]
+
+  ephesians:
+    name: Efesliler
+    pattern: "[Ee]fesliler"
+    alt: [Efes]
+
+  philippians:
+    name: Filipililer
+    pattern: "[Ff]ilipililer"
+    alt: [Flp]
+
+  colossians:
+    name: Koloseliler
+    pattern: "[Kk]oloseliler"
+    alt: [Kol]
+
+  1_thessalonians:
+    name: 1 Selanikliler
+    pattern: "1 *[Ss]elanikliler"
+    alt: [1 Sel]
+
+  2_thessalonians:
+    name: 2 Selanikliler
+    pattern: "2 *[Ss]elanikliler"
+    alt: [2 Sel]
+
+  1_timothy:
+    name: 1 Timoteos
+    pattern: "1 *[Tt]imoteos"
+    alt: [1 Tim]
+
+  2_timothy:
+    name: 2 Timoteos
+    pattern: "2 *[Tt]imoteos"
+    alt: [2 Tim]
+
+  titus:
+    name: Titus
+    pattern: "[Tt]itus"
+    alt: [Tit]
+
+  philemon:
+    name: Filimon
+    pattern: "[Ff]ilimon"
+    alt: [Flm]
+
+  hebrews:
+    name: İbraniler
+    pattern: "[İi]braniler"
+    alt: [İbr]
+
+  james:
+    name: Yakup
+    pattern: "[Yy]akup"
+    alt: [Yak]
+
+  1_peter:
+    name: 1 Petrus
+    pattern: "1 *[Pp]etrus"
+    alt: [1 Pet]
+
+  2_peter:
+    name: 2 Petrus
+    pattern: "2 *[Pp]etrus"
+    alt: [2 Pet]
+
+  1_john:
+    name: 1 Yuhanna
+    pattern: "1 *[Yy]uhanna"
+    alt: [1 Yuh]
+
+  2_john:
+    name: 2 Yuhanna
+    pattern: "2 *[Yy]uhanna"
+    alt: [2 Yuh]
+
+  3_john:
+    name: 3 Yuhanna
+    pattern: "3 *[Yy]uhanna"
+    alt: [3 Yuh]
+
+  jude:
+    name: Yahuda
+    pattern: "[Yy]ahuda"
+    alt: [Yah]
+
+  revelation:
+    name: Vahiy
+    pattern: "[Vv]ahiy"
+    alt: [Vah]

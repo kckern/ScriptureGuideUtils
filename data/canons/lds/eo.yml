@@ -1,0 +1,108 @@
+canon: lds
+language: eo
+
+books:
+  1_nephi:
+    name: 1 Nefi
+    pattern: "1 *[Nn]efi"
+    alt: [1 Nef]
+
+  2_nephi:
+    name: 2 Nefi
+    pattern: "2 *[Nn]efi"
+    alt: [2 Nef]
+
+  jacob:
+    name: Jakobo (ML)
+    pattern: "[Jj]akobo *\\([Mm][Ll]\\)"
+    alt: [JakK, Jakobo ML]
+
+  enos:
+    name: Enos
+    pattern: "[Ee]nos"
+    alt: [Eno]
+
+  jarom:
+    name: Jerom
+    pattern: "[Jj]erom"
+    alt: [Jerom]
+
+  omni:
+    name: Omni
+    pattern: "[Oo]mni"
+    alt: [Omni]
+
+  words_of_mormon:
+    name: La Vortoj de Mormon
+    pattern: "[Ll]a *[Vv]ortoj *de *[Mm]ormon"
+    alt: [Vortoj Morm]
+
+  mosiah:
+    name: Mosiah
+    pattern: "[Mm]osiah"
+    alt: [Mos]
+
+  alma:
+    name: Alma
+    pattern: "[Aa]lma"
+    alt: [Alma]
+
+  helaman:
+    name: Helaman
+    pattern: "[Hh]elaman"
+    alt: [Hel]
+
+  3_nephi:
+    name: 3 Nefi
+    pattern: "3 *[Nn]efi"
+    alt: [3 Nef]
+
+  4_nephi:
+    name: 4 Nefi
+    pattern: "4 *[Nn]efi"
+    alt: [4 Nef]
+
+  mormon:
+    name: Mormon
+    pattern: "[Mm]ormon"
+    alt: [Morm]
+
+  ether:
+    name: Eter
+    pattern: "[Ee]ter"
+    alt: [Eter]
+
+  moroni:
+    name: Moroni
+    pattern: "[Mm]oroni"
+    alt: [Moroni]
+
+  doctrine_and_covenants:
+    name: Doktrino kaj Interligoj
+    pattern: "[Dd]oktrino *kaj *[Ii]nterligoj"
+    alt: [D&I]
+
+  moses:
+    name: Moseo
+    pattern: "[Mm]oseo"
+    alt: [Mos]
+
+  abraham:
+    name: Abraham
+    pattern: "[Aa]braham"
+    alt: [Abr]
+
+  joseph_smith_matthew:
+    name: Joseph Smith—Mateo
+    pattern: "[Jj]oseph *[Ss]mith[—–-][Mm]ateo"
+    alt: [JS-Mat]
+
+  joseph_smith_history:
+    name: Joseph Smith—Historio
+    pattern: "[Jj]oseph *[Ss]mith[—–-][Hh]istorio"
+    alt: [JS-Historio]
+
+  articles_of_faith:
+    name: Kredo Artikoloj
+    pattern: "[Kk]redo *[Aa]rtikoloj"
+    alt: [KA]

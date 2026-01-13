@@ -1,0 +1,108 @@
+canon: lds
+language: vn
+
+books:
+  1_nephi:
+    name: 1 Nê Phi
+    pattern: "1[ -]*N[êe][ -]*Phi"
+    alt: [1 Nê Phi]
+
+  2_nephi:
+    name: 2 Nê Phi
+    pattern: "2[ -]*N[êe][ -]*Phi"
+    alt: [2 Nê Phi]
+
+  jacob:
+    name: Gia Cốp
+    pattern: "Gi*a*[ -]*C[ốo]p"
+    alt: [Gia Cốp]
+
+  enos:
+    name: Ê Nót
+    pattern: "[ÊE][ -]*N[óo]t"
+    alt: [Ê Nót]
+
+  jarom:
+    name: Gia Rôm
+    pattern: "Gi*a*[ -]*R[ôo]m"
+    alt: [Gia Rôm]
+
+  omni:
+    name: Ôm Ni
+    pattern: "[ÔO]m[ -]*Ni"
+    alt: [Ôm Ni]
+
+  words_of_mormon:
+    name: Lời Mặc Môn
+    pattern: "L[ờo]i[ -]*M[ặa]c[ -]*M[ôo]n"
+    alt: [LMMÔn]
+
+  mosiah:
+    name: Mô Si A
+    pattern: "M[ôo][ -]*Si[ -]*A"
+    alt: [Mô Si A]
+
+  alma:
+    name: An Ma
+    pattern: "An[ -]*Ma"
+    alt: [An Ma]
+
+  helaman:
+    name: Hê La Man
+    pattern: "H[êe]*[ -]*La*[ -]*Man"
+    alt: [Hê La Man]
+
+  3_nephi:
+    name: 3 Nê Phi
+    pattern: "3[ -]*N[êe][ -]*Phi"
+    alt: [3 Nê Phi]
+
+  4_nephi:
+    name: 4 Nê Phi
+    pattern: "4[ -]*N[êe][ -]*Phi"
+    alt: [4 Nê Phi]
+
+  mormon:
+    name: Mặc Môn
+    pattern: "M[ậa]c[ -]*M[ôo]n"
+    alt: [MMÔn]
+
+  ether:
+    name: Ê The
+    pattern: "[ÊE][ -]*The"
+    alt: [Ê The]
+
+  moroni:
+    name: Mô Rô Ni
+    pattern: "M[ôo][ -]*R[ôo][ -]*Ni"
+    alt: [MRNi]
+
+  doctrine_and_covenants:
+    name: Giáo Lý và Giao Ước
+    pattern: "Gi[áa]o[ -]*L[ýi][ -]*v[àa][ -]*Giao[ -]*[ƯU][ớo]c"
+    alt: [GLGƯ]
+
+  moses:
+    name: Môi Se
+    pattern: "M[ôo]i[ -]*Se"
+    alt: [Môi Se]
+
+  abraham:
+    name: Áp Ra Ham
+    pattern: "[ÁA]p[ -]*Ra[ -]*Ham"
+    alt: [ARHÂm]
+
+  joseph_smith_matthew:
+    name: Joseph Smith—Ma Thi Ơ
+    pattern: "Joseph[ -]*Smith—Ma[ -]*Thi[ -]*[ƠO]"
+    alt: [JS—MTƠ]
+
+  joseph_smith_history:
+    name: Joseph Smith—Lịch Sử
+    pattern: "Joseph[ -]*Smith—L[ịi]ch[ -]*S[ửu]"
+    alt: [JS—LS]
+
+  articles_of_faith:
+    name: Những Tín Điều
+    pattern: "Nh[ữu]ng[ -]*T[íi]n[ -]*[ĐD]i[ềe]u"
+    alt: [NTĐ]

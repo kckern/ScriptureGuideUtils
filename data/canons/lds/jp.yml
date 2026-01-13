@@ -1,0 +1,108 @@
+canon: lds
+language: jp
+
+books:
+  1_nephi:
+    name: ニーファイ第一書
+    pattern: "ニーファイ第一書*"
+    alt: [1ニフ]
+
+  2_nephi:
+    name: ニーファイ第二書
+    pattern: "ニーファイ第二書*"
+    alt: [2ニフ]
+
+  jacob:
+    name: ヤコブ書
+    pattern: "ヤコブ書*"
+    alt: [ヤコ]
+
+  enos:
+    name: エノス書
+    pattern: "エノス書*"
+    alt: [エノ]
+
+  jarom:
+    name: ジェロム書
+    pattern: "ジェロム書*"
+    alt: [ジェロ]
+
+  omni:
+    name: オムナイ書
+    pattern: "オムナイ書*"
+    alt: [オム]
+
+  words_of_mormon:
+    name: モルモンの言葉
+    pattern: "モルモン(の)*(言葉)*"
+    alt: [モ言]
+
+  mosiah:
+    name: モーサヤ書
+    pattern: "モーサヤ書*"
+    alt: [モサ]
+
+  alma:
+    name: アルマ書
+    pattern: "アルマ書*"
+    alt: [アル]
+
+  helaman:
+    name: ヒラマン書
+    pattern: "ヒラマン書*"
+    alt: [ヒラ]
+
+  3_nephi:
+    name: 第三ニーファイ
+    pattern: "第三ニーファイ*"
+    alt: [3ニフ]
+
+  4_nephi:
+    name: 第四ニーファイ
+    pattern: "第四ニーファイ*"
+    alt: [4ニフ]
+
+  mormon:
+    name: モルモン書
+    pattern: "モルモン書*"
+    alt: [モル]
+
+  ether:
+    name: エテル書
+    pattern: "エテル書*"
+    alt: [エテ]
+
+  moroni:
+    name: モロナイ書
+    pattern: "モロナイ書*"
+    alt: [モロ]
+
+  doctrine_and_covenants:
+    name: 教義と聖約
+    pattern: "教義(と)*(聖約)*"
+    alt: [教義]
+
+  moses:
+    name: モーセ書
+    pattern: "モーセ書*"
+    alt: [モセ]
+
+  abraham:
+    name: アブラハム書
+    pattern: "アブラハム書*"
+    alt: [アブ]
+
+  joseph_smith_matthew:
+    name: ジョセフ・スミス—マタイ
+    pattern: "ジョセフ・スミス[—ー]マタイ"
+    alt: [ジ—マタ]
+
+  joseph_smith_history:
+    name: ジョセフ・スミス—歴史
+    pattern: "ジョセフ・スミス[—ー]歴史"
+    alt: [ジ—歴史]
+
+  articles_of_faith:
+    name: 信仰箇条
+    pattern: "信仰箇条*"
+    alt: [箇条]

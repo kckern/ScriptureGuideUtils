@@ -1,0 +1,108 @@
+canon: lds
+language: tr
+
+books:
+  1_nephi:
+    name: 1 Nefi
+    pattern: "1 *[Nn]efi"
+    alt: [1 Nef]
+
+  2_nephi:
+    name: 2 Nefi
+    pattern: "2 *[Nn]efi"
+    alt: [2 Nef]
+
+  jacob:
+    name: Yakup (MK)
+    pattern: "[Yy]akup *\\([Mm][Kk]\\)"
+    alt: [Yakup MK, Yakub]
+
+  enos:
+    name: Enos
+    pattern: "[Ee]nos"
+    alt: [Enos]
+
+  jarom:
+    name: Yarom
+    pattern: "[Yy]arom"
+    alt: [Yarom]
+
+  omni:
+    name: Omni
+    pattern: "[Oo]mni"
+    alt: [Omni]
+
+  words_of_mormon:
+    name: Mormon'un Sözleri
+    pattern: "[Mm]ormon'un *[Ss]özleri"
+    alt: [Mor Söz]
+
+  mosiah:
+    name: Mozya
+    pattern: "[Mm]ozya"
+    alt: [Moz]
+
+  alma:
+    name: Alma
+    pattern: "[Aa]lma"
+    alt: [Alma]
+
+  helaman:
+    name: Helaman
+    pattern: "[Hh]elaman"
+    alt: [Hel]
+
+  3_nephi:
+    name: 3 Nefi
+    pattern: "3 *[Nn]efi"
+    alt: [3 Nef]
+
+  4_nephi:
+    name: 4 Nefi
+    pattern: "4 *[Nn]efi"
+    alt: [4 Nef]
+
+  mormon:
+    name: Mormon
+    pattern: "[Mm]ormon"
+    alt: [Mormon]
+
+  ether:
+    name: Ether
+    pattern: "[Ee]ther"
+    alt: [Eter]
+
+  moroni:
+    name: Moroni
+    pattern: "[Mm]oroni"
+    alt: [Moroni]
+
+  doctrine_and_covenants:
+    name: Öğreti ve Antlaşmalar
+    pattern: "[Öö]ğreti *ve *[Aa]ntlaşmalar"
+    alt: [Ö&A]
+
+  moses:
+    name: Musa
+    pattern: "[Mm]usa"
+    alt: [Mus]
+
+  abraham:
+    name: İbrahim
+    pattern: "[İi]brahim"
+    alt: [İbra]
+
+  joseph_smith_matthew:
+    name: Joseph Smith—Matta
+    pattern: "[Jj]oseph *[Ss]mith[—-][Mm]atta"
+    alt: [JS—Mat]
+
+  joseph_smith_history:
+    name: Joseph Smith—Tarih
+    pattern: "[Jj]oseph *[Ss]mith[—-][Tt]arih"
+    alt: [JS—Tarih]
+
+  articles_of_faith:
+    name: İnanç Makaleleri
+    pattern: "[İi]nanç *[Mm]akaleleri"
+    alt: [İM]

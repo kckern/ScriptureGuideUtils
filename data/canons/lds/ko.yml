@@ -1,0 +1,108 @@
+canon: lds
+language: ko
+
+books:
+  1_nephi:
+    name: 니파이전서
+    pattern: "니파이전서"
+    alt: [니전]
+
+  2_nephi:
+    name: 니파이후서
+    pattern: "니파이후서"
+    alt: [니후]
+
+  jacob:
+    name: 야곱서
+    pattern: "야곱서"
+    alt: [야곱]
+
+  enos:
+    name: 이노스서
+    pattern: "이노스서"
+    alt: [이노]
+
+  jarom:
+    name: 예이롬서
+    pattern: "예이롬서"
+    alt: [예이, 예이롬]
+
+  omni:
+    name: 옴나이서
+    pattern: "옴나이서"
+    alt: [옴, 옴나이]
+
+  words_of_mormon:
+    name: 몰몬의 말씀
+    pattern: "몰몬의 *말씀"
+    alt: [몰말, 몰몬말씀]
+
+  mosiah:
+    name: 모사이야서
+    pattern: "모사이야서"
+    alt: [모사, 모사이야]
+
+  alma:
+    name: 앨마서
+    pattern: "앨마서"
+    alt: [앨, 앨마]
+
+  helaman:
+    name: 힐라맨서
+    pattern: "힐라맨서"
+    alt: [힐, 힐라맨]
+
+  3_nephi:
+    name: 제3니파이
+    pattern: "제* *3 *니파이서*"
+    alt: [3니]
+
+  4_nephi:
+    name: 제4니파이
+    pattern: "제* *4 *니파이서*"
+    alt: [4니]
+
+  mormon:
+    name: 몰몬서
+    pattern: "몰몬서"
+    alt: [몰, 몰몬]
+
+  ether:
+    name: 이더서
+    pattern: "이더서"
+    alt: [이더]
+
+  moroni:
+    name: 모로나이서
+    pattern: "모로나이서"
+    alt: [모로, 모로나이]
+
+  doctrine_and_covenants:
+    name: 교리와 성약
+    pattern: "교리와\\s*성약"
+    alt: [교성, 교리성약]
+
+  moses:
+    name: 모세서
+    pattern: "모세서"
+    alt: [모세]
+
+  abraham:
+    name: 아브라함서
+    pattern: "아브라함서"
+    alt: [아브, 아브라함]
+
+  joseph_smith_matthew:
+    name: 조셉 스미스—마태복음
+    pattern: "조셉 *스미스[—–-]마태(복음)*"
+    alt: [조마]
+
+  joseph_smith_history:
+    name: 조셉 스미스—역사
+    pattern: "조셉 *스미스[—–-]역사"
+    alt: [조역]
+
+  articles_of_faith:
+    name: 신앙개조
+    pattern: "신앙개조"
+    alt: [신개]

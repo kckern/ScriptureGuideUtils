@@ -1,0 +1,108 @@
+canon: lds
+language: slv
+
+books:
+  1_nephi:
+    name: 1 Nefi
+    pattern: "1 *[Nn]efi"
+    alt: [1 Ne, Prva Nefijeva knjiga]
+
+  2_nephi:
+    name: 2 Nefi
+    pattern: "2 *[Nn]efi"
+    alt: [2 Ne, Druga Nefijeva knjiga]
+
+  jacob:
+    name: Jakob
+    pattern: "[Jj]akob"
+    alt: [JakK, Jakobova knjiga]
+
+  enos:
+    name: Enoš
+    pattern: "[Ee]noš"
+    alt: [En, Enóševa knjiga]
+
+  jarom:
+    name: Jarom
+    pattern: "[Jj]arom"
+    alt: [Jar, Jaromova knjiga]
+
+  omni:
+    name: Omni
+    pattern: "[Oo]mni"
+    alt: [Om, Omnijeva knjiga]
+
+  words_of_mormon:
+    name: Mormonove besede
+    pattern: "[Mm]ormonove *[Bb]esede"
+    alt: [MrmB]
+
+  mosiah:
+    name: Mozija
+    pattern: "[Mm]ozija"
+    alt: [Moz, Mozijeva knjiga]
+
+  alma:
+    name: Alma
+    pattern: "[Aa]lma"
+    alt: [Al, Almova knjiga]
+
+  helaman:
+    name: Helaman
+    pattern: "[Hh]elaman"
+    alt: [He, Helamanova knjiga]
+
+  3_nephi:
+    name: 3 Nefi
+    pattern: "3 *[Nn]efi"
+    alt: [3 Ne, Tretji Nefi]
+
+  4_nephi:
+    name: 4 Nefi
+    pattern: "4 *[Nn]efi"
+    alt: [4 Ne, Četrti Nefi]
+
+  mormon:
+    name: Mormon
+    pattern: "[Mm]ormon"
+    alt: [Mrm, Mormonova knjiga]
+
+  ether:
+    name: Eter
+    pattern: "[Ee]ter"
+    alt: [Etr, Etrova knjiga]
+
+  moroni:
+    name: Moroni
+    pattern: "[Mm]oroni"
+    alt: [Mor, Moronijeva knjiga]
+
+  doctrine_and_covenants:
+    name: Nauk in zaveze
+    pattern: "[Nn]auk *in *[Zz]aveze"
+    alt: [NaZ]
+
+  moses:
+    name: Mojzes
+    pattern: "[Mm]ojzes"
+    alt: [Mz, Mojzesova knjiga]
+
+  abraham:
+    name: Abraham
+    pattern: "[Aa]braham"
+    alt: [Abr, Abrahamova knjiga]
+
+  joseph_smith_matthew:
+    name: Joseph Smith — Matej
+    pattern: "[Jj]oseph *[Ss]mith *[—–-] *[Mm]atej"
+    alt: [JS – Mt, Joseph Smith — Evangelij po Mateju]
+
+  joseph_smith_history:
+    name: Joseph Smith — Življenjska zgodba
+    pattern: "[Jj]oseph *[Ss]mith *[—–-] *[Žž]ivljenjska *[Zz]godba"
+    alt: [JS – ŽZ]
+
+  articles_of_faith:
+    name: Členi vere
+    pattern: "[Čč]leni *[Vv]ere"
+    alt: [ČV]

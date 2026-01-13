@@ -1,0 +1,333 @@
+canon: bible
+language: de
+
+books:
+  genesis:
+    name: Genesis
+    pattern: "(1\\.* *(buch )*[Mm]ose|[Gg]enesis)"
+    alt: [gen]
+
+  exodus:
+    name: Exodus
+    pattern: "(2\\.* *(buch )*[Mm]ose|[Ee]xodus)"
+    alt: [ex]
+
+  leviticus:
+    name: Leviticus
+    pattern: "(3\\.* *(buch )*[Mm]ose|[Ll]eviticus)"
+    alt: [lev]
+
+  numbers:
+    name: Numbers
+    pattern: "(4\\.* *(buch )*[Mm]ose|[Nn]umeri)"
+    alt: [num]
+
+  deuteronomy:
+    name: Deuteronomy
+    pattern: "(5\\.* *(buch )*[Mm]ose|[Dd]euteronomium)"
+    alt: [dtn]
+
+  joshua:
+    name: Josua
+    pattern: "[Jj]osua"
+    alt: [jos]
+
+  judges:
+    name: Richter
+    pattern: "[Rr]ichter"
+    alt: [ri]
+
+  ruth:
+    name: Rut
+    pattern: "[Rr]ut"
+    alt: [rut]
+
+  1_samuel:
+    name: 1 Samuel
+    pattern: "1 *[Ss]amuel"
+    alt: [1 sam]
+
+  2_samuel:
+    name: 2 Samuel
+    pattern: "2 *[Ss]amuel"
+    alt: [2 sam]
+
+  1_kings:
+    name: 1 Könige
+    pattern: "1 *[Kk][öo]nige"
+    alt: [1 kön]
+
+  2_kings:
+    name: 2 Könige
+    pattern: "2 *[Kk][öo]nige"
+    alt: [2 kön]
+
+  1_chronicles:
+    name: 1 Chronik
+    pattern: "1 *[Cc]hronik"
+    alt: [1 chr]
+
+  2_chronicles:
+    name: 2 Chronik
+    pattern: "2 *[Cc]hronik"
+    alt: [2 chr]
+
+  ezra:
+    name: Esra
+    pattern: "[Ee]sra"
+    alt: [esra]
+
+  nehemiah:
+    name: Nehemia
+    pattern: "[Nn]ehemia"
+    alt: [neh]
+
+  esther:
+    name: Ester
+    pattern: "[Ee]ster"
+    alt: [est]
+
+  job:
+    name: Ijob
+    pattern: "[IiHh]job"
+    alt: [iob]
+
+  psalms:
+    name: Psalmen
+    pattern: "[Pp]salm(en)*"
+    alt: [ps]
+
+  proverbs:
+    name: Sprichwörter
+    pattern: "[Ss]prichw[öo]rter"
+    alt: [spr]
+
+  ecclesiastes:
+    name: Kohelet
+    pattern: "[Kk]ohelet"
+    alt: [koh]
+
+  song_of_solomon:
+    name: Hohelied
+    pattern: "[Hh]ohelied"
+    alt: [hld]
+
+  isaiah:
+    name: Jesaja
+    pattern: "[Jj]esaja"
+    alt: [jes]
+
+  jeremiah:
+    name: Jeremia
+    pattern: "[Jj]eremia"
+    alt: [jer]
+
+  lamentations:
+    name: Klagelieder
+    pattern: "[Kk]lagelieder"
+    alt: [klgl]
+
+  ezekiel:
+    name: Ezechiel
+    pattern: "[Ee]zechiel"
+    alt: [ez]
+
+  daniel:
+    name: Daniel
+    pattern: "[Dd]aniel"
+    alt: [dan]
+
+  hosea:
+    name: Hosea
+    pattern: "[Hh]osea"
+    alt: [hos]
+
+  joel:
+    name: Joël
+    pattern: "[Jj]o[eë]l"
+    alt: [joe]
+
+  amos:
+    name: Amos
+    pattern: "[Aa]mos"
+    alt: [am]
+
+  obadiah:
+    name: Obadja
+    pattern: "[Oo]badja"
+    alt: [obd]
+
+  jonah:
+    name: Jona
+    pattern: "[Jj]ona"
+    alt: [jon]
+
+  micah:
+    name: Micha
+    pattern: "[Mm]icha"
+    alt: [mi]
+
+  nahum:
+    name: Nahum
+    pattern: "[Nn]ahum"
+    alt: [nah]
+
+  habakkuk:
+    name: Habakuk
+    pattern: "[Hh]abakuk"
+    alt: [hab]
+
+  zephaniah:
+    name: Zefanja
+    pattern: "[Zz]efanja"
+    alt: [zef]
+
+  haggai:
+    name: Haggai
+    pattern: "[Hh]aggai"
+    alt: [hag]
+
+  zechariah:
+    name: Sacharja
+    pattern: "[Ss]acharja"
+    alt: [sach]
+
+  malachi:
+    name: Maleachi
+    pattern: "[Mm]aleachi"
+    alt: [mal]
+
+  matthew:
+    name: Matthäus
+    pattern: "[Mm]atth[äa]us"
+    alt: [mt]
+
+  mark:
+    name: Markus
+    pattern: "[Mm]arkus"
+    alt: [mk]
+
+  luke:
+    name: Lukas
+    pattern: "[Ll]ukas"
+    alt: [lk]
+
+  john:
+    name: Johannes
+    pattern: "[Jj]ohannes"
+    alt: [joh]
+
+  acts:
+    name: Apostelgeschichte
+    pattern: "[Aa]postelgeschichte"
+    alt: [apg]
+
+  romans:
+    name: Römer
+    pattern: "[Rr][öo]mer"
+    alt: [röm]
+
+  1_corinthians:
+    name: 1 Korinther
+    pattern: "1 *[Kk]orinther"
+    alt: [1 kor]
+
+  2_corinthians:
+    name: 2 Korinther
+    pattern: "2 *[Kk]orinther"
+    alt: [2 kor]
+
+  galatians:
+    name: Galater
+    pattern: "[Gg]alater"
+    alt: [gal]
+
+  ephesians:
+    name: Epheser
+    pattern: "[Ee]pheser"
+    alt: [eph]
+
+  philippians:
+    name: Philipper
+    pattern: "[Pp]hilipper"
+    alt: [phil]
+
+  colossians:
+    name: Kolosser
+    pattern: "[Kk]olosser"
+    alt: [kol]
+
+  1_thessalonians:
+    name: 1 Thessalonicher
+    pattern: "1 *[Tt]hessalonicher"
+    alt: [1 thess]
+
+  2_thessalonians:
+    name: 2 Thessalonicher
+    pattern: "2 *[Tt]hessalonicher"
+    alt: [2 thess]
+
+  1_timothy:
+    name: 1 Timotheus
+    pattern: "1 *[Tt]imotheus"
+    alt: [1 tim]
+
+  2_timothy:
+    name: 2 Timotheus
+    pattern: "2 *[Tt]imotheus"
+    alt: [2 tim]
+
+  titus:
+    name: Titus
+    pattern: "[Tt]itus"
+    alt: [tit]
+
+  philemon:
+    name: Philemon
+    pattern: "[Pp]hilemon"
+    alt: [phlm]
+
+  hebrews:
+    name: Hebräer
+    pattern: "[Hh]ebr[äa]er"
+    alt: [hebr]
+
+  james:
+    name: Jakobus
+    pattern: "[Jj]akobus"
+    alt: [jakbr]
+
+  1_peter:
+    name: 1 Petrus
+    pattern: "1 *[Pp]etrus"
+    alt: [1 petr]
+
+  2_peter:
+    name: 2 Petrus
+    pattern: "2 *[Pp]etrus"
+    alt: [2 petr]
+
+  1_john:
+    name: 1 Johannes
+    pattern: "1 *[Jj]ohannes"
+    alt: [1 joh]
+
+  2_john:
+    name: 2 Johannes
+    pattern: "2 *[Jj]ohannes"
+    alt: [2 joh]
+
+  3_john:
+    name: 3 Johannes
+    pattern: "3 *[Jj]ohannes"
+    alt: [3 joh]
+
+  jude:
+    name: Judas
+    pattern: "[Jj]udas"
+    alt: [jud]
+
+  revelation:
+    name: Offenbarung
+    pattern: "[Oo]ffenbarung"
+    alt: [offb]

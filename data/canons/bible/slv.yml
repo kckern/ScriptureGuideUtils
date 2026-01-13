@@ -1,0 +1,333 @@
+canon: bible
+language: slv
+
+books:
+  genesis:
+    name: Geneza
+    pattern: "[Gg]eneza"
+    alt: [1 Mz, Prva Mojzesova knjiga]
+
+  exodus:
+    name: Eksodus
+    pattern: "[Ee]ksodus"
+    alt: [2 Mz, Druga Mojzesova knjiga]
+
+  leviticus:
+    name: Levitik
+    pattern: "[Ll]evitik"
+    alt: [3 Mz, Tretja Mojzesova knjiga]
+
+  numbers:
+    name: Numeri
+    pattern: "[Nn]umeri"
+    alt: [4 Mz, Četrta Mojzesova knjiga]
+
+  deuteronomy:
+    name: Devteronomij
+    pattern: "[Dd]evteronomij"
+    alt: [5 Mz, Peta Mojzesova knjiga]
+
+  joshua:
+    name: Jozue
+    pattern: "[Jj]ozue"
+    alt: [Joz]
+
+  judges:
+    name: Sodniki
+    pattern: "[Ss]odniki"
+    alt: [Sod]
+
+  ruth:
+    name: Ruta
+    pattern: "[Rr]uta"
+    alt: [Rut]
+
+  1_samuel:
+    name: 1 Samuel
+    pattern: "1 *[Ss]amuel"
+    alt: [1 Sam, Prva Samuelova knjiga]
+
+  2_samuel:
+    name: 2 Samuel
+    pattern: "2 *[Ss]amuel"
+    alt: [2 Sam, Druga Samuelova knjiga]
+
+  1_kings:
+    name: 1 Kralji
+    pattern: "1 *[Kk]ralji"
+    alt: [1 Kr, Prva knjiga kraljev]
+
+  2_kings:
+    name: 2 Kralji
+    pattern: "2 *[Kk]ralji"
+    alt: [2 Kr, Druga knjiga kraljev]
+
+  1_chronicles:
+    name: 1 Kroniška
+    pattern: "1 *[Kk]roniška"
+    alt: [1 Krn, Prva kroniška knjiga]
+
+  2_chronicles:
+    name: 2 Kroniška
+    pattern: "2 *[Kk]roniška"
+    alt: [2 Krn, Druga kroniška knjiga]
+
+  ezra:
+    name: Ezra
+    pattern: "[Ee]zra"
+    alt: [Ezr]
+
+  nehemiah:
+    name: Nehemija
+    pattern: "[Nn]ehemija"
+    alt: [Neh]
+
+  esther:
+    name: Estera
+    pattern: "[Ee]stera"
+    alt: [Est]
+
+  job:
+    name: Job
+    pattern: "[Jj]ob"
+    alt: [Job]
+
+  psalms:
+    name: Psalmi
+    pattern: "[Pp]salmi"
+    alt: [Ps]
+
+  proverbs:
+    name: Pregovori
+    pattern: "[Pp]regovori"
+    alt: [Prg]
+
+  ecclesiastes:
+    name: Pridigar
+    pattern: "[Pp]ridigar"
+    alt: [Prd, Kohelet]
+
+  song_of_solomon:
+    name: Visoka pesem
+    pattern: "[Vv]isoka *[Pp]esem"
+    alt: [Vp]
+
+  isaiah:
+    name: Izaija
+    pattern: "[Ii]zaija"
+    alt: [Iz]
+
+  jeremiah:
+    name: Jeremija
+    pattern: "[Jj]eremija"
+    alt: [Jer]
+
+  lamentations:
+    name: Žalostinke
+    pattern: "[Žž]alostinke"
+    alt: [Žal]
+
+  ezekiel:
+    name: Ezekiel
+    pattern: "[Ee]zekiel"
+    alt: [Ezk]
+
+  daniel:
+    name: Daniel
+    pattern: "[Dd]aniel"
+    alt: [Dan]
+
+  hosea:
+    name: Ozej
+    pattern: "[Oo]zej"
+    alt: [Oz]
+
+  joel:
+    name: Joel
+    pattern: "[Jj]oel"
+    alt: [Jl]
+
+  amos:
+    name: Amos
+    pattern: "[Aa]mos"
+    alt: [Am]
+
+  obadiah:
+    name: Abdija
+    pattern: "[Aa]bdija"
+    alt: [Abd]
+
+  jonah:
+    name: Jona
+    pattern: "[Jj]ona"
+    alt: [Jon]
+
+  micah:
+    name: Mihej
+    pattern: "[Mm]ihej"
+    alt: [Mih]
+
+  nahum:
+    name: Nahum
+    pattern: "[Nn]ahum"
+    alt: [Nah]
+
+  habakkuk:
+    name: Habakuk
+    pattern: "[Hh]abakuk"
+    alt: [Hab]
+
+  zephaniah:
+    name: Sofonija
+    pattern: "[Ss]ofonija"
+    alt: [Sof]
+
+  haggai:
+    name: Agej
+    pattern: "[Aa]gej"
+    alt: [Ag]
+
+  zechariah:
+    name: Zaharija
+    pattern: "[Zz]aharija"
+    alt: [Zah]
+
+  malachi:
+    name: Malahija
+    pattern: "[Mm]alahija"
+    alt: [Mal]
+
+  matthew:
+    name: Matej
+    pattern: "[Mm]atej"
+    alt: [Mt, Evangelij po Mateju]
+
+  mark:
+    name: Marko
+    pattern: "[Mm]arko"
+    alt: [Mr, Evangelij po Marku]
+
+  luke:
+    name: Luka
+    pattern: "[Ll]uka"
+    alt: [Lk, Evangelij po Luku]
+
+  john:
+    name: Janez
+    pattern: "[Jj]anez"
+    alt: [Jn, Evangelij po Janezu]
+
+  acts:
+    name: Apostolska dela
+    pattern: "[Aa]postolska *[Dd]ela"
+    alt: [Apd]
+
+  romans:
+    name: Rimljani
+    pattern: "[Rr]imljani"
+    alt: [Rim, Pismo Rimljanom]
+
+  1_corinthians:
+    name: 1 Korinčanom
+    pattern: "1 *[Kk]orinčanom"
+    alt: [1 Kor, Prvo pismo Korinčanom]
+
+  2_corinthians:
+    name: 2 Korinčanom
+    pattern: "2 *[Kk]orinčanom"
+    alt: [2 Kor, Drugo pismo Korinčanom]
+
+  galatians:
+    name: Galačanom
+    pattern: "[Gg]alačanom"
+    alt: [Gal, Pismo Galačanom]
+
+  ephesians:
+    name: Efežanom
+    pattern: "[Ee]fežanom"
+    alt: [Ef, Pismo Efežanom]
+
+  philippians:
+    name: Filipljanom
+    pattern: "[Ff]ilipljanom"
+    alt: [Flp, Pismo Filipljanom]
+
+  colossians:
+    name: Kološanom
+    pattern: "[Kk]ološanom"
+    alt: [Kol, Pismo Kološanom]
+
+  1_thessalonians:
+    name: 1 Tesaloničanom
+    pattern: "1 *[Tt]esaloničanom"
+    alt: [1 Tes, Prvo pismo Tesaloničanom]
+
+  2_thessalonians:
+    name: 2 Tesaloničanom
+    pattern: "2 *[Tt]esaloničanom"
+    alt: [2 Tes, Drugo pismo Tesaloničanom]
+
+  1_timothy:
+    name: 1 Timoteju
+    pattern: "1 *[Tt]imoteju"
+    alt: [1 Tim, Prvo pismo Timoteju]
+
+  2_timothy:
+    name: 2 Timoteju
+    pattern: "2 *[Tt]imoteju"
+    alt: [2 Tim, Drugo pismo Timoteju]
+
+  titus:
+    name: Titu
+    pattern: "[Tt]itu"
+    alt: [Tit, Pismo Titu]
+
+  philemon:
+    name: Filemonu
+    pattern: "[Ff]ilemonu"
+    alt: [Flm, Pismo Filemonu]
+
+  hebrews:
+    name: Hebrejcem
+    pattern: "[Hh]ebrejcem"
+    alt: [Heb, Pismo Hebrejcem]
+
+  james:
+    name: Jakobovo
+    pattern: "[Jj]akobovo"
+    alt: [Jak, Jakobovo pismo]
+
+  1_peter:
+    name: 1 Peter
+    pattern: "1 *[Pp]eter"
+    alt: [1 Pt, Prvo Petrovo pismo]
+
+  2_peter:
+    name: 2 Peter
+    pattern: "2 *[Pp]eter"
+    alt: [2 Pt, Drugo Petrovo pismo]
+
+  1_john:
+    name: 1 Janez
+    pattern: "1 *[Jj]anez"
+    alt: [1 Jn, Prvo Janezovo pismo]
+
+  2_john:
+    name: 2 Janez
+    pattern: "2 *[Jj]anez"
+    alt: [2 Jn, Drugo Janezovo pismo]
+
+  3_john:
+    name: 3 Janez
+    pattern: "3 *[Jj]anez"
+    alt: [3 Jn, Tretje Janezovo pismo]
+
+  jude:
+    name: Juda
+    pattern: "[Jj]uda"
+    alt: [Jud, Judovo pismo]
+
+  revelation:
+    name: Razodetje
+    pattern: "[Rr]azodetje"
+    alt: [Raz]

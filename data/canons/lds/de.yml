@@ -1,0 +1,108 @@
+canon: lds
+language: de
+
+books:
+  1_nephi:
+    name: 1 Nephi
+    pattern: "1 *[Nn]ephi"
+    alt: [1 ne]
+
+  2_nephi:
+    name: 2 Nephi
+    pattern: "2 *[Nn]ephi"
+    alt: [2 ne]
+
+  jacob:
+    name: Jakob
+    pattern: "[Jj]akob"
+    alt: [jak]
+
+  enos:
+    name: Enos
+    pattern: "[Ee]nos"
+    alt: [enos]
+
+  jarom:
+    name: Jarom
+    pattern: "[Jj]arom"
+    alt: [jar]
+
+  omni:
+    name: Omni
+    pattern: "[Oo]mni"
+    alt: [om]
+
+  words_of_mormon:
+    name: Worte Mormons
+    pattern: "[Ww]orte *[Mm]ormons"
+    alt: [wmorm]
+
+  mosiah:
+    name: Mosia
+    pattern: "[Mm]osia"
+    alt: [mos]
+
+  alma:
+    name: Alma
+    pattern: "[Aa]lma"
+    alt: [al]
+
+  helaman:
+    name: Helaman
+    pattern: "[Hh]elaman"
+    alt: [hel]
+
+  3_nephi:
+    name: 3 Nephi
+    pattern: "3 *[Nn]ephi"
+    alt: [3 ne]
+
+  4_nephi:
+    name: 4 Nephi
+    pattern: "4 *[Nn]ephi"
+    alt: [4 ne]
+
+  mormon:
+    name: Mormon
+    pattern: "[Mm]ormon"
+    alt: [morm]
+
+  ether:
+    name: Ether
+    pattern: "[Ee]ther"
+    alt: [eth]
+
+  moroni:
+    name: Moroni
+    pattern: "[Mm]oroni"
+    alt: [moro]
+
+  doctrine_and_covenants:
+    name: Lehre und Bündnisse
+    pattern: "[Ll]ehre *und *[Bb][üu]ndnisse"
+    alt: [lub]
+
+  moses:
+    name: Mose
+    pattern: "[Mm]ose"
+    alt: [mose]
+
+  abraham:
+    name: Abraham
+    pattern: "[Aa]braham"
+    alt: [abr]
+
+  joseph_smith_matthew:
+    name: Joseph Smith—Matthäus
+    pattern: "[Jj]oseph *[Ss]mith[—–-][Mm]atth[äa]us"
+    alt: [jsmt]
+
+  joseph_smith_history:
+    name: Joseph Smith—Lebensgeschichte
+    pattern: "[Jj]oseph *[Ss]mith[—–-][Ll]ebensgeschichte"
+    alt: [jslg]
+
+  articles_of_faith:
+    name: Glaubensartikel
+    pattern: "[Gg]laubensartikel"
+    alt: [ga]
