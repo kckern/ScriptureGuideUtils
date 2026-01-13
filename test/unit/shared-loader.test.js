@@ -18,4 +18,14 @@ describe('Shared Language Loading', () => {
     const shared = loadSharedLanguage('xyz');
     expect(shared).toBeNull();
   });
+
+  test('loads Korean shared patterns', () => {
+    const shared = loadSharedLanguage('ko');
+
+    expect(shared).not.toBeNull();
+    expect(shared.language).toBe('ko');
+    expect(shared.delimiters).toBeDefined();
+    expect(shared.labels.chapter).toContain('장');
+    expect(shared.labels.verse).toContain('절');
+  });
 });

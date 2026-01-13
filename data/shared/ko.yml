@@ -1,0 +1,34 @@
+language: ko
+
+delimiters:
+  chapter_verse: [":", "장"]
+  range: ["-", "~", "부터"]
+  list: [",", ";", "과", "와", "및"]
+
+numerals:
+  spelled:
+    제1: 1
+    제2: 2
+    제3: 3
+    제4: 4
+
+labels:
+  chapter: ["장", "편"]
+  verse: ["절"]
+
+joiners:
+  patterns: ["과", "와", "및", "그리고", "또는", "비교"]
+
+pre_rules:
+  - pattern: "(\\d+)\\s*장\\s*(\\d+)(?:~|-)(\\d+)\\s*절*"
+    replacement: "$1:$2-$3"
+  - pattern: "(\\d+)\\s*장\\s*(\\d+)\\s*절*"
+    replacement: "$1:$2"
+  - pattern: "~"
+    replacement: "-"
+  - pattern: "(비교|또는*|그리고|과|와|및)"
+    replacement: ";"
+
+post_rules:
+  - pattern: "\\s+"
+    replacement: " "
