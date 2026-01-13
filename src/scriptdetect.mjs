@@ -46,7 +46,7 @@ const findMatches = (content,books,lang_extra) => {
         substring = substring.trim();
         let positions = [];
         let index = normalizedContent.indexOf(substring);
-        while (index != -1) {
+        while (index !== -1) {
             positions.push(index);
             index = normalizedContent.indexOf(substring, index + 1);
         }        return [substring,positions];
@@ -109,7 +109,7 @@ function findMatchIndexes(content, matches,lookupReference, lang_extra) {
         let positions = [];
         let strPos = content.indexOf(i);
 
-        while (strPos != -1) {
+        while (strPos !== -1) {
             positions.push(strPos);
             strPos = content.indexOf(i, strPos + 1);
         }

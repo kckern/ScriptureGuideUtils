@@ -325,7 +325,7 @@ const consecutiveSplitterCoc = function(verse_ids) {
     let previousNum = 0;
     for (let i in verse_ids) {
         const currentNum = parseCocId(verse_ids[i]);
-        if (currentNum != previousNum + 1 && previousNum != 0) {
+        if (currentNum !== previousNum + 1 && previousNum !== 0) {
             segments.push(segment);
             segment = [];
         }
@@ -347,39 +347,39 @@ const loadRefsFromRangesCoc = function(ranges, config) {
         let end_ch = ranges[i][1][1];
         let start_vs = ranges[i][0][2];
         let end_vs = ranges[i][1][2];
-        if (start_bk == end_bk) {
-            if (start_ch == end_ch) {
-                if (start_bk == mostRecentBook) start_bk = '';
-                if (start_bk == mostRecentBook && start_ch == mostRecentChapter) start_ch = '';
-                if (start_vs == end_vs) {
+        if (start_bk === end_bk) {
+            if (start_ch === end_ch) {
+                if (start_bk === mostRecentBook) start_bk = '';
+                if (start_bk === mostRecentBook && start_ch === mostRecentChapter) start_ch = '';
+                if (start_vs === end_vs) {
                     ref = start_bk + " " + start_ch + ":" + start_vs;
                 } else {
-                    if (start_vs == 1 && end_vs == loadMaxVerseCoc(start_bk, start_ch)) {
+                    if (start_vs === 1 && end_vs === loadMaxVerseCoc(start_bk, start_ch)) {
                         ref = start_bk + " " + start_ch;
                     } else {
                         ref = start_bk + " " + start_ch + ":" + start_vs + "-" + end_vs;
                     }
                 }
             } else {
-                if (start_vs == 1 && end_vs == loadMaxVerseCoc(end_bk, end_ch)) {
+                if (start_vs === 1 && end_vs === loadMaxVerseCoc(end_bk, end_ch)) {
                     ref = start_bk + " " + start_ch + "-" + end_ch;
                 } else {
                     ref = start_bk + " " + start_ch + ":" + start_vs + "-" + end_ch + ":" + end_vs;
                 }
             }
         } else {
-            if (start_vs == 1 && end_vs == loadMaxVerseCoc(end_bk, end_ch)) {
+            if (start_vs === 1 && end_vs === loadMaxVerseCoc(end_bk, end_ch)) {
                 ref = start_bk + " " + start_ch + " - " + end_bk + " " + end_ch;
-            } else if (end_vs == loadMaxVerseCoc(end_bk, end_ch)) {
+            } else if (end_vs === loadMaxVerseCoc(end_bk, end_ch)) {
                 ref = start_bk + " " + start_ch + ":" + start_vs + " - " + end_bk + " " + end_ch;
-            } else if (start_vs == 1) {
+            } else if (start_vs === 1) {
                 ref = start_bk + " " + start_ch + " - " + end_bk + " " + end_ch + ":" + end_vs;
             } else {
                 ref = start_bk + " " + start_ch + ":" + start_vs + " - " + end_bk + " " + end_ch + ":" + end_vs;
             }
         }
-        if (start_bk != '') mostRecentBook = start_bk;
-        if (start_ch != '') mostRecentChapter = start_ch;
+        if (start_bk !== '') mostRecentBook = start_bk;
+        if (start_ch !== '') mostRecentChapter = start_ch;
         ref = ref.replace(/^\s+:*/, '').trim();
 
         // Apply language-specific post rules
@@ -441,9 +441,9 @@ const validateVerseIds = function(verse_ids) {
     if(!Array.isArray(verse_ids)) verse_ids = [verse_ids];
     verse_ids = verse_ids.map(v => parseInt(v));
     verse_ids = verse_ids.filter(v => !isNaN(v));
-    if(verse_ids.length == 0) return false;
+    if(verse_ids.length === 0) return false;
     //if array of non zero integers
-    if(verse_ids.filter(v => v > 0).length == verse_ids.length) return verse_ids;
+    if(verse_ids.filter(v => v > 0).length === verse_ids.length) return verse_ids;
     return false;
 
 }
@@ -452,7 +452,7 @@ const validateVerseIdsMixed = function(verse_ids) {
     if(!verse_ids) return { ids: false, canon: null };
     if(typeof verse_ids === 'string') verse_ids = verse_ids.split(/[,;]/);
     if(!Array.isArray(verse_ids)) verse_ids = [verse_ids];
-    if(verse_ids.length == 0) return { ids: false, canon: null };
+    if(verse_ids.length === 0) return { ids: false, canon: null };
 
     // Detect canon from first ID
     const firstCanon = detectCanon(verse_ids[0]);
@@ -596,7 +596,7 @@ const cleanReference = function(messyReference, config) {
 
 const handleSingleChapterBookRefs = function(ref, config) {
 
-   const singleChapterBooks = Object.keys(config.raw_index).filter(book => loadMaxChapter(book, config) == 1);
+   const singleChapterBooks = Object.keys(config.raw_index).filter(book => loadMaxChapter(book, config) === 1);
    const [matchingBook] = singleChapterBooks.filter(book => ref.match(new RegExp(`^${book} \\d+`)));
    if(new RegExp(`^${matchingBook} 1:`).test(ref)) return ref;
    if(new RegExp(`^${matchingBook} 1$`).test(ref)) return ref;
@@ -718,14 +718,14 @@ const getRanges = function(ref) {
     else if (isRange) {
         let chapters = numbers.match(/((\d+)[:]|^\d+)/g);
         let verses = numbers.match(/[:-](\d+)/g);
-        if (chapters.length == 1) chapters.push(chapters[0]);
+        if (chapters.length === 1) chapters.push(chapters[0]);
         chapters = chapters.map(c => parseInt(c.replace(/\D/g, '').trim()));
         verses = verses.map(v => parseInt(v.replace(/\D/g, '').trim()));
         for (let i = chapters[0]; i <= chapters[1]; i++) {
             let start = 1;
             let end = "X";
-            if (chapters[0] == i) start = verses[0];
-            if (chapters[1] == i) end = verses[verses.length - 1];
+            if (chapters[0] === i) start = verses[0];
+            if (chapters[1] === i) end = verses[verses.length - 1];
             ranges.push(i + ": " + start + "-" + end);
         }
     } else {
@@ -785,7 +785,7 @@ const consecutiveSplitter = function(verse_ids) {
     let segment = [];
     let previousVerseId = 0;
     for (let i in verse_ids) {
-        if (verse_ids[i] != previousVerseId + 1 && previousVerseId != 0) {
+        if (verse_ids[i] !== previousVerseId + 1 && previousVerseId !== 0) {
             segments.push(segment);
             segment = [];
         }
@@ -806,14 +806,14 @@ const loadRefsFromRanges = function(ranges, config) {
         let end_ch = ranges[i][1][1];
         let start_vs = ranges[i][0][2];
         let end_vs = ranges[i][1][2];
-        if (start_bk == end_bk) {
-            if (start_ch == end_ch) {
-                if (start_bk == mostRecentBook) start_bk = '';
-                if (start_bk == mostRecentBook && start_ch == mostRecentChapter) start_ch = '';
-                if (start_vs == end_vs) {
+        if (start_bk === end_bk) {
+            if (start_ch === end_ch) {
+                if (start_bk === mostRecentBook) start_bk = '';
+                if (start_bk === mostRecentBook && start_ch === mostRecentChapter) start_ch = '';
+                if (start_vs === end_vs) {
                     ref = start_bk + " " + start_ch + ":" + start_vs;
                 } else {
-                    if (start_vs == 1 && end_vs == loadMaxVerse(start_bk, start_ch, config)) //whole chapter
+                    if (start_vs === 1 && end_vs === loadMaxVerse(start_bk, start_ch, config)) //whole chapter
                     {
                         ref = start_bk + " " + start_ch;
                     } else {
@@ -821,27 +821,27 @@ const loadRefsFromRanges = function(ranges, config) {
                     }
                 }
             } else {
-                if (start_vs == 1 && end_vs == loadMaxVerse(end_bk, end_ch, config)) {
+                if (start_vs === 1 && end_vs === loadMaxVerse(end_bk, end_ch, config)) {
                     ref = start_bk + " " + start_ch + "-" + end_ch;
                 } else {
                     ref = start_bk + " " + start_ch + ":" + start_vs + "-" + end_ch + ":" + end_vs;
                 }
             }
         } else {
-            if (start_vs == 1 && end_vs == loadMaxVerse(end_bk, end_ch, config)) {
+            if (start_vs === 1 && end_vs === loadMaxVerse(end_bk, end_ch, config)) {
                 ref = start_bk + " " + start_ch + " - " + end_bk + " " + end_ch;
-            } else if (end_vs == loadMaxVerse(end_bk, end_ch, config)) {
+            } else if (end_vs === loadMaxVerse(end_bk, end_ch, config)) {
                 ref = start_bk + " " + start_ch + ":" + start_vs + " - " + end_bk + " " + end_ch;
-            } else if (start_vs == 1) {
+            } else if (start_vs === 1) {
                 ref = start_bk + " " + start_ch + " - " + end_bk + " " + end_ch + ":" + end_vs;
             } else {
                 ref = start_bk + " " + start_ch + ":" + start_vs + " - " + end_bk + " " + end_ch + ":" + end_vs;
             }
         }
-        if (start_bk != '') mostRecentBook = start_bk;
-        if (start_ch != '') mostRecentChapter = start_ch;
+        if (start_bk !== '') mostRecentBook = start_bk;
+        if (start_ch !== '') mostRecentChapter = start_ch;
         ref = ref.replace(/^\s+:*/, '').trim();
-        
+
         // Apply language-specific post rules
         if (config.raw_regex.post_rules) {
             for (let rule of config.raw_regex.post_rules) {
