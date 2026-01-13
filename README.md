@@ -1,134 +1,255 @@
+# Scripture Guide
 
+A multilingual scripture reference parser for looking up, generating, and detecting scripture references across multiple religious canons.
 
-# Scripture Reference Parser
+**[scripture.guide](https://scripture.guide)**
 
-This universal scripture reference parser is designed to lookup any reference to a scriptural text and return the corresponding verse ids.  These verse ids can then be used to query a database using a verse id index, such as those found on https://scriptures.nephi.org/
+## Features
 
-## Scripture Reference Conventions
-Scripture references generally follow standard conventions for citing the Bible. Various style guides have different conventions for citing the bible, but they are all generally recgoniziable by the elements of `Book`, `Chapter`, and `Verse`. Multiple reference types exist for citing various combinations of book, verse, or chapter ranges,  discreet passages, and non-sequential verses within a single chapter or book, or across multiple chapters and/or books.
+- **Parse references** - Convert "John 3:16" to verse IDs
+- **Generate references** - Convert verse IDs back to human-readable strings
+- **Detect references** - Find and link scripture references in text
+- **12 languages** - English, Korean, German, French, Russian, Vietnamese, Swedish, Tagalog, Japanese, Turkish, Slovenian, Esperanto
+- **Multiple canons** - Bible, LDS, RLDS, Hindu, Buddhist, Islamic texts
+- **Context-aware detection** - Recognizes implied references like "v. 16" and "vv. 17-18"
 
-## Prerequisites
+## Installation
 
- - This scripture reference parser executes in a JavaScript envrionment.  (Both NodeJS and major browsers supported)
-
-## Installing
-
-Install the package:
 ```bash
-npm i scripture-guide
-```
-Import and use the package:
-```js
-import {lookupReference,generateReference} from 'scripture-guide';
-
-const verses = lookupReference('Jn 3:16');
-console.log(verses);
-// { query: 'Jn 3:16', ref: 'John 3:16', verse_ids: [ 26137 ] }
-//  John 3:16 is the 26137th verse in the Bible
-
-const ref = generateReference([ 26137, 26138, 26139 ]);
-console.log(ref);
-// John 3:16-18
-
+npm install scripture-guide
 ```
 
-## INPUT—Supported Reference Types
-|**Reference Type**|**Example**  |
-|--|--|
-|Simple reference | Exodus 1:1 |
-| Simple chapter | Genesis 2 |
-| Split chapters  |  Genesis 1,3 |
-| Chapter range | Exodus 3-5 |
-| Chapter range and split | Exodus 3-5,8 |
-| Verse range | Exodus 20:1-10 |
-| Verse range and split | Exodus 20:1-5,10 |
-| Verse Split | Exodus 20:5,10 |
-| Verse range spanning multiple chapters | Exodus 1:5-4:3 |
-| Chapter range ending in partial chapter | Exodus 3-4:10 |
-| Chapter range spanning multiple books | Genesis 30—Exodus 2 |
-| Chapter range spanning multiple books, ending in partial chapter | Genesis 30—Exodus 2:5 |
-| Chapter range spanning multiple books, starting in partial chapter | Genesis 30:10—Exodus 2 |
-| Chapter range spanning multiple books, starting and ending with partial chapters | Genesis 30:10 - Exodus 2:5 |
-| Compound reference in same book | Exodus 5:1;6:2;8:5 |
-| Compound reference in different books | Exodus 5:1; Leviticus 6:2; Numbers 8:5 |
-| Compound reference ranges in different books | Exodus 5:1-3; Leviticus 6:2-5; Numbers 8:5-6 |
-| Entire Book Range | Genesis - Numbers |
-| Abbreviation detection | Mt 2.5; Mk 3; Lk 4; Jn 5.2-6; 1 Jn1.5,7-8; 3 Jn1.1 |
+## Quick Start
 
-###  Example
-A scripture reference `string` is passed into the `scripture` object’s `lookupReference()` function like this:
-```js
-let results = scripture.lookupReference('Ex 20.5,10');
+```javascript
+import { lookupReference, generateReference, detectReferences } from 'scripture-guide';
+
+// Parse a reference to verse IDs
+lookupReference('John 3:16');
+// { query: 'John 3:16', ref: 'John 3:16', verse_ids: [26137] }
+
+// Generate a reference from verse IDs
+generateReference([26137, 26138, 26139]);
+// 'John 3:16-18'
+
+// Detect and link references in text
+detectReferences('Read John 3:16 today.', (ref, ids) => `<a href="/v/${ids[0]}">${ref}</a>`);
+// 'Read <a href="/v/26137">John 3:16</a> today.'
 ```
 
-## OUTPUT—Verse IDs
-The function will return a `json` object containing the following:
- - `query`: the user-provided input string (*what was said*)
- - `ref`: the parsed, interpreted reference string (*what was meant*)
- - `verse_ids`: the resuluting array containing the verse ID integers corresponding to the input query
+## API Reference
 
-```json
+### lookupReference(query, language?, config?)
+
+Parse a scripture reference string into verse IDs.
+
+```javascript
+lookupReference('Mt 5:3-12');
+// { query: 'Mt 5:3-12', ref: 'Matthew 5:3-12', verse_ids: [23239, 23240, ...] }
+
+lookupReference('Genesis 1:1', 'ko');
+// { query: 'Genesis 1:1', ref: '창세기 1:1', verse_ids: [1] }
+
+lookupReference('1 Nephi 3:7', 'en', { canon: 'lds' });
+// { query: '1 Nephi 3:7', ref: '1 Nephi 3:7', verse_ids: [23152] }
+```
+
+**Parameters:**
+| Name | Type | Description |
+|------|------|-------------|
+| `query` | string | Scripture reference to parse |
+| `language` | string | Language code (optional) |
+| `config.canon` | string | Canon: `'lds'` or `'coc'` |
+
+**Returns:**
+```typescript
 {
-    "query": "Ex 20.5,10",
-    "ref": "Exodus 20:5, 10",
-    "verse_ids": [ 2057, 2062 ]
+  query: string;        // Original input
+  ref: string;          // Normalized reference
+  verse_ids: number[];  // Verse ID array
+  error?: string;       // Error message if failed
 }
 ```
 
-## Using Verse IDs
+### generateReference(verse_ids, language?, options?)
 
- - Verse IDs are intended to be used to query a scripture database.  (Database not included).
- - Verse IDs are calculated as a function of number of verses away from `Genesis 1:1`, inclusive, using the conventionally standard sequence of books, chapters, and verses.
+Convert verse IDs to a formatted reference string.
 
-### Example Verse IDs:
-|Verse|Verse ID|
-|--|--|
-|Genesis 1:1| 1 |
-|Genesis 1:2| 2 |
-|Genesis 1:10| 10 |
-|Genesis 1:31| 31 |
-|Genesis 2:1| 32 |
-|Genesis 50:26| 1533 |
-|Exodus 1:1| 1534 |
-|Exodus 1:2| 1535 |
-|Malachi 4:6| 23145 |
+```javascript
+generateReference([1, 2, 3]);
+// 'Genesis 1:1-3'
 
-See also: Master Verse ID list
+generateReference([26137], 'de');
+// 'Johannes 3:16'
 
+generateReference([1, 2, 3, 10, 11]);
+// 'Genesis 1:1-3, 10-11'
+```
 
-### Example Database Usage:
-Assuming a `verse_id`–index database table named `scripture_verses` exists
+**Parameters:**
+| Name | Type | Description |
+|------|------|-------------|
+| `verse_ids` | number[] | Array of verse IDs |
+| `language` | string | Output language code (optional) |
+| `options.canon` | string | Canon: `'lds'` or `'coc'` |
+
+### detectReferences(content, callback?, options?)
+
+Find scripture references in text and optionally transform them.
+
+```javascript
+// Default: wrap in brackets
+detectReferences('See Matthew 5:3-12 and John 3:16.');
+// 'See [Matthew 5:3-12] and [John 3:16].'
+
+// Custom callback
+detectReferences('Read John 3:16.', (ref, ids) => {
+  return `<a href="/bible/${ids.join(',')}">${ref}</a>`;
+});
+
+// Context-aware: detects "v. 16" from surrounding context
+detectReferences('In John 3, Jesus explains (v. 16) that God loved the world.');
+// Detects 'John 3:16'
+```
+
+**Parameters:**
+| Name | Type | Description |
+|------|------|-------------|
+| `content` | string | Text containing references |
+| `callback` | function | `(query, verseIds) => string` |
+| `options.language` | string | Language code |
+| `options.contextAware` | boolean | Enable context detection (default: true) |
+| `options.enableImpliedBooks` | boolean | Detect bare verse numbers (default: true) |
+
+### setLanguage(language)
+
+Set the default language for all subsequent calls.
+
+```javascript
+import { setLanguage, lookupReference } from 'scripture-guide';
+
+setLanguage('ko');
+lookupReference('요한복음 3:16');
+// Works in Korean
+```
+
+## Supported Reference Formats
+
+| Format | Example |
+|--------|---------|
+| Simple verse | `Exodus 1:1` |
+| Chapter only | `Genesis 2` |
+| Verse range | `Exodus 20:1-10` |
+| Split verses | `Exodus 20:5,10` |
+| Split chapters | `Genesis 1,3` |
+| Chapter range | `Exodus 3-5` |
+| Multi-chapter range | `Exodus 1:5-4:3` |
+| Multi-book range | `Genesis 30—Exodus 2` |
+| Compound references | `Exodus 5:1; Leviticus 6:2` |
+| Abbreviations | `Mt 2:5`, `Mk 3`, `1 Jn 1:5` |
+| Entire book | `Genesis` |
+
+## Language Support
+
+| Code | Language | Example Reference |
+|------|----------|-------------------|
+| `en` | English | John 3:16 |
+| `ko` | Korean | 요한복음 3:16 |
+| `de` | German | Johannes 3:16 |
+| `fr` | French | Jean 3:16 |
+| `ru` | Russian | Иоанна 3:16 |
+| `jp` | Japanese | ヨハネによる福音書 3:16 |
+| `vn` | Vietnamese | Giăng 3:16 |
+| `tr` | Turkish | Yuhanna 3:16 |
+| `swe` | Swedish | Johannes 3:16 |
+| `tgl` | Tagalog | Juan 3:16 |
+| `slv` | Slovenian | Janez 3:16 |
+| `eo` | Esperanto | Johano 3:16 |
+
+## Canons
+
+| Canon | Description |
+|-------|-------------|
+| `bible` | Protestant Bible (66 books) |
+| `lds` | LDS Standard Works (Bible + Book of Mormon + D&C + Pearl of Great Price) |
+| `rlds` | RLDS/Community of Christ canon |
+| `hindu` | Hindu scriptures |
+| `buddhist` | Buddhist texts |
+| `islam` | Islamic texts |
+
+## Verse IDs
+
+Verse IDs are sequential integers starting from Genesis 1:1.
+
+| Reference | Verse ID |
+|-----------|----------|
+| Genesis 1:1 | 1 |
+| Genesis 1:2 | 2 |
+| Genesis 50:26 | 1533 |
+| Exodus 1:1 | 1534 |
+| Malachi 4:6 | 23145 |
+| Matthew 1:1 | 23146 |
+| John 3:16 | 26137 |
+| Revelation 22:21 | 31102 |
+
+Use verse IDs to query your scripture database:
+
 ```sql
-SELECT * FROM `scripture_verses` WHERE verse_id IN (2057, 2062);
+SELECT * FROM verses WHERE verse_id IN (26137, 26138, 26139);
 ```
-This query will enable the retrieval of the text associated with the input reference, mediated by verse IDs.
 
-### Customizing Verse IDs
+## Configuration
 
- - The `data/scriptdata.json` file contains the sequential index from which verse_ids are calculated.
- - If needed, this file may be edited to correspond to a difference database index
- - The data structure is:
-```json
-{
-    "Book 1 Name": 
-        [
-            "verse count (int) of chapter 1",
-            "verse count (int) of chapter 2",
-            "verse count (int) of chapter 3",
-            "verse count (int) of chapter 4"
-        ],
-    "Book 2 Name": 
-        [
-            "verse count (int) of chapter 1",
-            "verse count (int) of chapter 2",
-            "verse count (int) of chapter 3"
-        ],
-}
+### Custom Canon Data
+
+Canon data is stored in `data/canons/{canon}/{language}.yml`:
+
+```yaml
+canon: bible
+language: en
+
+books:
+  genesis:
+    name: Genesis
+    pattern: "[Gg]enesis"
+    alt: [Gen, Gn]
+  exodus:
+    name: Exodus
+    pattern: "[Ee]xodus"
+    alt: [Exod, Ex]
 ```
-Following this structure, the verse_ids corresponding to each book, chapter and verse may be modified according to the desired sequenital index.
 
-## Authors
+### Structure Data
 
-* **KC Kern** - *Initial work* - [kckern](https://github.com/kckern)
+Verse counts per chapter are in `data/structure/{canon}.yml`:
 
-```npm run build && node test.js```
+```yaml
+genesis: [31, 25, 24, 26, 32, 22, 24, ...]  # verses per chapter
+exodus: [22, 25, 22, 31, 23, 30, 25, ...]
+```
+
+## Function Aliases
+
+For convenience, functions have shorter aliases:
+
+| Full Name | Aliases |
+|-----------|---------|
+| `lookupReference` | `lookup`, `parse`, `read`, `ref2VerseId` |
+| `generateReference` | `generate`, `gen`, `ref`, `verseId2Ref` |
+| `detectReferences` | `detect`, `detectRefs`, `linkRefs` |
+| `setLanguage` | `lang`, `setLang` |
+
+## Build
+
+```bash
+npm run build    # Build dist files
+npm test         # Run tests
+```
+
+## License
+
+ISC
+
+## Author
+
+KC Kern - [kckern](https://github.com/kckern)
