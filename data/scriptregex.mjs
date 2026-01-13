@@ -184,6 +184,15 @@ export default {
         ["(fourth|4th|\\biv\\b)", "4"],
         ["([0-9])th\\b", "$1"],
         ["([1-4])(st|nd|d|rd|th)\\b", "$1"],
+
+        // Spelled delimiters - convert to standard format
+        // These must come BEFORE the chapter-stripping rules below
+        ["\\bchapter\\s+(\\d+),?\\s*verses?\\s+(\\d+)\\s*(?:through|to|-)\\s*(\\d+)", "$1:$2-$3"],
+        ["\\bchapter\\s+(\\d+),?\\s*verse\\s+(\\d+)", "$1:$2"],
+        ["\\bch\\.?\\s+(\\d+),?\\s*v(?:v|s)?\\.?\\s+(\\d+)", "$1:$2"],
+        ["\\bverses?\\s+(\\d+)\\s+(?:through|to)\\s+(\\d+)", ":$1-$2"],
+        ["\\bverses?\\s+(\\d+)\\s*,\\s*(\\d+)", ":$1,$2"],
+
         [",*\\s*\\b(?:ch\\b|chap(?:t*er)*s*)\\.*\\,*\\s*(\\d+)", "$1"],
         [",*\\s*\\b(?:sec\\b|section)\\.*\\s*(\\d+)", "$1"],
         ["([0-9]),*\\s*\\b(?:chapt*ers*|ch|chptrs*)\\.*,*\\s*([0-9])", "$1:$2"],
