@@ -5,6 +5,15 @@ import { processReferenceDetection } from './scriptdetect.mjs';
 import {  detectReferencesWithContext } from './scriptdetectcontext.mjs';
 import { detectCanon, formatCocId, parseCocId, convertToLds, convertToCoc, convertCanon } from './scriptcanon.mjs';
 import cocData from '../data/coc.mjs';
+import {
+  MAX_RANGE_SIZE,
+  MAX_CHAPTER,
+  MAX_VERSE,
+  MAX_QUERY_LENGTH,
+  CANON_LDS,
+  CANON_COC,
+  DEFAULTS
+} from './config.mjs';
 
 // Module-level caches for performance
 const indexCache = {
@@ -22,11 +31,6 @@ const hashConfig = (config) => {
   // Hash based on language for proper cache invalidation
   return config?.language || 'en';
 };
-
-// Safety limits
-const MAX_RANGE_SIZE = 1000; // Maximum verses to return in a single lookup
-const MAX_CHAPTER = 200;     // No book has more than 150 chapters
-const MAX_VERSE = 200;       // No chapter has more than 176 verses
 
 // Browser localStorage key for language preference
 const LANGUAGE_STORAGE_KEY = 'scriptureGuideUtils_language';
@@ -83,12 +87,12 @@ const lookupReference = function(query, language = null, lookupConfig = {}) {
     }
 
     // Length limit to prevent DoS
-    if (query.length > 500) {
+    if (query.length > MAX_QUERY_LENGTH) {
         return {
             query: query.substring(0, 100) + '...',
             ref: '',
             verse_ids: [],
-            error: 'Invalid input: query exceeds maximum length (500 chars)'
+            error: `Invalid input: query exceeds maximum length (${MAX_QUERY_LENGTH} chars)`
         };
     }
 
@@ -99,7 +103,7 @@ const lookupReference = function(query, language = null, lookupConfig = {}) {
     const { canon, convertTo, includeParallel } = lookupConfig;
 
     // Determine if using COC canon
-    const useCoc = canon === 'coc';
+    const useCoc = canon === CANON_COC;
 
     // Try lookup in the requested language first
     let lookupResult;
@@ -122,23 +126,23 @@ const lookupReference = function(query, language = null, lookupConfig = {}) {
 
         // Handle convertTo option
         if (convertTo && convertTo !== canon) {
-            result.sourceCanon = useCoc ? 'coc' : 'lds';
+            result.sourceCanon = useCoc ? CANON_COC : CANON_LDS;
             const converted = useCoc ? convertToLds(verse_ids) : convertToCoc(verse_ids);
             result.verse_ids = converted.verse_ids;
             result.partial = converted.partial;
-            result.ref = convertTo === 'coc'
+            result.ref = convertTo === CANON_COC
                 ? generateReferenceCoc(converted.verse_ids, effectiveLanguage)
                 : generateReference(converted.verse_ids, effectiveLanguage);
         }
 
         // Handle includeParallel option
         if (includeParallel) {
-            const parallelCanon = useCoc ? 'lds' : 'coc';
+            const parallelCanon = useCoc ? CANON_LDS : CANON_COC;
             const parallelConverted = useCoc ? convertToLds(verse_ids) : convertToCoc(verse_ids);
             result.parallel = {
                 canon: parallelCanon,
                 verse_ids: parallelConverted.verse_ids,
-                ref: parallelCanon === 'coc'
+                ref: parallelCanon === CANON_COC
                     ? generateReferenceCoc(parallelConverted.verse_ids, effectiveLanguage)
                     : generateReference(parallelConverted.verse_ids, effectiveLanguage),
                 partial: parallelConverted.partial
@@ -331,7 +335,7 @@ const loadMaxVerseCoc = function(book, chapter) {
  * @returns {Object} Reference index: refIndex[book][chapter][verse] = id
  */
 const loadRefIndexByCanon = function(canon, config = null) {
-    if (canon === 'coc') {
+    if (canon === CANON_COC) {
         return loadCocRefIndex();
     }
     if (!config) {
@@ -347,7 +351,7 @@ const loadRefIndexByCanon = function(canon, config = null) {
  * @returns {Object|Array} Verse ID to [book, chapter, verse] mapping
  */
 const loadVerseIdIndexByCanon = function(canon, config = null) {
-    if (canon === 'coc') {
+    if (canon === CANON_COC) {
         return loadCocVerseIdIndex();
     }
     if (!config) {
@@ -365,7 +369,7 @@ const loadVerseIdIndexByCanon = function(canon, config = null) {
  * @returns {number} Maximum verse number
  */
 const loadMaxVerseByCanon = function(book, chapter, canon, config = null) {
-    if (canon === 'coc') {
+    if (canon === CANON_COC) {
         return loadMaxVerseCoc(book, chapter);
     }
     if (!config) {
@@ -555,12 +559,12 @@ const validateVerseIdsMixed = function(verse_ids) {
     if (!firstCanon) return { ids: false, canon: null };
 
     // Validate and normalize IDs
-    if (firstCanon === 'coc') {
-        const validIds = verse_ids.filter(id => detectCanon(id) === 'coc');
-        return { ids: validIds.length > 0 ? validIds : false, canon: 'coc' };
+    if (firstCanon === CANON_COC) {
+        const validIds = verse_ids.filter(id => detectCanon(id) === CANON_COC);
+        return { ids: validIds.length > 0 ? validIds : false, canon: CANON_COC };
     } else {
         const validIds = validateVerseIds(verse_ids);
-        return { ids: validIds, canon: 'lds' };
+        return { ids: validIds, canon: CANON_LDS };
     }
 }
 
@@ -582,7 +586,7 @@ const generateReference = function(verse_ids, language = null, options = {}) {
     const effectiveCanon = canon || detectedCanon;
 
     // Use COC generator if COC canon specified or detected
-    if (effectiveCanon === 'coc') {
+    if (effectiveCanon === CANON_COC) {
         return generateReferenceCoc(ids, language);
     }
 
