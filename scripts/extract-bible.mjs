@@ -41,6 +41,6 @@ const structure = {
 };
 
 mkdirSync('data/canons/bible', { recursive: true });
-writeFileSync('data/canons/bible/_structure.yml', yaml.dump(structure, { lineWidth: 200, noRefs: true }));
-console.log('Created data/canons/bible/_structure.yml');
+writeFileSync('data/canons/bible/_bible.yml', yaml.dump(structure, { lineWidth: 200, noRefs: true }));
+console.log('Created data/canons/bible/_bible.yml');
 console.log('Total verses:', verseId - 1);

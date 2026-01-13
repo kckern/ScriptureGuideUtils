@@ -1,0 +1,87 @@
+# Critical mapping test cases
+# Tests core functionality of mapping-loader.mjs
+
+# Loader functionality tests
+loader:
+  - canon: rlds
+    targets: [bible, lds]
+    description: "RLDS canon should have mappings to both Bible and LDS"
+
+# Bible (JST) to KJV mappings
+bible_jst:
+  - name: "First JST verse (Genesis preface)"
+    rlds_id: 1
+    bible_id: null
+    description: "JST has extra verses before Genesis 1:1"
+
+  - name: "JST Genesis verse with Bible equivalent"
+    rlds_id: 3
+    bible_id: 1
+    description: "JST verse 3 maps to KJV Genesis 1:1"
+
+  - name: "Run mapping - sequential verses"
+    rlds_id: 10
+    bible_id: 7
+    description: "Verify run compression works"
+
+  - name: "Last Old Testament verse"
+    rlds_id: 23267
+    bible_id: 23136
+    description: "Malachi 4:6 - end of OT (JST numbering differs)"
+
+# COC to LDS Book of Mormon mappings
+coc_lds:
+  - name: "1 Nephi 1:1 (first BOM verse)"
+    coc_id: 31334
+    lds_id: 31103
+    coc_ref: "1 Nephi 1:1"
+    lds_ref: "1 Nephi 1:1"
+    description: "First verse of Book of Mormon in both editions"
+
+  - name: "Last BOM verse (Moroni)"
+    coc_id: 39975
+    lds_id: 37706
+    coc_ref: "Moroni 10:30"
+    lds_ref: "Moroni 10:34"
+    description: "Final verse of Book of Mormon (maps to multiple LDS verses)"
+    partial: true
+
+  - name: "Mid-1 Nephi verse"
+    coc_id: 31500
+    lds_id: 31231
+    description: "Middle of 1 Nephi"
+
+  - name: "Mid-2 Nephi verse"
+    coc_id: 32500
+    lds_id: 31816
+    description: "Middle of 2 Nephi"
+
+  - name: "First Alma verse"
+    coc_id: 34999
+    lds_id: 33578
+    description: "Alma book start"
+
+  - name: "Mid-Helaman verse"
+    coc_id: 37500
+    lds_id: 35508
+    description: "Helaman section"
+
+# Round-trip verification tests
+roundtrip:
+  - name: "COC -> LDS -> COC"
+    start_id: 31334
+    canon_path: [rlds, lds, rlds]
+    expect_same: true
+    description: "Should return to same verse"
+
+  - name: "JST -> Bible -> JST"
+    start_id: 100
+    canon_path: [rlds, bible, rlds]
+    expect_same: true
+    description: "Round-trip through Bible canon"
+
+  - name: "Mid-BOM round-trip"
+    start_id: 34999
+    canon_path: [rlds, lds, rlds]
+    expect_same: true
+    description: "Round-trip from middle of BOM"

@@ -1,0 +1,4446 @@
+description: Critical lookup tests - all book variants
+tests:
+  - id: en-lookup-001
+    input: John 3:16
+    expected_ids:
+      - 26137
+    expected_ref: John 3:16
+    description: Simple single verse
+  - id: en-lookup-002
+    input: Jn 3:16
+    expected_ids:
+      - 26137
+    expected_ref: John 3:16
+    description: Common abbreviation
+  - id: en-lookup-003
+    input: Genesis 1:1
+    expected_ids:
+      - 1
+    expected_ref: Genesis 1:1
+    description: First verse in Bible
+  - id: en-lookup-004
+    input: Gen 1:1-3
+    expected_ids:
+      - 1
+      - 2
+      - 3
+    expected_ref: Genesis 1:1-3
+    description: Verse range
+  - id: en-lookup-005
+    input: Exodus 20:1-10
+    expected_ids:
+      - 2053
+      - 2054
+      - 2055
+      - 2056
+      - 2057
+      - 2058
+      - 2059
+      - 2060
+      - 2061
+      - 2062
+    expected_ref: Exodus 20:1-10
+    description: Ten Commandments opening
+  - id: lookup-0001
+    input: Genesis 1:1
+    expected_ids:
+      - 1
+    expected_ref: Genesis 1:1
+    book: Genesis
+    variant: Genesis
+    description: Genesis using variant "Genesis"
+  - id: lookup-0002
+    input: Gen 1:1
+    expected_ids:
+      - 1
+    expected_ref: Genesis 1:1
+    book: Genesis
+    variant: Gen
+    description: Genesis using variant "Gen"
+  - id: lookup-0003
+    input: Gn 1:1
+    expected_ids:
+      - 1
+    expected_ref: Genesis 1:1
+    book: Genesis
+    variant: Gn
+    description: Genesis using variant "Gn"
+  - id: lookup-0006
+    input: Exodus 1:1
+    expected_ids:
+      - 1534
+    expected_ref: Exodus 1:1
+    book: Exodus
+    variant: Exodus
+    description: Exodus using variant "Exodus"
+  - id: lookup-0007
+    input: Exod 1:1
+    expected_ids:
+      - 1534
+    expected_ref: Exodus 1:1
+    book: Exodus
+    variant: Exod
+    description: Exodus using variant "Exod"
+  - id: lookup-0008
+    input: Ex 1:1
+    expected_ids:
+      - 1534
+    expected_ref: Exodus 1:1
+    book: Exodus
+    variant: Ex
+    description: Exodus using variant "Ex"
+  - id: lookup-0009
+    input: Exo 1:1
+    expected_ids:
+      - 1534
+    expected_ref: Exodus 1:1
+    book: Exodus
+    variant: Exo
+    description: Exodus using variant "Exo"
+  - id: lookup-0012
+    input: Leviticus 1:1
+    expected_ids:
+      - 2747
+    expected_ref: Leviticus 1:1
+    book: Leviticus
+    variant: Leviticus
+    description: Leviticus using variant "Leviticus"
+  - id: lookup-0013
+    input: Lev 1:1
+    expected_ids:
+      - 2747
+    expected_ref: Leviticus 1:1
+    book: Leviticus
+    variant: Lev
+    description: Leviticus using variant "Lev"
+  - id: lookup-0014
+    input: Lv 1:1
+    expected_ids:
+      - 2747
+    expected_ref: Leviticus 1:1
+    book: Leviticus
+    variant: Lv
+    description: Leviticus using variant "Lv"
+  - id: lookup-0017
+    input: Numbers 1:1
+    expected_ids:
+      - 3606
+    expected_ref: Numbers 1:1
+    book: Numbers
+    variant: Numbers
+    description: Numbers using variant "Numbers"
+  - id: lookup-0018
+    input: Num 1:1
+    expected_ids:
+      - 3606
+    expected_ref: Numbers 1:1
+    book: Numbers
+    variant: Num
+    description: Numbers using variant "Num"
+  - id: lookup-0021
+    input: Deuteronomy 1:1
+    expected_ids:
+      - 4894
+    expected_ref: Deuteronomy 1:1
+    book: Deuteronomy
+    variant: Deuteronomy
+    description: Deuteronomy using variant "Deuteronomy"
+  - id: lookup-0022
+    input: Deut 1:1
+    expected_ids:
+      - 4894
+    expected_ref: Deuteronomy 1:1
+    book: Deuteronomy
+    variant: Deut
+    description: Deuteronomy using variant "Deut"
+  - id: lookup-0023
+    input: Deu 1:1
+    expected_ids:
+      - 4894
+    expected_ref: Deuteronomy 1:1
+    book: Deuteronomy
+    variant: Deu
+    description: Deuteronomy using variant "Deu"
+  - id: lookup-0024
+    input: De 1:1
+    expected_ids:
+      - 4894
+    expected_ref: Deuteronomy 1:1
+    book: Deuteronomy
+    variant: De
+    description: Deuteronomy using variant "De"
+  - id: lookup-0027
+    input: Joshua 1:1
+    expected_ids:
+      - 5853
+    expected_ref: Joshua 1:1
+    book: Joshua
+    variant: Joshua
+    description: Joshua using variant "Joshua"
+  - id: lookup-0028
+    input: Josh 1:1
+    expected_ids:
+      - 5853
+    expected_ref: Joshua 1:1
+    book: Joshua
+    variant: Josh
+    description: Joshua using variant "Josh"
+  - id: lookup-0029
+    input: Jos 1:1
+    expected_ids:
+      - 5853
+    expected_ref: Joshua 1:1
+    book: Joshua
+    variant: Jos
+    description: Joshua using variant "Jos"
+  - id: lookup-0032
+    input: Judges 1:1
+    expected_ids:
+      - 6511
+    expected_ref: Judges 1:1
+    book: Judges
+    variant: Judges
+    description: Judges using variant "Judges"
+  - id: lookup-0033
+    input: Judg 1:1
+    expected_ids:
+      - 6511
+    expected_ref: Judges 1:1
+    book: Judges
+    variant: Judg
+    description: Judges using variant "Judg"
+  - id: lookup-0036
+    input: Ruth 1:1
+    expected_ids:
+      - 7129
+    expected_ref: Ruth 1:1
+    book: Ruth
+    variant: Ruth
+    description: Ruth using variant "Ruth"
+  - id: lookup-0037
+    input: Ru 1:1
+    expected_ids:
+      - 7129
+    expected_ref: Ruth 1:1
+    book: Ruth
+    variant: Ru
+    description: Ruth using variant "Ru"
+  - id: lookup-0040
+    input: 1 Samuel 1:1
+    expected_ids:
+      - 7214
+    expected_ref: 1 Samuel 1:1
+    book: 1 Samuel
+    variant: 1 Samuel
+    description: 1 Samuel using variant "1 Samuel"
+  - id: lookup-0041
+    input: 1 Sam 1:1
+    expected_ids:
+      - 7214
+    expected_ref: 1 Samuel 1:1
+    book: 1 Samuel
+    variant: 1 Sam
+    description: 1 Samuel using variant "1 Sam"
+  - id: lookup-0042
+    input: 1 Sa 1:1
+    expected_ids:
+      - 7214
+    expected_ref: 1 Samuel 1:1
+    book: 1 Samuel
+    variant: 1 Sa
+    description: 1 Samuel using variant "1 Sa"
+  - id: lookup-0043
+    input: I Samuel 1:1
+    expected_ids:
+      - 7214
+    expected_ref: 1 Samuel 1:1
+    book: 1 Samuel
+    variant: I Samuel
+    description: 1 Samuel using variant "I Samuel"
+  - id: lookup-0044
+    input: I Sam 1:1
+    expected_ids:
+      - 7214
+    expected_ref: 1 Samuel 1:1
+    book: 1 Samuel
+    variant: I Sam
+    description: 1 Samuel using variant "I Sam"
+  - id: lookup-0045
+    input: First Samuel 1:1
+    expected_ids:
+      - 7214
+    expected_ref: 1 Samuel 1:1
+    book: 1 Samuel
+    variant: First Samuel
+    description: 1 Samuel using variant "First Samuel"
+  - id: lookup-0046
+    input: 1Sam 1:1
+    expected_ids:
+      - 7214
+    expected_ref: 1 Samuel 1:1
+    book: 1 Samuel
+    variant: 1Sam
+    description: 1 Samuel using variant "1Sam"
+  - id: lookup-0049
+    input: 2 Samuel 1:1
+    expected_ids:
+      - 8024
+    expected_ref: 2 Samuel 1:1
+    book: 2 Samuel
+    variant: 2 Samuel
+    description: 2 Samuel using variant "2 Samuel"
+  - id: lookup-0050
+    input: 2 Sam 1:1
+    expected_ids:
+      - 8024
+    expected_ref: 2 Samuel 1:1
+    book: 2 Samuel
+    variant: 2 Sam
+    description: 2 Samuel using variant "2 Sam"
+  - id: lookup-0051
+    input: 2 Sa 1:1
+    expected_ids:
+      - 8024
+    expected_ref: 2 Samuel 1:1
+    book: 2 Samuel
+    variant: 2 Sa
+    description: 2 Samuel using variant "2 Sa"
+  - id: lookup-0052
+    input: II Samuel 1:1
+    expected_ids:
+      - 8024
+    expected_ref: 2 Samuel 1:1
+    book: 2 Samuel
+    variant: II Samuel
+    description: 2 Samuel using variant "II Samuel"
+  - id: lookup-0053
+    input: II Sam 1:1
+    expected_ids:
+      - 8024
+    expected_ref: 2 Samuel 1:1
+    book: 2 Samuel
+    variant: II Sam
+    description: 2 Samuel using variant "II Sam"
+  - id: lookup-0054
+    input: Second Samuel 1:1
+    expected_ids:
+      - 8024
+    expected_ref: 2 Samuel 1:1
+    book: 2 Samuel
+    variant: Second Samuel
+    description: 2 Samuel using variant "Second Samuel"
+  - id: lookup-0055
+    input: 2Sam 1:1
+    expected_ids:
+      - 8024
+    expected_ref: 2 Samuel 1:1
+    book: 2 Samuel
+    variant: 2Sam
+    description: 2 Samuel using variant "2Sam"
+  - id: lookup-0058
+    input: 1 Kings 1:1
+    expected_ids:
+      - 8719
+    expected_ref: 1 Kings 1:1
+    book: 1 Kings
+    variant: 1 Kings
+    description: 1 Kings using variant "1 Kings"
+  - id: lookup-0059
+    input: 1 Kgs 1:1
+    expected_ids:
+      - 8719
+    expected_ref: 1 Kings 1:1
+    book: 1 Kings
+    variant: 1 Kgs
+    description: 1 Kings using variant "1 Kgs"
+  - id: lookup-0060
+    input: I Kings 1:1
+    expected_ids:
+      - 8719
+    expected_ref: 1 Kings 1:1
+    book: 1 Kings
+    variant: I Kings
+    description: 1 Kings using variant "I Kings"
+  - id: lookup-0061
+    input: I Kgs 1:1
+    expected_ids:
+      - 8719
+    expected_ref: 1 Kings 1:1
+    book: 1 Kings
+    variant: I Kgs
+    description: 1 Kings using variant "I Kgs"
+  - id: lookup-0062
+    input: First Kings 1:1
+    expected_ids:
+      - 8719
+    expected_ref: 1 Kings 1:1
+    book: 1 Kings
+    variant: First Kings
+    description: 1 Kings using variant "First Kings"
+  - id: lookup-0063
+    input: 1Kgs 1:1
+    expected_ids:
+      - 8719
+    expected_ref: 1 Kings 1:1
+    book: 1 Kings
+    variant: 1Kgs
+    description: 1 Kings using variant "1Kgs"
+  - id: lookup-0066
+    input: 2 Kings 1:1
+    expected_ids:
+      - 9535
+    expected_ref: 2 Kings 1:1
+    book: 2 Kings
+    variant: 2 Kings
+    description: 2 Kings using variant "2 Kings"
+  - id: lookup-0067
+    input: 2 Kgs 1:1
+    expected_ids:
+      - 9535
+    expected_ref: 2 Kings 1:1
+    book: 2 Kings
+    variant: 2 Kgs
+    description: 2 Kings using variant "2 Kgs"
+  - id: lookup-0068
+    input: II Kings 1:1
+    expected_ids:
+      - 9535
+    expected_ref: 2 Kings 1:1
+    book: 2 Kings
+    variant: II Kings
+    description: 2 Kings using variant "II Kings"
+  - id: lookup-0069
+    input: II Kgs 1:1
+    expected_ids:
+      - 9535
+    expected_ref: 2 Kings 1:1
+    book: 2 Kings
+    variant: II Kgs
+    description: 2 Kings using variant "II Kgs"
+  - id: lookup-0070
+    input: Second Kings 1:1
+    expected_ids:
+      - 9535
+    expected_ref: 2 Kings 1:1
+    book: 2 Kings
+    variant: Second Kings
+    description: 2 Kings using variant "Second Kings"
+  - id: lookup-0071
+    input: 2Kgs 1:1
+    expected_ids:
+      - 9535
+    expected_ref: 2 Kings 1:1
+    book: 2 Kings
+    variant: 2Kgs
+    description: 2 Kings using variant "2Kgs"
+  - id: lookup-0074
+    input: 1 Chronicles 1:1
+    expected_ids:
+      - 10254
+    expected_ref: 1 Chronicles 1:1
+    book: 1 Chronicles
+    variant: 1 Chronicles
+    description: 1 Chronicles using variant "1 Chronicles"
+  - id: lookup-0075
+    input: 1 Chr 1:1
+    expected_ids:
+      - 10254
+    expected_ref: 1 Chronicles 1:1
+    book: 1 Chronicles
+    variant: 1 Chr
+    description: 1 Chronicles using variant "1 Chr"
+  - id: lookup-0076
+    input: 1 Ch 1:1
+    expected_ids:
+      - 10254
+    expected_ref: 1 Chronicles 1:1
+    book: 1 Chronicles
+    variant: 1 Ch
+    description: 1 Chronicles using variant "1 Ch"
+  - id: lookup-0077
+    input: I Chronicles 1:1
+    expected_ids:
+      - 10254
+    expected_ref: 1 Chronicles 1:1
+    book: 1 Chronicles
+    variant: I Chronicles
+    description: 1 Chronicles using variant "I Chronicles"
+  - id: lookup-0078
+    input: I Chr 1:1
+    expected_ids:
+      - 10254
+    expected_ref: 1 Chronicles 1:1
+    book: 1 Chronicles
+    variant: I Chr
+    description: 1 Chronicles using variant "I Chr"
+  - id: lookup-0079
+    input: First Chronicles 1:1
+    expected_ids:
+      - 10254
+    expected_ref: 1 Chronicles 1:1
+    book: 1 Chronicles
+    variant: First Chronicles
+    description: 1 Chronicles using variant "First Chronicles"
+  - id: lookup-0080
+    input: 1Chr 1:1
+    expected_ids:
+      - 10254
+    expected_ref: 1 Chronicles 1:1
+    book: 1 Chronicles
+    variant: 1Chr
+    description: 1 Chronicles using variant "1Chr"
+  - id: lookup-0083
+    input: 2 Chronicles 1:1
+    expected_ids:
+      - 11196
+    expected_ref: 2 Chronicles 1:1
+    book: 2 Chronicles
+    variant: 2 Chronicles
+    description: 2 Chronicles using variant "2 Chronicles"
+  - id: lookup-0084
+    input: 2 Chr 1:1
+    expected_ids:
+      - 11196
+    expected_ref: 2 Chronicles 1:1
+    book: 2 Chronicles
+    variant: 2 Chr
+    description: 2 Chronicles using variant "2 Chr"
+  - id: lookup-0085
+    input: 2 Ch 1:1
+    expected_ids:
+      - 11196
+    expected_ref: 2 Chronicles 1:1
+    book: 2 Chronicles
+    variant: 2 Ch
+    description: 2 Chronicles using variant "2 Ch"
+  - id: lookup-0086
+    input: II Chronicles 1:1
+    expected_ids:
+      - 11196
+    expected_ref: 2 Chronicles 1:1
+    book: 2 Chronicles
+    variant: II Chronicles
+    description: 2 Chronicles using variant "II Chronicles"
+  - id: lookup-0087
+    input: II Chr 1:1
+    expected_ids:
+      - 11196
+    expected_ref: 2 Chronicles 1:1
+    book: 2 Chronicles
+    variant: II Chr
+    description: 2 Chronicles using variant "II Chr"
+  - id: lookup-0088
+    input: Second Chronicles 1:1
+    expected_ids:
+      - 11196
+    expected_ref: 2 Chronicles 1:1
+    book: 2 Chronicles
+    variant: Second Chronicles
+    description: 2 Chronicles using variant "Second Chronicles"
+  - id: lookup-0089
+    input: 2Chr 1:1
+    expected_ids:
+      - 11196
+    expected_ref: 2 Chronicles 1:1
+    book: 2 Chronicles
+    variant: 2Chr
+    description: 2 Chronicles using variant "2Chr"
+  - id: lookup-0092
+    input: Ezra 1:1
+    expected_ids:
+      - 12018
+    expected_ref: Ezra 1:1
+    book: Ezra
+    variant: Ezra
+    description: Ezra using variant "Ezra"
+  - id: lookup-0093
+    input: Ezr 1:1
+    expected_ids:
+      - 12018
+    expected_ref: Ezra 1:1
+    book: Ezra
+    variant: Ezr
+    description: Ezra using variant "Ezr"
+  - id: lookup-0096
+    input: Nehemiah 1:1
+    expected_ids:
+      - 12298
+    expected_ref: Nehemiah 1:1
+    book: Nehemiah
+    variant: Nehemiah
+    description: Nehemiah using variant "Nehemiah"
+  - id: lookup-0097
+    input: Neh 1:1
+    expected_ids:
+      - 12298
+    expected_ref: Nehemiah 1:1
+    book: Nehemiah
+    variant: Neh
+    description: Nehemiah using variant "Neh"
+  - id: lookup-0100
+    input: Esther 1:1
+    expected_ids:
+      - 12704
+    expected_ref: Esther 1:1
+    book: Esther
+    variant: Esther
+    description: Esther using variant "Esther"
+  - id: lookup-0101
+    input: Est 1:1
+    expected_ids:
+      - 12704
+    expected_ref: Esther 1:1
+    book: Esther
+    variant: Est
+    description: Esther using variant "Est"
+  - id: lookup-0102
+    input: Esth 1:1
+    expected_ids:
+      - 12704
+    expected_ref: Esther 1:1
+    book: Esther
+    variant: Esth
+    description: Esther using variant "Esth"
+  - id: lookup-0105
+    input: Job 1:1
+    expected_ids:
+      - 12871
+    expected_ref: Job 1:1
+    book: Job
+    variant: Job
+    description: Job using variant "Job"
+  - id: lookup-0106
+    input: Jb 1:1
+    expected_ids:
+      - 12871
+    expected_ref: Job 1:1
+    book: Job
+    variant: Jb
+    description: Job using variant "Jb"
+  - id: lookup-0109
+    input: Psalms 1:1
+    expected_ids:
+      - 13941
+    expected_ref: Psalms 1:1
+    book: Psalms
+    variant: Psalms
+    description: Psalms using variant "Psalms"
+  - id: lookup-0110
+    input: Psalm 1:1
+    expected_ids:
+      - 13941
+    expected_ref: Psalms 1:1
+    book: Psalms
+    variant: Psalm
+    description: Psalms using variant "Psalm"
+  - id: lookup-0111
+    input: Ps 1:1
+    expected_ids:
+      - 13941
+    expected_ref: Psalms 1:1
+    book: Psalms
+    variant: Ps
+    description: Psalms using variant "Ps"
+  - id: lookup-0112
+    input: Psa 1:1
+    expected_ids:
+      - 13941
+    expected_ref: Psalms 1:1
+    book: Psalms
+    variant: Psa
+    description: Psalms using variant "Psa"
+  - id: lookup-0113
+    input: Pss 1:1
+    expected_ids:
+      - 13941
+    expected_ref: Psalms 1:1
+    book: Psalms
+    variant: Pss
+    description: Psalms using variant "Pss"
+  - id: lookup-0116
+    input: Proverbs 1:1
+    expected_ids:
+      - 16402
+    expected_ref: Proverbs 1:1
+    book: Proverbs
+    variant: Proverbs
+    description: Proverbs using variant "Proverbs"
+  - id: lookup-0117
+    input: Prov 1:1
+    expected_ids:
+      - 16402
+    expected_ref: Proverbs 1:1
+    book: Proverbs
+    variant: Prov
+    description: Proverbs using variant "Prov"
+  - id: lookup-0118
+    input: Pr 1:1
+    expected_ids:
+      - 16402
+    expected_ref: Proverbs 1:1
+    book: Proverbs
+    variant: Pr
+    description: Proverbs using variant "Pr"
+  - id: lookup-0121
+    input: Ecclesiastes 1:1
+    expected_ids:
+      - 17317
+    expected_ref: Ecclesiastes 1:1
+    book: Ecclesiastes
+    variant: Ecclesiastes
+    description: Ecclesiastes using variant "Ecclesiastes"
+  - id: lookup-0122
+    input: Eccl 1:1
+    expected_ids:
+      - 17317
+    expected_ref: Ecclesiastes 1:1
+    book: Ecclesiastes
+    variant: Eccl
+    description: Ecclesiastes using variant "Eccl"
+  - id: lookup-0123
+    input: Ecc 1:1
+    expected_ids:
+      - 17317
+    expected_ref: Ecclesiastes 1:1
+    book: Ecclesiastes
+    variant: Ecc
+    description: Ecclesiastes using variant "Ecc"
+  - id: lookup-0124
+    input: Ec 1:1
+    expected_ids:
+      - 17317
+    expected_ref: Ecclesiastes 1:1
+    book: Ecclesiastes
+    variant: Ec
+    description: Ecclesiastes using variant "Ec"
+  - id: lookup-0127
+    input: Song of Solomon 1:1
+    expected_ids:
+      - 17539
+    expected_ref: Solomon's Song 1:1
+    book: Song of Solomon
+    variant: Song of Solomon
+    description: Song of Solomon using variant "Song of Solomon"
+  - id: lookup-0128
+    input: Song 1:1
+    expected_ids:
+      - 17539
+    expected_ref: Solomon's Song 1:1
+    book: Song of Solomon
+    variant: Song
+    description: Song of Solomon using variant "Song"
+  - id: lookup-0131
+    input: Isaiah 1:1
+    expected_ids:
+      - 17656
+    expected_ref: Isaiah 1:1
+    book: Isaiah
+    variant: Isaiah
+    description: Isaiah using variant "Isaiah"
+  - id: lookup-0132
+    input: Isa 1:1
+    expected_ids:
+      - 17656
+    expected_ref: Isaiah 1:1
+    book: Isaiah
+    variant: Isa
+    description: Isaiah using variant "Isa"
+  - id: lookup-0133
+    input: Is 1:1
+    expected_ids:
+      - 17656
+    expected_ref: Isaiah 1:1
+    book: Isaiah
+    variant: Is
+    description: Isaiah using variant "Is"
+  - id: lookup-0136
+    input: Jeremiah 1:1
+    expected_ids:
+      - 18948
+    expected_ref: Jeremiah 1:1
+    book: Jeremiah
+    variant: Jeremiah
+    description: Jeremiah using variant "Jeremiah"
+  - id: lookup-0137
+    input: Jer 1:1
+    expected_ids:
+      - 18948
+    expected_ref: Jeremiah 1:1
+    book: Jeremiah
+    variant: Jer
+    description: Jeremiah using variant "Jer"
+  - id: lookup-0140
+    input: Lamentations 1:1
+    expected_ids:
+      - 20312
+    expected_ref: Lamentations 1:1
+    book: Lamentations
+    variant: Lamentations
+    description: Lamentations using variant "Lamentations"
+  - id: lookup-0141
+    input: Lam 1:1
+    expected_ids:
+      - 20312
+    expected_ref: Lamentations 1:1
+    book: Lamentations
+    variant: Lam
+    description: Lamentations using variant "Lam"
+  - id: lookup-0142
+    input: La 1:1
+    expected_ids:
+      - 20312
+    expected_ref: Lamentations 1:1
+    book: Lamentations
+    variant: La
+    description: Lamentations using variant "La"
+  - id: lookup-0145
+    input: Ezekiel 1:1
+    expected_ids:
+      - 20466
+    expected_ref: Ezekiel 1:1
+    book: Ezekiel
+    variant: Ezekiel
+    description: Ezekiel using variant "Ezekiel"
+  - id: lookup-0146
+    input: Ezek 1:1
+    expected_ids:
+      - 20466
+    expected_ref: Ezekiel 1:1
+    book: Ezekiel
+    variant: Ezek
+    description: Ezekiel using variant "Ezek"
+  - id: lookup-0147
+    input: Eze 1:1
+    expected_ids:
+      - 20466
+    expected_ref: Ezekiel 1:1
+    book: Ezekiel
+    variant: Eze
+    description: Ezekiel using variant "Eze"
+  - id: lookup-0148
+    input: Ez 1:1
+    expected_ids:
+      - 20466
+    expected_ref: Ezekiel 1:1
+    book: Ezekiel
+    variant: Ez
+    description: Ezekiel using variant "Ez"
+  - id: lookup-0151
+    input: Daniel 1:1
+    expected_ids:
+      - 21739
+    expected_ref: Daniel 1:1
+    book: Daniel
+    variant: Daniel
+    description: Daniel using variant "Daniel"
+  - id: lookup-0152
+    input: Dan 1:1
+    expected_ids:
+      - 21739
+    expected_ref: Daniel 1:1
+    book: Daniel
+    variant: Dan
+    description: Daniel using variant "Dan"
+  - id: lookup-0153
+    input: Da 1:1
+    expected_ids:
+      - 21739
+    expected_ref: Daniel 1:1
+    book: Daniel
+    variant: Da
+    description: Daniel using variant "Da"
+  - id: lookup-0156
+    input: Hosea 1:1
+    expected_ids:
+      - 22096
+    expected_ref: Hosea 1:1
+    book: Hosea
+    variant: Hosea
+    description: Hosea using variant "Hosea"
+  - id: lookup-0157
+    input: Hos 1:1
+    expected_ids:
+      - 22096
+    expected_ref: Hosea 1:1
+    book: Hosea
+    variant: Hos
+    description: Hosea using variant "Hos"
+  - id: lookup-0158
+    input: Ho 1:1
+    expected_ids:
+      - 22096
+    expected_ref: Hosea 1:1
+    book: Hosea
+    variant: Ho
+    description: Hosea using variant "Ho"
+  - id: lookup-0161
+    input: Joel 1:1
+    expected_ids:
+      - 22293
+    expected_ref: Joel 1:1
+    book: Joel
+    variant: Joel
+    description: Joel using variant "Joel"
+  - id: lookup-0162
+    input: Joe 1:1
+    expected_ids:
+      - 22293
+    expected_ref: Joel 1:1
+    book: Joel
+    variant: Joe
+    description: Joel using variant "Joe"
+  - id: lookup-0163
+    input: Jl 1:1
+    expected_ids:
+      - 22293
+    expected_ref: Joel 1:1
+    book: Joel
+    variant: Jl
+    description: Joel using variant "Jl"
+  - id: lookup-0166
+    input: Amos 1:1
+    expected_ids:
+      - 22366
+    expected_ref: Amos 1:1
+    book: Amos
+    variant: Amos
+    description: Amos using variant "Amos"
+  - id: lookup-0167
+    input: Am 1:1
+    expected_ids:
+      - 22366
+    expected_ref: Amos 1:1
+    book: Amos
+    variant: Am
+    description: Amos using variant "Am"
+  - id: lookup-0170
+    input: Obadiah 1
+    expected_ids:
+      - 22512
+      - 22513
+      - 22514
+      - 22515
+      - 22516
+      - 22517
+      - 22518
+      - 22519
+      - 22520
+      - 22521
+      - 22522
+      - 22523
+      - 22524
+      - 22525
+      - 22526
+      - 22527
+      - 22528
+      - 22529
+      - 22530
+      - 22531
+      - 22532
+    expected_ref: Obadiah 1
+    book: Obadiah
+    variant: Obadiah
+    description: Obadiah using variant "Obadiah"
+  - id: lookup-0171
+    input: Obad 1
+    expected_ids:
+      - 22512
+      - 22513
+      - 22514
+      - 22515
+      - 22516
+      - 22517
+      - 22518
+      - 22519
+      - 22520
+      - 22521
+      - 22522
+      - 22523
+      - 22524
+      - 22525
+      - 22526
+      - 22527
+      - 22528
+      - 22529
+      - 22530
+      - 22531
+      - 22532
+    expected_ref: Obadiah 1
+    book: Obadiah
+    variant: Obad
+    description: Obadiah using variant "Obad"
+  - id: lookup-0172
+    input: Ob 1
+    expected_ids:
+      - 22512
+      - 22513
+      - 22514
+      - 22515
+      - 22516
+      - 22517
+      - 22518
+      - 22519
+      - 22520
+      - 22521
+      - 22522
+      - 22523
+      - 22524
+      - 22525
+      - 22526
+      - 22527
+      - 22528
+      - 22529
+      - 22530
+      - 22531
+      - 22532
+    expected_ref: Obadiah 1
+    book: Obadiah
+    variant: Ob
+    description: Obadiah using variant "Ob"
+  - id: lookup-0173
+    input: Jonah 1:1
+    expected_ids:
+      - 22533
+    expected_ref: Jonah 1:1
+    book: Jonah
+    variant: Jonah
+    description: Jonah using variant "Jonah"
+  - id: lookup-0174
+    input: Jon 1:1
+    expected_ids:
+      - 22533
+    expected_ref: Jonah 1:1
+    book: Jonah
+    variant: Jon
+    description: Jonah using variant "Jon"
+  - id: lookup-0177
+    input: Micah 1:1
+    expected_ids:
+      - 22581
+    expected_ref: Micah 1:1
+    book: Micah
+    variant: Micah
+    description: Micah using variant "Micah"
+  - id: lookup-0178
+    input: Mic 1:1
+    expected_ids:
+      - 22581
+    expected_ref: Micah 1:1
+    book: Micah
+    variant: Mic
+    description: Micah using variant "Mic"
+  - id: lookup-0179
+    input: Mi 1:1
+    expected_ids:
+      - 22581
+    expected_ref: Micah 1:1
+    book: Micah
+    variant: Mi
+    description: Micah using variant "Mi"
+  - id: lookup-0182
+    input: Nahum 1:1
+    expected_ids:
+      - 22686
+    expected_ref: Nahum 1:1
+    book: Nahum
+    variant: Nahum
+    description: Nahum using variant "Nahum"
+  - id: lookup-0183
+    input: Nah 1:1
+    expected_ids:
+      - 22686
+    expected_ref: Nahum 1:1
+    book: Nahum
+    variant: Nah
+    description: Nahum using variant "Nah"
+  - id: lookup-0184
+    input: Na 1:1
+    expected_ids:
+      - 22686
+    expected_ref: Nahum 1:1
+    book: Nahum
+    variant: Na
+    description: Nahum using variant "Na"
+  - id: lookup-0187
+    input: Habakkuk 1:1
+    expected_ids:
+      - 22733
+    expected_ref: Habakkuk 1:1
+    book: Habakkuk
+    variant: Habakkuk
+    description: Habakkuk using variant "Habakkuk"
+  - id: lookup-0188
+    input: Hab 1:1
+    expected_ids:
+      - 22733
+    expected_ref: Habakkuk 1:1
+    book: Habakkuk
+    variant: Hab
+    description: Habakkuk using variant "Hab"
+  - id: lookup-0191
+    input: Zephaniah 1:1
+    expected_ids:
+      - 22789
+    expected_ref: Zephaniah 1:1
+    book: Zephaniah
+    variant: Zephaniah
+    description: Zephaniah using variant "Zephaniah"
+  - id: lookup-0192
+    input: Zeph 1:1
+    expected_ids:
+      - 22789
+    expected_ref: Zephaniah 1:1
+    book: Zephaniah
+    variant: Zeph
+    description: Zephaniah using variant "Zeph"
+  - id: lookup-0193
+    input: Zep 1:1
+    expected_ids:
+      - 22789
+    expected_ref: Zephaniah 1:1
+    book: Zephaniah
+    variant: Zep
+    description: Zephaniah using variant "Zep"
+  - id: lookup-0196
+    input: Haggai 1:1
+    expected_ids:
+      - 22842
+    expected_ref: Haggai 1:1
+    book: Haggai
+    variant: Haggai
+    description: Haggai using variant "Haggai"
+  - id: lookup-0197
+    input: Hag 1:1
+    expected_ids:
+      - 22842
+    expected_ref: Haggai 1:1
+    book: Haggai
+    variant: Hag
+    description: Haggai using variant "Hag"
+  - id: lookup-0200
+    input: Zechariah 1:1
+    expected_ids:
+      - 22880
+    expected_ref: Zechariah 1:1
+    book: Zechariah
+    variant: Zechariah
+    description: Zechariah using variant "Zechariah"
+  - id: lookup-0201
+    input: Zech 1:1
+    expected_ids:
+      - 22880
+    expected_ref: Zechariah 1:1
+    book: Zechariah
+    variant: Zech
+    description: Zechariah using variant "Zech"
+  - id: lookup-0202
+    input: Zec 1:1
+    expected_ids:
+      - 22880
+    expected_ref: Zechariah 1:1
+    book: Zechariah
+    variant: Zec
+    description: Zechariah using variant "Zec"
+  - id: lookup-0205
+    input: Malachi 1:1
+    expected_ids:
+      - 23091
+    expected_ref: Malachi 1:1
+    book: Malachi
+    variant: Malachi
+    description: Malachi using variant "Malachi"
+  - id: lookup-0206
+    input: Mal 1:1
+    expected_ids:
+      - 23091
+    expected_ref: Malachi 1:1
+    book: Malachi
+    variant: Mal
+    description: Malachi using variant "Mal"
+  - id: lookup-0209
+    input: Matthew 1:1
+    expected_ids:
+      - 23146
+    expected_ref: Matthew 1:1
+    book: Matthew
+    variant: Matthew
+    description: Matthew using variant "Matthew"
+  - id: lookup-0210
+    input: Matt 1:1
+    expected_ids:
+      - 23146
+    expected_ref: Matthew 1:1
+    book: Matthew
+    variant: Matt
+    description: Matthew using variant "Matt"
+  - id: lookup-0211
+    input: Mt 1:1
+    expected_ids:
+      - 23146
+    expected_ref: Matthew 1:1
+    book: Matthew
+    variant: Mt
+    description: Matthew using variant "Mt"
+  - id: lookup-0212
+    input: Mat 1:1
+    expected_ids:
+      - 23146
+    expected_ref: Matthew 1:1
+    book: Matthew
+    variant: Mat
+    description: Matthew using variant "Mat"
+  - id: lookup-0215
+    input: Mark 1:1
+    expected_ids:
+      - 24217
+    expected_ref: Mark 1:1
+    book: Mark
+    variant: Mark
+    description: Mark using variant "Mark"
+  - id: lookup-0216
+    input: Mk 1:1
+    expected_ids:
+      - 24217
+    expected_ref: Mark 1:1
+    book: Mark
+    variant: Mk
+    description: Mark using variant "Mk"
+  - id: lookup-0217
+    input: Mr 1:1
+    expected_ids:
+      - 24217
+    expected_ref: Mark 1:1
+    book: Mark
+    variant: Mr
+    description: Mark using variant "Mr"
+  - id: lookup-0218
+    input: Mar 1:1
+    expected_ids:
+      - 24217
+    expected_ref: Mark 1:1
+    book: Mark
+    variant: Mar
+    description: Mark using variant "Mar"
+  - id: lookup-0221
+    input: Luke 1:1
+    expected_ids:
+      - 24895
+    expected_ref: Luke 1:1
+    book: Luke
+    variant: Luke
+    description: Luke using variant "Luke"
+  - id: lookup-0222
+    input: Lk 1:1
+    expected_ids:
+      - 24895
+    expected_ref: Luke 1:1
+    book: Luke
+    variant: Lk
+    description: Luke using variant "Lk"
+  - id: lookup-0223
+    input: Lu 1:1
+    expected_ids:
+      - 24895
+    expected_ref: Luke 1:1
+    book: Luke
+    variant: Lu
+    description: Luke using variant "Lu"
+  - id: lookup-0224
+    input: Luk 1:1
+    expected_ids:
+      - 24895
+    expected_ref: Luke 1:1
+    book: Luke
+    variant: Luk
+    description: Luke using variant "Luk"
+  - id: lookup-0227
+    input: John 1:1
+    expected_ids:
+      - 26046
+    expected_ref: John 1:1
+    book: John
+    variant: John
+    description: John using variant "John"
+  - id: lookup-0228
+    input: Jn 1:1
+    expected_ids:
+      - 26046
+    expected_ref: John 1:1
+    book: John
+    variant: Jn
+    description: John using variant "Jn"
+  - id: lookup-0229
+    input: Jhn 1:1
+    expected_ids:
+      - 26046
+    expected_ref: John 1:1
+    book: John
+    variant: Jhn
+    description: John using variant "Jhn"
+  - id: lookup-0230
+    input: Jo 1:1
+    expected_ids:
+      - 22533
+    expected_ref: Jonah 1:1
+    book: John
+    variant: Jo
+    description: John using variant "Jo"
+  - id: lookup-0233
+    input: Acts 1:1
+    expected_ids:
+      - 26925
+    expected_ref: Acts 1:1
+    book: Acts
+    variant: Acts
+    description: Acts using variant "Acts"
+  - id: lookup-0234
+    input: Ac 1:1
+    expected_ids:
+      - 26925
+    expected_ref: Acts 1:1
+    book: Acts
+    variant: Ac
+    description: Acts using variant "Ac"
+  - id: lookup-0235
+    input: Act 1:1
+    expected_ids:
+      - 26925
+    expected_ref: Acts 1:1
+    book: Acts
+    variant: Act
+    description: Acts using variant "Act"
+  - id: lookup-0238
+    input: Romans 1:1
+    expected_ids:
+      - 27932
+    expected_ref: Romans 1:1
+    book: Romans
+    variant: Romans
+    description: Romans using variant "Romans"
+  - id: lookup-0239
+    input: Rom 1:1
+    expected_ids:
+      - 27932
+    expected_ref: Romans 1:1
+    book: Romans
+    variant: Rom
+    description: Romans using variant "Rom"
+  - id: lookup-0240
+    input: Ro 1:1
+    expected_ids:
+      - 27932
+    expected_ref: Romans 1:1
+    book: Romans
+    variant: Ro
+    description: Romans using variant "Ro"
+  - id: lookup-0243
+    input: 1 Corinthians 1:1
+    expected_ids:
+      - 28365
+    expected_ref: 1 Corinthians 1:1
+    book: 1 Corinthians
+    variant: 1 Corinthians
+    description: 1 Corinthians using variant "1 Corinthians"
+  - id: lookup-0244
+    input: 1 Cor 1:1
+    expected_ids:
+      - 28365
+    expected_ref: 1 Corinthians 1:1
+    book: 1 Corinthians
+    variant: 1 Cor
+    description: 1 Corinthians using variant "1 Cor"
+  - id: lookup-0245
+    input: 1 Co 1:1
+    expected_ids:
+      - 28365
+    expected_ref: 1 Corinthians 1:1
+    book: 1 Corinthians
+    variant: 1 Co
+    description: 1 Corinthians using variant "1 Co"
+  - id: lookup-0246
+    input: I Corinthians 1:1
+    expected_ids:
+      - 28365
+    expected_ref: 1 Corinthians 1:1
+    book: 1 Corinthians
+    variant: I Corinthians
+    description: 1 Corinthians using variant "I Corinthians"
+  - id: lookup-0247
+    input: I Cor 1:1
+    expected_ids:
+      - 28365
+    expected_ref: 1 Corinthians 1:1
+    book: 1 Corinthians
+    variant: I Cor
+    description: 1 Corinthians using variant "I Cor"
+  - id: lookup-0248
+    input: First Corinthians 1:1
+    expected_ids:
+      - 28365
+    expected_ref: 1 Corinthians 1:1
+    book: 1 Corinthians
+    variant: First Corinthians
+    description: 1 Corinthians using variant "First Corinthians"
+  - id: lookup-0249
+    input: 1Cor 1:1
+    expected_ids:
+      - 28365
+    expected_ref: 1 Corinthians 1:1
+    book: 1 Corinthians
+    variant: 1Cor
+    description: 1 Corinthians using variant "1Cor"
+  - id: lookup-0252
+    input: 2 Corinthians 1:1
+    expected_ids:
+      - 28802
+    expected_ref: 2 Corinthians 1:1
+    book: 2 Corinthians
+    variant: 2 Corinthians
+    description: 2 Corinthians using variant "2 Corinthians"
+  - id: lookup-0253
+    input: 2 Cor 1:1
+    expected_ids:
+      - 28802
+    expected_ref: 2 Corinthians 1:1
+    book: 2 Corinthians
+    variant: 2 Cor
+    description: 2 Corinthians using variant "2 Cor"
+  - id: lookup-0254
+    input: 2 Co 1:1
+    expected_ids:
+      - 28802
+    expected_ref: 2 Corinthians 1:1
+    book: 2 Corinthians
+    variant: 2 Co
+    description: 2 Corinthians using variant "2 Co"
+  - id: lookup-0255
+    input: II Corinthians 1:1
+    expected_ids:
+      - 28802
+    expected_ref: 2 Corinthians 1:1
+    book: 2 Corinthians
+    variant: II Corinthians
+    description: 2 Corinthians using variant "II Corinthians"
+  - id: lookup-0256
+    input: II Cor 1:1
+    expected_ids:
+      - 28802
+    expected_ref: 2 Corinthians 1:1
+    book: 2 Corinthians
+    variant: II Cor
+    description: 2 Corinthians using variant "II Cor"
+  - id: lookup-0257
+    input: Second Corinthians 1:1
+    expected_ids:
+      - 28802
+    expected_ref: 2 Corinthians 1:1
+    book: 2 Corinthians
+    variant: Second Corinthians
+    description: 2 Corinthians using variant "Second Corinthians"
+  - id: lookup-0258
+    input: 2Cor 1:1
+    expected_ids:
+      - 28802
+    expected_ref: 2 Corinthians 1:1
+    book: 2 Corinthians
+    variant: 2Cor
+    description: 2 Corinthians using variant "2Cor"
+  - id: lookup-0261
+    input: Galatians 1:1
+    expected_ids:
+      - 29059
+    expected_ref: Galatians 1:1
+    book: Galatians
+    variant: Galatians
+    description: Galatians using variant "Galatians"
+  - id: lookup-0262
+    input: Gal 1:1
+    expected_ids:
+      - 29059
+    expected_ref: Galatians 1:1
+    book: Galatians
+    variant: Gal
+    description: Galatians using variant "Gal"
+  - id: lookup-0263
+    input: Ga 1:1
+    expected_ids:
+      - 29059
+    expected_ref: Galatians 1:1
+    book: Galatians
+    variant: Ga
+    description: Galatians using variant "Ga"
+  - id: lookup-0266
+    input: Ephesians 1:1
+    expected_ids:
+      - 29208
+    expected_ref: Ephesians 1:1
+    book: Ephesians
+    variant: Ephesians
+    description: Ephesians using variant "Ephesians"
+  - id: lookup-0267
+    input: Eph 1:1
+    expected_ids:
+      - 29208
+    expected_ref: Ephesians 1:1
+    book: Ephesians
+    variant: Eph
+    description: Ephesians using variant "Eph"
+  - id: lookup-0268
+    input: Ep 1:1
+    expected_ids:
+      - 29208
+    expected_ref: Ephesians 1:1
+    book: Ephesians
+    variant: Ep
+    description: Ephesians using variant "Ep"
+  - id: lookup-0271
+    input: Philippians 1:1
+    expected_ids:
+      - 29363
+    expected_ref: Philippians 1:1
+    book: Philippians
+    variant: Philippians
+    description: Philippians using variant "Philippians"
+  - id: lookup-0272
+    input: Phil 1:1
+    expected_ids:
+      - 29363
+    expected_ref: Philippians 1:1
+    book: Philippians
+    variant: Phil
+    description: Philippians using variant "Phil"
+  - id: lookup-0275
+    input: Colossians 1:1
+    expected_ids:
+      - 29467
+    expected_ref: Colossians 1:1
+    book: Colossians
+    variant: Colossians
+    description: Colossians using variant "Colossians"
+  - id: lookup-0276
+    input: Col 1:1
+    expected_ids:
+      - 29467
+    expected_ref: Colossians 1:1
+    book: Colossians
+    variant: Col
+    description: Colossians using variant "Col"
+  - id: lookup-0279
+    input: 1 Thessalonians 1:1
+    expected_ids:
+      - 29562
+    expected_ref: 1 Thessalonians 1:1
+    book: 1 Thessalonians
+    variant: 1 Thessalonians
+    description: 1 Thessalonians using variant "1 Thessalonians"
+  - id: lookup-0280
+    input: 1 Thess 1:1
+    expected_ids:
+      - 29562
+    expected_ref: 1 Thessalonians 1:1
+    book: 1 Thessalonians
+    variant: 1 Thess
+    description: 1 Thessalonians using variant "1 Thess"
+  - id: lookup-0281
+    input: 1 Th 1:1
+    expected_ids:
+      - 29562
+    expected_ref: 1 Thessalonians 1:1
+    book: 1 Thessalonians
+    variant: 1 Th
+    description: 1 Thessalonians using variant "1 Th"
+  - id: lookup-0282
+    input: I Thessalonians 1:1
+    expected_ids:
+      - 29562
+    expected_ref: 1 Thessalonians 1:1
+    book: 1 Thessalonians
+    variant: I Thessalonians
+    description: 1 Thessalonians using variant "I Thessalonians"
+  - id: lookup-0283
+    input: I Thess 1:1
+    expected_ids:
+      - 29562
+    expected_ref: 1 Thessalonians 1:1
+    book: 1 Thessalonians
+    variant: I Thess
+    description: 1 Thessalonians using variant "I Thess"
+  - id: lookup-0284
+    input: First Thessalonians 1:1
+    expected_ids:
+      - 29562
+    expected_ref: 1 Thessalonians 1:1
+    book: 1 Thessalonians
+    variant: First Thessalonians
+    description: 1 Thessalonians using variant "First Thessalonians"
+  - id: lookup-0285
+    input: 1Thess 1:1
+    expected_ids:
+      - 29562
+    expected_ref: 1 Thessalonians 1:1
+    book: 1 Thessalonians
+    variant: 1Thess
+    description: 1 Thessalonians using variant "1Thess"
+  - id: lookup-0286
+    input: 1Thes 1:1
+    expected_ids:
+      - 29562
+    expected_ref: 1 Thessalonians 1:1
+    book: 1 Thessalonians
+    variant: 1Thes
+    description: 1 Thessalonians using variant "1Thes"
+  - id: lookup-0289
+    input: 2 Thessalonians 1:1
+    expected_ids:
+      - 29651
+    expected_ref: 2 Thessalonians 1:1
+    book: 2 Thessalonians
+    variant: 2 Thessalonians
+    description: 2 Thessalonians using variant "2 Thessalonians"
+  - id: lookup-0290
+    input: 2 Thess 1:1
+    expected_ids:
+      - 29651
+    expected_ref: 2 Thessalonians 1:1
+    book: 2 Thessalonians
+    variant: 2 Thess
+    description: 2 Thessalonians using variant "2 Thess"
+  - id: lookup-0291
+    input: 2 Th 1:1
+    expected_ids:
+      - 29651
+    expected_ref: 2 Thessalonians 1:1
+    book: 2 Thessalonians
+    variant: 2 Th
+    description: 2 Thessalonians using variant "2 Th"
+  - id: lookup-0292
+    input: II Thessalonians 1:1
+    expected_ids:
+      - 29651
+    expected_ref: 2 Thessalonians 1:1
+    book: 2 Thessalonians
+    variant: II Thessalonians
+    description: 2 Thessalonians using variant "II Thessalonians"
+  - id: lookup-0293
+    input: II Thess 1:1
+    expected_ids:
+      - 29651
+    expected_ref: 2 Thessalonians 1:1
+    book: 2 Thessalonians
+    variant: II Thess
+    description: 2 Thessalonians using variant "II Thess"
+  - id: lookup-0294
+    input: Second Thessalonians 1:1
+    expected_ids:
+      - 29651
+    expected_ref: 2 Thessalonians 1:1
+    book: 2 Thessalonians
+    variant: Second Thessalonians
+    description: 2 Thessalonians using variant "Second Thessalonians"
+  - id: lookup-0295
+    input: 2Thess 1:1
+    expected_ids:
+      - 29651
+    expected_ref: 2 Thessalonians 1:1
+    book: 2 Thessalonians
+    variant: 2Thess
+    description: 2 Thessalonians using variant "2Thess"
+  - id: lookup-0296
+    input: 2Thes 1:1
+    expected_ids:
+      - 29651
+    expected_ref: 2 Thessalonians 1:1
+    book: 2 Thessalonians
+    variant: 2Thes
+    description: 2 Thessalonians using variant "2Thes"
+  - id: lookup-0299
+    input: 1 Timothy 1:1
+    expected_ids:
+      - 29698
+    expected_ref: 1 Timothy 1:1
+    book: 1 Timothy
+    variant: 1 Timothy
+    description: 1 Timothy using variant "1 Timothy"
+  - id: lookup-0300
+    input: 1 Tim 1:1
+    expected_ids:
+      - 29698
+    expected_ref: 1 Timothy 1:1
+    book: 1 Timothy
+    variant: 1 Tim
+    description: 1 Timothy using variant "1 Tim"
+  - id: lookup-0301
+    input: 1 Ti 1:1
+    expected_ids:
+      - 29698
+    expected_ref: 1 Timothy 1:1
+    book: 1 Timothy
+    variant: 1 Ti
+    description: 1 Timothy using variant "1 Ti"
+  - id: lookup-0302
+    input: I Timothy 1:1
+    expected_ids:
+      - 29698
+    expected_ref: 1 Timothy 1:1
+    book: 1 Timothy
+    variant: I Timothy
+    description: 1 Timothy using variant "I Timothy"
+  - id: lookup-0303
+    input: I Tim 1:1
+    expected_ids:
+      - 29698
+    expected_ref: 1 Timothy 1:1
+    book: 1 Timothy
+    variant: I Tim
+    description: 1 Timothy using variant "I Tim"
+  - id: lookup-0304
+    input: First Timothy 1:1
+    expected_ids:
+      - 29698
+    expected_ref: 1 Timothy 1:1
+    book: 1 Timothy
+    variant: First Timothy
+    description: 1 Timothy using variant "First Timothy"
+  - id: lookup-0305
+    input: 1Tim 1:1
+    expected_ids:
+      - 29698
+    expected_ref: 1 Timothy 1:1
+    book: 1 Timothy
+    variant: 1Tim
+    description: 1 Timothy using variant "1Tim"
+  - id: lookup-0308
+    input: 2 Timothy 1:1
+    expected_ids:
+      - 29811
+    expected_ref: 2 Timothy 1:1
+    book: 2 Timothy
+    variant: 2 Timothy
+    description: 2 Timothy using variant "2 Timothy"
+  - id: lookup-0309
+    input: 2 Tim 1:1
+    expected_ids:
+      - 29811
+    expected_ref: 2 Timothy 1:1
+    book: 2 Timothy
+    variant: 2 Tim
+    description: 2 Timothy using variant "2 Tim"
+  - id: lookup-0310
+    input: 2 Ti 1:1
+    expected_ids:
+      - 29811
+    expected_ref: 2 Timothy 1:1
+    book: 2 Timothy
+    variant: 2 Ti
+    description: 2 Timothy using variant "2 Ti"
+  - id: lookup-0311
+    input: II Timothy 1:1
+    expected_ids:
+      - 29811
+    expected_ref: 2 Timothy 1:1
+    book: 2 Timothy
+    variant: II Timothy
+    description: 2 Timothy using variant "II Timothy"
+  - id: lookup-0312
+    input: II Tim 1:1
+    expected_ids:
+      - 29811
+    expected_ref: 2 Timothy 1:1
+    book: 2 Timothy
+    variant: II Tim
+    description: 2 Timothy using variant "II Tim"
+  - id: lookup-0313
+    input: Second Timothy 1:1
+    expected_ids:
+      - 29811
+    expected_ref: 2 Timothy 1:1
+    book: 2 Timothy
+    variant: Second Timothy
+    description: 2 Timothy using variant "Second Timothy"
+  - id: lookup-0314
+    input: 2Tim 1:1
+    expected_ids:
+      - 29811
+    expected_ref: 2 Timothy 1:1
+    book: 2 Timothy
+    variant: 2Tim
+    description: 2 Timothy using variant "2Tim"
+  - id: lookup-0317
+    input: Titus 1:1
+    expected_ids:
+      - 29894
+    expected_ref: Titus 1:1
+    book: Titus
+    variant: Titus
+    description: Titus using variant "Titus"
+  - id: lookup-0318
+    input: Tit 1:1
+    expected_ids:
+      - 29894
+    expected_ref: Titus 1:1
+    book: Titus
+    variant: Tit
+    description: Titus using variant "Tit"
+  - id: lookup-0319
+    input: Ti 1:1
+    expected_ids:
+      - 29894
+    expected_ref: Titus 1:1
+    book: Titus
+    variant: Ti
+    description: Titus using variant "Ti"
+  - id: lookup-0322
+    input: Philemon 1
+    expected_ids:
+      - 29940
+      - 29941
+      - 29942
+      - 29943
+      - 29944
+      - 29945
+      - 29946
+      - 29947
+      - 29948
+      - 29949
+      - 29950
+      - 29951
+      - 29952
+      - 29953
+      - 29954
+      - 29955
+      - 29956
+      - 29957
+      - 29958
+      - 29959
+      - 29960
+      - 29961
+      - 29962
+      - 29963
+      - 29964
+    expected_ref: Philemon 1
+    book: Philemon
+    variant: Philemon
+    description: Philemon using variant "Philemon"
+  - id: lookup-0323
+    input: Philem 1
+    expected_ids:
+      - 29940
+      - 29941
+      - 29942
+      - 29943
+      - 29944
+      - 29945
+      - 29946
+      - 29947
+      - 29948
+      - 29949
+      - 29950
+      - 29951
+      - 29952
+      - 29953
+      - 29954
+      - 29955
+      - 29956
+      - 29957
+      - 29958
+      - 29959
+      - 29960
+      - 29961
+      - 29962
+      - 29963
+      - 29964
+    expected_ref: Philemon 1
+    book: Philemon
+    variant: Philem
+    description: Philemon using variant "Philem"
+  - id: lookup-0324
+    input: Phlm 1
+    expected_ids:
+      - 29940
+      - 29941
+      - 29942
+      - 29943
+      - 29944
+      - 29945
+      - 29946
+      - 29947
+      - 29948
+      - 29949
+      - 29950
+      - 29951
+      - 29952
+      - 29953
+      - 29954
+      - 29955
+      - 29956
+      - 29957
+      - 29958
+      - 29959
+      - 29960
+      - 29961
+      - 29962
+      - 29963
+      - 29964
+    expected_ref: Philemon 1
+    book: Philemon
+    variant: Phlm
+    description: Philemon using variant "Phlm"
+  - id: lookup-0325
+    input: Phm 1
+    expected_ids:
+      - 29940
+      - 29941
+      - 29942
+      - 29943
+      - 29944
+      - 29945
+      - 29946
+      - 29947
+      - 29948
+      - 29949
+      - 29950
+      - 29951
+      - 29952
+      - 29953
+      - 29954
+      - 29955
+      - 29956
+      - 29957
+      - 29958
+      - 29959
+      - 29960
+      - 29961
+      - 29962
+      - 29963
+      - 29964
+    expected_ref: Philemon 1
+    book: Philemon
+    variant: Phm
+    description: Philemon using variant "Phm"
+  - id: lookup-0326
+    input: Hebrews 1:1
+    expected_ids:
+      - 29965
+    expected_ref: Hebrews 1:1
+    book: Hebrews
+    variant: Hebrews
+    description: Hebrews using variant "Hebrews"
+  - id: lookup-0327
+    input: Heb 1:1
+    expected_ids:
+      - 29965
+    expected_ref: Hebrews 1:1
+    book: Hebrews
+    variant: Heb
+    description: Hebrews using variant "Heb"
+  - id: lookup-0328
+    input: He 1:1
+    expected_ids:
+      - 29965
+    expected_ref: Hebrews 1:1
+    book: Hebrews
+    variant: He
+    description: Hebrews using variant "He"
+  - id: lookup-0331
+    input: James 1:1
+    expected_ids:
+      - 30268
+    expected_ref: James 1:1
+    book: James
+    variant: James
+    description: James using variant "James"
+  - id: lookup-0332
+    input: Jas 1:1
+    expected_ids:
+      - 30268
+    expected_ref: James 1:1
+    book: James
+    variant: Jas
+    description: James using variant "Jas"
+  - id: lookup-0333
+    input: Jm 1:1
+    expected_ids:
+      - 32730
+    expected_ref: Jarom 1:1
+    book: James
+    variant: Jm
+    description: James using variant "Jm"
+  - id: lookup-0336
+    input: 1 Peter 1:1
+    expected_ids:
+      - 30376
+    expected_ref: 1 Peter 1:1
+    book: 1 Peter
+    variant: 1 Peter
+    description: 1 Peter using variant "1 Peter"
+  - id: lookup-0337
+    input: 1 Pet 1:1
+    expected_ids:
+      - 30376
+    expected_ref: 1 Peter 1:1
+    book: 1 Peter
+    variant: 1 Pet
+    description: 1 Peter using variant "1 Pet"
+  - id: lookup-0338
+    input: 1 Pe 1:1
+    expected_ids:
+      - 30376
+    expected_ref: 1 Peter 1:1
+    book: 1 Peter
+    variant: 1 Pe
+    description: 1 Peter using variant "1 Pe"
+  - id: lookup-0339
+    input: I Peter 1:1
+    expected_ids:
+      - 30376
+    expected_ref: 1 Peter 1:1
+    book: 1 Peter
+    variant: I Peter
+    description: 1 Peter using variant "I Peter"
+  - id: lookup-0340
+    input: I Pet 1:1
+    expected_ids:
+      - 30376
+    expected_ref: 1 Peter 1:1
+    book: 1 Peter
+    variant: I Pet
+    description: 1 Peter using variant "I Pet"
+  - id: lookup-0341
+    input: First Peter 1:1
+    expected_ids:
+      - 30376
+    expected_ref: 1 Peter 1:1
+    book: 1 Peter
+    variant: First Peter
+    description: 1 Peter using variant "First Peter"
+  - id: lookup-0342
+    input: 1Pet 1:1
+    expected_ids:
+      - 30376
+    expected_ref: 1 Peter 1:1
+    book: 1 Peter
+    variant: 1Pet
+    description: 1 Peter using variant "1Pet"
+  - id: lookup-0343
+    input: 1Pt 1:1
+    expected_ids:
+      - 30376
+    expected_ref: 1 Peter 1:1
+    book: 1 Peter
+    variant: 1Pt
+    description: 1 Peter using variant "1Pt"
+  - id: lookup-0346
+    input: 2 Peter 1:1
+    expected_ids:
+      - 30481
+    expected_ref: 2 Peter 1:1
+    book: 2 Peter
+    variant: 2 Peter
+    description: 2 Peter using variant "2 Peter"
+  - id: lookup-0347
+    input: 2 Pet 1:1
+    expected_ids:
+      - 30481
+    expected_ref: 2 Peter 1:1
+    book: 2 Peter
+    variant: 2 Pet
+    description: 2 Peter using variant "2 Pet"
+  - id: lookup-0348
+    input: 2 Pe 1:1
+    expected_ids:
+      - 30481
+    expected_ref: 2 Peter 1:1
+    book: 2 Peter
+    variant: 2 Pe
+    description: 2 Peter using variant "2 Pe"
+  - id: lookup-0349
+    input: II Peter 1:1
+    expected_ids:
+      - 30481
+    expected_ref: 2 Peter 1:1
+    book: 2 Peter
+    variant: II Peter
+    description: 2 Peter using variant "II Peter"
+  - id: lookup-0350
+    input: II Pet 1:1
+    expected_ids:
+      - 30481
+    expected_ref: 2 Peter 1:1
+    book: 2 Peter
+    variant: II Pet
+    description: 2 Peter using variant "II Pet"
+  - id: lookup-0351
+    input: Second Peter 1:1
+    expected_ids:
+      - 30481
+    expected_ref: 2 Peter 1:1
+    book: 2 Peter
+    variant: Second Peter
+    description: 2 Peter using variant "Second Peter"
+  - id: lookup-0352
+    input: 2Pet 1:1
+    expected_ids:
+      - 30481
+    expected_ref: 2 Peter 1:1
+    book: 2 Peter
+    variant: 2Pet
+    description: 2 Peter using variant "2Pet"
+  - id: lookup-0353
+    input: 2Pt 1:1
+    expected_ids:
+      - 30481
+    expected_ref: 2 Peter 1:1
+    book: 2 Peter
+    variant: 2Pt
+    description: 2 Peter using variant "2Pt"
+  - id: lookup-0356
+    input: 1 John 1:1
+    expected_ids:
+      - 30542
+    expected_ref: 1 John 1:1
+    book: 1 John
+    variant: 1 John
+    description: 1 John using variant "1 John"
+  - id: lookup-0357
+    input: 1 Jn 1:1
+    expected_ids:
+      - 30542
+    expected_ref: 1 John 1:1
+    book: 1 John
+    variant: 1 Jn
+    description: 1 John using variant "1 Jn"
+  - id: lookup-0358
+    input: I John 1:1
+    expected_ids:
+      - 30542
+    expected_ref: 1 John 1:1
+    book: 1 John
+    variant: I John
+    description: 1 John using variant "I John"
+  - id: lookup-0359
+    input: I Jn 1:1
+    expected_ids:
+      - 30542
+    expected_ref: 1 John 1:1
+    book: 1 John
+    variant: I Jn
+    description: 1 John using variant "I Jn"
+  - id: lookup-0360
+    input: First John 1:1
+    expected_ids:
+      - 30542
+    expected_ref: 1 John 1:1
+    book: 1 John
+    variant: First John
+    description: 1 John using variant "First John"
+  - id: lookup-0361
+    input: 1Jn 1:1
+    expected_ids:
+      - 30542
+    expected_ref: 1 John 1:1
+    book: 1 John
+    variant: 1Jn
+    description: 1 John using variant "1Jn"
+  - id: lookup-0364
+    input: 2 John 1
+    expected_ids:
+      - 30647
+      - 30648
+      - 30649
+      - 30650
+      - 30651
+      - 30652
+      - 30653
+      - 30654
+      - 30655
+      - 30656
+      - 30657
+      - 30658
+      - 30659
+    expected_ref: 2 John 1
+    book: 2 John
+    variant: 2 John
+    description: 2 John using variant "2 John"
+  - id: lookup-0365
+    input: 2 Jn 1
+    expected_ids:
+      - 30647
+      - 30648
+      - 30649
+      - 30650
+      - 30651
+      - 30652
+      - 30653
+      - 30654
+      - 30655
+      - 30656
+      - 30657
+      - 30658
+      - 30659
+    expected_ref: 2 John 1
+    book: 2 John
+    variant: 2 Jn
+    description: 2 John using variant "2 Jn"
+  - id: lookup-0366
+    input: II John 1
+    expected_ids:
+      - 30647
+      - 30648
+      - 30649
+      - 30650
+      - 30651
+      - 30652
+      - 30653
+      - 30654
+      - 30655
+      - 30656
+      - 30657
+      - 30658
+      - 30659
+    expected_ref: 2 John 1
+    book: 2 John
+    variant: II John
+    description: 2 John using variant "II John"
+  - id: lookup-0367
+    input: II Jn 1
+    expected_ids:
+      - 30647
+      - 30648
+      - 30649
+      - 30650
+      - 30651
+      - 30652
+      - 30653
+      - 30654
+      - 30655
+      - 30656
+      - 30657
+      - 30658
+      - 30659
+    expected_ref: 2 John 1
+    book: 2 John
+    variant: II Jn
+    description: 2 John using variant "II Jn"
+  - id: lookup-0368
+    input: Second John 1
+    expected_ids:
+      - 30647
+      - 30648
+      - 30649
+      - 30650
+      - 30651
+      - 30652
+      - 30653
+      - 30654
+      - 30655
+      - 30656
+      - 30657
+      - 30658
+      - 30659
+    expected_ref: 2 John 1
+    book: 2 John
+    variant: Second John
+    description: 2 John using variant "Second John"
+  - id: lookup-0369
+    input: 2Jn 1
+    expected_ids:
+      - 30647
+      - 30648
+      - 30649
+      - 30650
+      - 30651
+      - 30652
+      - 30653
+      - 30654
+      - 30655
+      - 30656
+      - 30657
+      - 30658
+      - 30659
+    expected_ref: 2 John 1
+    book: 2 John
+    variant: 2Jn
+    description: 2 John using variant "2Jn"
+  - id: lookup-0370
+    input: 3 John 1
+    expected_ids:
+      - 30660
+      - 30661
+      - 30662
+      - 30663
+      - 30664
+      - 30665
+      - 30666
+      - 30667
+      - 30668
+      - 30669
+      - 30670
+      - 30671
+      - 30672
+      - 30673
+    expected_ref: 3 John 1
+    book: 3 John
+    variant: 3 John
+    description: 3 John using variant "3 John"
+  - id: lookup-0371
+    input: 3 Jn 1
+    expected_ids:
+      - 30660
+      - 30661
+      - 30662
+      - 30663
+      - 30664
+      - 30665
+      - 30666
+      - 30667
+      - 30668
+      - 30669
+      - 30670
+      - 30671
+      - 30672
+      - 30673
+    expected_ref: 3 John 1
+    book: 3 John
+    variant: 3 Jn
+    description: 3 John using variant "3 Jn"
+  - id: lookup-0372
+    input: III John 1
+    expected_ids:
+      - 30660
+      - 30661
+      - 30662
+      - 30663
+      - 30664
+      - 30665
+      - 30666
+      - 30667
+      - 30668
+      - 30669
+      - 30670
+      - 30671
+      - 30672
+      - 30673
+    expected_ref: 3 John 1
+    book: 3 John
+    variant: III John
+    description: 3 John using variant "III John"
+  - id: lookup-0373
+    input: III Jn 1
+    expected_ids:
+      - 30660
+      - 30661
+      - 30662
+      - 30663
+      - 30664
+      - 30665
+      - 30666
+      - 30667
+      - 30668
+      - 30669
+      - 30670
+      - 30671
+      - 30672
+      - 30673
+    expected_ref: 3 John 1
+    book: 3 John
+    variant: III Jn
+    description: 3 John using variant "III Jn"
+  - id: lookup-0374
+    input: Third John 1
+    expected_ids:
+      - 30660
+      - 30661
+      - 30662
+      - 30663
+      - 30664
+      - 30665
+      - 30666
+      - 30667
+      - 30668
+      - 30669
+      - 30670
+      - 30671
+      - 30672
+      - 30673
+    expected_ref: 3 John 1
+    book: 3 John
+    variant: Third John
+    description: 3 John using variant "Third John"
+  - id: lookup-0375
+    input: 3Jn 1
+    expected_ids:
+      - 30660
+      - 30661
+      - 30662
+      - 30663
+      - 30664
+      - 30665
+      - 30666
+      - 30667
+      - 30668
+      - 30669
+      - 30670
+      - 30671
+      - 30672
+      - 30673
+    expected_ref: 3 John 1
+    book: 3 John
+    variant: 3Jn
+    description: 3 John using variant "3Jn"
+  - id: lookup-0376
+    input: Jude 1
+    expected_ids:
+      - 30674
+      - 30675
+      - 30676
+      - 30677
+      - 30678
+      - 30679
+      - 30680
+      - 30681
+      - 30682
+      - 30683
+      - 30684
+      - 30685
+      - 30686
+      - 30687
+      - 30688
+      - 30689
+      - 30690
+      - 30691
+      - 30692
+      - 30693
+      - 30694
+      - 30695
+      - 30696
+      - 30697
+      - 30698
+    expected_ref: Jude 1
+    book: Jude
+    variant: Jude
+    description: Jude using variant "Jude"
+  - id: lookup-0377
+    input: Jud 1
+    expected_ids:
+      - 30674
+      - 30675
+      - 30676
+      - 30677
+      - 30678
+      - 30679
+      - 30680
+      - 30681
+      - 30682
+      - 30683
+      - 30684
+      - 30685
+      - 30686
+      - 30687
+      - 30688
+      - 30689
+      - 30690
+      - 30691
+      - 30692
+      - 30693
+      - 30694
+      - 30695
+      - 30696
+      - 30697
+      - 30698
+    expected_ref: Jude 1
+    book: Jude
+    variant: Jud
+    description: Jude using variant "Jud"
+  - id: lookup-0378
+    input: Revelation 1:1
+    expected_ids:
+      - 30699
+    expected_ref: Revelation 1:1
+    book: Revelation
+    variant: Revelation
+    description: Revelation using variant "Revelation"
+  - id: lookup-0379
+    input: Rev 1:1
+    expected_ids:
+      - 30699
+    expected_ref: Revelation 1:1
+    book: Revelation
+    variant: Rev
+    description: Revelation using variant "Rev"
+  - id: lookup-0380
+    input: Apocalypse 1:1
+    expected_ids:
+      - 30699
+    expected_ref: Revelation 1:1
+    book: Revelation
+    variant: Apocalypse
+    description: Revelation using variant "Apocalypse"
+  - id: lookup-0383
+    input: 1 Nephi 1:1
+    expected_ids:
+      - 31103
+    expected_ref: 1 Nephi 1:1
+    book: 1 Nephi
+    variant: 1 Nephi
+    description: 1 Nephi using variant "1 Nephi"
+  - id: lookup-0384
+    input: 1 Ne 1:1
+    expected_ids:
+      - 31103
+    expected_ref: 1 Nephi 1:1
+    book: 1 Nephi
+    variant: 1 Ne
+    description: 1 Nephi using variant "1 Ne"
+  - id: lookup-0385
+    input: 1 Ne. 1:1
+    expected_ids:
+      - 31103
+    expected_ref: 1 Nephi 1:1
+    book: 1 Nephi
+    variant: 1 Ne.
+    description: 1 Nephi using variant "1 Ne."
+  - id: lookup-0386
+    input: I Nephi 1:1
+    expected_ids:
+      - 31103
+    expected_ref: 1 Nephi 1:1
+    book: 1 Nephi
+    variant: I Nephi
+    description: 1 Nephi using variant "I Nephi"
+  - id: lookup-0387
+    input: I Ne 1:1
+    expected_ids:
+      - 31103
+    expected_ref: 1 Nephi 1:1
+    book: 1 Nephi
+    variant: I Ne
+    description: 1 Nephi using variant "I Ne"
+  - id: lookup-0388
+    input: First Nephi 1:1
+    expected_ids:
+      - 31103
+    expected_ref: 1 Nephi 1:1
+    book: 1 Nephi
+    variant: First Nephi
+    description: 1 Nephi using variant "First Nephi"
+  - id: lookup-0389
+    input: 1Ne 1:1
+    expected_ids:
+      - 31103
+    expected_ref: 1 Nephi 1:1
+    book: 1 Nephi
+    variant: 1Ne
+    description: 1 Nephi using variant "1Ne"
+  - id: lookup-0390
+    input: 1Nephi 1:1
+    expected_ids:
+      - 31103
+    expected_ref: 1 Nephi 1:1
+    book: 1 Nephi
+    variant: 1Nephi
+    description: 1 Nephi using variant "1Nephi"
+  - id: lookup-0393
+    input: 2 Nephi 1:1
+    expected_ids:
+      - 31721
+    expected_ref: 2 Nephi 1:1
+    book: 2 Nephi
+    variant: 2 Nephi
+    description: 2 Nephi using variant "2 Nephi"
+  - id: lookup-0394
+    input: 2 Ne 1:1
+    expected_ids:
+      - 31721
+    expected_ref: 2 Nephi 1:1
+    book: 2 Nephi
+    variant: 2 Ne
+    description: 2 Nephi using variant "2 Ne"
+  - id: lookup-0395
+    input: 2 Ne. 1:1
+    expected_ids:
+      - 31721
+    expected_ref: 2 Nephi 1:1
+    book: 2 Nephi
+    variant: 2 Ne.
+    description: 2 Nephi using variant "2 Ne."
+  - id: lookup-0396
+    input: II Nephi 1:1
+    expected_ids:
+      - 31721
+    expected_ref: 2 Nephi 1:1
+    book: 2 Nephi
+    variant: II Nephi
+    description: 2 Nephi using variant "II Nephi"
+  - id: lookup-0397
+    input: II Ne 1:1
+    expected_ids:
+      - 31721
+    expected_ref: 2 Nephi 1:1
+    book: 2 Nephi
+    variant: II Ne
+    description: 2 Nephi using variant "II Ne"
+  - id: lookup-0398
+    input: Second Nephi 1:1
+    expected_ids:
+      - 31721
+    expected_ref: 2 Nephi 1:1
+    book: 2 Nephi
+    variant: Second Nephi
+    description: 2 Nephi using variant "Second Nephi"
+  - id: lookup-0399
+    input: 2Ne 1:1
+    expected_ids:
+      - 31721
+    expected_ref: 2 Nephi 1:1
+    book: 2 Nephi
+    variant: 2Ne
+    description: 2 Nephi using variant "2Ne"
+  - id: lookup-0400
+    input: 2Nephi 1:1
+    expected_ids:
+      - 31721
+    expected_ref: 2 Nephi 1:1
+    book: 2 Nephi
+    variant: 2Nephi
+    description: 2 Nephi using variant "2Nephi"
+  - id: lookup-0403
+    input: Jacob 1:1
+    expected_ids:
+      - 32500
+    expected_ref: Jacob 1:1
+    book: Jacob
+    variant: Jacob
+    description: Jacob using variant "Jacob"
+  - id: lookup-0404
+    input: Jac 1:1
+    expected_ids:
+      - 32500
+    expected_ref: Jacob 1:1
+    book: Jacob
+    variant: Jac
+    description: Jacob using variant "Jac"
+  - id: lookup-0405
+    input: Ja 1:1
+    expected_ids:
+      - 30268
+    expected_ref: James 1:1
+    book: Jacob
+    variant: Ja
+    description: Jacob using variant "Ja"
+  - id: lookup-0408
+    input: Enos 1
+    expected_ids:
+      - 32703
+      - 32704
+      - 32705
+      - 32706
+      - 32707
+      - 32708
+      - 32709
+      - 32710
+      - 32711
+      - 32712
+      - 32713
+      - 32714
+      - 32715
+      - 32716
+      - 32717
+      - 32718
+      - 32719
+      - 32720
+      - 32721
+      - 32722
+      - 32723
+      - 32724
+      - 32725
+      - 32726
+      - 32727
+      - 32728
+      - 32729
+    expected_ref: Enos 1
+    book: Enos
+    variant: Enos
+    description: Enos using variant "Enos"
+  - id: lookup-0409
+    input: Eno 1
+    expected_ids:
+      - 32703
+      - 32704
+      - 32705
+      - 32706
+      - 32707
+      - 32708
+      - 32709
+      - 32710
+      - 32711
+      - 32712
+      - 32713
+      - 32714
+      - 32715
+      - 32716
+      - 32717
+      - 32718
+      - 32719
+      - 32720
+      - 32721
+      - 32722
+      - 32723
+      - 32724
+      - 32725
+      - 32726
+      - 32727
+      - 32728
+      - 32729
+    expected_ref: Enos 1
+    book: Enos
+    variant: Eno
+    description: Enos using variant "Eno"
+  - id: lookup-0410
+    input: Jarom 1
+    expected_ids:
+      - 32730
+      - 32731
+      - 32732
+      - 32733
+      - 32734
+      - 32735
+      - 32736
+      - 32737
+      - 32738
+      - 32739
+      - 32740
+      - 32741
+      - 32742
+      - 32743
+      - 32744
+    expected_ref: Jarom 1
+    book: Jarom
+    variant: Jarom
+    description: Jarom using variant "Jarom"
+  - id: lookup-0411
+    input: Jar 1
+    expected_ids:
+      - 32730
+      - 32731
+      - 32732
+      - 32733
+      - 32734
+      - 32735
+      - 32736
+      - 32737
+      - 32738
+      - 32739
+      - 32740
+      - 32741
+      - 32742
+      - 32743
+      - 32744
+    expected_ref: Jarom 1
+    book: Jarom
+    variant: Jar
+    description: Jarom using variant "Jar"
+  - id: lookup-0412
+    input: Omni 1
+    expected_ids:
+      - 32745
+      - 32746
+      - 32747
+      - 32748
+      - 32749
+      - 32750
+      - 32751
+      - 32752
+      - 32753
+      - 32754
+      - 32755
+      - 32756
+      - 32757
+      - 32758
+      - 32759
+      - 32760
+      - 32761
+      - 32762
+      - 32763
+      - 32764
+      - 32765
+      - 32766
+      - 32767
+      - 32768
+      - 32769
+      - 32770
+      - 32771
+      - 32772
+      - 32773
+      - 32774
+    expected_ref: Omni 1
+    book: Omni
+    variant: Omni
+    description: Omni using variant "Omni"
+  - id: lookup-0413
+    input: Omn 1
+    expected_ids:
+      - 32745
+      - 32746
+      - 32747
+      - 32748
+      - 32749
+      - 32750
+      - 32751
+      - 32752
+      - 32753
+      - 32754
+      - 32755
+      - 32756
+      - 32757
+      - 32758
+      - 32759
+      - 32760
+      - 32761
+      - 32762
+      - 32763
+      - 32764
+      - 32765
+      - 32766
+      - 32767
+      - 32768
+      - 32769
+      - 32770
+      - 32771
+      - 32772
+      - 32773
+      - 32774
+    expected_ref: Omni 1
+    book: Omni
+    variant: Omn
+    description: Omni using variant "Omn"
+  - id: lookup-0414
+    input: Words of Mormon 1
+    expected_ids:
+      - 32775
+      - 32776
+      - 32777
+      - 32778
+      - 32779
+      - 32780
+      - 32781
+      - 32782
+      - 32783
+      - 32784
+      - 32785
+      - 32786
+      - 32787
+      - 32788
+      - 32789
+      - 32790
+      - 32791
+      - 32792
+    expected_ref: Words of Mormon 1
+    book: Words of Mormon
+    variant: Words of Mormon
+    description: Words of Mormon using variant "Words of Mormon"
+  - id: lookup-0415
+    input: W of M 1
+    expected_ids:
+      - 32775
+      - 32776
+      - 32777
+      - 32778
+      - 32779
+      - 32780
+      - 32781
+      - 32782
+      - 32783
+      - 32784
+      - 32785
+      - 32786
+      - 32787
+      - 32788
+      - 32789
+      - 32790
+      - 32791
+      - 32792
+    expected_ref: Words of Mormon 1
+    book: Words of Mormon
+    variant: W of M
+    description: Words of Mormon using variant "W of M"
+  - id: lookup-0416
+    input: WofM 1
+    expected_ids:
+      - 32775
+      - 32776
+      - 32777
+      - 32778
+      - 32779
+      - 32780
+      - 32781
+      - 32782
+      - 32783
+      - 32784
+      - 32785
+      - 32786
+      - 32787
+      - 32788
+      - 32789
+      - 32790
+      - 32791
+      - 32792
+    expected_ref: Words of Mormon 1
+    book: Words of Mormon
+    variant: WofM
+    description: Words of Mormon using variant "WofM"
+  - id: lookup-0417
+    input: Mosiah 1:1
+    expected_ids:
+      - 32793
+    expected_ref: Mosiah 1:1
+    book: Mosiah
+    variant: Mosiah
+    description: Mosiah using variant "Mosiah"
+  - id: lookup-0418
+    input: Mos 1:1
+    expected_ids:
+      - 32793
+    expected_ref: Mosiah 1:1
+    book: Mosiah
+    variant: Mos
+    description: Mosiah using variant "Mos"
+  - id: lookup-0421
+    input: Alma 1:1
+    expected_ids:
+      - 33578
+    expected_ref: Alma 1:1
+    book: Alma
+    variant: Alma
+    description: Alma using variant "Alma"
+  - id: lookup-0422
+    input: Al 1:1
+    expected_ids:
+      - 33578
+    expected_ref: Alma 1:1
+    book: Alma
+    variant: Al
+    description: Alma using variant "Al"
+  - id: lookup-0425
+    input: Helaman 1:1
+    expected_ids:
+      - 35553
+    expected_ref: Helaman 1:1
+    book: Helaman
+    variant: Helaman
+    description: Helaman using variant "Helaman"
+  - id: lookup-0426
+    input: Hel 1:1
+    expected_ids:
+      - 35553
+    expected_ref: Helaman 1:1
+    book: Helaman
+    variant: Hel
+    description: Helaman using variant "Hel"
+  - id: lookup-0427
+    input: Hela 1:1
+    expected_ids:
+      - 35553
+    expected_ref: Helaman 1:1
+    book: Helaman
+    variant: Hela
+    description: Helaman using variant "Hela"
+  - id: lookup-0430
+    input: 3 Nephi 1:1
+    expected_ids:
+      - 36050
+    expected_ref: 3 Nephi 1:1
+    book: 3 Nephi
+    variant: 3 Nephi
+    description: 3 Nephi using variant "3 Nephi"
+  - id: lookup-0431
+    input: 3 Ne 1:1
+    expected_ids:
+      - 36050
+    expected_ref: 3 Nephi 1:1
+    book: 3 Nephi
+    variant: 3 Ne
+    description: 3 Nephi using variant "3 Ne"
+  - id: lookup-0432
+    input: 3 Ne. 1:1
+    expected_ids:
+      - 36050
+    expected_ref: 3 Nephi 1:1
+    book: 3 Nephi
+    variant: 3 Ne.
+    description: 3 Nephi using variant "3 Ne."
+  - id: lookup-0433
+    input: III Nephi 1:1
+    expected_ids:
+      - 36050
+    expected_ref: 3 Nephi 1:1
+    book: 3 Nephi
+    variant: III Nephi
+    description: 3 Nephi using variant "III Nephi"
+  - id: lookup-0434
+    input: III Ne 1:1
+    expected_ids:
+      - 36050
+    expected_ref: 3 Nephi 1:1
+    book: 3 Nephi
+    variant: III Ne
+    description: 3 Nephi using variant "III Ne"
+  - id: lookup-0435
+    input: Third Nephi 1:1
+    expected_ids:
+      - 36050
+    expected_ref: 3 Nephi 1:1
+    book: 3 Nephi
+    variant: Third Nephi
+    description: 3 Nephi using variant "Third Nephi"
+  - id: lookup-0436
+    input: 3Ne 1:1
+    expected_ids:
+      - 36050
+    expected_ref: 3 Nephi 1:1
+    book: 3 Nephi
+    variant: 3Ne
+    description: 3 Nephi using variant "3Ne"
+  - id: lookup-0437
+    input: 3Nephi 1:1
+    expected_ids:
+      - 36050
+    expected_ref: 3 Nephi 1:1
+    book: 3 Nephi
+    variant: 3Nephi
+    description: 3 Nephi using variant "3Nephi"
+  - id: lookup-0440
+    input: 4 Nephi 1
+    expected_ids:
+      - 36835
+      - 36836
+      - 36837
+      - 36838
+      - 36839
+      - 36840
+      - 36841
+      - 36842
+      - 36843
+      - 36844
+      - 36845
+      - 36846
+      - 36847
+      - 36848
+      - 36849
+      - 36850
+      - 36851
+      - 36852
+      - 36853
+      - 36854
+      - 36855
+      - 36856
+      - 36857
+      - 36858
+      - 36859
+      - 36860
+      - 36861
+      - 36862
+      - 36863
+      - 36864
+      - 36865
+      - 36866
+      - 36867
+      - 36868
+      - 36869
+      - 36870
+      - 36871
+      - 36872
+      - 36873
+      - 36874
+      - 36875
+      - 36876
+      - 36877
+      - 36878
+      - 36879
+      - 36880
+      - 36881
+      - 36882
+      - 36883
+    expected_ref: 4 Nephi 1
+    book: 4 Nephi
+    variant: 4 Nephi
+    description: 4 Nephi using variant "4 Nephi"
+  - id: lookup-0441
+    input: 4 Ne 1
+    expected_ids:
+      - 36835
+      - 36836
+      - 36837
+      - 36838
+      - 36839
+      - 36840
+      - 36841
+      - 36842
+      - 36843
+      - 36844
+      - 36845
+      - 36846
+      - 36847
+      - 36848
+      - 36849
+      - 36850
+      - 36851
+      - 36852
+      - 36853
+      - 36854
+      - 36855
+      - 36856
+      - 36857
+      - 36858
+      - 36859
+      - 36860
+      - 36861
+      - 36862
+      - 36863
+      - 36864
+      - 36865
+      - 36866
+      - 36867
+      - 36868
+      - 36869
+      - 36870
+      - 36871
+      - 36872
+      - 36873
+      - 36874
+      - 36875
+      - 36876
+      - 36877
+      - 36878
+      - 36879
+      - 36880
+      - 36881
+      - 36882
+      - 36883
+    expected_ref: 4 Nephi 1
+    book: 4 Nephi
+    variant: 4 Ne
+    description: 4 Nephi using variant "4 Ne"
+  - id: lookup-0442
+    input: 4 Ne. 1
+    expected_ids:
+      - 36835
+      - 36836
+      - 36837
+      - 36838
+      - 36839
+      - 36840
+      - 36841
+      - 36842
+      - 36843
+      - 36844
+      - 36845
+      - 36846
+      - 36847
+      - 36848
+      - 36849
+      - 36850
+      - 36851
+      - 36852
+      - 36853
+      - 36854
+      - 36855
+      - 36856
+      - 36857
+      - 36858
+      - 36859
+      - 36860
+      - 36861
+      - 36862
+      - 36863
+      - 36864
+      - 36865
+      - 36866
+      - 36867
+      - 36868
+      - 36869
+      - 36870
+      - 36871
+      - 36872
+      - 36873
+      - 36874
+      - 36875
+      - 36876
+      - 36877
+      - 36878
+      - 36879
+      - 36880
+      - 36881
+      - 36882
+      - 36883
+    expected_ref: 4 Nephi 1
+    book: 4 Nephi
+    variant: 4 Ne.
+    description: 4 Nephi using variant "4 Ne."
+  - id: lookup-0443
+    input: IV Nephi 1
+    expected_ids:
+      - 36835
+      - 36836
+      - 36837
+      - 36838
+      - 36839
+      - 36840
+      - 36841
+      - 36842
+      - 36843
+      - 36844
+      - 36845
+      - 36846
+      - 36847
+      - 36848
+      - 36849
+      - 36850
+      - 36851
+      - 36852
+      - 36853
+      - 36854
+      - 36855
+      - 36856
+      - 36857
+      - 36858
+      - 36859
+      - 36860
+      - 36861
+      - 36862
+      - 36863
+      - 36864
+      - 36865
+      - 36866
+      - 36867
+      - 36868
+      - 36869
+      - 36870
+      - 36871
+      - 36872
+      - 36873
+      - 36874
+      - 36875
+      - 36876
+      - 36877
+      - 36878
+      - 36879
+      - 36880
+      - 36881
+      - 36882
+      - 36883
+    expected_ref: 4 Nephi 1
+    book: 4 Nephi
+    variant: IV Nephi
+    description: 4 Nephi using variant "IV Nephi"
+  - id: lookup-0444
+    input: IV Ne 1
+    expected_ids:
+      - 36835
+      - 36836
+      - 36837
+      - 36838
+      - 36839
+      - 36840
+      - 36841
+      - 36842
+      - 36843
+      - 36844
+      - 36845
+      - 36846
+      - 36847
+      - 36848
+      - 36849
+      - 36850
+      - 36851
+      - 36852
+      - 36853
+      - 36854
+      - 36855
+      - 36856
+      - 36857
+      - 36858
+      - 36859
+      - 36860
+      - 36861
+      - 36862
+      - 36863
+      - 36864
+      - 36865
+      - 36866
+      - 36867
+      - 36868
+      - 36869
+      - 36870
+      - 36871
+      - 36872
+      - 36873
+      - 36874
+      - 36875
+      - 36876
+      - 36877
+      - 36878
+      - 36879
+      - 36880
+      - 36881
+      - 36882
+      - 36883
+    expected_ref: 4 Nephi 1
+    book: 4 Nephi
+    variant: IV Ne
+    description: 4 Nephi using variant "IV Ne"
+  - id: lookup-0445
+    input: Fourth Nephi 1
+    expected_ids:
+      - 36835
+      - 36836
+      - 36837
+      - 36838
+      - 36839
+      - 36840
+      - 36841
+      - 36842
+      - 36843
+      - 36844
+      - 36845
+      - 36846
+      - 36847
+      - 36848
+      - 36849
+      - 36850
+      - 36851
+      - 36852
+      - 36853
+      - 36854
+      - 36855
+      - 36856
+      - 36857
+      - 36858
+      - 36859
+      - 36860
+      - 36861
+      - 36862
+      - 36863
+      - 36864
+      - 36865
+      - 36866
+      - 36867
+      - 36868
+      - 36869
+      - 36870
+      - 36871
+      - 36872
+      - 36873
+      - 36874
+      - 36875
+      - 36876
+      - 36877
+      - 36878
+      - 36879
+      - 36880
+      - 36881
+      - 36882
+      - 36883
+    expected_ref: 4 Nephi 1
+    book: 4 Nephi
+    variant: Fourth Nephi
+    description: 4 Nephi using variant "Fourth Nephi"
+  - id: lookup-0446
+    input: 4Ne 1
+    expected_ids:
+      - 36835
+      - 36836
+      - 36837
+      - 36838
+      - 36839
+      - 36840
+      - 36841
+      - 36842
+      - 36843
+      - 36844
+      - 36845
+      - 36846
+      - 36847
+      - 36848
+      - 36849
+      - 36850
+      - 36851
+      - 36852
+      - 36853
+      - 36854
+      - 36855
+      - 36856
+      - 36857
+      - 36858
+      - 36859
+      - 36860
+      - 36861
+      - 36862
+      - 36863
+      - 36864
+      - 36865
+      - 36866
+      - 36867
+      - 36868
+      - 36869
+      - 36870
+      - 36871
+      - 36872
+      - 36873
+      - 36874
+      - 36875
+      - 36876
+      - 36877
+      - 36878
+      - 36879
+      - 36880
+      - 36881
+      - 36882
+      - 36883
+    expected_ref: 4 Nephi 1
+    book: 4 Nephi
+    variant: 4Ne
+    description: 4 Nephi using variant "4Ne"
+  - id: lookup-0447
+    input: 4Nephi 1
+    expected_ids:
+      - 36835
+      - 36836
+      - 36837
+      - 36838
+      - 36839
+      - 36840
+      - 36841
+      - 36842
+      - 36843
+      - 36844
+      - 36845
+      - 36846
+      - 36847
+      - 36848
+      - 36849
+      - 36850
+      - 36851
+      - 36852
+      - 36853
+      - 36854
+      - 36855
+      - 36856
+      - 36857
+      - 36858
+      - 36859
+      - 36860
+      - 36861
+      - 36862
+      - 36863
+      - 36864
+      - 36865
+      - 36866
+      - 36867
+      - 36868
+      - 36869
+      - 36870
+      - 36871
+      - 36872
+      - 36873
+      - 36874
+      - 36875
+      - 36876
+      - 36877
+      - 36878
+      - 36879
+      - 36880
+      - 36881
+      - 36882
+      - 36883
+    expected_ref: 4 Nephi 1
+    book: 4 Nephi
+    variant: 4Nephi
+    description: 4 Nephi using variant "4Nephi"
+  - id: lookup-0448
+    input: Mormon 1:1
+    expected_ids:
+      - 36884
+    expected_ref: Mormon 1:1
+    book: Mormon
+    variant: Mormon
+    description: Mormon using variant "Mormon"
+  - id: lookup-0449
+    input: Morm 1:1
+    expected_ids:
+      - 36884
+    expected_ref: Mormon 1:1
+    book: Mormon
+    variant: Morm
+    description: Mormon using variant "Morm"
+  - id: lookup-0450
+    input: Mor 1:1
+    expected_ids:
+      - 37544
+    expected_ref: Moroni 1:1
+    book: Mormon
+    variant: Mor
+    description: Mormon using variant "Mor"
+  - id: lookup-0451
+    input: Mrm 1:1
+    expected_ids:
+      - 36884
+    expected_ref: Mormon 1:1
+    book: Mormon
+    variant: Mrm
+    description: Mormon using variant "Mrm"
+  - id: lookup-0454
+    input: Ether 1:1
+    expected_ids:
+      - 37111
+    expected_ref: Ether 1:1
+    book: Ether
+    variant: Ether
+    description: Ether using variant "Ether"
+  - id: lookup-0455
+    input: Eth 1:1
+    expected_ids:
+      - 37111
+    expected_ref: Ether 1:1
+    book: Ether
+    variant: Eth
+    description: Ether using variant "Eth"
+  - id: lookup-0458
+    input: Moroni 1:1
+    expected_ids:
+      - 37544
+    expected_ref: Moroni 1:1
+    book: Moroni
+    variant: Moroni
+    description: Moroni using variant "Moroni"
+  - id: lookup-0459
+    input: Moro 1:1
+    expected_ids:
+      - 37544
+    expected_ref: Moroni 1:1
+    book: Moroni
+    variant: Moro
+    description: Moroni using variant "Moro"
+  - id: lookup-0462
+    input: Doctrine and Covenants 1:1
+    expected_ids:
+      - 37707
+    expected_ref: Doctrine and Covenants 1:1
+    book: Doctrine and Covenants
+    variant: Doctrine and Covenants
+    description: Doctrine and Covenants using variant "Doctrine and Covenants"
+  - id: lookup-0463
+    input: D&C 1:1
+    expected_ids:
+      - 37707
+    expected_ref: Doctrine and Covenants 1:1
+    book: Doctrine and Covenants
+    variant: D&C
+    description: Doctrine and Covenants using variant "D&C"
+  - id: lookup-0464
+    input: D & C 1:1
+    expected_ids:
+      - 37707
+    expected_ref: Doctrine and Covenants 1:1
+    book: Doctrine and Covenants
+    variant: D & C
+    description: Doctrine and Covenants using variant "D & C"
+  - id: lookup-0465
+    input: DC 1:1
+    expected_ids:
+      - 37707
+    expected_ref: Doctrine and Covenants 1:1
+    book: Doctrine and Covenants
+    variant: DC
+    description: Doctrine and Covenants using variant "DC"
+  - id: lookup-0466
+    input: D.C. 1:1
+    expected_ids:
+      - 37707
+    expected_ref: Doctrine and Covenants 1:1
+    book: Doctrine and Covenants
+    variant: D.C.
+    description: Doctrine and Covenants using variant "D.C."
+  - id: lookup-0467
+    input: D and C 1:1
+    expected_ids:
+      - 37707
+    expected_ref: Doctrine and Covenants 1:1
+    book: Doctrine and Covenants
+    variant: D and C
+    description: Doctrine and Covenants using variant "D and C"
+  - id: lookup-0468
+    input: Doctrine & Covenants 1:1
+    expected_ids:
+      - 37707
+    expected_ref: Doctrine and Covenants 1:1
+    book: Doctrine and Covenants
+    variant: Doctrine & Covenants
+    description: Doctrine and Covenants using variant "Doctrine & Covenants"
+  - id: lookup-0471
+    input: Moses 1:1
+    expected_ids:
+      - 41361
+    expected_ref: Moses 1:1
+    book: Moses
+    variant: Moses
+    description: Moses using variant "Moses"
+  - id: lookup-0472
+    input: Mos. 1:1
+    expected_ids:
+      - 32793
+    expected_ref: Mosiah 1:1
+    book: Moses
+    variant: Mos.
+    description: Moses using variant "Mos."
+  - id: lookup-0473
+    input: Mose 1:1
+    expected_ids:
+      - 41361
+    expected_ref: Moses 1:1
+    book: Moses
+    variant: Mose
+    description: Moses using variant "Mose"
+  - id: lookup-0476
+    input: Abraham 1:1
+    expected_ids:
+      - 41717
+    expected_ref: Abraham 1:1
+    book: Abraham
+    variant: Abraham
+    description: Abraham using variant "Abraham"
+  - id: lookup-0477
+    input: Abr 1:1
+    expected_ids:
+      - 41717
+    expected_ref: Abraham 1:1
+    book: Abraham
+    variant: Abr
+    description: Abraham using variant "Abr"
+  - id: lookup-0478
+    input: Abra 1:1
+    expected_ids:
+      - 41717
+    expected_ref: Abraham 1:1
+    book: Abraham
+    variant: Abra
+    description: Abraham using variant "Abra"
+  - id: lookup-0481
+    input: Joseph Smith—Matthew 1
+    expected_ids:
+      - 41853
+      - 41854
+      - 41855
+      - 41856
+      - 41857
+      - 41858
+      - 41859
+      - 41860
+      - 41861
+      - 41862
+      - 41863
+      - 41864
+      - 41865
+      - 41866
+      - 41867
+      - 41868
+      - 41869
+      - 41870
+      - 41871
+      - 41872
+      - 41873
+      - 41874
+      - 41875
+      - 41876
+      - 41877
+      - 41878
+      - 41879
+      - 41880
+      - 41881
+      - 41882
+      - 41883
+      - 41884
+      - 41885
+      - 41886
+      - 41887
+      - 41888
+      - 41889
+      - 41890
+      - 41891
+      - 41892
+      - 41893
+      - 41894
+      - 41895
+      - 41896
+      - 41897
+      - 41898
+      - 41899
+      - 41900
+      - 41901
+      - 41902
+      - 41903
+      - 41904
+      - 41905
+      - 41906
+      - 41907
+    expected_ref: Joseph Smith—Matthew 1
+    book: Joseph Smith—Matthew
+    variant: Joseph Smith—Matthew
+    description: Joseph Smith—Matthew using variant "Joseph Smith—Matthew"
+  - id: lookup-0482
+    input: JS-M 1
+    expected_ids:
+      - 41853
+      - 41854
+      - 41855
+      - 41856
+      - 41857
+      - 41858
+      - 41859
+      - 41860
+      - 41861
+      - 41862
+      - 41863
+      - 41864
+      - 41865
+      - 41866
+      - 41867
+      - 41868
+      - 41869
+      - 41870
+      - 41871
+      - 41872
+      - 41873
+      - 41874
+      - 41875
+      - 41876
+      - 41877
+      - 41878
+      - 41879
+      - 41880
+      - 41881
+      - 41882
+      - 41883
+      - 41884
+      - 41885
+      - 41886
+      - 41887
+      - 41888
+      - 41889
+      - 41890
+      - 41891
+      - 41892
+      - 41893
+      - 41894
+      - 41895
+      - 41896
+      - 41897
+      - 41898
+      - 41899
+      - 41900
+      - 41901
+      - 41902
+      - 41903
+      - 41904
+      - 41905
+      - 41906
+      - 41907
+    expected_ref: Joseph Smith—Matthew 1
+    book: Joseph Smith—Matthew
+    variant: JS-M
+    description: Joseph Smith—Matthew using variant "JS-M"
+  - id: lookup-0483
+    input: JSM 1
+    expected_ids:
+      - 41853
+      - 41854
+      - 41855
+      - 41856
+      - 41857
+      - 41858
+      - 41859
+      - 41860
+      - 41861
+      - 41862
+      - 41863
+      - 41864
+      - 41865
+      - 41866
+      - 41867
+      - 41868
+      - 41869
+      - 41870
+      - 41871
+      - 41872
+      - 41873
+      - 41874
+      - 41875
+      - 41876
+      - 41877
+      - 41878
+      - 41879
+      - 41880
+      - 41881
+      - 41882
+      - 41883
+      - 41884
+      - 41885
+      - 41886
+      - 41887
+      - 41888
+      - 41889
+      - 41890
+      - 41891
+      - 41892
+      - 41893
+      - 41894
+      - 41895
+      - 41896
+      - 41897
+      - 41898
+      - 41899
+      - 41900
+      - 41901
+      - 41902
+      - 41903
+      - 41904
+      - 41905
+      - 41906
+      - 41907
+    expected_ref: Joseph Smith—Matthew 1
+    book: Joseph Smith—Matthew
+    variant: JSM
+    description: Joseph Smith—Matthew using variant "JSM"
+  - id: lookup-0484
+    input: JS—M 1
+    expected_ids:
+      - 41853
+      - 41854
+      - 41855
+      - 41856
+      - 41857
+      - 41858
+      - 41859
+      - 41860
+      - 41861
+      - 41862
+      - 41863
+      - 41864
+      - 41865
+      - 41866
+      - 41867
+      - 41868
+      - 41869
+      - 41870
+      - 41871
+      - 41872
+      - 41873
+      - 41874
+      - 41875
+      - 41876
+      - 41877
+      - 41878
+      - 41879
+      - 41880
+      - 41881
+      - 41882
+      - 41883
+      - 41884
+      - 41885
+      - 41886
+      - 41887
+      - 41888
+      - 41889
+      - 41890
+      - 41891
+      - 41892
+      - 41893
+      - 41894
+      - 41895
+      - 41896
+      - 41897
+      - 41898
+      - 41899
+      - 41900
+      - 41901
+      - 41902
+      - 41903
+      - 41904
+      - 41905
+      - 41906
+      - 41907
+    expected_ref: Joseph Smith—Matthew 1
+    book: Joseph Smith—Matthew
+    variant: JS—M
+    description: Joseph Smith—Matthew using variant "JS—M"
+  - id: lookup-0485
+    input: Joseph Smith-Matthew 1
+    expected_ids:
+      - 41853
+      - 41854
+      - 41855
+      - 41856
+      - 41857
+      - 41858
+      - 41859
+      - 41860
+      - 41861
+      - 41862
+      - 41863
+      - 41864
+      - 41865
+      - 41866
+      - 41867
+      - 41868
+      - 41869
+      - 41870
+      - 41871
+      - 41872
+      - 41873
+      - 41874
+      - 41875
+      - 41876
+      - 41877
+      - 41878
+      - 41879
+      - 41880
+      - 41881
+      - 41882
+      - 41883
+      - 41884
+      - 41885
+      - 41886
+      - 41887
+      - 41888
+      - 41889
+      - 41890
+      - 41891
+      - 41892
+      - 41893
+      - 41894
+      - 41895
+      - 41896
+      - 41897
+      - 41898
+      - 41899
+      - 41900
+      - 41901
+      - 41902
+      - 41903
+      - 41904
+      - 41905
+      - 41906
+      - 41907
+    expected_ref: Joseph Smith—Matthew 1
+    book: Joseph Smith—Matthew
+    variant: Joseph Smith-Matthew
+    description: Joseph Smith—Matthew using variant "Joseph Smith-Matthew"
+  - id: lookup-0486
+    input: Joseph Smith—History 1
+    expected_ids:
+      - 41908
+      - 41909
+      - 41910
+      - 41911
+      - 41912
+      - 41913
+      - 41914
+      - 41915
+      - 41916
+      - 41917
+      - 41918
+      - 41919
+      - 41920
+      - 41921
+      - 41922
+      - 41923
+      - 41924
+      - 41925
+      - 41926
+      - 41927
+      - 41928
+      - 41929
+      - 41930
+      - 41931
+      - 41932
+      - 41933
+      - 41934
+      - 41935
+      - 41936
+      - 41937
+      - 41938
+      - 41939
+      - 41940
+      - 41941
+      - 41942
+      - 41943
+      - 41944
+      - 41945
+      - 41946
+      - 41947
+      - 41948
+      - 41949
+      - 41950
+      - 41951
+      - 41952
+      - 41953
+      - 41954
+      - 41955
+      - 41956
+      - 41957
+      - 41958
+      - 41959
+      - 41960
+      - 41961
+      - 41962
+      - 41963
+      - 41964
+      - 41965
+      - 41966
+      - 41967
+      - 41968
+      - 41969
+      - 41970
+      - 41971
+      - 41972
+      - 41973
+      - 41974
+      - 41975
+      - 41976
+      - 41977
+      - 41978
+      - 41979
+      - 41980
+      - 41981
+      - 41982
+    expected_ref: Joseph Smith—History 1
+    book: Joseph Smith—History
+    variant: Joseph Smith—History
+    description: Joseph Smith—History using variant "Joseph Smith—History"
+  - id: lookup-0487
+    input: JS-H 1
+    expected_ids:
+      - 41908
+      - 41909
+      - 41910
+      - 41911
+      - 41912
+      - 41913
+      - 41914
+      - 41915
+      - 41916
+      - 41917
+      - 41918
+      - 41919
+      - 41920
+      - 41921
+      - 41922
+      - 41923
+      - 41924
+      - 41925
+      - 41926
+      - 41927
+      - 41928
+      - 41929
+      - 41930
+      - 41931
+      - 41932
+      - 41933
+      - 41934
+      - 41935
+      - 41936
+      - 41937
+      - 41938
+      - 41939
+      - 41940
+      - 41941
+      - 41942
+      - 41943
+      - 41944
+      - 41945
+      - 41946
+      - 41947
+      - 41948
+      - 41949
+      - 41950
+      - 41951
+      - 41952
+      - 41953
+      - 41954
+      - 41955
+      - 41956
+      - 41957
+      - 41958
+      - 41959
+      - 41960
+      - 41961
+      - 41962
+      - 41963
+      - 41964
+      - 41965
+      - 41966
+      - 41967
+      - 41968
+      - 41969
+      - 41970
+      - 41971
+      - 41972
+      - 41973
+      - 41974
+      - 41975
+      - 41976
+      - 41977
+      - 41978
+      - 41979
+      - 41980
+      - 41981
+      - 41982
+    expected_ref: Joseph Smith—History 1
+    book: Joseph Smith—History
+    variant: JS-H
+    description: Joseph Smith—History using variant "JS-H"
+  - id: lookup-0488
+    input: JSH 1
+    expected_ids:
+      - 41908
+      - 41909
+      - 41910
+      - 41911
+      - 41912
+      - 41913
+      - 41914
+      - 41915
+      - 41916
+      - 41917
+      - 41918
+      - 41919
+      - 41920
+      - 41921
+      - 41922
+      - 41923
+      - 41924
+      - 41925
+      - 41926
+      - 41927
+      - 41928
+      - 41929
+      - 41930
+      - 41931
+      - 41932
+      - 41933
+      - 41934
+      - 41935
+      - 41936
+      - 41937
+      - 41938
+      - 41939
+      - 41940
+      - 41941
+      - 41942
+      - 41943
+      - 41944
+      - 41945
+      - 41946
+      - 41947
+      - 41948
+      - 41949
+      - 41950
+      - 41951
+      - 41952
+      - 41953
+      - 41954
+      - 41955
+      - 41956
+      - 41957
+      - 41958
+      - 41959
+      - 41960
+      - 41961
+      - 41962
+      - 41963
+      - 41964
+      - 41965
+      - 41966
+      - 41967
+      - 41968
+      - 41969
+      - 41970
+      - 41971
+      - 41972
+      - 41973
+      - 41974
+      - 41975
+      - 41976
+      - 41977
+      - 41978
+      - 41979
+      - 41980
+      - 41981
+      - 41982
+    expected_ref: Joseph Smith—History 1
+    book: Joseph Smith—History
+    variant: JSH
+    description: Joseph Smith—History using variant "JSH"
+  - id: lookup-0489
+    input: JS—H 1
+    expected_ids:
+      - 41908
+      - 41909
+      - 41910
+      - 41911
+      - 41912
+      - 41913
+      - 41914
+      - 41915
+      - 41916
+      - 41917
+      - 41918
+      - 41919
+      - 41920
+      - 41921
+      - 41922
+      - 41923
+      - 41924
+      - 41925
+      - 41926
+      - 41927
+      - 41928
+      - 41929
+      - 41930
+      - 41931
+      - 41932
+      - 41933
+      - 41934
+      - 41935
+      - 41936
+      - 41937
+      - 41938
+      - 41939
+      - 41940
+      - 41941
+      - 41942
+      - 41943
+      - 41944
+      - 41945
+      - 41946
+      - 41947
+      - 41948
+      - 41949
+      - 41950
+      - 41951
+      - 41952
+      - 41953
+      - 41954
+      - 41955
+      - 41956
+      - 41957
+      - 41958
+      - 41959
+      - 41960
+      - 41961
+      - 41962
+      - 41963
+      - 41964
+      - 41965
+      - 41966
+      - 41967
+      - 41968
+      - 41969
+      - 41970
+      - 41971
+      - 41972
+      - 41973
+      - 41974
+      - 41975
+      - 41976
+      - 41977
+      - 41978
+      - 41979
+      - 41980
+      - 41981
+      - 41982
+    expected_ref: Joseph Smith—History 1
+    book: Joseph Smith—History
+    variant: JS—H
+    description: Joseph Smith—History using variant "JS—H"
+  - id: lookup-0490
+    input: Joseph Smith-History 1
+    expected_ids:
+      - 41908
+      - 41909
+      - 41910
+      - 41911
+      - 41912
+      - 41913
+      - 41914
+      - 41915
+      - 41916
+      - 41917
+      - 41918
+      - 41919
+      - 41920
+      - 41921
+      - 41922
+      - 41923
+      - 41924
+      - 41925
+      - 41926
+      - 41927
+      - 41928
+      - 41929
+      - 41930
+      - 41931
+      - 41932
+      - 41933
+      - 41934
+      - 41935
+      - 41936
+      - 41937
+      - 41938
+      - 41939
+      - 41940
+      - 41941
+      - 41942
+      - 41943
+      - 41944
+      - 41945
+      - 41946
+      - 41947
+      - 41948
+      - 41949
+      - 41950
+      - 41951
+      - 41952
+      - 41953
+      - 41954
+      - 41955
+      - 41956
+      - 41957
+      - 41958
+      - 41959
+      - 41960
+      - 41961
+      - 41962
+      - 41963
+      - 41964
+      - 41965
+      - 41966
+      - 41967
+      - 41968
+      - 41969
+      - 41970
+      - 41971
+      - 41972
+      - 41973
+      - 41974
+      - 41975
+      - 41976
+      - 41977
+      - 41978
+      - 41979
+      - 41980
+      - 41981
+      - 41982
+    expected_ref: Joseph Smith—History 1
+    book: Joseph Smith—History
+    variant: Joseph Smith-History
+    description: Joseph Smith—History using variant "Joseph Smith-History"
+  - id: lookup-0491
+    input: Articles of Faith 1
+    expected_ids:
+      - 41983
+      - 41984
+      - 41985
+      - 41986
+      - 41987
+      - 41988
+      - 41989
+      - 41990
+      - 41991
+      - 41992
+      - 41993
+      - 41994
+      - 41995
+    expected_ref: Articles of Faith 1
+    book: Articles of Faith
+    variant: Articles of Faith
+    description: Articles of Faith using variant "Articles of Faith"
+  - id: lookup-0492
+    input: A of F 1
+    expected_ids:
+      - 41983
+      - 41984
+      - 41985
+      - 41986
+      - 41987
+      - 41988
+      - 41989
+      - 41990
+      - 41991
+      - 41992
+      - 41993
+      - 41994
+      - 41995
+    expected_ref: Articles of Faith 1
+    book: Articles of Faith
+    variant: A of F
+    description: Articles of Faith using variant "A of F"
+  - id: lookup-0493
+    input: AofF 1
+    expected_ids:
+      - 41983
+      - 41984
+      - 41985
+      - 41986
+      - 41987
+      - 41988
+      - 41989
+      - 41990
+      - 41991
+      - 41992
+      - 41993
+      - 41994
+      - 41995
+    expected_ref: Articles of Faith 1
+    book: Articles of Faith
+    variant: AofF
+    description: Articles of Faith using variant "AofF"
+  - id: lookup-0494
+    input: AF 1
+    expected_ids:
+      - 41983
+      - 41984
+      - 41985
+      - 41986
+      - 41987
+      - 41988
+      - 41989
+      - 41990
+      - 41991
+      - 41992
+      - 41993
+      - 41994
+      - 41995
+    expected_ref: Articles of Faith 1
+    book: Articles of Faith
+    variant: AF
+    description: Articles of Faith using variant "AF"
+  - id: lookup-0495
+    input: A.F. 1
+    expected_ids:
+      - 41983
+      - 41984
+      - 41985
+      - 41986
+      - 41987
+      - 41988
+      - 41989
+      - 41990
+      - 41991
+      - 41992
+      - 41993
+      - 41994
+      - 41995
+    expected_ref: Articles of Faith 1
+    book: Articles of Faith
+    variant: A.F.
+    description: Articles of Faith using variant "A.F."

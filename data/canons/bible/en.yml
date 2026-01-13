@@ -4,108 +4,108 @@ language: en
 books:
   genesis:
     name: Genesis
-    pattern: "gen\\.*(?:e*sis)*"
+    pattern: gen\.*(?:e*sis)*
     alt: [gen, gn]
 
   exodus:
     name: Exodus
-    pattern: "exo*\\.*(?:dus)*"
+    pattern: exo*\.*(?:dus)*
     alt: [ex, exod, exo]
 
   leviticus:
     name: Leviticus
-    pattern: "levi*t*\\.*(?:icus)*"
+    pattern: levi*t*\.*(?:icus)*
     alt: [lev, lv]
 
   numbers:
     name: Numbers
-    pattern: "num\\.*(?:bers)*"
+    pattern: num\.*(?:bers)*
     alt: [num, nu, nm]
 
   deuteronomy:
     name: Deuteronomy
-    pattern: "deut\\.*(?:eronomy)*"
+    pattern: deut\.*(?:eronomy)*
     alt: [deut, dt]
 
   joshua:
     name: Joshua
-    pattern: "josh\\.*(?:ua)*"
+    pattern: josh\.*(?:ua)*
     alt: [josh, jos]
 
   judges:
     name: Judges
-    pattern: "judg\\.*(?:es)*"
+    pattern: judg\.*(?:es)*
     alt: [judg, jdg]
 
   ruth:
     name: Ruth
-    pattern: "rut*h*\\.*"
+    pattern: rut*h*\.*
     alt: [ruth, ru]
 
   1_samuel:
     name: 1 Samuel
-    pattern: "sam*u*\\.*(?:el)*"
+    pattern: sam*u*\.*(?:el)*
     alt: [1 sam, 1sam, 1 sm]
 
   2_samuel:
     name: 2 Samuel
-    pattern: "sam*u*\\.*(?:el)*"
+    pattern: sam*u*\.*(?:el)*
     alt: [2 sam, 2sam, 2 sm]
 
   1_kings:
     name: 1 Kings
-    pattern: "ki*n*gs*\\.*"
+    pattern: ki*n*gs*\.*
     alt: [1 kgs, 1kgs, 1 ki]
 
   2_kings:
     name: 2 Kings
-    pattern: "ki*n*gs*\\.*"
+    pattern: ki*n*gs*\.*
     alt: [2 kgs, 2kgs, 2 ki]
 
   1_chronicles:
     name: 1 Chronicles
-    pattern: "chr*o*n*\\.*(?:icles)*"
+    pattern: chr*o*n*\.*(?:icles)*
     alt: [1 chr, 1chr, 1 ch]
 
   2_chronicles:
     name: 2 Chronicles
-    pattern: "chr*o*n*\\.*(?:icles)*"
+    pattern: chr*o*n*\.*(?:icles)*
     alt: [2 chr, 2chr, 2 ch]
 
   ezra:
     name: Ezra
-    pattern: "ezr*\\.*(?:a)*"
+    pattern: ezr*\.*(?:a)*
     alt: [ezr]
 
   nehemiah:
     name: Nehemiah
-    pattern: "neh\\.*(?:emiah)*"
+    pattern: neh\.*(?:emiah)*
     alt: [neh, ne]
 
   esther:
     name: Esther
-    pattern: "esth*\\.*(?:er)*"
+    pattern: esth*\.*(?:er)*
     alt: [est, esth]
 
   job:
     name: Job
-    pattern: "job"
+    pattern: job
     alt: [job, jb]
 
   psalms:
     name: Psalms
-    pattern: "ps\\.*(?:a)*\\.*(?:lm)*\\.*(?:s)*"
+    pattern: ps\.*(?:a)*\.*(?:lm)*\.*(?:s)*
     alt: [ps, pss, psa, psalm]
     singular: Psalm
 
   proverbs:
     name: Proverbs
-    pattern: "prov\\.*(?:erbs)*"
+    pattern: prov\.*(?:erbs)*
     alt: [prov, prv, pr]
 
   ecclesiastes:
     name: Ecclesiastes
-    pattern: "eccl*\\.*(?:esiastes)*"
+    pattern: eccl*\.*(?:esiastes)*
     alt: [eccl, ecc, ec]
 
   song_of_solomon:
@@ -115,107 +115,107 @@ books:
 
   isaiah:
     name: Isaiah
-    pattern: "isa\\.*(?:iah)*"
+    pattern: isa\.*(?:iah)*
     alt: [isa, is]
 
   jeremiah:
     name: Jeremiah
-    pattern: "jer\\.*(?:emiah)*"
+    pattern: jer\.*(?:emiah)*
     alt: [jer, je]
 
   lamentations:
     name: Lamentations
-    pattern: "lame*n*t*\\.*(?:ations)*"
+    pattern: lame*n*t*\.*(?:ations)*
     alt: [lam, la]
 
   ezekiel:
     name: Ezekiel
-    pattern: "eze*k*\\.*(?:iel)*"
+    pattern: eze*k*\.*(?:iel)*
     alt: [ezek, eze, ez]
 
   daniel:
     name: Daniel
-    pattern: "dan\\.*(?:iel)*"
+    pattern: dan\.*(?:iel)*
     alt: [dan, dn]
 
   hosea:
     name: Hosea
-    pattern: "hos*\\.*(?:ea)*"
+    pattern: hos*\.*(?:ea)*
     alt: [hos, ho]
 
   joel:
     name: Joel
-    pattern: "joel*\\.*"
+    pattern: joel*\.*
     alt: [joel, jl]
 
   amos:
     name: Amos
-    pattern: "amos*\\.*"
+    pattern: amos*\.*
     alt: [amos, am]
 
   obadiah:
     name: Obadiah
-    pattern: "obad\\.*(?:iah)*"
+    pattern: obad\.*(?:iah)*
     alt: [obad, ob]
 
   jonah:
     name: Jonah
-    pattern: "jon*\\.*(?:ah)*"
+    pattern: jon*\.*(?:ah)*
     alt: [jonah, jon]
 
   micah:
     name: Micah
-    pattern: "mic*\\.*(?:ah)*"
+    pattern: mic*\.*(?:ah)*
     alt: [mic, mc]
 
   nahum:
     name: Nahum
-    pattern: "nah*\\.*(?:um)*"
+    pattern: nah*\.*(?:um)*
     alt: [nah, na]
 
   habakkuk:
     name: Habakkuk
-    pattern: "hab*\\.*(?:akuk)*"
+    pattern: hab*\.*(?:akuk)*
     alt: [hab, hb]
 
   zephaniah:
     name: Zephaniah
-    pattern: "zeph*\\.*(?:aniah)*"
+    pattern: zeph*\.*(?:aniah)*
     alt: [zeph, zep]
 
   haggai:
     name: Haggai
-    pattern: "hag\\.*(?:gai)*"
+    pattern: hag\.*(?:gai)*
     alt: [hag, hg]
 
   zechariah:
     name: Zechariah
-    pattern: "zech*\\.*(?:ariah)*"
+    pattern: zech*\.*(?:ariah)*
     alt: [zech, zec]
 
   malachi:
     name: Malachi
-    pattern: "mal*\\.*(?:achi)*"
+    pattern: mal*\.*(?:achi)*
     alt: [mal, ml]
 
   matthew:
     name: Matthew
-    pattern: "(?:mat*t*h*|mt)\\.*(?:ew)*"
+    pattern: (?:mat*t*h*|mt)\.*(?:ew)*
     alt: [matt, mat, mt]
 
   mark:
     name: Mark
-    pattern: "m(ar)*k"
+    pattern: m(ar)*k
     alt: [mark, mrk, mk]
 
   luke:
     name: Luke
-    pattern: "lu*k*e*\\.*"
+    pattern: lu*k*e*\.*
     alt: [luke, luk, lk]
 
   john:
     name: John
-    pattern: "jo*h*n\\.*"
+    pattern: jo*h*n\.*
     alt: [john, jhn, jn]
 
   acts:
@@ -225,110 +225,110 @@ books:
 
   romans:
     name: Romans
-    pattern: "rom*\\.*(?:ans)*"
+    pattern: rom*\.*(?:ans)*
     alt: [rom, ro]
 
   1_corinthians:
     name: 1 Corinthians
-    pattern: "cor\\.*(?:inthians)*"
+    pattern: cor\.*(?:inthians)*
     alt: [1 cor, 1cor, 1 co]
 
   2_corinthians:
     name: 2 Corinthians
-    pattern: "cor\\.*(?:inthians)*"
+    pattern: cor\.*(?:inthians)*
     alt: [2 cor, 2cor, 2 co]
 
   galatians:
     name: Galatians
-    pattern: "gal*a*\\.*(?:tians)*"
+    pattern: gal*a*\.*(?:tians)*
     alt: [gal, ga]
 
   ephesians:
     name: Ephesians
-    pattern: "ephe*\\.*(?:sians)*"
+    pattern: ephe*\.*(?:sians)*
     alt: [eph, ep]
 
   philippians:
     name: Philippians
-    pattern: "phili*p*\\.*(?:ippians)*"
+    pattern: phili*p*\.*(?:ippians)*
     alt: [phil, php]
 
   colossians:
     name: Colossians
-    pattern: "colo*s*\\.*(?:sians)*"
+    pattern: colo*s*\.*(?:sians)*
     alt: [col, co]
 
   1_thessalonians:
     name: 1 Thessalonians
-    pattern: "thess*\\.*(?:alonians)*"
+    pattern: thess*\.*(?:alonians)*
     alt: [1 thess, 1thess, 1 th]
 
   2_thessalonians:
     name: 2 Thessalonians
-    pattern: "thess*\\.*(?:alonians)*"
+    pattern: thess*\.*(?:alonians)*
     alt: [2 thess, 2thess, 2 th]
 
   1_timothy:
     name: 1 Timothy
-    pattern: "tim\\.*(?:othy)*"
+    pattern: tim\.*(?:othy)*
     alt: [1 tim, 1tim, 1 ti]
 
   2_timothy:
     name: 2 Timothy
-    pattern: "tim\\.*(?:othy)*"
+    pattern: tim\.*(?:othy)*
     alt: [2 tim, 2tim, 2 ti]
 
   titus:
     name: Titus
-    pattern: "tit*\\.*(?:us)*"
+    pattern: tit*\.*(?:us)*
     alt: [titus, tit]
 
   philemon:
     name: Philemon
-    pattern: "philem*o*n*\\.*"
+    pattern: philem*o*n*\.*
     alt: [phlm, phm]
 
   hebrews:
     name: Hebrews
-    pattern: "he\\.*(?:b)*\\.*(?:rews)*"
+    pattern: he\.*(?:b)*\.*(?:rews)*
     alt: [heb, he]
 
   james:
     name: James
-    pattern: "ja\\.*(?:me)*s"
+    pattern: ja\.*(?:me)*s
     alt: [james, jas, jm]
 
   1_peter:
     name: 1 Peter
-    pattern: "pet*\\.*(?:er)*"
+    pattern: pet*\.*(?:er)*
     alt: [1 pet, 1pet, 1 pe]
 
   2_peter:
     name: 2 Peter
-    pattern: "pet*\\.*(?:er)*"
+    pattern: pet*\.*(?:er)*
     alt: [2 pet, 2pet, 2 pe]
 
   1_john:
     name: 1 John
-    pattern: "jo*h*n\\.*"
+    pattern: jo*h*n\.*
     alt: [1 john, 1john, 1 jn]
 
   2_john:
     name: 2 John
-    pattern: "jo*h*n\\.*"
+    pattern: jo*h*n\.*
     alt: [2 john, 2john, 2 jn]
 
   3_john:
     name: 3 John
-    pattern: "jo*h*n\\.*"
+    pattern: jo*h*n\.*
     alt: [3 john, 3john, 3 jn]
 
   jude:
     name: Jude
-    pattern: "ju\\.*(?:d)*\\.*(?:e)*"
+    pattern: ju\.*(?:d)*\.*(?:e)*
     alt: [jude, jud]
 
   revelation:
     name: Revelation
-    pattern: "rev\\.*(?:elation)*"
+    pattern: rev\.*(?:elation)*
     alt: [rev, re, apoc, revelations, apocalypse]

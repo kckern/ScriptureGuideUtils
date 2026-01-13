@@ -1,0 +1,24 @@
+description: Critical detect reference tests
+tests:
+  - id: en-detect-001
+    input: Read John 3:16 for comfort.
+    expected_refs:
+      - John 3:16
+    expected_ids:
+      - - 26137
+    context_variations:
+      contextAware_true:
+        expected_output: Read [John 3:16] for comfort.
+      contextAware_false:
+        expected_output: Read [John 3:16] for comfort.
+    description: Simple inline reference
+  - id: en-detect-002
+    input: See Genesis 1:1 and Exodus 20:1.
+    expected_refs:
+      - Genesis 1:1; Exodus 20:1
+    context_variations:
+      contextAware_true:
+        expected_output: See [Genesis 1:1; Exodus 20:1].
+      contextAware_false:
+        expected_output: See [Genesis 1:1; Exodus 20:1].
+    description: Multiple references grouped together

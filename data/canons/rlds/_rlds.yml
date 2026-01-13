@@ -1,0 +1,412 @@
+canon: rlds
+name: RLDS/Community of Christ Scripture
+description: Joseph Smith Translation (Inspired Version) plus Book of Mormon (RLDS versification)
+id_format: integer
+id_start: 1
+id_end: 39975
+books:
+  - key: jst_genesis
+    order: 1
+    chapters: 50
+    verses: [33, 31, 33, 13, 45, 71, 84, 56, 32, 20, 20, 15, 15, 40, 22, 20, 33, 42, 44, 20, 32, 28, 18, 73, 34, 35, 46, 22, 35, 43, 55, 33, 20, 31, 29, 43, 36, 30, 23, 23, 57, 38, 34, 34, 28, 34, 31, 28, 33, 38]
+    first_verse_id: 1
+  - key: jst_exodus
+    order: 2
+    chapters: 40
+    verses: [22, 25, 22, 31, 23, 29, 25, 32, 35, 29, 10, 51, 22, 32, 27, 36, 16, 27, 25, 26, 36, 31, 33, 18, 40, 37, 21, 43, 46, 38, 18, 35, 23, 35, 35, 38, 29, 31, 43, 38]
+    first_verse_id: 1734
+  - key: jst_leviticus
+    order: 3
+    chapters: 27
+    verses: [17, 16, 17, 35, 19, 30, 38, 36, 24, 20, 47, 8, 59, 57, 33, 34, 16, 30, 37, 27, 24, 33, 44, 23, 55, 46, 34]
+    first_verse_id: 2947
+  - key: jst_numbers
+    order: 4
+    chapters: 36
+    verses: [54, 34, 51, 49, 31, 27, 89, 26, 23, 36, 35, 16, 33, 45, 41, 50, 13, 32, 22, 29, 35, 41, 30, 25, 18, 65, 23, 31, 40, 16, 54, 42, 56, 29, 34, 13]
+    first_verse_id: 3806
+  - key: jst_deuteronomy
+    order: 5
+    chapters: 34
+    verses: [46, 37, 29, 49, 33, 25, 26, 20, 29, 22, 32, 32, 18, 29, 23, 22, 20, 22, 21, 20, 23, 30, 25, 22, 19, 19, 26, 68, 29, 20, 30, 52, 29, 12]
+    first_verse_id: 5094
+  - key: jst_joshua
+    order: 6
+    chapters: 24
+    verses: [18, 24, 17, 24, 15, 27, 26, 35, 27, 43, 23, 24, 33, 15, 63, 10, 18, 28, 51, 9, 45, 34, 16, 33]
+    first_verse_id: 6053
+  - key: jst_judges
+    order: 7
+    chapters: 21
+    verses: [36, 23, 31, 24, 31, 40, 25, 35, 57, 18, 40, 15, 25, 20, 20, 31, 13, 31, 30, 48, 25]
+    first_verse_id: 6711
+  - key: jst_ruth
+    order: 8
+    chapters: 4
+    verses: [22, 23, 18, 22]
+    first_verse_id: 7329
+  - key: jst_1_samuel
+    order: 9
+    chapters: 31
+    verses: [28, 36, 21, 22, 12, 21, 17, 22, 27, 27, 15, 25, 23, 52, 35, 23, 58, 30, 24, 42, 15, 23, 29, 22, 44, 25, 12, 25, 11, 31, 13]
+    first_verse_id: 7414
+  - key: jst_2_samuel
+    order: 10
+    chapters: 24
+    verses: [27, 32, 39, 12, 25, 23, 29, 18, 13, 19, 27, 31, 39, 33, 37, 23, 29, 33, 43, 26, 22, 51, 39, 25]
+    first_verse_id: 8224
+  - key: jst_1_kings
+    order: 11
+    chapters: 22
+    verses: [53, 46, 28, 34, 18, 38, 51, 66, 28, 29, 43, 33, 34, 31, 34, 34, 24, 46, 21, 43, 29, 53]
+    first_verse_id: 8919
+  - key: jst_2_kings
+    order: 12
+    chapters: 25
+    verses: [18, 25, 27, 44, 27, 33, 20, 29, 37, 36, 21, 21, 25, 29, 38, 20, 41, 37, 37, 21, 26, 20, 37, 20, 30]
+    first_verse_id: 9735
+  - key: jst_1_chronicles
+    order: 13
+    chapters: 29
+    verses: [54, 55, 24, 43, 26, 81, 40, 40, 44, 14, 47, 40, 14, 17, 29, 43, 27, 17, 19, 8, 30, 19, 32, 31, 31, 32, 34, 21, 30]
+    first_verse_id: 10454
+  - key: jst_2_chronicles
+    order: 14
+    chapters: 36
+    verses: [17, 18, 17, 22, 14, 42, 22, 18, 31, 19, 23, 16, 22, 15, 19, 14, 19, 34, 11, 37, 20, 12, 21, 27, 28, 23, 9, 27, 36, 27, 21, 33, 25, 33, 27, 23]
+    first_verse_id: 11396
+  - key: jst_ezra
+    order: 15
+    chapters: 10
+    verses: [11, 70, 13, 24, 17, 22, 28, 36, 15, 44]
+    first_verse_id: 12218
+  - key: jst_nehemiah
+    order: 16
+    chapters: 13
+    verses: [11, 20, 32, 23, 19, 19, 73, 18, 38, 39, 36, 47, 31]
+    first_verse_id: 12498
+  - key: jst_esther
+    order: 17
+    chapters: 10
+    verses: [22, 23, 15, 17, 14, 14, 10, 17, 32, 3]
+    first_verse_id: 12904
+  - key: jst_job
+    order: 18
+    chapters: 42
+    verses: [22, 13, 26, 21, 27, 30, 21, 22, 35, 22, 20, 25, 28, 22, 35, 22, 16, 21, 29, 29, 34, 30, 17, 25, 6, 14, 23, 28, 25, 31, 40, 22, 33, 37, 16, 33, 24, 41, 30, 24, 34, 17]
+    first_verse_id: 13071
+  - key: jst_psalms
+    order: 19
+    chapters: 150
+    verses: [6, 12, 8, 8, 12, 10, 17, 9, 20, 18, 7, 8, 6, 7, 5, 11, 15, 50, 14, 9, 31, 31, 6, 10, 22, 12, 14, 11, 11, 12, 24, 11, 22, 22, 28, 12, 40, 22, 13, 17, 13, 11, 5, 26, 17, 11, 14, 14, 20, 23, 19, 9, 6, 7, 23, 13, 11, 11, 17, 12, 8, 12, 11, 10, 13, 20, 7, 35, 36, 5, 24, 20, 28, 23, 10, 12, 20, 72, 14, 19, 16, 8, 18, 12, 13, 17, 7, 18, 52, 17, 16, 15, 5, 23, 11, 13, 12, 9, 9, 5, 8, 28, 22, 35, 45, 48, 43, 13, 31, 7, 10, 10, 9, 8, 18, 19, 2, 29, 176, 8, 8, 9, 4, 8, 5, 6, 6, 8, 8, 8, 3, 18, 3, 3, 21, 26, 9, 8, 24, 13, 10, 11, 15, 8, 21, 11, 20, 14, 9, 6]
+    first_verse_id: 14141
+  - key: jst_proverbs
+    order: 20
+    chapters: 31
+    verses: [33, 22, 35, 27, 23, 35, 27, 36, 18, 32, 31, 28, 25, 35, 33, 33, 28, 24, 29, 30, 31, 29, 35, 34, 28, 28, 27, 28, 27, 33, 31]
+    first_verse_id: 16633
+  - key: jst_ecclesiastes
+    order: 21
+    chapters: 12
+    verses: [18, 26, 22, 16, 20, 12, 29, 17, 18, 20, 10, 14]
+    first_verse_id: 17548
+  - key: jst_song_of_solomon
+    order: 22
+    chapters: 8
+    verses: [17, 17, 11, 16, 16, 13, 13, 14]
+    first_verse_id: 17770
+  - key: jst_isaiah
+    order: 23
+    chapters: 66
+    verses: [31, 22, 26, 6, 30, 13, 25, 22, 21, 34, 16, 6, 22, 32, 9, 14, 14, 7, 25, 6, 17, 25, 18, 23, 12, 21, 13, 29, 24, 33, 9, 20, 24, 17, 10, 22, 38, 22, 8, 31, 29, 25, 28, 28, 25, 13, 15, 22, 26, 11, 23, 15, 12, 17, 13, 12, 21, 14, 21, 22, 11, 12, 19, 12, 25, 24]
+    first_verse_id: 17887
+  - key: jst_jeremiah
+    order: 24
+    chapters: 52
+    verses: [19, 37, 25, 31, 31, 30, 34, 22, 26, 25, 23, 17, 27, 22, 21, 21, 27, 23, 15, 18, 14, 30, 40, 10, 38, 24, 22, 17, 32, 24, 40, 44, 26, 22, 19, 32, 21, 28, 18, 16, 18, 22, 13, 30, 5, 28, 7, 47, 39, 46, 64, 34]
+    first_verse_id: 19179
+  - key: jst_lamentations
+    order: 25
+    chapters: 5
+    verses: [22, 22, 66, 22, 22]
+    first_verse_id: 20543
+  - key: jst_ezekiel
+    order: 26
+    chapters: 48
+    verses: [28, 10, 27, 17, 17, 14, 27, 18, 11, 22, 25, 28, 23, 23, 8, 63, 24, 32, 14, 49, 32, 31, 49, 27, 17, 21, 36, 26, 21, 26, 18, 32, 33, 31, 15, 38, 28, 23, 29, 49, 26, 20, 27, 31, 25, 24, 23, 35]
+    first_verse_id: 20697
+  - key: jst_daniel
+    order: 27
+    chapters: 12
+    verses: [21, 49, 30, 37, 31, 28, 28, 27, 27, 21, 45, 13]
+    first_verse_id: 21970
+  - key: jst_hosea
+    order: 28
+    chapters: 14
+    verses: [11, 23, 5, 19, 15, 11, 16, 14, 17, 15, 12, 14, 16, 9]
+    first_verse_id: 22327
+  - key: jst_joel
+    order: 29
+    chapters: 3
+    verses: [20, 32, 21]
+    first_verse_id: 22524
+  - key: jst_amos
+    order: 30
+    chapters: 9
+    verses: [15, 16, 15, 13, 27, 14, 17, 14, 15]
+    first_verse_id: 22597
+  - key: jst_obadiah
+    order: 31
+    chapters: 1
+    verses: [21]
+    first_verse_id: 22743
+  - key: jst_jonah
+    order: 32
+    chapters: 4
+    verses: [17, 10, 10, 11]
+    first_verse_id: 22764
+  - key: jst_micah
+    order: 33
+    chapters: 7
+    verses: [16, 13, 12, 13, 15, 16, 20]
+    first_verse_id: 22812
+  - key: jst_nahum
+    order: 34
+    chapters: 3
+    verses: [15, 13, 19]
+    first_verse_id: 22917
+  - key: jst_habakkuk
+    order: 35
+    chapters: 3
+    verses: [17, 20, 19]
+    first_verse_id: 22964
+  - key: jst_zephaniah
+    order: 36
+    chapters: 3
+    verses: [18, 15, 20]
+    first_verse_id: 23020
+  - key: jst_haggai
+    order: 37
+    chapters: 2
+    verses: [15, 23]
+    first_verse_id: 23073
+  - key: jst_zechariah
+    order: 38
+    chapters: 14
+    verses: [21, 13, 10, 14, 11, 15, 14, 23, 17, 12, 17, 14, 9, 21]
+    first_verse_id: 23111
+  - key: jst_malachi
+    order: 39
+    chapters: 4
+    verses: [14, 17, 18, 6]
+    first_verse_id: 23322
+  - key: jst_matthew
+    order: 40
+    chapters: 28
+    verses: [25, 23, 17, 25, 48, 34, 29, 34, 38, 42, 30, 50, 58, 36, 39, 28, 27, 35, 30, 34, 46, 46, 39, 51, 46, 75, 66, 20]
+    first_verse_id: 23377
+  - key: jst_mark
+    order: 41
+    chapters: 16
+    verses: [45, 28, 35, 41, 43, 56, 37, 38, 50, 52, 33, 44, 37, 72, 47, 20]
+    first_verse_id: 24448
+  - key: jst_luke
+    order: 42
+    chapters: 24
+    verses: [80, 52, 38, 44, 39, 49, 50, 56, 62, 42, 54, 59, 35, 35, 32, 31, 37, 43, 48, 47, 38, 71, 56, 53]
+    first_verse_id: 25126
+  - key: jst_john
+    order: 43
+    chapters: 21
+    verses: [51, 25, 36, 54, 47, 71, 53, 59, 41, 42, 57, 50, 38, 31, 27, 33, 26, 40, 42, 31, 25]
+    first_verse_id: 26277
+  - key: jst_acts
+    order: 44
+    chapters: 28
+    verses: [26, 47, 26, 37, 42, 15, 60, 40, 43, 48, 30, 25, 52, 28, 41, 40, 34, 28, 41, 38, 40, 30, 35, 27, 27, 32, 44, 31]
+    first_verse_id: 27156
+  - key: jst_romans
+    order: 45
+    chapters: 16
+    verses: [32, 29, 31, 25, 21, 23, 25, 39, 33, 21, 36, 21, 14, 23, 33, 27]
+    first_verse_id: 28163
+  - key: jst_1_corinthians
+    order: 46
+    chapters: 16
+    verses: [31, 16, 23, 21, 13, 20, 40, 13, 27, 33, 34, 31, 13, 40, 58, 24]
+    first_verse_id: 28596
+  - key: jst_2_corinthians
+    order: 47
+    chapters: 13
+    verses: [24, 17, 18, 18, 21, 18, 16, 24, 15, 18, 33, 21, 14]
+    first_verse_id: 29033
+  - key: jst_galatians
+    order: 48
+    chapters: 6
+    verses: [24, 21, 29, 31, 26, 18]
+    first_verse_id: 29290
+  - key: jst_ephesians
+    order: 49
+    chapters: 6
+    verses: [23, 22, 21, 32, 33, 24]
+    first_verse_id: 29439
+  - key: jst_philippians
+    order: 50
+    chapters: 4
+    verses: [30, 30, 21, 23]
+    first_verse_id: 29594
+  - key: jst_colossians
+    order: 51
+    chapters: 4
+    verses: [29, 23, 25, 18]
+    first_verse_id: 29698
+  - key: jst_1_thessalonians
+    order: 52
+    chapters: 5
+    verses: [10, 20, 13, 18, 28]
+    first_verse_id: 29793
+  - key: jst_2_thessalonians
+    order: 53
+    chapters: 3
+    verses: [12, 17, 18]
+    first_verse_id: 29882
+  - key: jst_1_timothy
+    order: 54
+    chapters: 6
+    verses: [20, 15, 16, 16, 25, 21]
+    first_verse_id: 29929
+  - key: jst_2_timothy
+    order: 55
+    chapters: 4
+    verses: [18, 26, 17, 22]
+    first_verse_id: 30042
+  - key: jst_titus
+    order: 56
+    chapters: 3
+    verses: [16, 15, 15]
+    first_verse_id: 30125
+  - key: jst_philemon
+    order: 57
+    chapters: 1
+    verses: [25]
+    first_verse_id: 30171
+  - key: jst_hebrews
+    order: 58
+    chapters: 13
+    verses: [14, 18, 19, 16, 14, 20, 28, 13, 28, 39, 40, 29, 25]
+    first_verse_id: 30196
+  - key: jst_james
+    order: 59
+    chapters: 5
+    verses: [27, 26, 18, 17, 20]
+    first_verse_id: 30499
+  - key: jst_1_peter
+    order: 60
+    chapters: 5
+    verses: [25, 25, 22, 19, 14]
+    first_verse_id: 30607
+  - key: jst_2_peter
+    order: 61
+    chapters: 3
+    verses: [21, 22, 18]
+    first_verse_id: 30712
+  - key: jst_1_john
+    order: 62
+    chapters: 5
+    verses: [10, 29, 24, 21, 21]
+    first_verse_id: 30773
+  - key: jst_2_john
+    order: 63
+    chapters: 1
+    verses: [13]
+    first_verse_id: 30878
+  - key: jst_3_john
+    order: 64
+    chapters: 1
+    verses: [14]
+    first_verse_id: 30891
+  - key: jst_jude
+    order: 65
+    chapters: 1
+    verses: [25]
+    first_verse_id: 30905
+  - key: jst_revelation
+    order: 66
+    chapters: 22
+    verses: [20, 29, 22, 11, 14, 17, 17, 13, 21, 11, 19, 17, 18, 20, 8, 21, 18, 24, 21, 15, 27, 21]
+    first_verse_id: 30930
+  - key: 1_nephi
+    order: 67
+    chapters: 7
+    verses: [174, 100, 255, 62, 262, 56, 68]
+    first_verse_id: 31334
+  - key: 2_nephi
+    order: 68
+    chapters: 15
+    verses: [126, 48, 64, 51, 114, 106, 43, 100, 137, 54, 160, 98, 31, 12, 18]
+    first_verse_id: 32311
+  - key: jacob
+    order: 69
+    chapters: 5
+    verses: [19, 69, 151, 18, 45]
+    first_verse_id: 33473
+  - key: enos
+    order: 70
+    chapters: 1
+    verses: [45]
+    first_verse_id: 33775
+  - key: jarom
+    order: 71
+    chapters: 1
+    verses: [32]
+    first_verse_id: 33820
+  - key: omni
+    order: 72
+    chapters: 1
+    verses: [52]
+    first_verse_id: 33852
+  - key: words_of_mormon
+    order: 73
+    chapters: 1
+    verses: [27]
+    first_verse_id: 33904
+  - key: mosiah
+    order: 74
+    chapters: 13
+    verses: [129, 49, 21, 9, 86, 58, 124, 91, 181, 19, 207, 26, 68]
+    first_verse_id: 33931
+  - key: alma
+    order: 75
+    chapters: 30
+    verses: [129, 28, 108, 9, 44, 42, 50, 108, 73, 111, 32, 219, 82, 127, 68, 260, 83, 17, 115, 99, 186, 44, 44, 79, 63, 168, 58, 26, 62, 21]
+    first_verse_id: 34999
+  - key: helaman
+    order: 76
+    chapters: 5
+    verses: [52, 168, 132, 73, 140]
+    first_verse_id: 37554
+  - key: 3_nephi
+    order: 77
+    chapters: 14
+    verses: [57, 109, 70, 75, 115, 37, 45, 74, 106, 41, 33, 34, 62, 2]
+    first_verse_id: 38119
+  - key: 4_nephi
+    order: 78
+    chapters: 1
+    verses: [59]
+    first_verse_id: 38979
+  - key: mormon
+    order: 79
+    chapters: 4
+    verses: [89, 54, 32, 103]
+    first_verse_id: 39038
+  - key: ether
+    order: 80
+    chapters: 6
+    verses: [116, 5, 102, 115, 41, 109]
+    first_verse_id: 39316
+  - key: moroni
+    order: 81
+    chapters: 10
+    verses: [4, 3, 3, 4, 3, 9, 53, 35, 28, 30]
+    first_verse_id: 39804

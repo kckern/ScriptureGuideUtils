@@ -1,0 +1,12 @@
+canon: hindu
+name: Hindu Scripture
+description: Bhagavad Gita - 18 chapters of sacred Hindu scripture from the Mahabharata
+id_format: integer
+id_start: 50001
+id_end: 50700
+books:
+  - key: bhagavad_gita
+    order: 1
+    chapters: 18
+    verses: [47, 72, 43, 42, 29, 47, 30, 28, 34, 42, 55, 20, 35, 27, 20, 24, 28, 78]
+    first_verse_id: 50001

@@ -1,0 +1,9 @@
+canon: hindu
+language: en
+
+books:
+  bhagavad_gita:
+    name: Bhagavad Gita
+    pattern: "(?:bhagavad[- ]*)*gita"
+    alt: [gita, bg, bhagavad gita, bhagavadgita]
+    chapter_label: chapter

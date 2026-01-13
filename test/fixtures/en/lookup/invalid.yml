@@ -1,0 +1,38 @@
+description: Invalid input tests
+tests:
+  - id: en-lookup-invalid-001
+    input: Nosuchbook 1:1
+    expected_ids: []
+    description: Non-existent book
+  - id: en-lookup-invalid-002
+    input: ""
+    expected_ids: []
+    description: Empty string
+  - id: en-lookup-invalid-003
+    input: John 999:999
+    expected_ids: []
+    description: Invalid chapter and verse
+  - id: invalid-0538
+    input: Nosuchbook 1:1
+    expected_ids: []
+    description: Non-existent book
+  - id: invalid-0539
+    input: ""
+    expected_ids: []
+    description: Empty string
+  - id: invalid-0540
+    input: John
+    expected_ids: []
+    description: Book name only, no reference
+  - id: invalid-0541
+    input: John 999:999
+    expected_ids: []
+    description: Invalid chapter and verse
+  - id: invalid-0542
+    input: "123"
+    expected_ids: []
+    description: Just numbers
+  - id: invalid-0543
+    input: Genesis 1:1000
+    expected_ids: []
+    description: Invalid verse number

@@ -7,3 +7,8 @@ test_results/test_results.html
 /dist/*.cjs
 /dist/*.mjs
 /dist/*.map
+.env
+.claude/
+test-results.md
+.DS_Store
+.venv/

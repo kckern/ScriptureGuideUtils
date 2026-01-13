@@ -1,0 +1,351 @@
+description: Negative test cases - text that looks like scripture references but should NOT be detected
+tests:
+  - id: en-detect-negative-001
+    input: The meeting starts at 3:16 PM in the fellowship hall.
+    expected_refs: []
+    tags:
+      - negative
+      - time
+    description: Time expression should not match
+  - id: en-detect-negative-002
+    input: I'll pick up John at 3:16 from the airport.
+    expected_refs: []
+    tags:
+      - negative
+      - time
+      - name-collision
+    description: Person named John with time
+  - id: en-detect-negative-003
+    input: Mark arrived at 10:30, Luke at 11:15, and Matthew at noon.
+    expected_refs: []
+    tags:
+      - negative
+      - time
+      - multiple-names
+    description: People with gospel names and arrival times
+  - id: en-detect-negative-004
+    input: The Genesis concert starts at 7:30 tonight.
+    expected_refs: []
+    tags:
+      - negative
+      - time
+      - band-name
+    description: Band named Genesis with time
+  - id: en-detect-negative-005
+    input: The Patriots defeated the Giants 24:21 in overtime.
+    expected_refs: []
+    tags:
+      - negative
+      - sports-score
+    description: Sports score format
+  - id: en-detect-negative-006
+    input: "Final score: Romans 3, Corinthians 1."
+    expected_refs: []
+    tags:
+      - negative
+      - sports-score
+      - team-names
+    description: Sports teams with biblical city names
+  - id: en-detect-negative-007
+    input: The Saints beat the Cardinals 27:24 last Sunday.
+    expected_refs: []
+    tags:
+      - negative
+      - sports-score
+      - religious-team-names
+    description: NFL teams with religious names
+  - id: en-detect-negative-008
+    input: Ruth hit 3 home runs in yesterday's game.
+    expected_refs: []
+    tags:
+      - negative
+      - personal-name
+      - sports
+    description: Person named Ruth with number
+  - id: en-detect-negative-009
+    input: I spoke with Mark 2 days ago about the project.
+    expected_refs: []
+    tags:
+      - negative
+      - personal-name
+      - time-ago
+    description: Person named Mark with days ago
+  - id: en-detect-negative-010
+    input: Matthew is 6 feet tall and still growing!
+    expected_refs: []
+    tags:
+      - negative
+      - personal-name
+      - measurement
+    description: Person named Matthew with height
+  - id: en-detect-negative-011
+    input: James won 1st place in the competition.
+    expected_refs: []
+    tags:
+      - negative
+      - personal-name
+      - ranking
+    description: Person named James with ranking
+  - id: en-detect-negative-012
+    input: Peter 1 and Peter 2 are twins in my class.
+    expected_refs: []
+    tags:
+      - negative
+      - personal-name
+      - numbered-people
+    description: Two people named Peter numbered
+  - id: en-detect-negative-013
+    input: I, John, write these words to you today.
+    expected_refs: []
+    tags:
+      - negative
+      - first-person
+      - i-comma
+    description: First person "I, John" not "1 John"
+  - id: en-detect-negative-014
+    input: As I, Peter, have stated before in my letters...
+    expected_refs: []
+    tags:
+      - negative
+      - first-person
+      - self-reference
+    description: Someone named Peter referring to self
+  - id: en-detect-negative-015
+    input: In 1 Kings County, New York, the population grew.
+    expected_refs: []
+    tags:
+      - negative
+      - place-name
+    description: Kings County place name
+  - id: en-detect-negative-016
+    input: The year 1984, chapter 2, describes the Ministry of Truth.
+    expected_refs: []
+    tags:
+      - negative
+      - book-title
+      - orwell
+    description: 1984 novel chapter reference
+  - id: en-detect-negative-017
+    input: Acts 2 of the play begins with a soliloquy.
+    expected_refs: []
+    tags:
+      - negative
+      - theater
+      - act
+    description: Theater act reference
+  - id: en-detect-negative-018
+    input: Please update to version 3.16.4 of the application.
+    expected_refs: []
+    tags:
+      - negative
+      - version-number
+    description: Software version number
+  - id: en-detect-negative-019
+    input: The error occurred at line 316 in Genesis.java.
+    expected_refs: []
+    tags:
+      - negative
+      - code
+      - filename
+    description: Code file named Genesis
+  - id: en-detect-negative-020
+    input: "Run the command: exodus --chapter 3 --verse 14"
+    expected_refs: []
+    tags:
+      - negative
+      - code
+      - command-line
+    description: Command line with biblical-looking flags
+  - id: en-detect-negative-021
+    input: "The API returns JSON: { 'john': 3, 'chapter': 16 }"
+    expected_refs: []
+    tags:
+      - negative
+      - code
+      - json
+    description: JSON with coincidental values
+  - id: en-detect-negative-022
+    input: See Section 3.16 of the municipal code for parking regulations.
+    expected_refs: []
+    tags:
+      - negative
+      - legal
+      - section
+    description: Legal section reference
+  - id: en-detect-negative-023
+    input: Article II, Section 3 of the Constitution addresses succession.
+    expected_refs: []
+    tags:
+      - negative
+      - legal
+      - constitution
+    description: Constitutional article/section
+  - id: en-detect-negative-024
+    input: Per Regulation 1, Peter must file the report.
+    expected_refs: []
+    tags:
+      - negative
+      - legal
+      - regulation
+    description: Regulation with person named Peter
+  - id: en-detect-negative-025
+    input: The aspect ratio is 16:9 for widescreen displays.
+    expected_refs: []
+    tags:
+      - negative
+      - ratio
+    description: Aspect ratio
+  - id: en-detect-negative-026
+    input: Mix the ingredients in a 3:1 ratio.
+    expected_refs: []
+    tags:
+      - negative
+      - ratio
+      - recipe
+    description: Recipe ratio
+  - id: en-detect-negative-027
+    input: The scale is 1:24 for this model.
+    expected_refs: []
+    tags:
+      - negative
+      - ratio
+      - scale
+    description: Model scale ratio
+  - id: en-detect-negative-028
+    input: Track 3 runs 3:16 in length.
+    expected_refs: []
+    tags:
+      - negative
+      - music
+      - track-time
+    description: Music track with timestamp
+  - id: en-detect-negative-029
+    input: The song 'Revelation' runs 4:32 in length.
+    expected_refs: []
+    tags:
+      - negative
+      - music
+      - song-title
+    description: Song titled Revelation with duration
+  - id: en-detect-negative-030
+    input: Listen to Psalm by the band U2.
+    expected_refs: []
+    tags:
+      - negative
+      - music
+      - song-title
+    description: Song titled like a Psalm
+  - id: en-detect-negative-031
+    input: Episode 3, 'Genesis,' airs at 9 PM.
+    expected_refs: []
+    tags:
+      - negative
+      - tv
+      - episode-title
+    description: TV episode with biblical title
+  - id: en-detect-negative-032
+    input: See Chapter 3, page 16 of the textbook.
+    expected_refs: []
+    tags:
+      - negative
+      - textbook
+      - chapter-page
+    description: Textbook chapter and page
+  - id: en-detect-negative-033
+    input: Problem 3.16 asks you to solve for x.
+    expected_refs: []
+    tags:
+      - negative
+      - homework
+      - problem-number
+    description: Homework problem number
+  - id: en-detect-negative-034
+    input: "In 'Romans: A History of the Empire,' chapter 8 discusses trade."
+    expected_refs: []
+    tags:
+      - negative
+      - book-title
+      - history
+    description: History book about Romans
+  - id: en-detect-negative-035
+    input: King James I of England commissioned the translation.
+    expected_refs: []
+    tags:
+      - negative
+      - historical-figure
+    description: Historical King James reference
+  - id: en-detect-negative-036
+    input: I read John's essay and Peter's response yesterday.
+    expected_refs: []
+    tags:
+      - negative
+      - possessive
+    description: Possessive form of biblical names
+  - id: en-detect-negative-037
+    input: The 1 Kings game and 2 Kings game are chess variants.
+    expected_refs: []
+    tags:
+      - negative
+      - game-name
+    description: Games with numbered Kings in name
+  - id: en-detect-negative-038
+    input: She ordered the Mark 2 version of the product.
+    expected_refs: []
+    tags:
+      - negative
+      - product-version
+    description: Product version "Mark 2"
+  - id: en-detect-negative-039
+    input: The Genesis 3 is a great gaming console.
+    expected_refs: []
+    tags:
+      - negative
+      - product-name
+      - sega
+    description: Sega Genesis product reference
+  - id: en-detect-negative-040
+    input: My son, Timothy, won 1st place in his class.
+    expected_refs: []
+    tags:
+      - negative
+      - personal-name
+      - ranking
+    description: Person Timothy with ranking
+  - id: en-detect-negative-041
+    input: The job took 3 years to complete.
+    expected_refs: []
+    tags:
+      - negative
+      - ambiguous
+      - job-work
+    description: "\"job\" as work/task, not biblical Job"
+  - id: en-detect-negative-042
+    input: Exodus 3D is a stunning visual experience.
+    expected_refs: []
+    tags:
+      - negative
+      - movie-format
+    description: Movie with Exodus in title and 3D format
+  - id: en-detect-negative-043
+    input: According to Luke, about 3-4 people attended the party.
+    expected_refs: []
+    tags:
+      - negative
+      - personal-name
+      - estimate
+    description: Person named Luke giving estimate
+  - id: en-detect-negative-044
+    input: The band Genesis released 15 studio albums.
+    expected_refs: []
+    tags:
+      - negative
+      - band-name
+      - statistic
+    description: Band Genesis with album count
+  - id: en-detect-negative-045
+    input: "I watched Exodus: Gods and Kings last night."
+    expected_refs: []
+    tags:
+      - negative
+      - movie-title
+    description: Movie title containing Exodus

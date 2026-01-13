@@ -1,0 +1,15 @@
+canon: islam
+language: en
+
+books:
+  quran:
+    name: Qur'an
+    pattern: "(?:the *)*(?:holy *)*(?:qur['']*an|koran|quran)"
+    alt: [quran, koran, qur'an, qu'ran, al-quran]
+    chapter_label: surah
+    verse_label: ayah
+
+pre_rules:
+  - ['\bsurah\s+', '']
+  - ['\bayah\s+', ':']
+  - ['\bayat\s+', ':']

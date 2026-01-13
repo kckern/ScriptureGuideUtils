@@ -1,0 +1,169 @@
+# Edge case test data for mapping tests
+
+# Boundary conditions - first verses of each BOM book (actual values from canon)
+boundaries:
+  first_verses:
+    - book: "1_nephi"
+      coc_id: 31334
+      lds_id: 31103
+      description: "First book of Mormon"
+    - book: "2_nephi"
+      coc_id: 32311
+      lds_id: 31721
+      description: "2 Nephi starts"
+    - book: "jacob"
+      coc_id: 33473
+      lds_id: 32500
+      description: "Jacob starts"
+    - book: "enos"
+      coc_id: 33775
+      lds_id: 32703
+      description: "Enos starts"
+    - book: "jarom"
+      coc_id: 33820
+      lds_id: 32730
+      description: "Jarom starts"
+    - book: "omni"
+      coc_id: 33852
+      lds_id: 32745
+      description: "Omni starts"
+    - book: "words_of_mormon"
+      coc_id: 33904
+      lds_id: 32775
+      description: "Words of Mormon starts"
+    - book: "mosiah"
+      coc_id: 33931
+      lds_id: 32793
+      description: "Mosiah starts"
+    - book: "alma"
+      coc_id: 34999
+      lds_id: 33578
+      description: "Alma starts"
+    - book: "helaman"
+      coc_id: 37554
+      lds_id: 35553
+      description: "Helaman starts"
+    - book: "3_nephi"
+      coc_id: 38119
+      lds_id: 36050
+      description: "3 Nephi starts"
+    - book: "4_nephi"
+      coc_id: 38979
+      lds_id: 36835
+      description: "4 Nephi starts"
+    - book: "mormon"
+      coc_id: 39038
+      lds_id: 36884
+      description: "Mormon starts"
+    - book: "ether"
+      coc_id: 39316
+      lds_id: 37111
+      description: "Ether starts"
+    - book: "moroni"
+      coc_id: 39804
+      lds_id: 37544
+      description: "Moroni starts"
+
+  last_verses:
+    - book: "1_nephi"
+      coc_id: 32310
+      lds_id: 31720
+      description: "Last verse of 1 Nephi"
+    - book: "moroni"
+      coc_id: 39975
+      lds_id: 37706
+      description: "Last verse of entire BOM"
+
+# Multi-mappings (one verse maps to multiple) - verify actual multi entries exist
+multi:
+  - name: "Last BOM verse maps to multiple LDS verses"
+    coc_id: 39975
+    lds_ids: [37705, 37706]
+    partial: true
+    description: "Final verse maps to two verses"
+
+# Invalid inputs
+invalid:
+  - name: "ID outside canon range (too high)"
+    input: 99999
+    from_canon: rlds
+    to_canon: lds
+    expect: null
+
+  - name: "ID outside canon range (negative)"
+    input: -1
+    from_canon: rlds
+    to_canon: lds
+    expect: null
+
+  - name: "ID outside canon range (zero)"
+    input: 0
+    from_canon: rlds
+    to_canon: lds
+    expect: null
+
+  - name: "Unknown source canon"
+    input: 31334
+    from_canon: unknown
+    to_canon: lds
+    expect: null
+
+  - name: "Unknown target canon"
+    input: 31334
+    from_canon: rlds
+    to_canon: unknown
+    expect: null
+
+  - name: "No mapping exists between canons"
+    input: 31103
+    from_canon: bible
+    to_canon: lds
+    expect: null
+    description: "Bible has no direct mapping to LDS BOM"
+
+# Reference string parsing
+references:
+  - name: "Full reference with chapter:verse"
+    input: "1 Nephi 1:1"
+    canon: rlds
+    expect_id: 31334
+
+  - name: "Multi-word book name"
+    input: "Words Of Mormon 1:1"
+    canon: rlds
+    expect_id: 33904
+
+  - name: "Numbered book name"
+    input: "3 Nephi 1:1"
+    canon: rlds
+    expect_id: 38119
+
+  - name: "Invalid reference format"
+    input: "Invalid Reference"
+    canon: rlds
+    expect: null
+
+  - name: "Reference with invalid chapter"
+    input: "1 Nephi 999:1"
+    canon: rlds
+    expect: null
+
+  - name: "Reference with invalid verse"
+    input: "1 Nephi 1:999"
+    canon: rlds
+    expect: null
+
+# ID range boundaries (actual from canon structure)
+ranges:
+  jst:
+    min: 1
+    max: 31333
+  bible:
+    min: 1
+    max: 31102
+  coc_bom:
+    min: 31334
+    max: 39975
+  lds_bom:
+    min: 31103
+    max: 37706

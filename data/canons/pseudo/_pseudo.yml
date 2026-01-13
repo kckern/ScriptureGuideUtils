@@ -1,0 +1,42 @@
+canon: pseudo
+name: LDS Pseudepigrapha
+description: Modern apocryphal texts claiming LDS prophetic authorship
+id_format: integer
+id_start: 60001
+id_end: 69713
+books:
+  - key: sealed_portion
+    order: 1
+    chapters: 100
+    verses: [25, 13, 41, 66, 71, 54, 62, 62, 52, 90, 107, 120, 52, 71, 78, 136, 91, 85, 97, 110, 96, 87, 78, 132, 121, 129, 115, 65, 84, 109, 89, 134, 73, 83, 131, 95, 86, 86, 99, 69, 89, 110, 103, 61, 81, 94, 55, 92, 79, 82, 101, 83, 91, 113, 82, 89, 97, 94, 77, 87, 125, 71, 92, 100, 50, 82, 102, 107, 105, 82, 72, 75, 97, 77, 65, 57, 51, 11, 76, 45, 71, 93, 110, 100, 76, 91, 92, 108, 29, 83, 122, 78, 94, 54, 64, 36, 152, 51, 112, 18]
+    first_verse_id: 60001
+  - key: book_of_lehi
+    order: 2
+    chapters: 9
+    verses: [66, 59, 57, 66, 75, 36, 51, 41, 63]
+    first_verse_id: 68381
+  - key: first_vision
+    order: 3
+    chapters: 1
+    verses: [57]
+    first_verse_id: 68895
+  - key: law_of_the_lord
+    order: 4
+    chapters: 47
+    verses: [10, 16, 10, 2, 3, 3, 2, 5, 6, 4, 3, 9, 4, 3, 2, 3, 2, 4, 2, 15, 4, 6, 4, 6, 8, 4, 7, 5, 3, 7, 6, 7, 8, 4, 21, 15, 3, 5, 4, 17, 8, 12, 17, 15, 10, 12, 6]
+    first_verse_id: 68952
+  - key: words_of_moroni
+    order: 5
+    chapters: 1
+    verses: [45]
+    first_verse_id: 69260
+  - key: sealed_book_of_moses
+    order: 6
+    chapters: 18
+    verses: [4, 10, 84, 67, 42, 12, 16, 6, 12, 6, 9, 15, 24, 23, 15, 22, 30, 23]
+    first_verse_id: 69305
+  - key: acts_three_nephites
+    order: 7
+    chapters: 14
+    verses: [7, 11, 18, 5, 11, 20, 12, 11, 16, 11, 12, 36, 20, 60]
+    first_verse_id: 69725

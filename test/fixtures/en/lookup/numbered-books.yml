@@ -1,0 +1,225 @@
+description: Numbered book tests - 1 Kings, 2 Kings, I John, etc.
+tests:
+  - id: numbook-0496
+    input: 1 Kings 2:3
+    expected_ids:
+      - 8774
+    expected_ref: 1 Kings 2:3
+    tags:
+      - numbered-book
+    description: numbered book with chapter:verse
+    status: pass
+  - id: numbook-0497
+    input: 2 Kings 2:3
+    expected_ids:
+      - 9555
+    expected_ref: 2 Kings 2:3
+    tags:
+      - numbered-book
+    description: numbered book 2 with chapter:verse
+    status: pass
+  - id: numbook-0498
+    input: I Kings 1:1
+    expected_ids:
+      - 8719
+    expected_ref: 1 Kings 1:1
+    tags:
+      - numbered-book
+    description: Roman numeral I
+    status: pass
+  - id: numbook-0499
+    input: II Kings 1:1
+    expected_ids:
+      - 9535
+    expected_ref: 2 Kings 1:1
+    tags:
+      - numbered-book
+    description: Roman numeral II
+    status: pass
+  - id: numbook-0500
+    input: First Kings 1:1
+    expected_ids:
+      - 8719
+    expected_ref: 1 Kings 1:1
+    tags:
+      - numbered-book
+    description: Word "First"
+    status: pass
+  - id: numbook-0501
+    input: Second Kings 1:1
+    expected_ids:
+      - 9535
+    expected_ref: 2 Kings 1:1
+    tags:
+      - numbered-book
+    description: Word "Second"
+    status: pass
+  - id: numbook-0502
+    input: 1Kgs 1:1
+    expected_ids:
+      - 8719
+    expected_ref: 1 Kings 1:1
+    tags:
+      - numbered-book
+    description: No space after number
+    status: pass
+  - id: numbook-0503
+    input: 1 John 1:1
+    expected_ids:
+      - 30542
+    expected_ref: 1 John 1:1
+    tags:
+      - numbered-book
+    description: 1 John - not confused with John 1:1
+    status: pass
+  - id: numbook-0504
+    input: 2 John 1
+    expected_ids:
+      - 30647
+      - 30648
+      - 30649
+      - 30650
+      - 30651
+      - 30652
+      - 30653
+      - 30654
+      - 30655
+      - 30656
+      - 30657
+      - 30658
+      - 30659
+    expected_ref: 2 John 1
+    tags:
+      - numbered-book
+    description: 2 John (single chapter book)
+    status: pass
+  - id: numbook-0505
+    input: 3 John 1
+    expected_ids:
+      - 30660
+      - 30661
+      - 30662
+      - 30663
+      - 30664
+      - 30665
+      - 30666
+      - 30667
+      - 30668
+      - 30669
+      - 30670
+      - 30671
+      - 30672
+      - 30673
+    expected_ref: 3 John 1
+    tags:
+      - numbered-book
+    description: 3 John (single chapter book)
+    status: pass
+  - id: numbook-0506
+    input: 1 Nephi 1:1
+    expected_ids:
+      - 31103
+    expected_ref: 1 Nephi 1:1
+    tags:
+      - numbered-book
+    description: Book of Mormon numbered book
+    status: pass
+  - id: numbook-0507
+    input: 2 Nephi 1:1
+    expected_ids:
+      - 31721
+    expected_ref: 2 Nephi 1:1
+    tags:
+      - numbered-book
+    description: Book of Mormon 2 Nephi
+    status: pass
+  - id: numbook-0508
+    input: 3 Nephi 1:1
+    expected_ids:
+      - 36050
+    expected_ref: 3 Nephi 1:1
+    tags:
+      - numbered-book
+    description: Book of Mormon 3 Nephi
+    status: pass
+  - id: numbook-0509
+    input: 4 Nephi 1:1
+    expected_ids:
+      - 36835
+    expected_ref: 4 Nephi 1:1
+    tags:
+      - numbered-book
+    description: Book of Mormon 4 Nephi
+    status: pass
+  - id: numbook-0510
+    input: 1 Ne. 1:1
+    expected_ids:
+      - 31103
+    expected_ref: 1 Nephi 1:1
+    tags:
+      - numbered-book
+    description: Abbreviated with period
+    status: pass
+  - id: numbook-0511
+    input: 1 Cor 1:1
+    expected_ids:
+      - 28365
+    expected_ref: 1 Corinthians 1:1
+    tags:
+      - numbered-book
+    description: 1 Corinthians abbreviated
+    status: pass
+  - id: numbook-0512
+    input: 2 Cor 1:1
+    expected_ids:
+      - 28802
+    expected_ref: 2 Corinthians 1:1
+    tags:
+      - numbered-book
+    description: 2 Corinthians abbreviated
+    status: pass
+  - id: numbook-0513
+    input: 1 Thess 1:1
+    expected_ids:
+      - 29562
+    expected_ref: 1 Thessalonians 1:1
+    tags:
+      - numbered-book
+    description: 1 Thessalonians abbreviated
+    status: pass
+  - id: numbook-0514
+    input: 1 Tim 1:1
+    expected_ids:
+      - 29698
+    expected_ref: 1 Timothy 1:1
+    tags:
+      - numbered-book
+    description: 1 Timothy abbreviated
+    status: pass
+  - id: numbook-0515
+    input: 1 Pet 1:1
+    expected_ids:
+      - 30376
+    expected_ref: 1 Peter 1:1
+    tags:
+      - numbered-book
+    description: 1 Peter abbreviated
+    status: pass
+  - id: numbook-0516
+    input: I Peter 1:1
+    expected_ids:
+      - 30376
+    expected_ref: 1 Peter 1:1
+    tags:
+      - numbered-book
+    description: I Peter Roman numeral
+    status: pass
+  - id: numbook-0517
+    input: II Peter 1:1
+    expected_ids:
+      - 30481
+    expected_ref: 2 Peter 1:1
+    tags:
+      - numbered-book
+    description: II Peter Roman numeral
+    status: pass

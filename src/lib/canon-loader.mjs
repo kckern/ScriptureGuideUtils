@@ -23,7 +23,7 @@ export function loadSharedLanguage(langCode) {
  * @returns {Object|null} Canon structure or null
  */
 export function loadCanonStructure(canonName) {
-  const path = join(DATA_DIR, 'canons', canonName, '_structure.yml');
+  const path = join(DATA_DIR, 'canons', canonName, `_${canonName}.yml`);
   return loadYaml(path);
 }
 

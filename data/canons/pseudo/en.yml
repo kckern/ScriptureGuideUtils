@@ -1,0 +1,38 @@
+canon: pseudo
+language: en
+
+books:
+  sealed_portion:
+    name: The Sealed Portion
+    pattern: "(?:the *)*sealed *portion"
+    alt: [sealed portion, tsp, sp]
+
+  book_of_lehi:
+    name: The Book of Lehi
+    pattern: "(?:the *)*(?:book *of *)*lehi"
+    alt: [book of lehi, lehi]
+
+  first_vision:
+    name: The First Vision
+    pattern: "(?:the *)*first *vision"
+    alt: [first vision, 1st vision]
+
+  law_of_the_lord:
+    name: The Law of the Lord
+    pattern: "(?:the *)*law *(?:of *the *)*lord"
+    alt: [law of the lord, law]
+
+  words_of_moroni:
+    name: Words of Moroni
+    pattern: "(?:the *)*words *(?:of *)*moroni"
+    alt: [words of moroni, w moro, w. moroni]
+
+  sealed_book_of_moses:
+    name: Sealed Book of Moses
+    pattern: "sealed *(?:book *(?:of *)*)*moses"
+    alt: [sealed moses, sealed book of moses]
+
+  acts_three_nephites:
+    name: Acts of the Three Nephites
+    pattern: "acts *(?:of *the *)*(?:three *|3 *)*nephites"
+    alt: [3 ne acts, acts of the three nephites, three nephites]

@@ -1,0 +1,67 @@
+description: Critical generate reference tests
+tests:
+  - id: en-gen-001
+    input_ids:
+      - 26137
+    expected: John 3:16
+    description: Single verse
+  - id: en-gen-002
+    input_ids:
+      - 26137
+      - 26138
+      - 26139
+    expected: John 3:16-18
+    description: Consecutive verses collapse to range
+  - id: en-gen-003
+    input_ids:
+      - 26137
+      - 26139
+    expected: John 3:16; 3:18
+    description: Non-consecutive verses use semicolon
+  - id: en-gen-004
+    input_ids:
+      - 1
+      - 2
+      - 3
+    expected: Genesis 1:1-3
+    description: First verses of Bible
+  - id: en-gen-005
+    input_ids: []
+    expected: ""
+    description: Empty array returns empty string
+  - id: gen-0544
+    input_ids:
+      - 26137
+    expected: John 3:16
+    description: Single verse (John 3:16)
+  - id: gen-0545
+    input_ids:
+      - 26137
+      - 26138
+      - 26139
+    expected: John 3:16-18
+    description: Consecutive verses
+  - id: gen-0546
+    input_ids:
+      - 26137
+      - 26139
+    expected: John 3:16; 3:18
+    description: Non-consecutive verses
+  - id: gen-0547
+    input_ids:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+    expected: Genesis 1:1-5
+    description: Genesis 1:1-5
+  - id: gen-0548
+    input_ids:
+      - 1
+    expected: Genesis 1:1
+    description: First verse in Bible
+  - id: gen-0549
+    input_ids: []
+    expected: ""
+    description: Empty array

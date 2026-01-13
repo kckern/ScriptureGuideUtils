@@ -1,0 +1,420 @@
+canon: rlds
+language: en
+
+# RLDS/Community of Christ Inspired Version - Joseph Smith Translation
+books:
+  jst_genesis:
+    name: Genesis
+    pattern: gen\.*(?:e*sis)*
+    alt: [gen, gn, jst gen, iv gen]
+
+  jst_exodus:
+    name: Exodus
+    pattern: exo*\.*(?:dus)*
+    alt: [ex, exod, exo, jst ex]
+
+  jst_leviticus:
+    name: Leviticus
+    pattern: levi*t*\.*(?:icus)*
+    alt: [lev, lv, jst lev]
+
+  jst_numbers:
+    name: Numbers
+    pattern: num\.*(?:bers)*
+    alt: [num, nu, nm, jst num]
+
+  jst_deuteronomy:
+    name: Deuteronomy
+    pattern: deut\.*(?:eronomy)*
+    alt: [deut, dt, jst deut]
+
+  jst_joshua:
+    name: Joshua
+    pattern: josh\.*(?:ua)*
+    alt: [josh, jos, jst josh]
+
+  jst_judges:
+    name: Judges
+    pattern: judg\.*(?:es)*
+    alt: [judg, jdg, jst judg]
+
+  jst_ruth:
+    name: Ruth
+    pattern: rut*h*\.*
+    alt: [ruth, ru, jst ruth]
+
+  jst_1_samuel:
+    name: 1 Samuel
+    pattern: sam*u*\.*(?:el)*
+    alt: [1 sam, 1sam, 1 sm, jst 1 sam]
+
+  jst_2_samuel:
+    name: 2 Samuel
+    pattern: sam*u*\.*(?:el)*
+    alt: [2 sam, 2sam, 2 sm, jst 2 sam]
+
+  jst_1_kings:
+    name: 1 Kings
+    pattern: ki*n*gs*\.*
+    alt: [1 kgs, 1kgs, 1 ki, jst 1 kings]
+
+  jst_2_kings:
+    name: 2 Kings
+    pattern: ki*n*gs*\.*
+    alt: [2 kgs, 2kgs, 2 ki, jst 2 kings]
+
+  jst_1_chronicles:
+    name: 1 Chronicles
+    pattern: chr*o*n*\.*(?:icles)*
+    alt: [1 chr, 1chr, 1 ch, jst 1 chr]
+
+  jst_2_chronicles:
+    name: 2 Chronicles
+    pattern: chr*o*n*\.*(?:icles)*
+    alt: [2 chr, 2chr, 2 ch, jst 2 chr]
+
+  jst_ezra:
+    name: Ezra
+    pattern: ezr*\.*(?:a)*
+    alt: [ezr, jst ezra]
+
+  jst_nehemiah:
+    name: Nehemiah
+    pattern: neh\.*(?:emiah)*
+    alt: [neh, ne, jst neh]
+
+  jst_esther:
+    name: Esther
+    pattern: esth*\.*(?:er)*
+    alt: [est, esth, jst esth]
+
+  jst_job:
+    name: Job
+    pattern: job
+    alt: [job, jb, jst job]
+
+  jst_psalms:
+    name: Psalms
+    pattern: ps\.*(?:a)*\.*(?:lm)*\.*(?:s)*
+    alt: [ps, pss, psa, psalm, jst ps]
+    singular: Psalm
+
+  jst_proverbs:
+    name: Proverbs
+    pattern: prov\.*(?:erbs)*
+    alt: [prov, prv, pr, jst prov]
+
+  jst_ecclesiastes:
+    name: Ecclesiastes
+    pattern: eccl*\.*(?:esiastes)*
+    alt: [eccl, ecc, ec, jst eccl]
+
+  jst_song_of_solomon:
+    name: Song of Solomon
+    pattern: "(?<!solomon's )(the )*song*\\.*(?: *of *solomon)*"
+    alt: [song, sos, ss, jst song]
+
+  jst_isaiah:
+    name: Isaiah
+    pattern: isa\.*(?:iah)*
+    alt: [isa, is, jst isa]
+
+  jst_jeremiah:
+    name: Jeremiah
+    pattern: jer\.*(?:emiah)*
+    alt: [jer, je, jst jer]
+
+  jst_lamentations:
+    name: Lamentations
+    pattern: lame*n*t*\.*(?:ations)*
+    alt: [lam, la, jst lam]
+
+  jst_ezekiel:
+    name: Ezekiel
+    pattern: eze*k*\.*(?:iel)*
+    alt: [ezek, eze, ez, jst ezek]
+
+  jst_daniel:
+    name: Daniel
+    pattern: dan\.*(?:iel)*
+    alt: [dan, dn, jst dan]
+
+  jst_hosea:
+    name: Hosea
+    pattern: hos*\.*(?:ea)*
+    alt: [hos, ho, jst hos]
+
+  jst_joel:
+    name: Joel
+    pattern: joel*\.*
+    alt: [joel, jl, jst joel]
+
+  jst_amos:
+    name: Amos
+    pattern: amos*\.*
+    alt: [amos, am, jst amos]
+
+  jst_obadiah:
+    name: Obadiah
+    pattern: obad*\.*(?:iah)*
+    alt: [obad, ob, jst obad]
+
+  jst_jonah:
+    name: Jonah
+    pattern: jonah*\.*
+    alt: [jonah, jon, jst jonah]
+
+  jst_micah:
+    name: Micah
+    pattern: mic*\.*(?:ah)*
+    alt: [micah, mic, jst micah]
+
+  jst_nahum:
+    name: Nahum
+    pattern: nah*\.*(?:um)*
+    alt: [nahum, nah, jst nahum]
+
+  jst_habakkuk:
+    name: Habakkuk
+    pattern: hab\.*(?:akkuk)*
+    alt: [hab, jst hab]
+
+  jst_zephaniah:
+    name: Zephaniah
+    pattern: zeph\.*(?:aniah)*
+    alt: [zeph, jst zeph]
+
+  jst_haggai:
+    name: Haggai
+    pattern: hag\.*(?:gai)*
+    alt: [hag, jst hag]
+
+  jst_zechariah:
+    name: Zechariah
+    pattern: zech\.*(?:ariah)*
+    alt: [zech, zec, jst zech]
+
+  jst_malachi:
+    name: Malachi
+    pattern: mal\.*(?:achi)*
+    alt: [mal, jst mal]
+
+  jst_matthew:
+    name: Matthew
+    pattern: mat+\.*(?:hew)*
+    alt: [matt, mt, jst matt]
+
+  jst_mark:
+    name: Mark
+    pattern: mar*k*\.*
+    alt: [mark, mk, jst mark]
+
+  jst_luke:
+    name: Luke
+    pattern: luk*e*\.*
+    alt: [luke, lk, jst luke]
+
+  jst_john:
+    name: John
+    pattern: joh*n*\.*
+    alt: [john, jn, jst john]
+
+  jst_acts:
+    name: Acts
+    pattern: act*s*\.*
+    alt: [acts, jst acts]
+
+  jst_romans:
+    name: Romans
+    pattern: rom\.*(?:ans)*
+    alt: [rom, ro, jst rom]
+
+  jst_1_corinthians:
+    name: 1 Corinthians
+    pattern: cor\.*(?:inthians)*
+    alt: [1 cor, 1cor, jst 1 cor]
+
+  jst_2_corinthians:
+    name: 2 Corinthians
+    pattern: cor\.*(?:inthians)*
+    alt: [2 cor, 2cor, jst 2 cor]
+
+  jst_galatians:
+    name: Galatians
+    pattern: gal\.*(?:atians)*
+    alt: [gal, jst gal]
+
+  jst_ephesians:
+    name: Ephesians
+    pattern: eph\.*(?:esians)*
+    alt: [eph, jst eph]
+
+  jst_philippians:
+    name: Philippians
+    pattern: phil\.*(?:ippians)*
+    alt: [phil, jst phil]
+
+  jst_colossians:
+    name: Colossians
+    pattern: col\.*(?:ossians)*
+    alt: [col, jst col]
+
+  jst_1_thessalonians:
+    name: 1 Thessalonians
+    pattern: thes+\.*(?:alonians)*
+    alt: [1 thes, 1thes, jst 1 thes]
+
+  jst_2_thessalonians:
+    name: 2 Thessalonians
+    pattern: thes+\.*(?:alonians)*
+    alt: [2 thes, 2thes, jst 2 thes]
+
+  jst_1_timothy:
+    name: 1 Timothy
+    pattern: tim\.*(?:othy)*
+    alt: [1 tim, 1tim, jst 1 tim]
+
+  jst_2_timothy:
+    name: 2 Timothy
+    pattern: tim\.*(?:othy)*
+    alt: [2 tim, 2tim, jst 2 tim]
+
+  jst_titus:
+    name: Titus
+    pattern: tit\.*(?:us)*
+    alt: [titus, tit, jst titus]
+
+  jst_philemon:
+    name: Philemon
+    pattern: philem\.*(?:on)*
+    alt: [philem, phlm, jst philem]
+
+  jst_hebrews:
+    name: Hebrews
+    pattern: heb\.*(?:rews)*
+    alt: [heb, jst heb]
+
+  jst_james:
+    name: James
+    pattern: jam\.*(?:es)*
+    alt: [james, jas, jst james]
+
+  jst_1_peter:
+    name: 1 Peter
+    pattern: pet\.*(?:er)*
+    alt: [1 pet, 1pet, jst 1 pet]
+
+  jst_2_peter:
+    name: 2 Peter
+    pattern: pet\.*(?:er)*
+    alt: [2 pet, 2pet, jst 2 pet]
+
+  jst_1_john:
+    name: 1 John
+    pattern: joh*n*\.*
+    alt: [1 jn, 1jn, jst 1 john]
+
+  jst_2_john:
+    name: 2 John
+    pattern: joh*n*\.*
+    alt: [2 jn, 2jn, jst 2 john]
+
+  jst_3_john:
+    name: 3 John
+    pattern: joh*n*\.*
+    alt: [3 jn, 3jn, jst 3 john]
+
+  jst_jude:
+    name: Jude
+    pattern: jud*e*\.*
+    alt: [jude, jst jude]
+
+  jst_revelation:
+    name: Revelation
+    pattern: rev\.*(?:elation)*
+    alt: [rev, jst rev]
+
+  # Book of Mormon (RLDS/Community of Christ versification)
+  1_nephi:
+    name: 1 Nephi
+    pattern: ne\.*(?:phi)*
+    alt: [1 ne, 1ne, 1 nep, first nephi, I nephi]
+
+  2_nephi:
+    name: 2 Nephi
+    pattern: ne\.*(?:phi)*
+    alt: [2 ne, 2ne, 2 nep, second nephi, II nephi]
+
+  jacob:
+    name: Jacob
+    pattern: jac\.*(?:ob)*
+    alt: [jacob, jac]
+
+  enos:
+    name: Enos
+    pattern: en\.*(?:os)*
+    alt: [enos]
+
+  jarom:
+    name: Jarom
+    pattern: jar\.*(?:om)*
+    alt: [jarom, jar]
+
+  omni:
+    name: Omni
+    pattern: om\.*(?:ni)*
+    alt: [omni, om]
+
+  words_of_mormon:
+    name: Words of Mormon
+    pattern: (?:the *)*w(?:ords)*[ _-]*o[ _-f]*m(?:ormon)*
+    alt: [w of m, wom]
+
+  mosiah:
+    name: Mosiah
+    pattern: mos\.*(?:iah)*
+    alt: [mosiah, mos]
+
+  alma:
+    name: Alma
+    pattern: alma
+    alt: [alma, al]
+
+  helaman:
+    name: Helaman
+    pattern: hela*\.*(?:a*man)*
+    alt: [hel, helaman]
+
+  3_nephi:
+    name: 3 Nephi
+    pattern: ne\.*(?:phi)*
+    alt: [3 ne, 3ne, 3 nep, third nephi, III nephi]
+
+  4_nephi:
+    name: 4 Nephi
+    pattern: ne\.*(?:phi)*
+    alt: [4 ne, 4ne, 4 nep, fourth nephi, IV nephi]
+
+  mormon:
+    name: Mormon
+    pattern: morm\.*(?:on)*
+    alt: [morm, mormon]
+
+  ether:
+    name: Ether
+    pattern: eth\.*(?:er)*
+    alt: [ether, eth]
+
+  moroni:
+    name: Moroni
+    pattern: moro\.*(?:ni)*
+    alt: [moro, moroni]
+
+pre_rules:
+  - ['\bgospel\s+(?:of|according\s+to)\s+', '']
+  - ['\bepistle\s+(?:of|to(?:\s+the)?)\s+(?!jeremiah)', '']
+  - ['\brlds\s+', '']
+  - ['\bcommunity\s+of\s+christ\s+', '']
+  - ['\binspired\s+version\s+', '']
+  - ['\biv\s+', '']
+  - ['\bjst\s+', '']

@@ -1,0 +1,11 @@
+description: Edge case generate reference tests
+tests:
+  - id: en-gen-edge-001
+    input_ids:
+      - 26137
+      - 26138
+      - 26140
+    expected: John 3:16-17; 3:19
+    tags:
+      - mixed-range
+    description: Mixed consecutive and non-consecutive

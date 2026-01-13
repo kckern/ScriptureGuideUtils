@@ -1,0 +1,15 @@
+canon: buddhist
+language: en
+
+books:
+  dhammapada:
+    name: Dhammapada
+    pattern: "dham+a*pada"
+    alt: [dhammapada, dhpada, dhp]
+    chapter_label: chapter
+
+  tao_te_ching:
+    name: Tao Te Ching
+    pattern: "tao(?: *te *ching)*"
+    alt: [tao, tao te ching, daodejing, dao de jing, laozi, lao tzu]
+    chapter_label: chapter

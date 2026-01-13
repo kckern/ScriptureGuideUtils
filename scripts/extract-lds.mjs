@@ -69,6 +69,6 @@ const structure = {
 };
 
 mkdirSync('data/canons/lds', { recursive: true });
-writeFileSync('data/canons/lds/_structure.yml', yaml.dump(structure, { lineWidth: 200, noRefs: true }));
-console.log('Created data/canons/lds/_structure.yml with ' + books.length + ' books');
+writeFileSync('data/canons/lds/_lds.yml', yaml.dump(structure, { lineWidth: 200, noRefs: true }));
+console.log('Created data/canons/lds/_lds.yml with ' + books.length + ' books');
 console.log('LDS verse ID range:', ldsStartId, '-', verseId - 1);

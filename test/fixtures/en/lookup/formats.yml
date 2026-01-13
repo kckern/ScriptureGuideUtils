@@ -1,0 +1,334 @@
+description: Format variation tests - delimiters, case, spacing
+tests:
+  - id: format-0518
+    input: John 3:16
+    expected_ids:
+      - 26137
+    expected_ref: John 3:16
+    tags:
+      - format
+    description: standard colon
+    status: pass
+  - id: format-0519
+    input: John 3.16
+    expected_ids:
+      - 26137
+    expected_ref: John 3:16
+    tags:
+      - format
+    description: period delimiter
+    status: pass
+  - id: format-0520
+    input: John 3,16
+    expected_ids:
+      - 26122
+      - 26123
+      - 26124
+      - 26125
+      - 26126
+      - 26127
+      - 26128
+      - 26129
+      - 26130
+      - 26131
+      - 26132
+      - 26133
+      - 26134
+      - 26135
+      - 26136
+      - 26137
+      - 26138
+      - 26139
+      - 26140
+      - 26141
+      - 26142
+      - 26143
+      - 26144
+      - 26145
+      - 26146
+      - 26147
+      - 26148
+      - 26149
+      - 26150
+      - 26151
+      - 26152
+      - 26153
+      - 26154
+      - 26155
+      - 26156
+      - 26157
+      - 26728
+      - 26729
+      - 26730
+      - 26731
+      - 26732
+      - 26733
+      - 26734
+      - 26735
+      - 26736
+      - 26737
+      - 26738
+      - 26739
+      - 26740
+      - 26741
+      - 26742
+      - 26743
+      - 26744
+      - 26745
+      - 26746
+      - 26747
+      - 26748
+      - 26749
+      - 26750
+      - 26751
+      - 26752
+      - 26753
+      - 26754
+      - 26755
+      - 26756
+      - 26757
+      - 26758
+      - 26759
+      - 26760
+    expected_ref: John 3; 16:1-33
+    tags:
+      - format
+    description: comma delimiter
+    status: pass
+  - id: format-0521
+    input: John 3 16
+    expected_ids:
+      - 26137
+    expected_ref: John 3:16
+    tags:
+      - format
+    description: space delimiter
+    status: pass
+  - id: format-0522
+    input: John  3:16
+    expected_ids:
+      - 26137
+    expected_ref: John 3:16
+    tags:
+      - format
+    description: double space before chapter
+    status: pass
+  - id: format-0523
+    input: Jn 3:16
+    expected_ids:
+      - 26137
+    expected_ref: John 3:16
+    tags:
+      - format
+    description: common abbreviation
+    status: pass
+  - id: format-0524
+    input: Jn. 3:16
+    expected_ids:
+      - 26137
+    expected_ref: John 3:16
+    tags:
+      - format
+    description: abbreviation with period
+    status: pass
+  - id: format-0525
+    input: JOHN 3:16
+    expected_ids:
+      - 26137
+    expected_ref: John 3:16
+    tags:
+      - format
+    description: uppercase
+    status: pass
+  - id: format-0526
+    input: john 3:16
+    expected_ids:
+      - 26137
+    expected_ref: John 3:16
+    tags:
+      - format
+    description: lowercase
+    status: pass
+  - id: format-0527
+    input: John 3:16-18
+    expected_ids:
+      - 26137
+      - 26138
+      - 26139
+    expected_ref: John 3:16-18
+    tags:
+      - format
+    description: verse range
+    status: pass
+  - id: format-0528
+    input: John 3:16,18
+    expected_ids:
+      - 26137
+      - 26139
+    expected_ref: John 3:16; 3:18
+    tags:
+      - format
+    description: non-consecutive verses
+    status: pass
+  - id: format-0529
+    input: John 3:16-18,20
+    expected_ids:
+      - 26137
+      - 26138
+      - 26139
+      - 26141
+    expected_ref: John 3:16-18; 3:20
+    tags:
+      - format
+    description: range plus single
+    status: pass
+  - id: format-0530
+    input: John 3
+    expected_ids:
+      - 26122
+      - 26123
+      - 26124
+      - 26125
+      - 26126
+      - 26127
+      - 26128
+      - 26129
+      - 26130
+      - 26131
+      - 26132
+      - 26133
+      - 26134
+      - 26135
+      - 26136
+      - 26137
+      - 26138
+      - 26139
+      - 26140
+      - 26141
+      - 26142
+      - 26143
+      - 26144
+      - 26145
+      - 26146
+      - 26147
+      - 26148
+      - 26149
+      - 26150
+      - 26151
+      - 26152
+      - 26153
+      - 26154
+      - 26155
+      - 26156
+      - 26157
+    expected_ref: John 3
+    tags:
+      - format
+    description: whole chapter
+    status: pass
+  - id: format-0531
+    input: Genesis 1:1-2:3
+    expected_ids:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      - 7
+      - 8
+      - 9
+      - 10
+      - 11
+      - 12
+      - 13
+      - 14
+      - 15
+      - 16
+      - 17
+      - 18
+      - 19
+      - 20
+      - 21
+      - 22
+      - 23
+      - 24
+      - 25
+      - 26
+      - 27
+      - 28
+      - 29
+      - 30
+      - 31
+      - 32
+      - 33
+      - 34
+    expected_ref: Genesis 1:1-2:3
+    tags:
+      - format
+    description: cross-chapter range
+    status: pass
+  - id: format-0532
+    input: Psalm 23
+    expected_ids:
+      - 14237
+      - 14238
+      - 14239
+      - 14240
+      - 14241
+      - 14242
+    expected_ref: Psalms 23
+    tags:
+      - format
+    description: Psalms singular
+    status: pass
+  - id: format-0533
+    input: Psalms 23
+    expected_ids:
+      - 14237
+      - 14238
+      - 14239
+      - 14240
+      - 14241
+      - 14242
+    expected_ref: Psalms 23
+    tags:
+      - format
+    description: Psalms plural
+    status: pass
+  - id: format-0534
+    input: Ps 23:1
+    expected_ids:
+      - 14237
+    expected_ref: Psalms 23:1
+    tags:
+      - format
+    description: Psalms abbreviated
+    status: pass
+  - id: format-0535
+    input: D&C 1:1
+    expected_ids:
+      - 37707
+    expected_ref: Doctrine and Covenants 1:1
+    tags:
+      - format
+    description: D&C with ampersand
+    status: pass
+  - id: format-0536
+    input: D & C 1:1
+    expected_ids:
+      - 37707
+    expected_ref: Doctrine and Covenants 1:1
+    tags:
+      - format
+    description: D & C with spaces
+    status: pass
+  - id: format-0537
+    input: DC 1:1
+    expected_ids:
+      - 37707
+    expected_ref: Doctrine and Covenants 1:1
+    tags:
+      - format
+    description: DC no ampersand
+    status: pass

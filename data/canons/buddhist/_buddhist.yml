@@ -1,0 +1,17 @@
+canon: buddhist
+name: Buddhist Scripture
+description: Dhammapada and Tao Te Ching - foundational Buddhist and Taoist texts
+id_format: integer
+id_start: 51001
+id_end: 51504
+books:
+  - key: dhammapada
+    order: 1
+    chapters: 26
+    verses: [20, 12, 11, 16, 16, 14, 10, 16, 13, 17, 11, 10, 12, 18, 12, 12, 14, 21, 17, 17, 16, 14, 14, 26, 23, 41]
+    first_verse_id: 51001
+  - key: tao_te_ching
+    order: 2
+    chapters: 81
+    verses: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    first_verse_id: 51424

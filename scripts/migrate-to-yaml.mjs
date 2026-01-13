@@ -143,14 +143,14 @@ function migrate() {
   // Generate and write structures
   const bibleStructure = generateBibleStructure();
   writeYaml(
-    join(DATA_DIR, 'canons', 'bible', '_structure.yml'),
+    join(DATA_DIR, 'canons', 'bible', '_bible.yml'),
     bibleStructure
   );
   console.log(`Bible: ${bibleStructure.books.length} books, ${bibleStructure.id_end} verses`);
 
   const ldsStructure = generateLDSStructure();
   writeYaml(
-    join(DATA_DIR, 'canons', 'lds', '_structure.yml'),
+    join(DATA_DIR, 'canons', 'lds', '_lds.yml'),
     ldsStructure
   );
   console.log(`LDS: ${ldsStructure.books.length} books, verse IDs ${ldsStructure.id_start}-${ldsStructure.id_end}`);
