@@ -71,12 +71,26 @@ const getEffectiveLanguage = function(explicitLanguage) {
 };
 
 const lookupReference = function(query, language = null, lookupConfig = {}) {
-    const isValidReference = query && typeof query === 'string' && query.length > 0;
-    if (!isValidReference) return {
-        "query": query,
-        "ref": "",
-        "verse_ids": []
-    };
+    // Input validation
+    const isValidQuery = query && typeof query === 'string' && query.trim().length > 0;
+    if (!isValidQuery) {
+        return {
+            query: query ?? '',
+            ref: '',
+            verse_ids: [],
+            error: 'Invalid input: query must be a non-empty string'
+        };
+    }
+
+    // Length limit to prevent DoS
+    if (query.length > 500) {
+        return {
+            query: query.substring(0, 100) + '...',
+            ref: '',
+            verse_ids: [],
+            error: 'Invalid input: query exceeds maximum length (500 chars)'
+        };
+    }
 
     // Get effective language (explicit > stored > default > 'en')
     const effectiveLanguage = getEffectiveLanguage(language);

@@ -77,3 +77,38 @@ describe('lookupReference - Bounds Safety', () => {
     expect(Array.isArray(result.verse_ids)).toBe(true);
   });
 });
+
+describe('lookupReference - Input Validation', () => {
+  test('returns empty for null input', () => {
+    const result = lookupReference(null);
+    expect(result.verse_ids).toEqual([]);
+    expect(result.error).toBeDefined();
+  });
+
+  test('returns empty for undefined input', () => {
+    const result = lookupReference(undefined);
+    expect(result.verse_ids).toEqual([]);
+  });
+
+  test('returns empty for empty string', () => {
+    const result = lookupReference('');
+    expect(result.verse_ids).toEqual([]);
+  });
+
+  test('returns empty for whitespace-only string', () => {
+    const result = lookupReference('   ');
+    expect(result.verse_ids).toEqual([]);
+  });
+
+  test('returns empty for non-string input', () => {
+    const result = lookupReference(12345);
+    expect(result.verse_ids).toEqual([]);
+  });
+
+  test('handles very long input gracefully', () => {
+    const longInput = 'Genesis '.repeat(1000);
+    const result = lookupReference(longInput);
+    // Should not crash, may return empty
+    expect(result).toBeDefined();
+  });
+});
