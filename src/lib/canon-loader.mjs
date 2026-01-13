@@ -1,4 +1,5 @@
 import { loadYaml } from './yaml-loader.mjs';
+import { deepMerge } from './deep-merge.mjs';
 import { join } from 'path';
 
 const DATA_DIR = 'data';
@@ -62,4 +63,45 @@ export function loadCanonWithInheritance(canonName) {
  */
 export function clearCanonCache() {
   canonCache.clear();
+}
+
+/**
+ * Load canon-specific language file
+ * @param {string} canonName - Canon name
+ * @param {string} langCode - Language code
+ * @returns {Object|null} Canon language config or null
+ */
+export function loadCanonLanguage(canonName, langCode) {
+  const path = join(DATA_DIR, 'canons', canonName, `${langCode}.yml`);
+  return loadYaml(path);
+}
+
+/**
+ * Load full language config (shared + canon + parent canon)
+ * @param {string} canonName - Canon name
+ * @param {string} langCode - Language code
+ * @returns {Object|null} Merged language config
+ */
+export function loadFullLanguage(canonName, langCode) {
+  const shared = loadSharedLanguage(langCode);
+  if (!shared) return null;
+
+  const structure = loadCanonStructure(canonName);
+  if (!structure) return null;
+
+  // Load parent's language if extends
+  let parentLang = {};
+  if (structure.extends) {
+    parentLang = loadCanonLanguage(structure.extends, langCode) || {};
+  }
+
+  const canonLang = loadCanonLanguage(canonName, langCode) || {};
+
+  // Merge: shared → parent → canon (for books, merge rather than replace)
+  const result = deepMerge(shared, parentLang, canonLang);
+
+  // Special handling for books - merge all book objects
+  result.books = deepMerge(parentLang.books || {}, canonLang.books || {});
+
+  return result;
 }
