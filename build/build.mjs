@@ -1,7 +1,15 @@
 #!/usr/bin/env node
 
 import * as esbuild from 'esbuild';
-import { readFileSync } from 'fs';
+import { readFileSync, existsSync } from 'fs';
+import { execSync } from 'child_process';
+
+// Step 1: Compile YAML to JS if needed
+const yamlDataDir = 'src/data';
+if (!existsSync(yamlDataDir)) {
+  console.log('Compiling YAML data files...');
+  execSync('node build/compile-yaml.mjs', { stdio: 'inherit' });
+}
 
 const pkg = JSON.parse(readFileSync('package.json', 'utf8'));
 const banner = `/* scripture-guide v${pkg.version} */`;
@@ -13,14 +21,14 @@ const shared = {
   sourcemap: true,
 };
 
-// ESM build
+// Step 2: ESM build
 await esbuild.build({
   ...shared,
   format: 'esm',
   outfile: 'dist/scriptures.mjs',
 });
 
-// CommonJS build
+// Step 3: CommonJS build
 await esbuild.build({
   ...shared,
   format: 'cjs',

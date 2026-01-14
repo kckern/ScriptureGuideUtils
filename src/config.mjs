@@ -8,20 +8,12 @@ export const MAX_CHAPTER = 200;
 export const MAX_VERSE = 200;
 export const MAX_QUERY_LENGTH = 500;
 
-// Canon identifiers
-export const CANON_LDS = 'lds';
-export const CANON_COC = 'coc';
-
-// Verse ID format patterns
-export const COC_ID_PATTERN = /^C\d+$/;
-export const LDS_ID_PATTERN = /^\d+$/;
-
 // Language fallback order
 export const LANGUAGE_FALLBACK = ['en', 'es', 'fr', 'de', 'ko', 'ja', 'zh'];
 
-// Default settings
+// Default settings (canon value comes from registered canons)
 export const DEFAULTS = {
   language: 'en',
-  canon: CANON_LDS,
+  canon: 'lds',
   contextAware: false
 };

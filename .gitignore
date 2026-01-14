@@ -1,6 +1,7 @@
 node_modules
 .worktrees/
 _archive/
+src/data/
 coverage/
 **/test_results/*
 test_results/test_results.html

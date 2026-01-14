@@ -1,19 +1,29 @@
-import raw_index_orig from '../data/scriptdata.mjs';
-import raw_regex_orig from '../data/scriptregex.mjs';
-import raw_lang from '../data/scriptlang.mjs';
+// Data loaded from compiled YAML
+import { scriptData, regexData, langData } from './lib/data-loader.mjs';
+const raw_index_orig = scriptData;
+const raw_regex_orig = regexData;
+const raw_lang = langData;
+
 import { processReferenceDetection } from './scriptdetect.mjs';
-import {  detectReferencesWithContext } from './scriptdetectcontext.mjs';
-import { detectCanon, formatCocId, parseCocId, convertToLds, convertToCoc, convertCanon } from './scriptcanon.mjs';
-import cocData from '../data/coc.mjs';
+import { detectReferencesWithContext } from './scriptdetectcontext.mjs';
+import { detectCanon, formatId, parseId, convertCanon, registerCanon } from './scriptcanon.mjs';
+
 import {
   MAX_RANGE_SIZE,
   MAX_CHAPTER,
   MAX_VERSE,
   MAX_QUERY_LENGTH,
-  CANON_LDS,
-  CANON_COC,
   DEFAULTS
 } from './config.mjs';
+
+// Register the default canon to accept plain integers
+// This is data-driven - the canon key comes from config, not hardcoded
+registerCanon(DEFAULTS.canon, {
+  acceptsInteger: true,
+  pattern: /^\d+$/,
+  format: (n) => n,
+  parse: (s) => parseInt(s, 10)
+});
 
 // Module-level caches for performance
 const indexCache = {
@@ -22,24 +32,20 @@ const indexCache = {
   configHash: null
 };
 
-const cocIndexCache = {
-  refIndex: null,
-  verseIdIndex: null
-};
-
 const hashConfig = (config) => {
   // Hash based on language for proper cache invalidation
   return config?.language || 'en';
 };
 
-// Browser localStorage key for language preference
+// Browser localStorage keys for preferences
 const LANGUAGE_STORAGE_KEY = 'scriptureGuideUtils_language';
+const CANON_STORAGE_KEY = 'scriptureGuideUtils_canon';
 
 // Helper function to safely access localStorage
-const getStoredLanguage = () => {
+const getStoredValue = (key) => {
     try {
         if (typeof localStorage !== 'undefined') {
-            return localStorage.getItem(LANGUAGE_STORAGE_KEY);
+            return localStorage.getItem(key);
         }
     } catch (e) {
         // localStorage might not be available in some environments
@@ -47,13 +53,13 @@ const getStoredLanguage = () => {
     return null;
 };
 
-const setStoredLanguage = (language) => {
+const setStoredValue = (key, value) => {
     try {
         if (typeof localStorage !== 'undefined') {
-            if (language) {
-                localStorage.setItem(LANGUAGE_STORAGE_KEY, language);
+            if (value) {
+                localStorage.setItem(key, value);
             } else {
-                localStorage.removeItem(LANGUAGE_STORAGE_KEY);
+                localStorage.removeItem(key);
             }
         }
     } catch (e) {
@@ -61,20 +67,50 @@ const setStoredLanguage = (language) => {
     }
 };
 
-// Global default language (can be overridden by localStorage)
+// Global defaults (can be overridden by localStorage)
 let defaultLanguage = null;
+let defaultCanon = null;
 
 const setLanguage = function(language) {
     defaultLanguage = language;
-    setStoredLanguage(language);
+    setStoredValue(LANGUAGE_STORAGE_KEY, language);
+};
+
+const setCanon = function(canon) {
+    defaultCanon = canon;
+    setStoredValue(CANON_STORAGE_KEY, canon);
 };
 
 const getEffectiveLanguage = function(explicitLanguage) {
     // Priority: explicit parameter > stored language > default language > 'en'
-    return explicitLanguage || getStoredLanguage() || defaultLanguage || 'en';
+    return explicitLanguage || getStoredValue(LANGUAGE_STORAGE_KEY) || defaultLanguage || 'en';
 };
 
-const lookupReference = function(query, language = null, lookupConfig = {}) {
+const getEffectiveCanon = function(explicitCanon) {
+    // Priority: explicit parameter > stored canon > default canon > config default
+    return explicitCanon || getStoredValue(CANON_STORAGE_KEY) || defaultCanon || DEFAULTS.canon;
+};
+
+const lookupReference = function(query, optionsOrLanguage = {}, legacyConfig = null) {
+    // Handle backward compatibility: old signature was (query, language, lookupConfig)
+    // New signature is (query, options) where options can be string (language) or object
+    let language = null;
+    let lookupConfig = {};
+
+    if (legacyConfig !== null) {
+        // Old 3-parameter signature: (query, language, lookupConfig)
+        console.warn('DEPRECATED: lookupReference(query, language, config) is deprecated. Use lookupReference(query, { language, ...config }) instead.');
+        language = optionsOrLanguage;
+        lookupConfig = legacyConfig || {};
+    } else if (typeof optionsOrLanguage === 'string') {
+        // String options = language shorthand
+        language = optionsOrLanguage;
+    } else if (optionsOrLanguage && typeof optionsOrLanguage === 'object') {
+        // Object options
+        language = optionsOrLanguage.language || null;
+        lookupConfig = optionsOrLanguage;
+    }
+
     // Input validation
     const isValidQuery = query && typeof query === 'string' && query.trim().length > 0;
     if (!isValidQuery) {
@@ -99,52 +135,39 @@ const lookupReference = function(query, language = null, lookupConfig = {}) {
     // Get effective language (explicit > stored > default > 'en')
     const effectiveLanguage = getEffectiveLanguage(language);
 
-    // Extract canon options
-    const { canon, convertTo, includeParallel } = lookupConfig;
+    // Extract canon options, using effective canon as default
+    const { convertTo, includeParallel } = lookupConfig;
+    const canon = lookupConfig.canon || getEffectiveCanon();
 
-    // Determine if using COC canon
-    const useCoc = canon === CANON_COC;
-
-    // Try lookup in the requested language first
-    let lookupResult;
-    let verse_ids;
-    let errors;
-    if (useCoc) {
-        verse_ids = lookupInLanguageCoc(query, effectiveLanguage);
-    } else {
-        lookupResult = lookupInLanguage(query, effectiveLanguage);
-        verse_ids = lookupResult.verse_ids;
-        errors = lookupResult.errors;
-    }
+    // Try lookup in the requested language
+    const lookupResult = lookupInLanguage(query, effectiveLanguage);
+    const verse_ids = lookupResult.verse_ids;
+    const errors = lookupResult.errors;
 
     if (verse_ids?.length) {
         let result = {
             "query": query,
-            "ref": useCoc ? generateReferenceCoc(verse_ids, effectiveLanguage) : generateReference(verse_ids, effectiveLanguage),
+            "ref": generateReference(verse_ids, effectiveLanguage),
             "verse_ids": verse_ids
         };
 
-        // Handle convertTo option
+        // Handle convertTo option using generic canon conversion
         if (convertTo && convertTo !== canon) {
-            result.sourceCanon = useCoc ? CANON_COC : CANON_LDS;
-            const converted = useCoc ? convertToLds(verse_ids) : convertToCoc(verse_ids);
+            result.sourceCanon = canon;
+            const converted = convertCanon(verse_ids, { from: canon, to: convertTo });
             result.verse_ids = converted.verse_ids;
             result.partial = converted.partial;
-            result.ref = convertTo === CANON_COC
-                ? generateReferenceCoc(converted.verse_ids, effectiveLanguage)
-                : generateReference(converted.verse_ids, effectiveLanguage);
+            result.ref = generateReference(converted.verse_ids, effectiveLanguage);
         }
 
-        // Handle includeParallel option
-        if (includeParallel) {
-            const parallelCanon = useCoc ? CANON_LDS : CANON_COC;
-            const parallelConverted = useCoc ? convertToLds(verse_ids) : convertToCoc(verse_ids);
+        // Handle includeParallel option using generic canon conversion
+        if (includeParallel && convertTo) {
+            const parallelCanon = convertTo;
+            const parallelConverted = convertCanon(verse_ids, { from: canon, to: parallelCanon });
             result.parallel = {
                 canon: parallelCanon,
                 verse_ids: parallelConverted.verse_ids,
-                ref: parallelCanon === CANON_COC
-                    ? generateReferenceCoc(parallelConverted.verse_ids, effectiveLanguage)
-                    : generateReference(parallelConverted.verse_ids, effectiveLanguage),
+                ref: generateReference(parallelConverted.verse_ids, effectiveLanguage),
                 partial: parallelConverted.partial
             };
         }
@@ -197,297 +220,6 @@ const lookupInLanguage = function(query, language) {
     };
 }
 
-const lookupInLanguageCoc = function(query, language) {
-    const config = getLanguageConfig(language);
-
-    // Cleanup and process the reference
-    let ref = cleanReference(query, config);
-    let refs = splitReferences(ref, config);
-
-    // Lookup each single reference individually, return the set of COC verse_ids
-    let verse_ids = [];
-    for (let i in refs) {
-        verse_ids = verse_ids.concat(lookupSingleRefCoc(refs[i], config));
-    }
-
-    return verse_ids;
-}
-
-const lookupSingleRefCoc = function(ref, config) {
-    const booksWithDashRegex = /^(joseph|조셉)/i;
-    if (!booksWithDashRegex.test(ref) && ref.match(/[—-](\d\s)*[\D]/ig)) return []; // Multi-book ranges not supported for COC yet
-    let book = getBook(ref, config);
-    if (!book) return [];
-    if (!cocData.books[book]) return []; // Book not in COC
-    let ranges = getRanges(ref, book);
-    let verse_ids = loadVerseIdsCoc(book, ranges);
-    return verse_ids;
-}
-
-const loadVerseIdsCoc = function(book, ranges) {
-    let verseList = [];
-    const cocRefIndex = loadCocRefIndex();
-
-    for (let i in ranges) {
-        // Bounds check: stop if we've collected enough
-        if (verseList.length >= MAX_RANGE_SIZE) break;
-
-        let range = ranges[i];
-        let matches = range.match(/(\d+): *([\dX]+)-*([\dX]*)/);
-        if (!matches) continue;
-
-        let chapter = parseInt(matches[1]);
-        let start = parseInt(matches[2]);
-        let end = matches[3];
-
-        // Validate chapter bounds
-        if (chapter < 1 || chapter > MAX_CHAPTER) continue;
-
-        if (end === '') end = start;
-        if (end === 'X') end = loadMaxVerseCoc(book, chapter);
-        else end = parseInt(end);
-
-        // Validate verse bounds
-        start = Math.max(1, Math.min(start, MAX_VERSE));
-        end = Math.max(start, Math.min(end, MAX_VERSE));
-
-        for (let verse_num = start; verse_num <= end; verse_num++) {
-            if (verseList.length >= MAX_RANGE_SIZE) break;
-            if (cocRefIndex[book]?.[chapter]?.[verse_num]) {
-                verseList.push(cocRefIndex[book][chapter][verse_num]);
-            }
-        }
-    }
-    return verseList;
-}
-
-const loadCocRefIndex = function() {
-    // Return cached if available
-    if (cocIndexCache.refIndex) {
-        return cocIndexCache.refIndex;
-    }
-
-    let refIndex = {};
-    let verse_num_global = 1;
-    const book_list = Object.keys(cocData.books);
-    for (let book of book_list) {
-        refIndex[book] = {};
-        const chapters = cocData.books[book];
-        for (let chapter_idx = 0; chapter_idx < chapters.length; chapter_idx++) {
-            let chapter_num = chapter_idx + 1;
-            let verse_max = chapters[chapter_idx];
-            refIndex[book][chapter_num] = {};
-            for (var verse_num = 1; verse_num <= verse_max; verse_num++) {
-                refIndex[book][chapter_num][verse_num] = formatCocId(verse_num_global);
-                verse_num_global++;
-            }
-        }
-    }
-
-    // Cache the result
-    cocIndexCache.refIndex = refIndex;
-
-    return refIndex;
-}
-
-const loadCocVerseIdIndex = function() {
-    // Return cached if available
-    if (cocIndexCache.verseIdIndex) {
-        return cocIndexCache.verseIdIndex;
-    }
-
-    let verseIdIndex = {};
-    let verse_num_global = 1;
-    const book_list = Object.keys(cocData.books);
-    for (let book of book_list) {
-        const chapters = cocData.books[book];
-        for (let chapter_idx = 0; chapter_idx < chapters.length; chapter_idx++) {
-            let chapter_num = chapter_idx + 1;
-            let verse_max = chapters[chapter_idx];
-            for (var verse_num = 1; verse_num <= verse_max; verse_num++) {
-                const cocId = formatCocId(verse_num_global);
-                verseIdIndex[cocId] = [book, chapter_num, verse_num];
-                verse_num_global++;
-            }
-        }
-    }
-
-    // Cache the result
-    cocIndexCache.verseIdIndex = verseIdIndex;
-
-    return verseIdIndex;
-}
-
-const loadMaxChapterCoc = function(book) {
-    if (!cocData.books[book]) return 0;
-    return cocData.books[book].length;
-}
-
-const loadMaxVerseCoc = function(book, chapter) {
-    if (!cocData.books[book]) return 0;
-    return cocData.books[book][parseInt(chapter) - 1] || 0;
-}
-
-/**
- * Load reference index for specified canon
- * @param {string} canon - 'lds' or 'coc'
- * @param {Object} config - Configuration object (required for LDS)
- * @returns {Object} Reference index: refIndex[book][chapter][verse] = id
- */
-const loadRefIndexByCanon = function(canon, config = null) {
-    if (canon === CANON_COC) {
-        return loadCocRefIndex();
-    }
-    if (!config) {
-        throw new Error('Config required for LDS canon');
-    }
-    return loadRefIndex(config);
-};
-
-/**
- * Load verse ID index for specified canon
- * @param {string} canon - 'lds' or 'coc'
- * @param {Object} config - Configuration object (required for LDS)
- * @returns {Object|Array} Verse ID to [book, chapter, verse] mapping
- */
-const loadVerseIdIndexByCanon = function(canon, config = null) {
-    if (canon === CANON_COC) {
-        return loadCocVerseIdIndex();
-    }
-    if (!config) {
-        throw new Error('Config required for LDS canon');
-    }
-    return loadVerseIdIndex(config);
-};
-
-/**
- * Get max verse for book/chapter in specified canon
- * @param {string} book - Book name
- * @param {number} chapter - Chapter number
- * @param {string} canon - 'lds' or 'coc'
- * @param {Object} config - Configuration (required for LDS)
- * @returns {number} Maximum verse number
- */
-const loadMaxVerseByCanon = function(book, chapter, canon, config = null) {
-    if (canon === CANON_COC) {
-        return loadMaxVerseCoc(book, chapter);
-    }
-    if (!config) {
-        throw new Error('Config required for LDS canon');
-    }
-    return loadMaxVerse(book, chapter, config);
-};
-
-const generateReferenceCoc = function(verse_ids, language = null) {
-    if (!verse_ids || verse_ids.length === 0) return '';
-
-    // Convert all IDs to COC format if not already
-    verse_ids = verse_ids.map(id => {
-        if (typeof id === 'string' && id.startsWith('C')) return id;
-        return formatCocId(id);
-    });
-
-    const effectiveLanguage = getEffectiveLanguage(language);
-    const config = getLanguageConfig(effectiveLanguage);
-    let ranges = loadVerseStructureCoc(verse_ids);
-    let refs = loadRefsFromRangesCoc(ranges, config);
-
-    let ref = refs.join("; ");
-    return ref;
-}
-
-const loadVerseStructureCoc = function(verse_ids) {
-    let verseIdIndex = loadCocVerseIdIndex();
-    let segments = consecutiveSplitterCoc(verse_ids);
-    let structure = [];
-    for (let i in segments) {
-        let min = segments[i][0];
-        let max = segments[i][segments[i].length - 1];
-        // Check if values exist before pushing to structure (handles out-of-range COC IDs)
-        if (verseIdIndex[min] && verseIdIndex[max]) {
-            structure.push([verseIdIndex[min], verseIdIndex[max]]);
-        }
-    }
-    return structure;
-}
-
-const consecutiveSplitterCoc = function(verse_ids) {
-    let segments = [];
-    let segment = [];
-    let previousNum = 0;
-    for (let i in verse_ids) {
-        const currentNum = parseCocId(verse_ids[i]);
-        if (currentNum !== previousNum + 1 && previousNum !== 0) {
-            segments.push(segment);
-            segment = [];
-        }
-        segment.push(verse_ids[i]);
-        previousNum = currentNum;
-    }
-    segments.push(segment);
-    return segments;
-}
-
-const loadRefsFromRangesCoc = function(ranges, config) {
-    let refs = [];
-    let mostRecentBook, mostRecentChapter;
-    for (let i in ranges) {
-        // Skip invalid ranges (defense-in-depth for out-of-range COC IDs)
-        if (!ranges[i] || !ranges[i][0] || !ranges[i][1]) continue;
-        let ref = '';
-        let start_bk = ranges[i][0][0];
-        let end_bk = ranges[i][1][0];
-        let start_ch = ranges[i][0][1];
-        let end_ch = ranges[i][1][1];
-        let start_vs = ranges[i][0][2];
-        let end_vs = ranges[i][1][2];
-        if (start_bk === end_bk) {
-            if (start_ch === end_ch) {
-                if (start_bk === mostRecentBook) start_bk = '';
-                if (start_bk === mostRecentBook && start_ch === mostRecentChapter) start_ch = '';
-                if (start_vs === end_vs) {
-                    ref = start_bk + " " + start_ch + ":" + start_vs;
-                } else {
-                    if (start_vs === 1 && end_vs === loadMaxVerseCoc(start_bk, start_ch)) {
-                        ref = start_bk + " " + start_ch;
-                    } else {
-                        ref = start_bk + " " + start_ch + ":" + start_vs + "-" + end_vs;
-                    }
-                }
-            } else {
-                if (start_vs === 1 && end_vs === loadMaxVerseCoc(end_bk, end_ch)) {
-                    ref = start_bk + " " + start_ch + "-" + end_ch;
-                } else {
-                    ref = start_bk + " " + start_ch + ":" + start_vs + "-" + end_ch + ":" + end_vs;
-                }
-            }
-        } else {
-            if (start_vs === 1 && end_vs === loadMaxVerseCoc(end_bk, end_ch)) {
-                ref = start_bk + " " + start_ch + " - " + end_bk + " " + end_ch;
-            } else if (end_vs === loadMaxVerseCoc(end_bk, end_ch)) {
-                ref = start_bk + " " + start_ch + ":" + start_vs + " - " + end_bk + " " + end_ch;
-            } else if (start_vs === 1) {
-                ref = start_bk + " " + start_ch + " - " + end_bk + " " + end_ch + ":" + end_vs;
-            } else {
-                ref = start_bk + " " + start_ch + ":" + start_vs + " - " + end_bk + " " + end_ch + ":" + end_vs;
-            }
-        }
-        if (start_bk !== '') mostRecentBook = start_bk;
-        if (start_ch !== '') mostRecentChapter = start_ch;
-        ref = ref.replace(/^\s+:*/, '').trim();
-
-        // Apply language-specific post rules
-        if (config.raw_regex.post_rules) {
-            for (let rule of config.raw_regex.post_rules) {
-                const re = new RegExp(rule[0], "ig");
-                ref = ref.replace(re, rule[1]);
-            }
-        }
-
-        refs.push(ref);
-    }
-    return refs;
-}
 
 const lookupWithLanguageFallback = function(query, targetLanguage) {
     // Define fallback order: English first (if not already tried), then all other languages
@@ -554,40 +286,43 @@ const validateVerseIdsMixed = function(verse_ids) {
     if(!Array.isArray(verse_ids)) verse_ids = [verse_ids];
     if(verse_ids.length === 0) return { ids: false, canon: null };
 
-    // Detect canon from first ID
+    // Detect canon from first ID using the registry
     const firstCanon = detectCanon(verse_ids[0]);
     if (!firstCanon) return { ids: false, canon: null };
 
-    // Validate and normalize IDs
-    if (firstCanon === CANON_COC) {
-        const validIds = verse_ids.filter(id => detectCanon(id) === CANON_COC);
-        return { ids: validIds.length > 0 ? validIds : false, canon: CANON_COC };
-    } else {
-        const validIds = validateVerseIds(verse_ids);
-        return { ids: validIds, canon: CANON_LDS };
-    }
+    // Filter IDs that match the detected canon
+    const validIds = verse_ids.filter(id => detectCanon(id) === firstCanon);
+    return { ids: validIds.length > 0 ? validIds : false, canon: firstCanon };
 }
 
-const generateReference = function(verse_ids, language = null, options = {}) {
-    const canon = options.canon || null;
+const generateReference = function(verse_ids, optionsOrLanguage = {}, legacyOptions = null) {
+    // Handle backward compatibility: old signature was (verse_ids, language, options)
+    // New signature is (verse_ids, options) where options can be string (language) or object
+    let language = null;
+    let canon = null;
 
-    // Auto-detect if these are COC IDs
+    if (legacyOptions !== null) {
+        // Old 3-parameter signature: (verse_ids, language, options)
+        console.warn('DEPRECATED: generateReference(ids, language, options) is deprecated. Use generateReference(ids, { language, ...options }) instead.');
+        language = optionsOrLanguage;
+        canon = legacyOptions?.canon || null;
+    } else if (typeof optionsOrLanguage === 'string') {
+        // String options = language shorthand
+        language = optionsOrLanguage;
+    } else if (optionsOrLanguage && typeof optionsOrLanguage === 'object') {
+        // Object options
+        language = optionsOrLanguage.language || null;
+        canon = optionsOrLanguage.canon || null;
+    }
+
+    // Validate and detect canon from IDs
     const { ids, canon: detectedCanon } = validateVerseIdsMixed(verse_ids);
     if(!ids) return '';
 
     // Handle canon mismatch: if explicit canon conflicts with detected canon, return empty
-    // This prevents crashes when e.g. COC IDs are passed with canon: 'lds' or vice versa
     if (canon && detectedCanon && canon !== detectedCanon) {
         console.warn(`Canon mismatch: requested ${canon} but IDs are ${detectedCanon}`);
         return '';
-    }
-
-    // Determine which canon to use: explicit option > auto-detected
-    const effectiveCanon = canon || detectedCanon;
-
-    // Use COC generator if COC canon specified or detected
-    if (effectiveCanon === CANON_COC) {
-        return generateReferenceCoc(ids, language);
     }
 
     const effectiveLanguage = getEffectiveLanguage(language);
@@ -597,7 +332,6 @@ const generateReference = function(verse_ids, language = null, options = {}) {
 
     let ref = refs.join("; ");
     return ref;
-
 }
 
 
@@ -1133,6 +867,7 @@ export {
     lookupReference,
     generateReference,
     setLanguage,
+    setCanon,
     detectReferences,
     convertCanon,
 
@@ -1140,6 +875,8 @@ export {
     setLanguage as lang,
     setLanguage as language,
     setLanguage as setLang,
+
+    setCanon as canon,
 
     lookupReference as lookup,
     lookupReference as parse,

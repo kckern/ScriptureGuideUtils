@@ -39,7 +39,7 @@ detectReferences('Read John 3:16 today.', (ref, ids) => `<a href="/v/${ids[0]}">
 
 ## API Reference
 
-### lookupReference(query, language?, config?)
+### lookupReference(query, options?)
 
 Parse a scripture reference string into verse IDs.
 
@@ -47,10 +47,10 @@ Parse a scripture reference string into verse IDs.
 lookupReference('Mt 5:3-12');
 // { query: 'Mt 5:3-12', ref: 'Matthew 5:3-12', verse_ids: [23239, 23240, ...] }
 
-lookupReference('Genesis 1:1', 'ko');
+lookupReference('Genesis 1:1', 'ko');  // string options = language
 // { query: 'Genesis 1:1', ref: '창세기 1:1', verse_ids: [1] }
 
-lookupReference('1 Nephi 3:7', 'en', { canon: 'lds' });
+lookupReference('1 Nephi 3:7', { language: 'en', canon: 'lds' });
 // { query: '1 Nephi 3:7', ref: '1 Nephi 3:7', verse_ids: [23152] }
 ```
 
@@ -58,8 +58,11 @@ lookupReference('1 Nephi 3:7', 'en', { canon: 'lds' });
 | Name | Type | Description |
 |------|------|-------------|
 | `query` | string | Scripture reference to parse |
-| `language` | string | Language code (optional) |
-| `config.canon` | string | Canon: `'lds'` or `'coc'` |
+| `options` | string \| object | If string, treated as language code |
+| `options.language` | string | Language code |
+| `options.canon` | string | Canon: `'lds'`, `'rlds'`, etc. |
+
+> **Backward Compatibility:** The old 3-parameter signature `lookupReference(query, language, config)` is deprecated but still supported.
 
 **Returns:**
 ```typescript
@@ -71,7 +74,7 @@ lookupReference('1 Nephi 3:7', 'en', { canon: 'lds' });
 }
 ```
 
-### generateReference(verse_ids, language?, options?)
+### generateReference(verse_ids, options?)
 
 Convert verse IDs to a formatted reference string.
 
@@ -79,10 +82,10 @@ Convert verse IDs to a formatted reference string.
 generateReference([1, 2, 3]);
 // 'Genesis 1:1-3'
 
-generateReference([26137], 'de');
+generateReference([26137], 'de');  // string options = language
 // 'Johannes 3:16'
 
-generateReference([1, 2, 3, 10, 11]);
+generateReference([1, 2, 3, 10, 11], { language: 'en', canon: 'lds' });
 // 'Genesis 1:1-3, 10-11'
 ```
 
@@ -90,8 +93,11 @@ generateReference([1, 2, 3, 10, 11]);
 | Name | Type | Description |
 |------|------|-------------|
 | `verse_ids` | number[] | Array of verse IDs |
-| `language` | string | Output language code (optional) |
-| `options.canon` | string | Canon: `'lds'` or `'coc'` |
+| `options` | string \| object | If string, treated as language code |
+| `options.language` | string | Language code |
+| `options.canon` | string | Canon: `'lds'`, `'rlds'`, etc. |
+
+> **Backward Compatibility:** The old 3-parameter signature `generateReference(ids, language, options)` is deprecated but still supported.
 
 ### detectReferences(content, callback?, options?)
 
@@ -131,6 +137,17 @@ import { setLanguage, lookupReference } from 'scripture-guide';
 setLanguage('ko');
 lookupReference('요한복음 3:16');
 // Works in Korean
+```
+
+### setCanon(canon)
+
+Set the default canon for all subsequent calls.
+
+```javascript
+import { setCanon, lookupReference } from 'scripture-guide';
+
+setCanon('lds');    // LDS Standard Works (default)
+setCanon('rlds');   // RLDS/Community of Christ
 ```
 
 ## Supported Reference Formats
@@ -238,12 +255,13 @@ For convenience, functions have shorter aliases:
 | `generateReference` | `generate`, `gen`, `ref`, `verseId2Ref` |
 | `detectReferences` | `detect`, `detectRefs`, `linkRefs` |
 | `setLanguage` | `lang`, `setLang` |
+| `setCanon` | `canon` |
 
 ## Build
 
 ```bash
-npm run build    # Build dist files
-npm test         # Run tests
+npm run build       # Build dist files
+npm run test:jest   # Run tests
 ```
 
 ## License

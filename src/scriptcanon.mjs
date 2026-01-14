@@ -1,113 +1,172 @@
 // src/scriptcanon.mjs
-import cocMapping from '../data/coc-mapping.mjs';
+// Canon conversion utilities - fully data-driven, zero hardcoded canon keys
+
+// Registry for canon configurations
+const canonRegistry = new Map();
+
+// Registry for mappings between canons
+const mappingRegistry = new Map();
 
 /**
- * Detect canon from verse_id format
+ * Register a canon's ID format configuration
+ * @param {string} canonKey
+ * @param {object} config - { pattern: RegExp, format: (n) => string, parse: (s) => number }
+ */
+export const registerCanon = (canonKey, config) => {
+  canonRegistry.set(canonKey, config);
+};
+
+/**
+ * Register a mapping between two canons
+ * @param {string} canonA
+ * @param {string} canonB
+ * @param {object} mappingData - { aToB: {}, bToA: {} }
+ */
+export const registerMapping = (canonA, canonB, mappingData) => {
+  const key = [canonA, canonB].sort().join(':');
+  mappingRegistry.set(key, { canonA, canonB, ...mappingData });
+};
+
+/**
+ * Get mapping between two canons
+ */
+const getMapping = (from, to) => {
+  const key = [from, to].sort().join(':');
+  return mappingRegistry.get(key);
+};
+
+/**
+ * Detect canon from verse_id format by checking all registered canons
  * @param {string|number} verseId
- * @returns {'coc'|'lds'|null}
+ * @returns {string|null} canon key or null
  */
 export const detectCanon = (verseId) => {
-  if (typeof verseId === 'string' && /^C\d+$/.test(verseId)) return 'coc';
-  if (typeof verseId === 'number') return 'lds';
-  if (typeof verseId === 'string' && /^\d+$/.test(verseId)) return 'lds';
+  const idStr = String(verseId);
+
+  for (const [canonKey, config] of canonRegistry.entries()) {
+    if (config.pattern && config.pattern.test(idStr)) {
+      return canonKey;
+    }
+  }
+
+  // Fallback: plain integers assumed to be default canon
+  if (/^\d+$/.test(idStr)) {
+    // Return first canon that accepts plain integers, or null
+    for (const [canonKey, config] of canonRegistry.entries()) {
+      if (config.acceptsInteger) return canonKey;
+    }
+  }
+
   return null;
 };
 
 /**
- * Format COC verse_id: 50 → "C00050"
+ * Format verse_id for a specific canon
  * @param {number} num
- * @returns {string}
+ * @param {string} canonKey
+ * @returns {string|number}
  */
-export const formatCocId = (num) => `C${String(num).padStart(5, '0')}`;
-
-/**
- * Parse COC verse_id: "C00050" → 50
- * @param {string} id
- * @returns {number}
- */
-export const parseCocId = (id) => parseInt(id.slice(1), 10);
-
-/**
- * Convert COC verse_ids to LDS verse_ids
- * @param {string[]} cocIds - Array of COC ids like ['C00001', 'C00002']
- * @returns {{ verse_ids: number[], partial: boolean }}
- */
-export const convertToLds = (cocIds) => {
-  const result = { verse_ids: [], partial: false };
-
-  for (const cocId of cocIds) {
-    const num = parseCocId(cocId);
-    const mapping = cocMapping.cocToLds[num];
-
-    if (mapping) {
-      result.verse_ids.push(...mapping.lds);
-      if (mapping.partial) result.partial = true;
-    }
-  }
-
-  return result;
+export const formatId = (num, canonKey) => {
+  const config = canonRegistry.get(canonKey);
+  if (config?.format) return config.format(num);
+  return num;
 };
 
 /**
- * Convert LDS verse_ids to COC verse_ids
- * @param {number[]} ldsIds - Array of LDS verse_ids
- * @returns {{ verse_ids: string[], partial: boolean }}
+ * Parse verse_id to number
+ * @param {string|number} id
+ * @param {string} canonKey
+ * @returns {number}
  */
-export const convertToCoc = (ldsIds) => {
-  const result = { verse_ids: [], partial: false };
-  const seen = new Set();
-
-  for (const ldsId of ldsIds) {
-    const mapping = cocMapping.ldsToCoc[ldsId];
-
-    if (mapping) {
-      for (const cocNum of mapping.coc) {
-        if (!seen.has(cocNum)) {
-          seen.add(cocNum);
-          result.verse_ids.push(formatCocId(cocNum));
-        }
-      }
-      if (mapping.partial) result.partial = true;
-    }
-  }
-
-  return result;
+export const parseId = (id, canonKey) => {
+  const config = canonRegistry.get(canonKey);
+  if (config?.parse) return config.parse(id);
+  return typeof id === 'number' ? id : parseInt(id, 10);
 };
 
 /**
  * Convert verse_ids between canons
- * Auto-detects source canon from ID format
  * @param {(string|number)[]} verseIds
- * @param {{ to: 'lds'|'coc' }} options
+ * @param {{ from?: string, to: string }} options
  * @returns {{ verse_ids: (string|number)[], partial: boolean, error?: string }}
  */
 export const convertCanon = (verseIds, options = {}) => {
-  const { to } = options;
+  const { from: explicitFrom, to: targetCanon } = options;
 
-  if (!to) {
+  if (!targetCanon) {
     return { verse_ids: [], partial: false, error: 'missing_target_canon' };
   }
 
-  // Detect canons of all inputs
-  const canons = verseIds.map(detectCanon);
-  const uniqueCanons = [...new Set(canons.filter(c => c !== null))];
-
-  // Check for mixed input
-  if (uniqueCanons.length > 1) {
-    return { verse_ids: [], partial: false, error: 'mixed_canon_input' };
+  if (!verseIds || verseIds.length === 0) {
+    return { verse_ids: [], partial: false };
   }
 
-  const sourceCanon = uniqueCanons[0];
+  // Detect source canon if not explicit
+  const sourceCanon = explicitFrom || detectCanon(verseIds[0]);
 
-  // Check for same-canon conversion
-  if (sourceCanon === to) {
-    return { verse_ids: [], partial: false, error: 'same_canon_conversion' };
+  if (!sourceCanon) {
+    return { verse_ids: [], partial: false, error: 'unknown_source_canon' };
+  }
+
+  // Same canon - no conversion needed
+  if (sourceCanon === targetCanon) {
+    return { verse_ids: [...verseIds], partial: false };
+  }
+
+  // Get mapping
+  const mapping = getMapping(sourceCanon, targetCanon);
+  if (!mapping) {
+    return { verse_ids: [], partial: false, error: `no_mapping:${sourceCanon}:${targetCanon}` };
+  }
+
+  // Determine direction
+  const isForward = mapping.canonA === sourceCanon;
+  const conversionMap = isForward ? mapping.aToB : mapping.bToA;
+
+  if (!conversionMap) {
+    return { verse_ids: [], partial: false, error: `no_conversion_map:${sourceCanon}:${targetCanon}` };
   }
 
   // Perform conversion
-  if (to === 'lds') {
-    return convertToLds(verseIds);
-  } else {
-    return convertToCoc(verseIds);
+  const result = { verse_ids: [], partial: false };
+  const seen = new Set();
+
+  for (const id of verseIds) {
+    const numericId = parseId(id, sourceCanon);
+    const mappingEntry = conversionMap[numericId];
+
+    if (mappingEntry) {
+      const targetIds = mappingEntry.ids || mappingEntry;
+      const idsArray = Array.isArray(targetIds) ? targetIds : [targetIds];
+
+      for (const targetId of idsArray) {
+        const formatted = formatId(targetId, targetCanon);
+        const key = String(formatted);
+        if (!seen.has(key)) {
+          seen.add(key);
+          result.verse_ids.push(formatted);
+        }
+      }
+      if (mappingEntry.partial) result.partial = true;
+    }
   }
+
+  return result;
+};
+
+/**
+ * Get all registered canon keys
+ * @returns {string[]}
+ */
+export const getRegisteredCanons = () => {
+  return [...canonRegistry.keys()];
+};
+
+/**
+ * Check if a canon is registered
+ * @param {string} canonKey
+ * @returns {boolean}
+ */
+export const isCanonRegistered = (canonKey) => {
+  return canonRegistry.has(canonKey);
 };
