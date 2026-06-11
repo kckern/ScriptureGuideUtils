@@ -28,8 +28,9 @@ registerCanon(DEFAULTS.canon, {
 // Module-level caches for performance
 const indexCache = {
   refIndex: null,
+  refIndexHash: null,
   verseIdIndex: null,
-  configHash: null
+  verseIdIndexHash: null
 };
 
 const hashConfig = (config) => {
@@ -709,7 +710,7 @@ const loadRefIndex = function(config) {
     const configHash = hashConfig(config);
 
     // Return cached if available and config unchanged
-    if (indexCache.refIndex && indexCache.configHash === configHash) {
+    if (indexCache.refIndex && indexCache.refIndexHash === configHash) {
         return indexCache.refIndex;
     }
 
@@ -732,7 +733,7 @@ const loadRefIndex = function(config) {
 
     // Cache the result
     indexCache.refIndex = refIndex;
-    indexCache.configHash = configHash;
+    indexCache.refIndexHash = configHash;
 
     return refIndex;
 }
@@ -742,7 +743,7 @@ const loadVerseIdIndex = function(config) {
     const configHash = hashConfig(config);
 
     // Return cached if available and config unchanged
-    if (indexCache.verseIdIndex && indexCache.configHash === configHash) {
+    if (indexCache.verseIdIndex && indexCache.verseIdIndexHash === configHash) {
         return indexCache.verseIdIndex;
     }
 
@@ -761,7 +762,7 @@ const loadVerseIdIndex = function(config) {
 
     // Cache the result
     indexCache.verseIdIndex = verseIdIndex;
-    indexCache.configHash = configHash;
+    indexCache.verseIdIndexHash = configHash;
 
     return verseIdIndex;
 }
