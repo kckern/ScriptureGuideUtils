@@ -1,0 +1,42 @@
+language: ko
+meta:
+  generated: "2026-06-11"
+  version: "1.0.0"
+
+lookup:
+  critical:
+    - id: ko-lookup-001
+      input: "니파이전서 3:7"
+      expected_ids: [31153]
+      expected_ref: "니파이전서 3:7"
+      description: Simple single verse (1 Nephi 3:7)
+
+    - id: ko-lookup-dc-001
+      input: "교리와 성약 121:7-9"
+      expected_ids: [40795, 40796, 40797]
+      expected_ref: "교리와 성약 121:7-9"
+      description: D&C full name — 와 inside book name must not be treated as a list joiner
+
+    - id: ko-lookup-dc-002
+      input: "교성 121:7-9"
+      expected_ids: [40795, 40796, 40797]
+      expected_ref: "교리와 성약 121:7-9"
+      description: D&C short alt name (교성) — Hangul alts need non-\b word boundaries
+
+    - id: ko-lookup-dc-003
+      input: "교리와 성약 121장 7절"
+      expected_ids: [40795]
+      expected_ref: "교리와 성약 121:7"
+      description: D&C full name with native chapter/verse markers
+
+    - id: ko-lookup-dc-004
+      input: "교리와성약 121:7"
+      expected_ids: [40795]
+      expected_ref: "교리와 성약 121:7"
+      description: D&C full name without internal space
+
+    - id: ko-lookup-dc-005
+      input: "교리와 성약 76편 20-24절"
+      expected_ids: [39430, 39431, 39432, 39433, 39434]
+      expected_ref: "교리와 성약 76:20-24"
+      description: D&C with 편 (section) suffix

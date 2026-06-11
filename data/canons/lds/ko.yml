@@ -80,7 +80,7 @@ books:
   doctrine_and_covenants:
     name: 교리와 성약
     pattern: "교리와\\s*성약"
-    alt: [교성, 교리성약]
+    alt: [교성, 교리성약, 교리와성약]
 
   moses:
     name: 모세서

@@ -130,6 +130,7 @@ function buildLangData() {
       pre_rules: sharedKo.pre_rules,
       post_rules: sharedKo.post_rules,
       joiners: sharedKo.joiners,
+      spacing: sharedKo.spacing,
       wordBreak: sharedKo.wordBreak || ''
     },
     de: {

@@ -1,5 +1,8 @@
 language: ko
 
+# [wordBreak, buffer] for book-name matching; \b does not work for Hangul
+spacing: ["", " "]
+
 delimiters:
   chapter_verse: [":", "장"]
   range: ["-", "~", "부터"]
@@ -20,12 +23,25 @@ joiners:
   patterns: ["과", "와", "및", "그리고", "또는", "비교"]
 
 pre_rules:
+  # Collapse D&C name before the joiner rule so its internal 와 is not split
+  - pattern: "교리와\\s*성약"
+    replacement: "교리성약"
+  # 편 (section) is used as the chapter marker for D&C
+  - pattern: "(\\d+)\\s*편\\s*(\\d+)"
+    replacement: "$1:$2"
+  - pattern: "(\\d+)\\s*편"
+    replacement: "$1"
   - pattern: "(\\d+)\\s*장\\s*(\\d+)(?:~|-)(\\d+)\\s*절*"
     replacement: "$1:$2-$3"
   - pattern: "(\\d+)\\s*장\\s*(\\d+)\\s*절*"
     replacement: "$1:$2"
   - pattern: "~"
     replacement: "-"
+  # Bare chapter/verse markers after the compound forms above
+  - pattern: "(\\d+)\\s*장"
+    replacement: "$1"
+  - pattern: "(\\d+)\\s*절"
+    replacement: "$1"
   - pattern: "(비교|또는*|그리고|과|와|및)"
     replacement: ";"
 
