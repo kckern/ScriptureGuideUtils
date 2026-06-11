@@ -384,8 +384,9 @@ const cleanReference = function(messyReference, config) {
     //Build Regex rules
     let regex = config.raw_regex.pre_rules;
     for (let i in regex) {
-        var re = new RegExp(regex[i][0], "ig");
-        ref = ref.replace(re, regex[i][1]);
+        // pre_rules are {pattern, replacement} objects (legacy: [pattern, replacement]).
+        var re = new RegExp(regex[i].pattern ?? regex[i][0], "ig");
+        ref = ref.replace(re, regex[i].replacement ?? regex[i][1] ?? "");
     }
 
     //Turn dots into colons
@@ -690,8 +691,12 @@ const loadRefsFromRanges = function(ranges, config) {
         // Apply language-specific post rules
         if (config.raw_regex.post_rules) {
             for (let rule of config.raw_regex.post_rules) {
-                const re = new RegExp(rule[0], "ig");
-                ref = ref.replace(re, rule[1]);
+                // pre_rules/post_rules migrated to {pattern, replacement} objects;
+                // keep legacy [pattern, replacement] tuple support. Guard the
+                // replacement so an undefined never coerces to the literal
+                // "undefined" via String.replace (the ko regression).
+                const re = new RegExp(rule.pattern ?? rule[0], "ig");
+                ref = ref.replace(re, rule.replacement ?? rule[1] ?? "");
             }
         }
         
