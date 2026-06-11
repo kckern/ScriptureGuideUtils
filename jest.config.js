@@ -13,7 +13,7 @@ export default {
     '!src/**/*.test.mjs'
   ],
   setupFilesAfterEnv: ['./test/setup.js'],
-  testPathIgnorePatterns: ['/node_modules/', '/_archive/', '/test/_archive/'],
+  testPathIgnorePatterns: ['/node_modules/', '/_archive/', '/test/_archive/', '/.worktrees/'],
   verbose: true,
   reporters: [
     'default',

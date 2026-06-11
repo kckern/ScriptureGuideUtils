@@ -4,12 +4,8 @@ import * as esbuild from 'esbuild';
 import { readFileSync, existsSync } from 'fs';
 import { execSync } from 'child_process';
 
-// Step 1: Compile YAML to JS if needed
-const yamlDataDir = 'src/data';
-if (!existsSync(yamlDataDir)) {
-  console.log('Compiling YAML data files...');
-  execSync('node build/compile-yaml.mjs', { stdio: 'inherit' });
-}
+// Step 1: Compile YAML to JS (always, so YAML edits are never silently stale)
+execSync('node build/compile-yaml.mjs', { stdio: 'inherit' });
 
 const pkg = JSON.parse(readFileSync('package.json', 'utf8'));
 const banner = `/* scripture-guide v${pkg.version} */`;
