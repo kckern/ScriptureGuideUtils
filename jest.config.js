@@ -13,7 +13,9 @@ export default {
     '!src/**/*.test.mjs'
   ],
   setupFilesAfterEnv: ['./test/setup.js'],
-  testPathIgnorePatterns: ['/node_modules/', '/_archive/', '/test/_archive/', '/.worktrees/'],
+  // <rootDir>-anchored so running jest FROM a worktree still finds its own tests
+  // (a bare '/.worktrees/' pattern matches the worktree's own absolute path)
+  testPathIgnorePatterns: ['/node_modules/', '/_archive/', '/test/_archive/', '<rootDir>/.worktrees/'],
   verbose: true,
   reporters: [
     'default',

@@ -14,7 +14,7 @@ labels:
   verse: ["verse", "v", "vv", "vs"]
   section: ["section", "sec"]
 
-joiners: ["and", ";", ",", "&", "compare", "see also", "cf", "cited at"]
+joiners: ["and", ";", ",", "&", "compare", "see also", "see", "cf", "c.f.", "cited at", "also"]
 
 pre_rules:
   # Strip Gospel/Epistle prefixes

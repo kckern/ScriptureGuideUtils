@@ -3,81 +3,92 @@
  * Handles detection of implied references using context from explicit references
  */
 import { findMatches, findMatchIndexes, processReferenceDetection } from './scriptdetect.mjs';
-import { 
-    removeOverlaps, 
-    calculateGaps, 
-    calculateNegativeSpace, 
+import {
+    removeOverlaps,
+    calculateGaps,
+    calculateNegativeSpace,
     mergeAdjacentMatches,
-    buildFinalOutput 
+    buildFinalOutput,
+    gapCanMerge
 } from './scriptlib.mjs';
 
-// Enhanced reference detection with contextual processing
+// Context-aware collection: the positional core shared by the string-output
+// detectReferencesWithContext and the public findReferences. Returns records:
+//   { start, end, text, combinedText, verse_ids }
+// where `text` is the verbatim span (content.slice(start,end) === text) used by
+// DOM consumers, and `combinedText` is the joiner-normalized display string
+// (e.g. "Jn 10.17–18;2 Nephi 2.8") used by the string-replacement callback.
+// Returns [] when nothing resolves.
+export const collectReferencesWithContext = (content, books, lang_extra, lookupReference, options) => {
+    // Step 1: Find explicit references using existing logic
+    // (findMatchIndexes returns false — not [] — when nothing matches)
+    const explicitMatches = findMatches(content, books, lang_extra);
+    const explicitIndices = findMatchIndexes(content, explicitMatches, lookupReference, lang_extra) || [];
+
+    // Step 2: Find implied references using context
+    const impliedMatches = findImpliedReferences(content, explicitMatches, explicitIndices, lookupReference, options);
+
+    // Step 3: Merge and sort all matches - store both original text and verse IDs
+    const explicitMatchesWithRefs = explicitIndices.map(([start, end]) => {
+        const originalText = content.substring(start, end);
+        const verification = lookupReference(originalText);
+        return [start, end, originalText, verification.verse_ids];
+    });
+
+    // Convert implied matches to include verse IDs
+    const impliedMatchesWithVerseIds = impliedMatches.map(([start, end, resolvedRef]) => {
+        const originalText = content.substring(start, end);
+        const verification = lookupReference(resolvedRef);
+        return [start, end, originalText, verification.verse_ids];
+    });
+
+    const allMatches = [...explicitMatchesWithRefs, ...impliedMatchesWithVerseIds];
+    allMatches.sort((a, b) => a[0] - b[0]);
+
+    // Step 4: Remove overlaps, preferring explicit matches
+    const nonOverlappingMatches = removeOverlaps(allMatches, content);
+
+    if (!nonOverlappingMatches || nonOverlappingMatches.length === 0) {
+        return [];
+    }
+
+    // Step 5: Merge adjacent matches whose gap is pure joiner material
+    const gapsBetweenIndices = calculateGaps(nonOverlappingMatches);
+    const joiners = lang_extra.joiners || ["^[;, &]$"];
+    const gapThatMayBeMerged = gapsBetweenIndices.map(([start, end]) => {
+        const gapString = content.substring(start, end).trim();
+        return gapCanMerge(gapString, joiners);
+    });
+
+    // Explicit references listed with joiners express one grouped citation.
+    const compatibilityCheck = () => true;
+    const mergedIndices = mergeAdjacentMatches(nonOverlappingMatches, gapThatMayBeMerged, compatibilityCheck);
+
+    return mergedIndices.map(([start, end, combinedText, verseIds]) => ({
+        start,
+        end,
+        text: content.substring(start, end),
+        combinedText,
+        verse_ids: verseIds || []
+    }));
+};
+
+// Enhanced reference detection with contextual processing (string output)
 export const detectReferencesWithContext = (content, books, lang_extra, lookupReference, callback, options, generateReference = null) => {
     try {
-        // Step 1: Find explicit references using existing logic
-        const explicitMatches = findMatches(content, books, lang_extra);
-        const explicitIndices = findMatchIndexes(content, explicitMatches, lookupReference, lang_extra);
-        
-        // Step 2: Find implied references using context
-        const impliedMatches = findImpliedReferences(content, explicitMatches, explicitIndices, lookupReference, options);
-        
-        // Step 3: Merge and sort all matches - store both original text and verse IDs
-        const explicitMatchesWithRefs = (explicitIndices || []).map(([start, end]) => {
-            const originalText = content.substring(start, end);
-            const verification = lookupReference(originalText);
-            return [start, end, originalText, verification.verse_ids];
-        });
-        
-        // Convert implied matches to include verse IDs
-        const impliedMatchesWithVerseIds = impliedMatches.map(([start, end, resolvedRef]) => {
-            const originalText = content.substring(start, end);
-            const verification = lookupReference(resolvedRef);
-            return [start, end, originalText, verification.verse_ids];
-        });
-        
-        const allMatches = [...explicitMatchesWithRefs, ...impliedMatchesWithVerseIds];
-        allMatches.sort((a, b) => a[0] - b[0]);
-        
-        // Step 4: Remove overlaps, preferring explicit matches
-        const nonOverlappingMatches = removeOverlaps(allMatches, content);
-        
-        if (!nonOverlappingMatches || nonOverlappingMatches.length === 0) {
-            return content;
-        }
-        
-        // Step 5: Apply the same gap merging logic as original
-        const gapsBetweenIndices = calculateGaps(nonOverlappingMatches);
-        
-        const joiners = lang_extra.joiners || ["^[;, &]$"];
-        const gapThatMayBeMerged = gapsBetweenIndices.map(([start, end]) => {
-            const gapString = content.substring(start, end).trim();
-            return joiners.some(joiner => (new RegExp(joiner, "ig")).test(gapString));
-        });
-        
-        // Compatibility check for merging references
-        const compatibilityCheck = (prevIndex, current) => {
-            // Always allow merging for explicit references separated by joiners
-            // The user's intention is clear when they list references like "Isa 45.22;Morm 3.18;Moro 10.24"
-            return true;
-        };
-        
-        // Merge adjacent matches if gaps are joiners and references are compatible
-        const mergedIndices = mergeAdjacentMatches(nonOverlappingMatches, gapThatMayBeMerged, compatibilityCheck);
-        
-        // Step 6: Build final output
-        const negativeSpace = calculateNegativeSpace(mergedIndices, content.length);
-        
-        // Use the stored reference and verse IDs
-        const cutItems = mergedIndices.map(([start, end, originalText, verseIds]) => {
-            // Pass verseIds to callback for compatibility with expected signature
-            return callback(originalText, verseIds);
-        });
-        
+        const records = collectReferencesWithContext(content, books, lang_extra, lookupReference, options);
+        if (!records.length) return content;
+
+        const indices = records.map(({ start, end }) => [start, end]);
+        const negativeSpace = calculateNegativeSpace(indices, content.length);
+
+        // Pass the joiner-normalized combinedText (not the verbatim span) to
+        // preserve the established string-replacement display behavior.
+        const cutItems = records.map(({ combinedText, verse_ids }) => callback(combinedText, verse_ids));
         const negativeItems = negativeSpace.map(([start, end]) => content.substring(start, end));
-        const firstReferenceIsAtStart = mergedIndices[0][0] === 0;
-        
-        const result = buildFinalOutput(cutItems, negativeItems, firstReferenceIsAtStart);
-        return result;
+        const firstReferenceIsAtStart = indices[0][0] === 0;
+
+        return buildFinalOutput(cutItems, negativeItems, firstReferenceIsAtStart);
     } catch (e) {
         console.warn('Enhanced reference detection failed, falling back to basic detection:', e);
         return processReferenceDetection(content, books, lang_extra, lookupReference, callback);
@@ -94,13 +105,16 @@ export const detectReferencesWithContext = (content, books, lang_extra, lookupRe
  */
 const findBookContexts = (content, explicitMatches, explicitIndices, lookupReference) => {
     const contexts = [];
-    
-    // Use the already found explicit matches and their positions
-    if (explicitMatches && explicitIndices) {
-        for (let i = 0; i < explicitMatches.length; i++) {
-            const match = explicitMatches[i];
+
+    // Derive contexts from the positional spans themselves. (explicitMatches
+    // is a differently-ordered/filtered string list — zipping the two arrays
+    // by index paired wrong matches with wrong positions and crashed when
+    // explicitIndices was false.)
+    if (explicitIndices && explicitIndices.length) {
+        for (let i = 0; i < explicitIndices.length; i++) {
             const [start, end] = explicitIndices[i];
-            
+            const match = content.substring(start, end);
+
             const verification = lookupReference(match);
             
             if (verification.verse_ids && verification.verse_ids.length > 0) {

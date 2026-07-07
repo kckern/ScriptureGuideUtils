@@ -4,8 +4,8 @@ const raw_index_orig = scriptData;
 const raw_regex_orig = regexData;
 const raw_lang = langData;
 
-import { processReferenceDetection } from './scriptdetect.mjs';
-import { detectReferencesWithContext } from './scriptdetectcontext.mjs';
+import { processReferenceDetection, collectReferences } from './scriptdetect.mjs';
+import { detectReferencesWithContext, collectReferencesWithContext } from './scriptdetectcontext.mjs';
 import { detectCanon, formatId, parseId, convertCanon, registerCanon, registerMapping } from './scriptcanon.mjs';
 
 import {
@@ -838,6 +838,81 @@ const detectReferences = (content, callBack, options = null) => {
     return processReferenceDetection(content, books, config.lang_extra, (query) => lookupReference(query, effectiveLanguage), callBack);
 }
 
+// Position-based sibling of detectReferences: instead of returning a
+// transformed string, return the detected references as structured records
+// with offsets into `content`: [{ start, end, text, ref, verse_ids }] where
+// content.slice(start, end) === text. Consumers (e.g. the browser extension)
+// use the offsets to wrap matches in DOM nodes without string replacement.
+const findReferences = (content, options = null) => {
+    // Handle legacy API: (content, language)
+    if (typeof options === 'string' || options === null) {
+        options = { language: options };
+    }
+
+    const defaultOptions = {
+        language: null,
+        contextAware: true,
+        contextScope: 'sentence',
+        maxContextDistance: 500,
+        enableImpliedBooks: true,
+        enableVerseAbbrev: true,
+        abbreviations: true,
+        chapterOnly: true
+    };
+
+    const finalOptions = { ...defaultOptions, ...options };
+
+    const effectiveLanguage = getEffectiveLanguage(finalOptions.language);
+    const config = getLanguageConfig(effectiveLanguage);
+    const src = config.raw_regex.books.map(i => i[0]);
+    const dst = [...new Set(config.raw_regex.books.map(i => i[1]))];
+    const books = [...dst, ...src];
+    const lookup = (query) => lookupReference(query, effectiveLanguage);
+
+    const found = finalOptions.contextAware
+        ? collectReferencesWithContext(content, books, config.lang_extra, lookup, finalOptions)
+        : collectReferences(content, books, config.lang_extra, lookup);
+
+    // `ref` is a canonical, scripture.guide-resolvable string derived from the
+    // resolved verse_ids (uniform across both collection paths); `text` remains
+    // the verbatim matched span for DOM consumers.
+    const records = found
+        .filter(m => m.verse_ids.length > 0)
+        .map(({ start, end, text, verse_ids }) => ({
+            start, end, text, verse_ids,
+            ref: generateReference(verse_ids, effectiveLanguage)
+        }));
+
+    return applyDetectionFlags(records, finalOptions);
+}
+
+// The book portion of a reference string: everything before the first
+// space-delimited number (the chapter). "Mt 5:3" -> "Mt", "1 Ne 3:7" -> "1 Ne".
+const bookPortion = (s) => {
+    const m = s.match(/^\s*(.*?)\s+\d/);
+    return (m ? m[1] : s).trim().toLowerCase();
+};
+
+// A reference has a verse component when a chapter number is followed by a
+// ":" or "." and a verse number ("John 3:16", "1 Nephi 8.15"); a bare
+// book+chapter ("Genesis 2") does not.
+const hasVerseComponent = (text) => /\d\s*[:.]\s*\d/.test(text);
+
+// Post-collection filters for the abbreviations / chapterOnly options. Grouped
+// citations (joiner-merged, so text contains ";" "," or " and ") always survive
+// — the flags target single-reference matches.
+const applyDetectionFlags = (records, opts) => {
+    const isGrouped = (text) => /[;,]| and /i.test(text);
+    let out = records;
+    if (opts.chapterOnly === false) {
+        out = out.filter(m => isGrouped(m.text) || hasVerseComponent(m.text));
+    }
+    if (opts.abbreviations === false) {
+        out = out.filter(m => isGrouped(m.text) || bookPortion(m.text) === bookPortion(m.ref));
+    }
+    return out;
+}
+
 const getLanguageConfig = function(language, canon = null) {
     // Default to English if no language specified or not found
     const effectiveLanguage = language && raw_lang[language] ? language : 'en';
@@ -906,6 +981,7 @@ export {
     setLanguage,
     setCanon,
     detectReferences,
+    findReferences,
     convertCanon,
 
     //Aliases for convenience
@@ -930,4 +1006,7 @@ export {
     detectReferences as detectRefs,
     detectReferences as detectScriptures,
     detectReferences as linkRefs,
+
+    findReferences as find,
+    findReferences as findRefs,
 };
