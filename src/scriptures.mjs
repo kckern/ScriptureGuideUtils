@@ -399,6 +399,9 @@ const cleanReference = function(messyReference, config) {
 
     let ref = messyReference.replace(/[\s]+/g, " ").trim();
 
+    // Verse/chapter continuation: "16:17 and 18" -> "16:17,18"
+    ref = ref.replace(/(\d)\s+and\s+(\d)/g, "$1,$2");
+
     //Build Regex rules
     let regex = config.raw_regex.pre_rules;
     for (let i in regex) {
@@ -876,14 +879,49 @@ const findReferences = (content, options = null) => {
     // `ref` is a canonical, scripture.guide-resolvable string derived from the
     // resolved verse_ids (uniform across both collection paths); `text` remains
     // the verbatim matched span for DOM consumers.
-    const records = found
+    let records = found
         .filter(m => m.verse_ids.length > 0)
         .map(({ start, end, text, verse_ids }) => ({
             start, end, text, verse_ids,
             ref: generateReference(verse_ids, effectiveLanguage)
         }));
 
+    // Supplementary pass: spelled-out "Nth chapter of BOOK" forms, which the
+    // numeric detector cannot see. Merge in any that don't overlap an existing
+    // numeric match, then re-sort by position.
+    const spelled = collectSpelledOut(content, lookup, effectiveLanguage)
+        .filter(sp => !records.some(r => sp.start < r.end && r.start < sp.end));
+    if (spelled.length) {
+        records = [...records, ...spelled].sort((a, b) => a.start - b.start);
+    }
+
     return applyDetectionFlags(records, finalOptions);
+}
+
+// Detect spelled-out chapter references like "the 13th chapter of First
+// Corinthians" or "22nd chapter of the book of Matthew". The trailing book
+// candidate is validated by lookupReference, so non-book phrases ("13th
+// chapter of His Gospel") are rejected. Returns position-based records.
+const collectSpelledOut = (content, lookup, effectiveLanguage) => {
+    const re = /\b(?:the\s+)?(\d+)(?:st|nd|rd|th)\s+chapter\s+of\s+(?:the\s+)?(?:book\s+of\s+)?((?:(?:First|Second|Third|Fourth|1st|2nd|3rd|4th|I{1,3}|IV)\s+)?[A-Z][a-zA-Z]+)/g;
+    const out = [];
+    let m;
+    while ((m = re.exec(content)) !== null) {
+        const chapter = m[1];
+        const bookText = m[2];
+        const result = lookup(`${bookText} ${chapter}`);
+        if (!result.verse_ids || !result.verse_ids.length) continue;
+        // Span from the ordinal number through the book name (exclude a leading "the ").
+        const start = m.index + m[0].indexOf(chapter);
+        const end = m.index + m[0].length;
+        out.push({
+            start, end,
+            text: content.substring(start, end),
+            verse_ids: result.verse_ids,
+            ref: generateReference(result.verse_ids, effectiveLanguage)
+        });
+    }
+    return out;
 }
 
 // The book portion of a reference string: everything before the first

@@ -27,7 +27,10 @@ const findMatches = (content,books,lang_extra) => {
     const tail = lang_extra.tail ? new RegExp(lang_extra.tail,"ig") : /[^0-9]+$/;
     const preBookMatch = lang_extra.book || `(First|I|1|1st|Second|II|2|2nd|Third|III|3|3rd|Fourth|IV|4|4th)*\\s*(books* of)*\\s*`;
     const matchingBooks = findMatchingBooks(normalizedContent,books);
-    const postBookMatch = lang_extra.chapter || "([0-9:.;,~ —–-]|cf)*[0-9]+";
+    // Allow whitespace (incl. newlines from wrapped HTML) between the book name
+    // and its chapter, and treat "and" as a numeric connector so verse
+    // continuations ("16:17 and 18") stay part of the reference span.
+    const postBookMatch = lang_extra.chapter || "([0-9:.;,~ —–-]|\\s|and|cf)*[0-9]+";
     const fullBookMatches = matchingBooks.map(bookMatch=>{
         const patternString =  preBookMatch + bookMatch ;
         const pattern = (new RegExp(patternString,"ig"));
