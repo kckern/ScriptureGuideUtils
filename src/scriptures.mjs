@@ -838,7 +838,9 @@ const findReferences = (content, options = null) => {
         contextScope: 'sentence',
         maxContextDistance: 500,
         enableImpliedBooks: true,
-        enableVerseAbbrev: true
+        enableVerseAbbrev: true,
+        abbreviations: true,
+        chapterOnly: true
     };
 
     const finalOptions = { ...defaultOptions, ...options };
@@ -857,12 +859,41 @@ const findReferences = (content, options = null) => {
     // `ref` is a canonical, scripture.guide-resolvable string derived from the
     // resolved verse_ids (uniform across both collection paths); `text` remains
     // the verbatim matched span for DOM consumers.
-    return found
+    const records = found
         .filter(m => m.verse_ids.length > 0)
         .map(({ start, end, text, verse_ids }) => ({
             start, end, text, verse_ids,
             ref: generateReference(verse_ids, effectiveLanguage)
         }));
+
+    return applyDetectionFlags(records, finalOptions);
+}
+
+// The book portion of a reference string: everything before the first
+// space-delimited number (the chapter). "Mt 5:3" -> "Mt", "1 Ne 3:7" -> "1 Ne".
+const bookPortion = (s) => {
+    const m = s.match(/^\s*(.*?)\s+\d/);
+    return (m ? m[1] : s).trim().toLowerCase();
+};
+
+// A reference has a verse component when a chapter number is followed by a
+// ":" or "." and a verse number ("John 3:16", "1 Nephi 8.15"); a bare
+// book+chapter ("Genesis 2") does not.
+const hasVerseComponent = (text) => /\d\s*[:.]\s*\d/.test(text);
+
+// Post-collection filters for the abbreviations / chapterOnly options. Grouped
+// citations (joiner-merged, so text contains ";" "," or " and ") always survive
+// — the flags target single-reference matches.
+const applyDetectionFlags = (records, opts) => {
+    const isGrouped = (text) => /[;,]| and /i.test(text);
+    let out = records;
+    if (opts.chapterOnly === false) {
+        out = out.filter(m => isGrouped(m.text) || hasVerseComponent(m.text));
+    }
+    if (opts.abbreviations === false) {
+        out = out.filter(m => isGrouped(m.text) || bookPortion(m.text) === bookPortion(m.ref));
+    }
+    return out;
 }
 
 const getLanguageConfig = function(language) {
