@@ -27,7 +27,18 @@ const findMatches = (content,books,lang_extra) => {
     const tail = lang_extra.tail ? new RegExp(lang_extra.tail,"ig") : /[^0-9]+$/;
     const preBookMatch = lang_extra.book || `(First|I|1|1st|Second|II|2|2nd|Third|III|3|3rd|Fourth|IV|4|4th)*\\s*(books* of)*\\s*`;
     const matchingBooks = findMatchingBooks(normalizedContent,books);
-    const postBookMatch = lang_extra.chapter || "([0-9:.;,~ —–-]|cf)*[0-9]+";
+    // Bind a book name to its chapter:verse. Structure (not a loose class) to
+    // avoid ReDoS and cross-sentence false positives:
+    //   <gap><number-core>
+    // gap = horizontal whitespace + at most one newline (wrapped HTML) + an
+    //   optional ", Sec." (D&C) + an optional "(" (Philippians (3:20)) — then a
+    //   digit MUST follow, so "Genesis. 2" / "Amos 5. Section 3" don't bind.
+    // core = digits joined by :.,;~ dashes, horizontal whitespace, single
+    //   newlines, and the word connectors "and"/"cf" (\b-bounded). Every
+    //   position matches exactly one alternative -> linear time.
+    const gap = "[ \\t]*(?:\\n(?![ \\t]*\\n)[ \\t]*)?(?:,[ \\t]*sec(?:tion)?\\.?[ \\t]*)?\\(?[ \\t]*(?=[0-9])";
+    const core = "(?:[0-9:.;,~—–-]|[ \\t]|\\n(?![ \\t]*\\n)|and\\b|cf\\b|\\()*[0-9]";
+    const postBookMatch = lang_extra.chapter || (gap + core);
     const fullBookMatches = matchingBooks.map(bookMatch=>{
         const patternString =  preBookMatch + bookMatch ;
         const pattern = (new RegExp(patternString,"ig"));
@@ -86,7 +97,9 @@ const findMatches = (content,books,lang_extra) => {
         return newString.replace(tail,"").trim();
     }).filter(i=>!!i);
     const matches =  matchesWithReferences.map(string=>{
-        const pattern = (new RegExp(string,"ig"));
+        // `string` is a literal matched span, re-found to enumerate occurrences;
+        // it may contain regex metacharacters (e.g. "(" from "Philippians (3:20").
+        const pattern = (new RegExp(string.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"),"ig"));
         const matches = normalizedContent.match(pattern)?.map(i=>i.trim().replace(tail,""));
         //console.log({string,matches,tail});
         return matches;
