@@ -134,3 +134,19 @@ describe('Guard: adversarial-review false positives', () => {
     expect(find('the second chapter of job hunting is networking')).toEqual([]);
   });
 });
+
+describe('T5: hyphenated Joseph Smith abbreviations', () => {
+  test('"JS-H 1:44" resolves to Joseph Smith—History', () => {
+    expect(covers('See JS-H 1:44 tonight.', 'Joseph Smith—History 1:44')).toBe(true);
+  });
+  test('em-dash and long forms', () => {
+    expect(covers('JS—H 1:44', 'Joseph Smith—History 1:44')).toBe(true);
+    expect(covers('js-hist 1:44', 'Joseph Smith—History 1:44')).toBe(true);
+  });
+  test('range form "JS-H 1:50-52"', () => {
+    expect(covers('quoted JS-H 1:50-52 here', 'Joseph Smith—History 1:50-52')).toBe(true);
+  });
+  test('does not swallow a following word (no false positive on "js-heavy")', () => {
+    expect(find('this is a js-heavy framework').length).toBe(0);
+  });
+});

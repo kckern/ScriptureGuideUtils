@@ -24,6 +24,11 @@ pre_rules:
   # Alternate book names
   - ["\\bsong of songs\\b", "Solomon's Song"]
   - ["\\bcanticle of canticles\\b", "Solomon's Song"]
+  # Hyphenated Joseph Smith abbreviations (JS-H, JS—H, JS-Hist, JS-M, JS-Matt)
+  # to the jsh/jsm alts — before the book-range dash rule would split them
+  # ("js-h" -> "js - h").
+  - ["\\bjs[\\s–—-]+h(?:ist(?:ory)?)?\\b", "jsh"]
+  - ["\\bjs[\\s–—-]+m(?:att(?:hew)?)?\\b", "jsm"]
   # Roman numerals to Arabic
   - ["\\bIV\\s+(?=[A-Za-z])", "4 "]
   - ["\\bIII\\s+(?=[A-Za-z])", "3 "]
