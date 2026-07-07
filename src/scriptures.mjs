@@ -5,7 +5,7 @@ const raw_regex_orig = regexData;
 const raw_lang = langData;
 
 import { processReferenceDetection, collectReferences } from './scriptdetect.mjs';
-import { detectReferencesWithContext } from './scriptdetectcontext.mjs';
+import { detectReferencesWithContext, collectReferencesWithContext } from './scriptdetectcontext.mjs';
 import { detectCanon, formatId, parseId, convertCanon, registerCanon } from './scriptcanon.mjs';
 
 import {
@@ -850,10 +850,19 @@ const findReferences = (content, options = null) => {
     const books = [...dst, ...src];
     const lookup = (query) => lookupReference(query, effectiveLanguage);
 
-    // Context-aware collection lands in Task 3; both option shapes route to
-    // the basic collector for now.
-    const found = collectReferences(content, books, config.lang_extra, lookup);
-    return found.filter(m => m.verse_ids.length > 0);
+    const found = finalOptions.contextAware
+        ? collectReferencesWithContext(content, books, config.lang_extra, lookup, finalOptions)
+        : collectReferences(content, books, config.lang_extra, lookup);
+
+    // `ref` is a canonical, scripture.guide-resolvable string derived from the
+    // resolved verse_ids (uniform across both collection paths); `text` remains
+    // the verbatim matched span for DOM consumers.
+    return found
+        .filter(m => m.verse_ids.length > 0)
+        .map(({ start, end, text, verse_ids }) => ({
+            start, end, text, verse_ids,
+            ref: generateReference(verse_ids, effectiveLanguage)
+        }));
 }
 
 const getLanguageConfig = function(language) {
