@@ -107,3 +107,30 @@ describe('Guard: no false positives on ordinary prose', () => {
     expect(find('This chapter of my life is closing.')).toEqual([]);
   });
 });
+
+describe('Guard: adversarial-review false positives', () => {
+  test('ReDoS — book followed by a long whitespace run resolves fast and does not match', () => {
+    const s = 'Genesis' + ' '.repeat(60) + 'was the beginning of all things here.';
+    const t0 = Date.now();
+    const out = find(s);
+    expect(Date.now() - t0).toBeLessThan(500); // would be many seconds with the exponential regex
+    expect(out).toEqual([]);
+  });
+  test('book name ending a sentence does not bind to the next line/list number', () => {
+    expect(find('This story is told in Genesis.\n\n2. The second point follows.')
+      .some((m) => /Genesis 2/i.test(m.ref))).toBe(false);
+    expect(find('That story is in Genesis. Section 2 of this essay explains why.')
+      .some((m) => /Genesis 2/i.test(m.ref))).toBe(false);
+  });
+  test('"Amos 5. Section 3" does not fabricate Amos 5:3', () => {
+    const out = find('He quoted Amos 5. Section 3 covers the judgment theme.');
+    expect(out.some((m) => /Amos 5:3/.test(m.ref))).toBe(false);
+  });
+  test('spelled-out chapter of a personal name / possessive is rejected', () => {
+    expect(find('the fifth chapter of Matthew Henry’s commentary on the gospel')).toEqual([]);
+    expect(find('the third chapter of James Brown’s autobiography')).toEqual([]);
+  });
+  test('spelled-out chapter of a lowercase word is rejected (i-flag guard)', () => {
+    expect(find('the second chapter of job hunting is networking')).toEqual([]);
+  });
+});

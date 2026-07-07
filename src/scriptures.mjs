@@ -935,6 +935,11 @@ const ordinalToNumber = (word) => {
 // A digit- or word-ordinal, e.g. "13th" or "fifteenth".
 const ANY_ORDINAL = '(\\d+(?:st|nd|rd|th)|' + ORDINAL_WORD_RE + ')';
 const BOOK_TAIL = '(?:the\\s+)?(?:book\\s+of\\s+)?((?:(?:First|Second|Third|Fourth|1st|2nd|3rd|4th|I{1,3}|IV)\\s+)?[A-Z][a-zA-Z]+)';
+// The regexes run case-insensitively, so validate case/context in JS instead:
+// the book must be Capitalized (else "job hunting" -> Job), and must not be a
+// person ("Matthew Henry’s commentary", "James Brown’s book").
+const isCapitalized = (s) => /^[A-Z]/.test(s);
+const followsAsName = (content, end) => /^(?:['’]s\b|\s+[A-Z][a-z])/.test(content.slice(end));
 
 // Detect spelled-out references the numeric matcher cannot see:
 //  - "the 13th/second/fifteenth chapter of [the book of] BOOK"     -> BOOK N
@@ -961,20 +966,20 @@ const collectSpelledOut = (content, lookup, effectiveLanguage) => {
     while ((m = verseRe.exec(content)) !== null) {
         const verse = ordinalToNumber(m[1]);
         const chapter = ordinalToNumber(m[2]);
-        if (verse == null || chapter == null) continue;
+        const e0 = m.index + m[0].length;
+        if (verse == null || chapter == null || !isCapitalized(m[3]) || followsAsName(content, e0)) continue;
         const s = m.index + m[0].indexOf(m[1]);
-        const e = m.index + m[0].length;
-        claimed.push([s, e]);
-        push(s, e, `${m[3]} ${chapter}:${verse}`);
+        claimed.push([s, e0]);
+        push(s, e0, `${m[3]} ${chapter}:${verse}`);
     }
 
     // "Nth chapter of BOOK"
     const chapRe = new RegExp('\\b(?:the\\s+)?' + ANY_ORDINAL + '\\s+chapter\\s+of\\s+' + BOOK_TAIL, 'ig');
     while ((m = chapRe.exec(content)) !== null) {
         const chapter = ordinalToNumber(m[1]);
-        if (chapter == null) continue;
-        const s = m.index + m[0].indexOf(m[1]);
         const e = m.index + m[0].length;
+        if (chapter == null || !isCapitalized(m[2]) || followsAsName(content, e)) continue;
+        const s = m.index + m[0].indexOf(m[1]);
         if (claimed.some(([cs, ce]) => s < ce && cs < e)) continue; // inside a verse-of-chapter match
         push(s, e, `${m[2]} ${chapter}`);
     }

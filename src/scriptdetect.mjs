@@ -27,11 +27,18 @@ const findMatches = (content,books,lang_extra) => {
     const tail = lang_extra.tail ? new RegExp(lang_extra.tail,"ig") : /[^0-9]+$/;
     const preBookMatch = lang_extra.book || `(First|I|1|1st|Second|II|2|2nd|Third|III|3|3rd|Fourth|IV|4|4th)*\\s*(books* of)*\\s*`;
     const matchingBooks = findMatchingBooks(normalizedContent,books);
-    // Allow whitespace (incl. newlines from wrapped HTML) between the book name
-    // and its chapter, treat "and" as a numeric connector so verse
-    // continuations ("16:17 and 18") stay part of the span, allow an opening
-    // paren ("Philippians (3:20, 21)"), and allow "sec"/"section" (D&C "Sec. 93:29").
-    const postBookMatch = lang_extra.chapter || "([0-9:.;,~ —–-]|\\s|and|section|sec|cf|\\()*[0-9]+";
+    // Bind a book name to its chapter:verse. Structure (not a loose class) to
+    // avoid ReDoS and cross-sentence false positives:
+    //   <gap><number-core>
+    // gap = horizontal whitespace + at most one newline (wrapped HTML) + an
+    //   optional ", Sec." (D&C) + an optional "(" (Philippians (3:20)) — then a
+    //   digit MUST follow, so "Genesis. 2" / "Amos 5. Section 3" don't bind.
+    // core = digits joined by :.,;~ dashes, horizontal whitespace, single
+    //   newlines, and the word connectors "and"/"cf" (\b-bounded). Every
+    //   position matches exactly one alternative -> linear time.
+    const gap = "[ \\t]*(?:\\n(?![ \\t]*\\n)[ \\t]*)?(?:,[ \\t]*sec(?:tion)?\\.?[ \\t]*)?\\(?[ \\t]*(?=[0-9])";
+    const core = "(?:[0-9:.;,~—–-]|[ \\t]|\\n(?![ \\t]*\\n)|and\\b|cf\\b|\\()*[0-9]";
+    const postBookMatch = lang_extra.chapter || (gap + core);
     const fullBookMatches = matchingBooks.map(bookMatch=>{
         const patternString =  preBookMatch + bookMatch ;
         const pattern = (new RegExp(patternString,"ig"));
