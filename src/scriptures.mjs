@@ -1,12 +1,12 @@
 // Data loaded from compiled YAML
-import { scriptData, regexData, langData } from './lib/data-loader.mjs';
+import { scriptData, regexData, langData, extraCanons } from './lib/data-loader.mjs';
 const raw_index_orig = scriptData;
 const raw_regex_orig = regexData;
 const raw_lang = langData;
 
 import { processReferenceDetection } from './scriptdetect.mjs';
 import { detectReferencesWithContext } from './scriptdetectcontext.mjs';
-import { detectCanon, formatId, parseId, convertCanon, registerCanon } from './scriptcanon.mjs';
+import { detectCanon, formatId, parseId, convertCanon, registerCanon, registerMapping } from './scriptcanon.mjs';
 
 import {
   MAX_RANGE_SIZE,
@@ -25,6 +25,23 @@ registerCanon(DEFAULTS.canon, {
   parse: (s) => parseInt(s, 10)
 });
 
+// Register additional canons and their concordances from data.
+// These use plain integers in their own id space; bare integers with no
+// explicit canon still resolve to the default canon, so no acceptsInteger.
+for (const [canonKey, canonData] of Object.entries(extraCanons)) {
+  registerCanon(canonKey, {
+    format: (n) => n,
+    parse: (s) => (typeof s === 'number' ? s : parseInt(s, 10))
+  });
+  for (const [targetKey, mapping] of Object.entries(canonData.mappings || {})) {
+    // canonA = target canon, so aToB is target->thisCanon
+    registerMapping(targetKey, canonKey, {
+      aToB: mapping.fromTarget,
+      bToA: mapping.toTarget
+    });
+  }
+}
+
 // Module-level caches for performance
 const indexCache = {
   refIndex: null,
@@ -34,8 +51,9 @@ const indexCache = {
 };
 
 const hashConfig = (config) => {
-  // Hash based on language for proper cache invalidation
-  return config?.language || 'en';
+  // Hash based on language AND canon for proper cache invalidation —
+  // rlds and lds share book names but have different verse structures
+  return (config?.language || 'en') + ':' + (config?.canon || DEFAULTS.canon);
 };
 
 // Browser localStorage keys for preferences
@@ -140,15 +158,15 @@ const lookupReference = function(query, optionsOrLanguage = {}, legacyConfig = n
     const { convertTo, includeParallel } = lookupConfig;
     const canon = lookupConfig.canon || getEffectiveCanon();
 
-    // Try lookup in the requested language
-    const lookupResult = lookupInLanguage(query, effectiveLanguage);
+    // Try lookup in the requested language (and canon versification)
+    const lookupResult = lookupInLanguage(query, effectiveLanguage, canon);
     const verse_ids = lookupResult.verse_ids;
     const errors = lookupResult.errors;
 
     if (verse_ids?.length) {
         let result = {
             "query": query,
-            "ref": generateReference(verse_ids, effectiveLanguage),
+            "ref": generateReference(verse_ids, { language: effectiveLanguage, canon }),
             "verse_ids": verse_ids
         };
 
@@ -158,7 +176,7 @@ const lookupReference = function(query, optionsOrLanguage = {}, legacyConfig = n
             const converted = convertCanon(verse_ids, { from: canon, to: convertTo });
             result.verse_ids = converted.verse_ids;
             result.partial = converted.partial;
-            result.ref = generateReference(converted.verse_ids, effectiveLanguage);
+            result.ref = generateReference(converted.verse_ids, { language: effectiveLanguage, canon: convertTo });
         }
 
         // Handle includeParallel option using generic canon conversion
@@ -168,7 +186,7 @@ const lookupReference = function(query, optionsOrLanguage = {}, legacyConfig = n
             result.parallel = {
                 canon: parallelCanon,
                 verse_ids: parallelConverted.verse_ids,
-                ref: generateReference(parallelConverted.verse_ids, effectiveLanguage),
+                ref: generateReference(parallelConverted.verse_ids, { language: effectiveLanguage, canon: parallelCanon }),
                 partial: parallelConverted.partial
             };
         }
@@ -178,7 +196,7 @@ const lookupReference = function(query, optionsOrLanguage = {}, legacyConfig = n
 
     // If no results and multi-language lookup is allowed, try fallback languages
     if (!lookupConfig.noMulti) {
-        const fallbackResult = lookupWithLanguageFallback(query, effectiveLanguage);
+        const fallbackResult = lookupWithLanguageFallback(query, effectiveLanguage, canon);
         // If fallback also found no results and we have errors, include them
         if (fallbackResult.verse_ids.length === 0 && errors) {
             fallbackResult.error = errors.join('; ');
@@ -194,8 +212,8 @@ const lookupReference = function(query, optionsOrLanguage = {}, legacyConfig = n
     };
 }
 
-const lookupInLanguage = function(query, language) {
-    const config = getLanguageConfig(language);
+const lookupInLanguage = function(query, language, canon = null) {
+    const config = getLanguageConfig(language, canon);
 
     // Cleanup and process the reference
     let ref = cleanReference(query, config);
@@ -222,18 +240,18 @@ const lookupInLanguage = function(query, language) {
 }
 
 
-const lookupWithLanguageFallback = function(query, targetLanguage) {
+const lookupWithLanguageFallback = function(query, targetLanguage, canon = null) {
     // Define fallback order: English first (if not already tried), then all other languages
     const fallbackLanguages = targetLanguage !== 'en'
         ? ['en', ...Object.keys(raw_lang).filter(lang => lang !== 'en' && lang !== targetLanguage)]
         : Object.keys(raw_lang).filter(lang => lang !== targetLanguage);
 
     for (const lang of fallbackLanguages) {
-        const lookupResult = lookupInLanguage(query, lang);
+        const lookupResult = lookupInLanguage(query, lang, canon);
         const verse_ids = lookupResult.verse_ids;
         if (verse_ids?.length) {
             // Generate reference in the target language
-            const refInTargetLanguage = generateReference(verse_ids, targetLanguage);
+            const refInTargetLanguage = generateReference(verse_ids, { language: targetLanguage, canon });
             return {
                 "query": query,
                 "ref": refInTargetLanguage,
@@ -320,14 +338,13 @@ const generateReference = function(verse_ids, optionsOrLanguage = {}, legacyOpti
     const { ids, canon: detectedCanon } = validateVerseIdsMixed(verse_ids);
     if(!ids) return '';
 
-    // Handle canon mismatch: if explicit canon conflicts with detected canon, return empty
-    if (canon && detectedCanon && canon !== detectedCanon) {
-        console.warn(`Canon mismatch: requested ${canon} but IDs are ${detectedCanon}`);
-        return '';
-    }
+    // Plain integers are not self-describing across canons (lds and rlds id
+    // spaces overlap), so an explicit canon always wins; detection only
+    // applies when no canon was given.
+    const effectiveCanon = canon || detectedCanon || null;
 
     const effectiveLanguage = getEffectiveLanguage(language);
-    const config = getLanguageConfig(effectiveLanguage);
+    const config = getLanguageConfig(effectiveLanguage, effectiveCanon);
     let ranges = loadVerseStructure(ids, config);
     let refs = loadRefsFromRanges(ranges, config);
 
@@ -821,12 +838,14 @@ const detectReferences = (content, callBack, options = null) => {
     return processReferenceDetection(content, books, config.lang_extra, (query) => lookupReference(query, effectiveLanguage), callBack);
 }
 
-const getLanguageConfig = function(language) {
+const getLanguageConfig = function(language, canon = null) {
     // Default to English if no language specified or not found
     const effectiveLanguage = language && raw_lang[language] ? language : 'en';
-    
+    const effectiveCanon = canon && extraCanons[canon] ? canon : DEFAULTS.canon;
+
     const config = {
         language: effectiveLanguage,
+        canon: effectiveCanon,
         raw_index: raw_index_orig,
         raw_regex: {...raw_regex_orig},
         lang_extra: {},
@@ -836,7 +855,7 @@ const getLanguageConfig = function(language) {
     // For English or if language not found, use defaults
     if (effectiveLanguage === 'en' || !raw_lang[effectiveLanguage]) {
         config.lang_extra.joiners = config.raw_regex.joiners;
-        return config;
+        return applyCanonOverride(config, effectiveCanon);
     }
 
     // Process language-specific data
@@ -865,6 +884,18 @@ const getLanguageConfig = function(language) {
     config.lang_extra.joiners = config.lang_extra.joiners || config.raw_regex.joiners;
     config.wordBreak = langData.wordBreak || "\\b";
 
+    return applyCanonOverride(config, config.canon);
+}
+
+// Swap in a non-default canon's verse structure and book regexes.
+// Extra canons currently ship English book data only, so canon override
+// replaces any language-specific book set.
+const applyCanonOverride = function(config, effectiveCanon) {
+    if (effectiveCanon === DEFAULTS.canon) return config;
+    const canonData = extraCanons[effectiveCanon];
+    if (!canonData) return config;
+    config.raw_index = canonData.index;
+    config.raw_regex.books = [...canonData.regexBooks];
     return config;
 }
 

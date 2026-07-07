@@ -148,6 +148,10 @@ export const convertCanon = (verseIds, options = {}) => {
         }
       }
       if (mappingEntry.partial) result.partial = true;
+    } else {
+      // Source id has no concordance entry: the input cannot be fully
+      // represented in the target canon. Never drop silently.
+      result.partial = true;
     }
   }
 

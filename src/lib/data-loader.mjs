@@ -47,6 +47,11 @@ import ldsEo from '../data/canons/lds/eo.mjs';
 // Load shared language configs
 import sharedKo from '../data/shared/ko.mjs';
 
+// Load RLDS canon data (structure, English names, concordance to lds/bible)
+import rldsStructure from '../data/canons/rlds/structure.mjs';
+import rldsEn from '../data/canons/rlds/en.mjs';
+import rldsMapping from '../data/canons/rlds/mapping.mjs';
+
 // Merge bible + lds structures
 const allBooks = [...bibleStructure.books, ...ldsStructure.books];
 const allBooksEn = { ...bibleEn.books, ...ldsEn.books };
@@ -197,10 +202,115 @@ function buildLangData() {
   };
 }
 
+/**
+ * Build a verse index for a canon: { "BookName": [verses_per_chapter], ... }
+ * Book order follows the canon structure, so sequential verse_id
+ * accumulation reproduces each book's first_verse_id.
+ */
+function buildCanonIndex(structure, enBooks) {
+  const index = {};
+  for (const book of structure.books) {
+    const name = enBooks[book.key]?.name || book.key;
+    index[name] = book.verses;
+  }
+  return index;
+}
+
+/**
+ * Build regex book list for a canon: [[pattern, name], ...]
+ * Mirrors buildRegexData's handling of number prefixes and alternates.
+ */
+function buildCanonRegexBooks(structure, enBooks) {
+  const books = [];
+  for (const book of structure.books) {
+    const info = enBooks[book.key];
+    if (!info) continue;
+    const name = info.name;
+    const numberMatch = name.match(/^(\d+)\s+(.+)$/);
+    const numberPrefix = numberMatch ? numberMatch[1] + '\\s*' : '';
+    if (info.pattern) {
+      books.push([numberPrefix + info.pattern, name]);
+    }
+    books.push([name, name]);
+    for (const alt of info.alt || []) {
+      books.push([alt, name]);
+    }
+  }
+  return books;
+}
+
+/**
+ * Expand compressed concordance sections (runs/singles/multi) into
+ * forward/reverse lookup objects usable by scriptcanon's convertCanon:
+ *   { sourceToTarget: { id: {ids, partial} }, targetToSource: {...} }
+ * Reverse entries with multiple sources, and both sides of a multi
+ * mapping, are flagged partial. Ids are sorted ascending (verse order).
+ */
+function expandConcordance(sections) {
+  const sourceToTarget = {};
+  const targetToSource = {};
+  const addReverse = (target, source) => {
+    if (!targetToSource[target]) targetToSource[target] = { ids: [], partial: false };
+    targetToSource[target].ids.push(source);
+  };
+
+  for (const section of sections) {
+    if (!section) continue;
+    for (const [sourceStart, targetStart, length] of section.runs || []) {
+      for (let i = 0; i < length; i++) {
+        sourceToTarget[sourceStart + i] = { ids: [targetStart + i], partial: false };
+        addReverse(targetStart + i, sourceStart + i);
+      }
+    }
+    for (const [source, target] of section.singles || []) {
+      sourceToTarget[source] = { ids: [target], partial: false };
+      addReverse(target, source);
+    }
+    for (const [source, targets] of section.multi || []) {
+      sourceToTarget[source] = { ids: [...targets].sort((a, b) => a - b), partial: true };
+      for (const target of targets) {
+        addReverse(target, source);
+        targetToSource[target].partial = true;
+      }
+    }
+  }
+
+  for (const entry of Object.values(targetToSource)) {
+    entry.ids.sort((a, b) => a - b);
+    if (entry.ids.length > 1) entry.partial = true;
+  }
+
+  return { sourceToTarget, targetToSource };
+}
+
+/**
+ * Build non-default canons with their indexes, book regexes, and
+ * concordances. The RLDS bible section (JST<->KJV) targets bible ids
+ * 1-31102, which are numerically identical to lds ids (the lds canon
+ * is bible + BOM + D&C + PGP), so both sections merge into one
+ * full-coverage lds<->rlds concordance.
+ */
+function buildExtraCanons() {
+  const { sourceToTarget: rldsToLds, targetToSource: ldsToRlds } =
+    expandConcordance([rldsMapping.bible, rldsMapping.lds]);
+
+  return {
+    [rldsStructure.canon]: {
+      index: buildCanonIndex(rldsStructure, rldsEn.books),
+      regexBooks: buildCanonRegexBooks(rldsStructure, rldsEn.books),
+      // keyed by target canon: toTarget = thisCanon->target, fromTarget = target->thisCanon
+      mappings: {
+        lds: { toTarget: rldsToLds, fromTarget: ldsToRlds }
+      }
+    }
+  };
+}
+
 // Export pre-built data
 export const scriptData = buildScriptData();
 export const regexData = buildRegexData();
 export const langData = buildLangData();
+export const extraCanons = buildExtraCanons();
 
 // Also export structures for advanced use
 export { bibleStructure, ldsStructure };

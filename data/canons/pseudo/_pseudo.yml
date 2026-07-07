@@ -1,6 +1,6 @@
 canon: pseudo
-name: LDS Pseudepigrapha
-description: Modern apocryphal texts claiming LDS prophetic authorship
+name: Pseudepigrapha
+description: Texts of uncertain or disputed authorship, often attributed to biblical figures.
 id_format: integer
 id_start: 60001
 id_end: 69713
