@@ -401,6 +401,10 @@ const cleanReference = function(messyReference, config) {
 
     // Verse/chapter continuation: "16:17 and 18" -> "16:17,18"
     ref = ref.replace(/(\d)\s+and\s+(\d)/g, "$1,$2");
+    // Drop parens and D&C "Sec."/"Section" markers before a number:
+    // "Philippians (3:20, 21)" / "Doctrine and Covenants, Sec. 93:29".
+    ref = ref.replace(/[()]/g, " ");
+    ref = ref.replace(/\bsec(?:tion)?\b\.?/ig, " ");
 
     //Build Regex rules
     let regex = config.raw_regex.pre_rules;
@@ -898,30 +902,84 @@ const findReferences = (content, options = null) => {
     return applyDetectionFlags(records, finalOptions);
 }
 
-// Detect spelled-out chapter references like "the 13th chapter of First
-// Corinthians" or "22nd chapter of the book of Matthew". The trailing book
-// candidate is validated by lookupReference, so non-book phrases ("13th
-// chapter of His Gospel") are rejected. Returns position-based records.
+// English ordinal words -> number, covering 1..39 (single words + twenty-/
+// thirty- compounds), which spans the chapters/verses that appear spelled out
+// in practice. Compound cardinals ("one hundred and second") are not covered.
+const ORDINAL_ONES = ['zeroth', 'first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eighth', 'ninth'];
+const ORDINAL_TEENS = { tenth: 10, eleventh: 11, twelfth: 12, thirteenth: 13, fourteenth: 14, fifteenth: 15, sixteenth: 16, seventeenth: 17, eighteenth: 18, nineteenth: 19 };
+const ORDINAL_TENS = { twentieth: 20, thirtieth: 30 };
+const CARDINAL_TENS = { twenty: 20, thirty: 30 };
+const ORDINAL_WORD_RE = '(?:' +
+    'twenty-(?:first|second|third|fourth|fifth|sixth|seventh|eighth|ninth)|' +
+    'thirty-(?:first|second|third|fourth|fifth|sixth|seventh|eighth|ninth)|' +
+    Object.keys(ORDINAL_TENS).join('|') + '|' +
+    Object.keys(ORDINAL_TEENS).join('|') + '|' +
+    ORDINAL_ONES.slice(1).join('|') +
+    ')';
+
+const ordinalToNumber = (word) => {
+    const digit = word.match(/^(\d+)(?:st|nd|rd|th)?$/i);
+    if (digit) return parseInt(digit[1], 10);
+    const w = word.toLowerCase();
+    if (ORDINAL_TEENS[w] != null) return ORDINAL_TEENS[w];
+    if (ORDINAL_TENS[w] != null) return ORDINAL_TENS[w];
+    const dash = w.split('-');
+    if (dash.length === 2 && CARDINAL_TENS[dash[0]] != null) {
+        const one = ORDINAL_ONES.indexOf(dash[1]);
+        if (one > 0) return CARDINAL_TENS[dash[0]] + one;
+    }
+    const one = ORDINAL_ONES.indexOf(w);
+    return one > 0 ? one : null;
+};
+
+// A digit- or word-ordinal, e.g. "13th" or "fifteenth".
+const ANY_ORDINAL = '(\\d+(?:st|nd|rd|th)|' + ORDINAL_WORD_RE + ')';
+const BOOK_TAIL = '(?:the\\s+)?(?:book\\s+of\\s+)?((?:(?:First|Second|Third|Fourth|1st|2nd|3rd|4th|I{1,3}|IV)\\s+)?[A-Z][a-zA-Z]+)';
+
+// Detect spelled-out references the numeric matcher cannot see:
+//  - "the 13th/second/fifteenth chapter of [the book of] BOOK"     -> BOOK N
+//  - "the Nth verse of the Mth chapter of BOOK"                    -> BOOK M:N
+// The trailing book candidate is validated via lookupReference, so non-book
+// phrases ("13th chapter of His Gospel") are rejected. Returns position records.
 const collectSpelledOut = (content, lookup, effectiveLanguage) => {
-    const re = /\b(?:the\s+)?(\d+)(?:st|nd|rd|th)\s+chapter\s+of\s+(?:the\s+)?(?:book\s+of\s+)?((?:(?:First|Second|Third|Fourth|1st|2nd|3rd|4th|I{1,3}|IV)\s+)?[A-Z][a-zA-Z]+)/g;
     const out = [];
-    let m;
-    while ((m = re.exec(content)) !== null) {
-        const chapter = m[1];
-        const bookText = m[2];
-        const result = lookup(`${bookText} ${chapter}`);
-        if (!result.verse_ids || !result.verse_ids.length) continue;
-        // Span from the ordinal number through the book name (exclude a leading "the ").
-        const start = m.index + m[0].indexOf(chapter);
-        const end = m.index + m[0].length;
+    const push = (start, end, query) => {
+        const result = lookup(query);
+        if (!result.verse_ids || !result.verse_ids.length) return;
         out.push({
             start, end,
             text: content.substring(start, end),
             verse_ids: result.verse_ids,
             ref: generateReference(result.verse_ids, effectiveLanguage)
         });
+    };
+
+    // "Nth verse of the Mth chapter of BOOK" (check first — longer span).
+    const verseRe = new RegExp('\\b(?:the\\s+)?' + ANY_ORDINAL + '\\s+verse\\s+of\\s+the\\s+' + ANY_ORDINAL + '\\s+chapter\\s+of\\s+' + BOOK_TAIL, 'ig');
+    const claimed = [];
+    let m;
+    while ((m = verseRe.exec(content)) !== null) {
+        const verse = ordinalToNumber(m[1]);
+        const chapter = ordinalToNumber(m[2]);
+        if (verse == null || chapter == null) continue;
+        const s = m.index + m[0].indexOf(m[1]);
+        const e = m.index + m[0].length;
+        claimed.push([s, e]);
+        push(s, e, `${m[3]} ${chapter}:${verse}`);
     }
-    return out;
+
+    // "Nth chapter of BOOK"
+    const chapRe = new RegExp('\\b(?:the\\s+)?' + ANY_ORDINAL + '\\s+chapter\\s+of\\s+' + BOOK_TAIL, 'ig');
+    while ((m = chapRe.exec(content)) !== null) {
+        const chapter = ordinalToNumber(m[1]);
+        if (chapter == null) continue;
+        const s = m.index + m[0].indexOf(m[1]);
+        const e = m.index + m[0].length;
+        if (claimed.some(([cs, ce]) => s < ce && cs < e)) continue; // inside a verse-of-chapter match
+        push(s, e, `${m[2]} ${chapter}`);
+    }
+
+    return out.sort((a, b) => a.start - b.start);
 }
 
 // The book portion of a reference string: everything before the first

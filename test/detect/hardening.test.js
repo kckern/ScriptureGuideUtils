@@ -69,6 +69,35 @@ describe('T3: spelled-out "Nth chapter of BOOK"', () => {
   });
 });
 
+describe('T3b: word-ordinal chapters (adversarial findings)', () => {
+  test('"the second chapter of Joel"', () => {
+    expect(find('the Prophet read the second chapter of Joel and remarked').find(Boolean).verse_ids)
+      .toEqual(ids('Joel 2'));
+  });
+  test('"the fifth chapter of Matthew"', () => {
+    expect(find('quoting from the fifth chapter of Matthew, ye are the light').find(Boolean).verse_ids)
+      .toEqual(ids('Matthew 5'));
+  });
+  test('"the fifteenth chapter of First Corinthians"', () => {
+    expect(find('from the fifteenth chapter of First Corinthians here').find(Boolean).verse_ids)
+      .toEqual(ids('1 Corinthians 15'));
+  });
+  test('"Nth verse of the Mth chapter of BOOK"', () => {
+    // "the fifteenth verse of the seventh chapter of Revelation" -> Revelation 7:15
+    const m = find('the fifteenth verse of the seventh chapter of Revelation').find(Boolean);
+    expect(m.verse_ids).toEqual(ids('Revelation 7:15'));
+  });
+});
+
+describe('T4: parenthetical and "Sec." forms', () => {
+  test('paren between book and verse: "Philippians (3:20, 21)"', () => {
+    expect(covers('epistle to the Philippians (3:20, 21) he says', 'Philippians 3:20-21')).toBe(true);
+  });
+  test('"Doctrine and Covenants, Sec. 93:29"', () => {
+    expect(covers('explained in the Doctrine and Covenants, Sec. 93:29 that man', 'Doctrine and Covenants 93:29')).toBe(true);
+  });
+});
+
 describe('Guard: no false positives on ordinary prose', () => {
   test('plain numbers and dates are not linked', () => {
     expect(find('There were 3 chapters and 16 verses written in 1830.')).toEqual([]);

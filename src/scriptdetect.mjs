@@ -28,9 +28,10 @@ const findMatches = (content,books,lang_extra) => {
     const preBookMatch = lang_extra.book || `(First|I|1|1st|Second|II|2|2nd|Third|III|3|3rd|Fourth|IV|4|4th)*\\s*(books* of)*\\s*`;
     const matchingBooks = findMatchingBooks(normalizedContent,books);
     // Allow whitespace (incl. newlines from wrapped HTML) between the book name
-    // and its chapter, and treat "and" as a numeric connector so verse
-    // continuations ("16:17 and 18") stay part of the reference span.
-    const postBookMatch = lang_extra.chapter || "([0-9:.;,~ —–-]|\\s|and|cf)*[0-9]+";
+    // and its chapter, treat "and" as a numeric connector so verse
+    // continuations ("16:17 and 18") stay part of the span, allow an opening
+    // paren ("Philippians (3:20, 21)"), and allow "sec"/"section" (D&C "Sec. 93:29").
+    const postBookMatch = lang_extra.chapter || "([0-9:.;,~ —–-]|\\s|and|section|sec|cf|\\()*[0-9]+";
     const fullBookMatches = matchingBooks.map(bookMatch=>{
         const patternString =  preBookMatch + bookMatch ;
         const pattern = (new RegExp(patternString,"ig"));
@@ -89,7 +90,9 @@ const findMatches = (content,books,lang_extra) => {
         return newString.replace(tail,"").trim();
     }).filter(i=>!!i);
     const matches =  matchesWithReferences.map(string=>{
-        const pattern = (new RegExp(string,"ig"));
+        // `string` is a literal matched span, re-found to enumerate occurrences;
+        // it may contain regex metacharacters (e.g. "(" from "Philippians (3:20").
+        const pattern = (new RegExp(string.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"),"ig"));
         const matches = normalizedContent.match(pattern)?.map(i=>i.trim().replace(tail,""));
         //console.log({string,matches,tail});
         return matches;
