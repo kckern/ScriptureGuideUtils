@@ -3,20 +3,22 @@
  * Handles detection of implied references using context from explicit references
  */
 import { findMatches, findMatchIndexes, processReferenceDetection } from './scriptdetect.mjs';
-import { 
-    removeOverlaps, 
-    calculateGaps, 
-    calculateNegativeSpace, 
+import {
+    removeOverlaps,
+    calculateGaps,
+    calculateNegativeSpace,
     mergeAdjacentMatches,
-    buildFinalOutput 
+    buildFinalOutput,
+    gapCanMerge
 } from './scriptlib.mjs';
 
 // Enhanced reference detection with contextual processing
 export const detectReferencesWithContext = (content, books, lang_extra, lookupReference, callback, options, generateReference = null) => {
     try {
         // Step 1: Find explicit references using existing logic
+        // (findMatchIndexes returns false — not [] — when nothing matches)
         const explicitMatches = findMatches(content, books, lang_extra);
-        const explicitIndices = findMatchIndexes(content, explicitMatches, lookupReference, lang_extra);
+        const explicitIndices = findMatchIndexes(content, explicitMatches, lookupReference, lang_extra) || [];
         
         // Step 2: Find implied references using context
         const impliedMatches = findImpliedReferences(content, explicitMatches, explicitIndices, lookupReference, options);
@@ -51,7 +53,7 @@ export const detectReferencesWithContext = (content, books, lang_extra, lookupRe
         const joiners = lang_extra.joiners || ["^[;, &]$"];
         const gapThatMayBeMerged = gapsBetweenIndices.map(([start, end]) => {
             const gapString = content.substring(start, end).trim();
-            return joiners.some(joiner => (new RegExp(joiner, "ig")).test(gapString));
+            return gapCanMerge(gapString, joiners);
         });
         
         // Compatibility check for merging references
@@ -94,13 +96,16 @@ export const detectReferencesWithContext = (content, books, lang_extra, lookupRe
  */
 const findBookContexts = (content, explicitMatches, explicitIndices, lookupReference) => {
     const contexts = [];
-    
-    // Use the already found explicit matches and their positions
-    if (explicitMatches && explicitIndices) {
-        for (let i = 0; i < explicitMatches.length; i++) {
-            const match = explicitMatches[i];
+
+    // Derive contexts from the positional spans themselves. (explicitMatches
+    // is a differently-ordered/filtered string list — zipping the two arrays
+    // by index paired wrong matches with wrong positions and crashed when
+    // explicitIndices was false.)
+    if (explicitIndices && explicitIndices.length) {
+        for (let i = 0; i < explicitIndices.length; i++) {
             const [start, end] = explicitIndices[i];
-            
+            const match = content.substring(start, end);
+
             const verification = lookupReference(match);
             
             if (verification.verse_ids && verification.verse_ids.length > 0) {

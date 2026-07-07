@@ -160,6 +160,33 @@ export const mergeAdjacentMatches = (matches, gapMergeFlags, compatibilityCheck 
 };
 
 /**
+ * Decide whether the text between two adjacent matches is purely "joiner"
+ * material (separators/conjunctions), meaning the matches should merge into
+ * one reference. The gap must consist ENTIRELY of joiner tokens, separator
+ * punctuation, and whitespace — a gap that merely CONTAINS a joiner word
+ * (e.g. "command" contains "and") must not merge.
+ * @param {string} gapString - Text between two matches
+ * @param {Array|Object} joiners - Token list, {patterns: [...]}, or legacy anchored regexes
+ * @returns {boolean}
+ */
+export const gapCanMerge = (gapString, joiners) => {
+    if (!/\S/.test(gapString)) return true;
+    const list = Array.isArray(joiners) ? joiners : (joiners && joiners.patterns) || [];
+    let residue = gapString;
+    for (const joiner of list) {
+        if (typeof joiner !== 'string') continue;
+        if (joiner.startsWith('^')) {
+            // Legacy full-match regex form
+            try { if (new RegExp(joiner, 'i').test(gapString)) return true; } catch (e) { /* skip bad pattern */ }
+            continue;
+        }
+        const escaped = joiner.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        residue = residue.replace(new RegExp(escaped, 'ig'), ' ');
+    }
+    return /^[\s;,&.]*$/.test(residue);
+};
+
+/**
  * Build final output by alternating between cut items and negative space
  * @param {Array} cutItems - Processed match content
  * @param {Array} negativeItems - Unprocessed content between matches
