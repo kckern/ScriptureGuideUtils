@@ -156,37 +156,51 @@ function findMatchIndexes(content, matches,lookupReference, lang_extra) {
 
 
 
+// Collect detected references as structured records with offsets into the
+// original content: [{ start, end, text, ref, verse_ids }]. `text` is the
+// verbatim matched span (content.slice(start,end) === text); `ref` is the
+// normalized query from lookupReference. This is the position-based core that
+// both processReferenceDetection (string output) and the public findReferences
+// build on.
+const collectReferences = (content,books,lang_extra,lookupReference) => {
+    try{
+        lang_extra = lang_extra || {};
+        const matches = findMatches(content,books,lang_extra);
+        const matchIndeces = findMatchIndexes(content,matches,lookupReference,lang_extra);
+        if(!matchIndeces) return [];
+
+        const gapsBetweenIndeces = calculateGaps(matchIndeces);
+        const gapStrings = gapsBetweenIndeces.map(([start,end])=>content.substring(start,end).trim());
+        const joiners = lang_extra.joiners || ["^[;, &]*(and|c\\.*f\\.*|&|cited\\s+at|see\\s+also|compare|cf|see)*\\s*$"];
+        const gapThatMayBeMerged = gapsBetweenIndeces.map(([start,end],i)=>gapCanMerge(gapStrings[i], joiners));
+
+        const mergedIndeces = mergeAdjacentMatches(matchIndeces, gapThatMayBeMerged);
+
+        return mergedIndeces.map(([start,end])=>{
+            const text = content.substring(start,end);
+            const lookupResult = lookupReference(text);
+            return { start, end, text, ref: lookupResult.query, verse_ids: lookupResult.verse_ids || [] };
+        });
+    }catch(e){
+        return [];
+    }
+}
+
 const processReferenceDetection = (content,books,lang_extra,lookupReference,callback) =>
 {
     try{
-    lang_extra = lang_extra || {};
-    const matches = findMatches(content,books,lang_extra);
-    const matchIndeces = findMatchIndexes(content,matches,lookupReference,lang_extra);
-    if(!matchIndeces) return content;
+    const found = collectReferences(content,books,lang_extra,lookupReference);
+    if(!found.length) return content;
 
-    const gapsBetweenIndeces = calculateGaps(matchIndeces);
-    const gapStrings = gapsBetweenIndeces.map(([start,end])=>content.substring(start,end).trim());
-    //console.log({matches,matchIndeces,gapsBetweenIndeces,gapStrings});
-    const joiners = lang_extra.joiners || ["^[;, &]*(and|c\\.*f\\.*|&|cited\\s+at|see\\s+also|compare|cf|see)*\\s*$"];
-    const gapThatMayBeMerged = gapsBetweenIndeces.map(([start,end],i)=>gapCanMerge(gapStrings[i], joiners));
-
-    // Use shared merge logic
-    const mergedIndeces = mergeAdjacentMatches(matchIndeces, gapThatMayBeMerged);
-
+    const indices = found.map(({start,end})=>[start,end]);
     // Use shared negative space calculation
-    const negativeSpace = calculateNegativeSpace(mergedIndeces, content.length);
+    const negativeSpace = calculateNegativeSpace(indices, content.length);
 
-    //check content between matches.  If puctuation only (or 'and'), then merge
-    const cutItems = mergedIndeces.map(([start,end])=>{
-        const string = content.substring(start,end);
-        const lookupResult = lookupReference(string);
-        return callback(lookupResult.query, lookupResult.verse_ids);
-    });
+    const cutItems = found.map(({ref,verse_ids})=>callback(ref, verse_ids));
+    const negativeItems = negativeSpace.map(([start,end])=>content.substring(start,end));
+    const firstReferenceIsAtStart = indices[0][0] === 0;
 
-   const negativeItems = negativeSpace.map(([start,end])=>content.substring(start,end));
-   const firstReferenceIsAtStart = mergedIndeces[0][0] === 0;
-
-   return buildFinalOutput(cutItems, negativeItems, firstReferenceIsAtStart);
+    return buildFinalOutput(cutItems, negativeItems, firstReferenceIsAtStart);
     }catch(e){
         return content;
     }
@@ -195,6 +209,7 @@ const processReferenceDetection = (content,books,lang_extra,lookupReference,call
 
 
 export {
+    collectReferences,
     processReferenceDetection,
     findMatches,
     findMatchIndexes

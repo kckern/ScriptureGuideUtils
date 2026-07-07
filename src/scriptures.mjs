@@ -4,7 +4,7 @@ const raw_index_orig = scriptData;
 const raw_regex_orig = regexData;
 const raw_lang = langData;
 
-import { processReferenceDetection } from './scriptdetect.mjs';
+import { processReferenceDetection, collectReferences } from './scriptdetect.mjs';
 import { detectReferencesWithContext } from './scriptdetectcontext.mjs';
 import { detectCanon, formatId, parseId, convertCanon, registerCanon } from './scriptcanon.mjs';
 
@@ -821,6 +821,41 @@ const detectReferences = (content, callBack, options = null) => {
     return processReferenceDetection(content, books, config.lang_extra, (query) => lookupReference(query, effectiveLanguage), callBack);
 }
 
+// Position-based sibling of detectReferences: instead of returning a
+// transformed string, return the detected references as structured records
+// with offsets into `content`: [{ start, end, text, ref, verse_ids }] where
+// content.slice(start, end) === text. Consumers (e.g. the browser extension)
+// use the offsets to wrap matches in DOM nodes without string replacement.
+const findReferences = (content, options = null) => {
+    // Handle legacy API: (content, language)
+    if (typeof options === 'string' || options === null) {
+        options = { language: options };
+    }
+
+    const defaultOptions = {
+        language: null,
+        contextAware: true,
+        contextScope: 'sentence',
+        maxContextDistance: 500,
+        enableImpliedBooks: true,
+        enableVerseAbbrev: true
+    };
+
+    const finalOptions = { ...defaultOptions, ...options };
+
+    const effectiveLanguage = getEffectiveLanguage(finalOptions.language);
+    const config = getLanguageConfig(effectiveLanguage);
+    const src = config.raw_regex.books.map(i => i[0]);
+    const dst = [...new Set(config.raw_regex.books.map(i => i[1]))];
+    const books = [...dst, ...src];
+    const lookup = (query) => lookupReference(query, effectiveLanguage);
+
+    // Context-aware collection lands in Task 3; both option shapes route to
+    // the basic collector for now.
+    const found = collectReferences(content, books, config.lang_extra, lookup);
+    return found.filter(m => m.verse_ids.length > 0);
+}
+
 const getLanguageConfig = function(language) {
     // Default to English if no language specified or not found
     const effectiveLanguage = language && raw_lang[language] ? language : 'en';
@@ -875,6 +910,7 @@ export {
     setLanguage,
     setCanon,
     detectReferences,
+    findReferences,
     convertCanon,
 
     //Aliases for convenience
@@ -899,4 +935,7 @@ export {
     detectReferences as detectRefs,
     detectReferences as detectScriptures,
     detectReferences as linkRefs,
+
+    findReferences as find,
+    findReferences as findRefs,
 };
